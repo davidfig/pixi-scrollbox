@@ -1,6 +1,5 @@
 const PIXI = require('pixi.js')
 const Viewport = require('pixi-viewport')
-// const Viewport = require('../../pixi-viewport/src/viewport')
 
 const defaults = require('./defaults')
 const DEFAULTS = require('./defaults.json')
