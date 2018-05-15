@@ -1,5 +1,4 @@
 {
-    "edge": "clamp",
     "boxWidth": 100,
     "boxHeight": 100,
     "scrollbarSize": 10,

@@ -37,7 +37,7 @@
     "eventemitter3": "^3.1.0",
     "exists": "^1.0.1",
     "pixi-ease": "^0.18.0",
-    "pixi-viewport": "^2.0.0"
+    "pixi-viewport": "^2.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

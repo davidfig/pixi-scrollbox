@@ -1,5 +1,6 @@
 const PIXI = require('pixi.js')
 const Viewport = require('pixi-viewport')
+// const Viewport = require('../../pixi-viewport/src/viewport')
 
 const defaults = require('./defaults')
 const DEFAULTS = require('./defaults.json')
@@ -13,10 +14,9 @@ class Scrollbox extends PIXI.Container
      * create a scrollbox
      * @param {object} options
      * @param {boolean} [options.dragScroll=true] user may drag the content area to scroll content
-     * @param {string} [options.overflowX=auto] (scroll, hidden, auto)
-     * @param {string} [options.overflowY=auto] (scroll, hidden, auto)
+     * @param {string} [options.overflowX=auto] (scroll, hidden, auto) this changes whether the scrollbar is shown
+     * @param {string} [options.overflowY=auto] (scroll, hidden, auto) this changes whether the scrollbar is shown
      * @param {string} [options.overflow] (scroll, hidden, auto) sets overflowX and overflowY to this value
-     * @param {string} [options.edge=clamp] what happens at edges (clamp or bounce)
      * @param {number} [options.boxWidth=100] width of scrollbox including scrollbar (in pixels)
      * @param {number} [options.boxHeight=100] height of scrollbox including scrollbar (in pixels)
      * @param {number} [options.scrollbarSize=10] size of scrollbar (in pixels)
@@ -39,14 +39,6 @@ class Scrollbox extends PIXI.Container
         if (this.options.dragScroll)
         {
             this.content.drag()
-        }
-        if (this.options.edge === 'clamp')
-        {
-            this.content.clamp()
-        }
-        else
-        {
-            this.content.bounce()
         }
 
         /**
@@ -102,11 +94,10 @@ class Scrollbox extends PIXI.Container
     }
 
     /**
-     * sets overflowX and overflowY to (scroll, hidden, auto, visible)
+     * sets overflowX and overflowY to (scroll, hidden, auto) changing whether the scrollbar is shown
      * scroll = always show scrollbar
      * hidden = hide overflow and do not show scrollbar
      * auto = if content is larger than box size, then show scrollbar
-     * visible = do not clip content if larger
      * @type {string}
      */
     get overflow()
@@ -118,6 +109,41 @@ class Scrollbox extends PIXI.Container
         this.options.overflow = value
         this.options.overflowX = value
         this.options.overflowY = value
+        this.update()
+    }
+
+    /**
+     * sets overflowX to (scroll, hidden, auto) changing whether the scrollbar is shown
+     * scroll = always show scrollbar
+     * hidden = hide overflow and do not show scrollbar
+     * auto = if content is larger than box size, then show scrollbar
+     * @type {string}
+     */
+    get overflowX()
+    {
+        return this.options.overflowX
+    }
+    set overflowX(value)
+    {
+        this.options.overflowX = value
+        this.update()
+    }
+
+    /**
+     * sets overflowY to (scroll, hidden, auto) changing whether the scrollbar is shown
+     * scroll = always show scrollbar
+     * hidden = hide overflow and do not show scrollbar
+     * auto = if content is larger than box size, then show scrollbar
+     * @type {string}
+     */
+    get overflowY()
+    {
+        return this.options.overflowY
+    }
+    set overflowY(value)
+    {
+        this.options.overflowY = value
+        this.update()
     }
 
     /**
@@ -226,14 +252,14 @@ class Scrollbox extends PIXI.Container
      */
     _drawScrollbars()
     {
+        this._isScrollbarHorizontal = this.overflowX === 'scroll' ? true : this.overflowX === 'hidden' ? false : this.content.width > this.options.boxWidth
+        this._isScrollbarVertical = this.overflowY === 'scroll' ? true : this.overflowY === 'hidden' ? false : this.content.height > this.options.boxHeight
         this.scrollbar.clear()
         let options = {}
         options.left = 0
-        options.right = this.content.width + (this.content.height > this.boxHeight ? this.options.scrollbarSize : 0)
-        this._isScrollbarHorizontal = this.content.width > this.options.boxWidth
+        options.right = this.content.width + (this._isScrollbarVertical ? this.options.scrollbarSize : 0)
         options.top = 0
         options.bottom = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
-        this._isScrollbarVertical = this.content.height > this.options.boxHeight
         const width = this.content.width + (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
         const height = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
         this.scrollbarTop = (this.content.top / height) * this.boxHeight

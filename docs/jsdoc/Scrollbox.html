@@ -87,6 +87,10 @@
             
                 <li class="parent " data-name="Scrollbox#overflow"><a href="Scrollbox.html#overflow">overflow</a></li>
             
+                <li class="parent " data-name="Scrollbox#overflowX"><a href="Scrollbox.html#overflowX">overflowX</a></li>
+            
+                <li class="parent " data-name="Scrollbox#overflowY"><a href="Scrollbox.html#overflowY">overflowY</a></li>
+            
                 <li class="parent " data-name="Scrollbox#scrollbar"><a href="Scrollbox.html#scrollbar">scrollbar</a></li>
             
                 <li class="parent " data-name="Scrollbox#scrollbarSize"><a href="Scrollbox.html#scrollbarSize">scrollbarSize</a></li>
@@ -135,7 +139,7 @@
         <h2>Scrollbox
         </h2>
         
-            <div class="class-description"><p>pixi.js scrollbox: a masked box that can scroll vertically or horizontally with scrollbars</p></div>
+            <div class="class-description"><p>pixi.js scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars</p></div>
         
     </div>
 </header>
@@ -310,7 +314,7 @@
                         
                     
                 
-                <p>(scroll, hidden, auto)</p></td>
+                <p>(scroll, hidden, auto) this changes whether the scrollbar is shown</p></td>
         </tr>
 	
 	
@@ -346,7 +350,7 @@
                         
                     
                 
-                <p>(scroll, hidden, auto)</p></td>
+                <p>(scroll, hidden, auto) this changes whether the scrollbar is shown</p></td>
         </tr>
 	
 	
@@ -381,42 +385,6 @@
                     
                 
                 <p>(scroll, hidden, auto) sets overflowX and overflowY to this value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>edge</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                    clamp
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>what happens at edges (clamp or bounce)</p></td>
         </tr>
 	
 	
@@ -1091,11 +1059,118 @@
 <dd>
     
     <div class="description">
-        <p>sets overflowX and overflowY to (scroll, hidden, auto, visible)
+        <p>sets overflowX and overflowY to (scroll, hidden, auto) changing whether the scrollbar is shown
 scroll = always show scrollbar
 hidden = hide overflow and do not show scrollbar
-auto = if content is larger than box size, then show scrollbar
-visible = do not clip content if larger</p>
+auto = if content is larger than box size, then show scrollbar</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="overflowX">
+            <a class="share-icon" href="#overflowX"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">overflowX</span>
+            <span class="type-signature type">string</span>
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>sets overflowX to (scroll, hidden, auto) changing whether the scrollbar is shown
+scroll = always show scrollbar
+hidden = hide overflow and do not show scrollbar
+auto = if content is larger than box size, then show scrollbar</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="overflowY">
+            <a class="share-icon" href="#overflowY"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">overflowY</span>
+            <span class="type-signature type">string</span>
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>sets overflowY to (scroll, hidden, auto) changing whether the scrollbar is shown
+scroll = always show scrollbar
+hidden = hide overflow and do not show scrollbar
+auto = if content is larger than box size, then show scrollbar</p>
     </div>
     
     
@@ -1456,7 +1531,7 @@ visible = do not clip content if larger</p>
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line291">scrollbox.js:291</a>
+            <a href="src_scrollbox.js.html#line316">scrollbox.js:316</a>
         </div>
         
     </div>
@@ -1534,7 +1609,7 @@ visible = do not clip content if larger</p>
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue May 15 2018 13:48:22 GMT+0800 (DST)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue May 15 2018 14:27:13 GMT+0800 (DST)
             </div>
         </footer>
     </div>
