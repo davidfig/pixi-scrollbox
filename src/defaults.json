@@ -1,0 +1,9 @@
+{
+    "edge": "clamp",
+    "boxWidth": 100,
+    "boxHeight": 100,
+    "scrollbarSize": 10,
+    "scrollbarBackground": 14540253,
+    "scrollbarForeground": 8947848,
+    "dragScroll": true
+}
