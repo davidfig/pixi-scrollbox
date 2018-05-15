@@ -10,7 +10,7 @@ function vertical()
 {
     const size = 500
     const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300 }))
-    scrollbox.position.set(50, 100)
+    scrollbox.position.set(50, 75)
     const box = scrollbox.content.addChild(new PIXI.Graphics())
     box.beginFill(0xff0000, 0.25).drawRect(0, 0, 290, size).endFill()
     for (let i = 0; i < 50; i++)
@@ -26,10 +26,10 @@ function vertical()
     scrollbox.update()
 }
 
-function horizontalVertical()
+function horizontalVertical(title)
 {
     const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300 }))
-    scrollbox.position.set(400, 100)
+    scrollbox.position.set(400, 75)
     const box = scrollbox.content.addChild(new PIXI.Graphics())
     const size = 500
     box.beginFill(0xff0000, 0.25).drawRect(0, 0, size, size).endFill()
@@ -41,16 +41,17 @@ function horizontalVertical()
             .drawCircle(Random.range(radius, size - radius), Random.range(radius, size - radius), radius)
             .endFill()
     }
-    const text = scrollbox.content.addChild(new PIXI.Text(' horizontal and vertical scroll ', { fill: 0xffffff, fontSize: 14 }))
+    const text = scrollbox.content.addChild(new PIXI.Text(' ' + (title ? title : 'horizontal and vertical scroll') + ' ', { fill: 0xffffff, fontSize: 14 }))
     box.beginFill(0).drawRect(0, 0, text.width, text.height).endFill()
     scrollbox.update()
+    return scrollbox
 }
 
 function horizontal()
 {
     const size = 500
     const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300 }))
-    scrollbox.position.set(750, 100)
+    scrollbox.position.set(50, 425)
     const box = scrollbox.content.addChild(new PIXI.Graphics())
     box.beginFill(0xff0000, 0.25).drawRect(0, 0, size, 290).endFill()
     for (let i = 0; i < 50; i++)
@@ -85,6 +86,9 @@ window.onload = function ()
     horizontalVertical()
     vertical()
     horizontal()
+    const nodrag = horizontalVertical('dragScroll=false')
+    nodrag.position.set(400, 425)
+    nodrag.dragScroll = false
     window.addEventListener('resize', resize)
 
     PIXI.ticker.shared.add(() =>

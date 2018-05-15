@@ -1,53 +1,42 @@
-# pixi-viewport
-A highly configurable viewport/2D camera designed to work with pixi.js.
+# pixi-scrollbox
+A configurable scrollbox designed for pixi.js.
 
-Features include dragging, pinch-to-zoom, mouse wheel zooming, decelerated dragging, follow target, snap to point, snap to zoom, clamping, bouncing on edges, and move on mouse edges. See live example to try out all of these features.
+Features:
+* scrollbox uses a mask to clip to desired boxWidth/boxHeight size
+* scrollbox scrolls with scrollbars (options.overflow=scroll)
+* scrollbox's scrollbars may be hidden when not needed (options.overflow=auto or hidden)
+* scrollbox may also be scrolled by dragging on the content window (options.dragScroll=true)
 
-All features are configurable and removable, so set up the viewport to be exactly what you need.
+[**Live Example**](https://davidfig.github.io/pixi-scrollbox/)
 
 ## Rationale
-I kept rewriting 2d cameras for the games I developed with pixi.js, so I decided to package up a generic one. I included options that I need in my games, including edges that bounce, deceleration, and lots of options to tweak the feel of the viewport. 
+I needed a scrollbox for the UI of my game and since I had this nifty pixi-viewport, I figured it wouldn't be much work to create it. Five hours later and I realized I was a bit off on my estimates. Hopefully others will find it useful.
 
 ## Simple Example
 ```js
 var PIXI = require('pixi.js');
-var Viewport = require('pixi-viewport');
+var Viewport = require('pixi-scrollbox');
 
-// create viewport
-var viewport = new Viewport({
-    screenWidth: window.innerWidth,
-    screenHeight: window.innerHeight,
-    worldWidth: 1000,
-    worldHeight: 1000
-});
+// create the scrollbox
+var scrollbox = new Scrollbox({ boxWidth: 200, boxHeight: 200});
+
+// add a sprite to the scrollbox's content
+var sprite = scrollbox.content.addChild(new PIXI.Sprite(PIXI.Texture.WHITE));
+sprite.width = sprite.height = 500;
+sprite.tint = 0xff0000;
 
 // add the viewport to the stage
 var app = new PIXI.Application();
 document.body.appendChild(app.view);
-app.stage.addChild(viewport);
-
-// activate plugins
-viewport
-    .drag()
-    .pinch()
-    .decelerate();
-
-// add a red box
-var sprite = viewport.addChild(new PIXI.Sprite(PIXI.Texture.WHITE));
-sprite.tint = 0xff0000;
-sprite.width = sprite.height = 100
-sprite.position.set(100, 100);
+app.stage.addChild(scrollbox);
 ```
 
-## Live Example
-[https://davidfig.github.io/pixi-viewport/](https://davidfig.github.io/pixi-viewport/)
+## Usage
+
+[![npm i pixi-scrollbox](https://nodei.co/npm/pixi-scrollbox.png?mini=true)](https://npmjs.org/package/pixi-scrollbox/)
 
 ## API Documentation
-[https://davidfig.github.io/pixi-viewport/jsdoc/](https://davidfig.github.io/pixi-viewport/jsdoc/)
-
-## Installation
-
-    npm i pixi-viewport
+[https://davidfig.github.io/pixi-scrollbox/jsdoc/](https://davidfig.github.io/pixi-scrollbox/jsdoc/)
 
 ## license  
 MIT License  

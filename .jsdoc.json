@@ -35,7 +35,7 @@
         "./node_modules/yy-jsdoc-template/plugins/skip-node_modules",
         "plugins/markdown"
     ],
-    "readmeShowNav": "scrollbox",
+    "readmeShowNav": "Scrollbox",
     "templates": {
         "default": {
             "outputSourceFiles": true

@@ -1,11 +1,149 @@
-const PIXI = require('pixi.js')
-const Viewport = require('pixi-viewport')
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>pixi-scrollbox API Documentation</title>
+    
+    <meta name="description" content="Documentation for pixi-scrollbox library" />
+    
+        <meta name="keywords" content="docs, documentation, html5, javascript, jsdoc, camera, scrollbox, bounce, snap, 2d" />
+        <meta name="keyword" content="docs, documentation, html5, javascript, jsdoc, camera, scrollbox, bounce, snap, 2d" />
+    
+    
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,700" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/main.css">
+
+    
+    <script>
+    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{"outputSourceFiles":true},"applicationName":"pixi-scrollbox","footer":"by YOPEY YOPEY LLC (yopeyopey.com)","copyright":"Copyright © 2018 YOPEY YOPEY LLC.","meta":{"title":"pixi-scrollbox API Documentation","description":"Documentation for pixi-scrollbox library","keyword":"docs, documentation, html5, javascript, jsdoc, camera, scrollbox, bounce, snap, 2d"},"matomo":{"url":"https://analytics.yopeyopey.com/piwik/","id":13}};
+    </script>
+    
+
+    
+    <script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="https://analytics.yopeyopey.com/piwik/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '13']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+    </script>
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">pixi-scrollbox</a></h3>
+    <button id="menuToggle" class="btn btn-link btn-lg menu-toggle">
+        <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </button>
+    <div class="search">
+        <input id="search" type="text" class="form-control input-md" placeholder="Search...">
+    </div>
+    <ul class="list">
+    
+        
+    
+        
+        <li class="item" data-name="Scrollbox">
+            <span class="title  ">
+                
+                <a href="Scrollbox.html">Scrollbox</a>
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li class="parent " data-name="Scrollbox#boxHeight"><a href="Scrollbox.html#boxHeight">boxHeight</a></li>
+            
+                <li class="parent " data-name="Scrollbox#boxWidth"><a href="Scrollbox.html#boxWidth">boxWidth</a></li>
+            
+                <li class="parent " data-name="Scrollbox#content"><a href="Scrollbox.html#content">content</a></li>
+            
+                <li class="parent " data-name="Scrollbox#contentHeight"><a href="Scrollbox.html#contentHeight">contentHeight</a></li>
+            
+                <li class="parent " data-name="Scrollbox#contentWidth"><a href="Scrollbox.html#contentWidth">contentWidth</a></li>
+            
+                <li class="parent " data-name="Scrollbox#dragScroll"><a href="Scrollbox.html#dragScroll">dragScroll</a></li>
+            
+                <li class="parent " data-name="Scrollbox#isScrollbarHorizontal"><a href="Scrollbox.html#isScrollbarHorizontal">isScrollbarHorizontal</a></li>
+            
+                <li class="parent " data-name="Scrollbox#isScrollbarVertical"><a href="Scrollbox.html#isScrollbarVertical">isScrollbarVertical</a></li>
+            
+                <li class="parent " data-name="Scrollbox#overflow"><a href="Scrollbox.html#overflow">overflow</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbar"><a href="Scrollbox.html#scrollbar">scrollbar</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbarSize"><a href="Scrollbox.html#scrollbarSize">scrollbarSize</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollHeight"><a href="Scrollbox.html#scrollHeight">scrollHeight</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollLeft"><a href="Scrollbox.html#scrollLeft">scrollLeft</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollTop"><a href="Scrollbox.html#scrollTop">scrollTop</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollWidth"><a href="Scrollbox.html#scrollWidth">scrollWidth</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li class="parent  " data-name="Scrollbox#update"><a href="Scrollbox.html#update">update</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        
+        <h1 class="page-title" data-filename="Scrollbox">Source: src/scrollbox.js</h1>
+        
+        
+
+
+    
+    <section>
+        <header>
+            <div class="header content-size">
+                <h2>src/scrollbox.js</h2>
+            </div>
+        </header>
+        <article>
+            <pre id="source-code" class="prettyprint source "><code>const PIXI = require('pixi.js')
+// const Viewport = require('pixi-viewport')
+const Viewport = require('../../pixi-viewport/src/viewport')
 
 const defaults = require('./defaults')
 const DEFAULTS = require('./defaults.json')
 
 /**
- * pixi.js scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
+ * pixi.js scrollbox: a masked box that can scroll vertically or horizontally with scrollbars
  */
 class Scrollbox extends PIXI.Container
 {
@@ -307,7 +445,7 @@ class Scrollbox extends PIXI.Container
         {
             if (local.y > this.boxHeight - this.scrollbarSize)
             {
-                if (local.x >= this.scrollbarLeft && local.x <= this.scrollbarLeft + this.scrollbarWidth)
+                if (local.x >= this.scrollbarLeft &amp;&amp; local.x &lt;= this.scrollbarLeft + this.scrollbarWidth)
                 {
                     this.pointerDown = { type: 'horizontal', last: local }
                 }
@@ -332,7 +470,7 @@ class Scrollbox extends PIXI.Container
         {
             if (local.x > this.boxWidth - this.scrollbarSize)
             {
-                if (local.y >= this.scrollbarTop && local.y <= this.scrollbarTop + this.scrollbarWidth)
+                if (local.y >= this.scrollbarTop &amp;&amp; local.y &lt;= this.scrollbarTop + this.scrollbarWidth)
                 {
                     this.pointerDown = { type: 'vertical', last: local }
                 }
@@ -392,4 +530,25 @@ class Scrollbox extends PIXI.Container
     }
 }
 
-module.exports = Scrollbox
+module.exports = Scrollbox</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+
+        
+
+        <footer class="content-size">
+            <div class="footer">
+                Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue May 15 2018 13:48:22 GMT+0800 (DST)
+            </div>
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/main.js"></script>
+</body>
+</html>

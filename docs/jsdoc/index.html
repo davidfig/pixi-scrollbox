@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>pixi-scrollbox API Documentation</title>
+    
+    <meta name="description" content="Documentation for pixi-scrollbox library" />
+    
+        <meta name="keywords" content="docs, documentation, html5, javascript, jsdoc, camera, scrollbox, bounce, snap, 2d" />
+        <meta name="keyword" content="docs, documentation, html5, javascript, jsdoc, camera, scrollbox, bounce, snap, 2d" />
+    
+    
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="https://fonts.googleapis.com/css?family=Libre+Franklin:400,700" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/main.css">
+
+    
+    <script>
+    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{"outputSourceFiles":true},"applicationName":"pixi-scrollbox","footer":"by YOPEY YOPEY LLC (yopeyopey.com)","copyright":"Copyright © 2018 YOPEY YOPEY LLC.","meta":{"title":"pixi-scrollbox API Documentation","description":"Documentation for pixi-scrollbox library","keyword":"docs, documentation, html5, javascript, jsdoc, camera, scrollbox, bounce, snap, 2d"},"matomo":{"url":"https://analytics.yopeyopey.com/piwik/","id":13}};
+    </script>
+    
+
+    
+    <script type="text/javascript">
+    var _paq = _paq || [];
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="https://analytics.yopeyopey.com/piwik/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '13']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+    </script>
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">pixi-scrollbox</a></h3>
+    <button id="menuToggle" class="btn btn-link btn-lg menu-toggle">
+        <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </button>
+    <div class="search">
+        <input id="search" type="text" class="form-control input-md" placeholder="Search...">
+    </div>
+    <ul class="list">
+    
+        
+    
+        
+        <li class="item" data-name="Scrollbox">
+            <span class="title  ">
+                
+                <a href="Scrollbox.html">Scrollbox</a>
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li class="parent " data-name="Scrollbox#boxHeight"><a href="Scrollbox.html#boxHeight">boxHeight</a></li>
+            
+                <li class="parent " data-name="Scrollbox#boxWidth"><a href="Scrollbox.html#boxWidth">boxWidth</a></li>
+            
+                <li class="parent " data-name="Scrollbox#content"><a href="Scrollbox.html#content">content</a></li>
+            
+                <li class="parent " data-name="Scrollbox#contentHeight"><a href="Scrollbox.html#contentHeight">contentHeight</a></li>
+            
+                <li class="parent " data-name="Scrollbox#contentWidth"><a href="Scrollbox.html#contentWidth">contentWidth</a></li>
+            
+                <li class="parent " data-name="Scrollbox#dragScroll"><a href="Scrollbox.html#dragScroll">dragScroll</a></li>
+            
+                <li class="parent " data-name="Scrollbox#isScrollbarHorizontal"><a href="Scrollbox.html#isScrollbarHorizontal">isScrollbarHorizontal</a></li>
+            
+                <li class="parent " data-name="Scrollbox#isScrollbarVertical"><a href="Scrollbox.html#isScrollbarVertical">isScrollbarVertical</a></li>
+            
+                <li class="parent " data-name="Scrollbox#overflow"><a href="Scrollbox.html#overflow">overflow</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbar"><a href="Scrollbox.html#scrollbar">scrollbar</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbarSize"><a href="Scrollbox.html#scrollbarSize">scrollbarSize</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollHeight"><a href="Scrollbox.html#scrollHeight">scrollHeight</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollLeft"><a href="Scrollbox.html#scrollLeft">scrollLeft</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollTop"><a href="Scrollbox.html#scrollTop">scrollTop</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollWidth"><a href="Scrollbox.html#scrollWidth">scrollWidth</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li class="parent  " data-name="Scrollbox#update"><a href="Scrollbox.html#update">update</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        
+        <h1 class="page-title" data-filename="Scrollbox">Index</h1>
+        
+        
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article class="readme content-size"><h1>pixi-scrollbox</h1><p>A configurable scrollbox designed for pixi.js.</p>
+<p>Features:</p>
+<ul>
+<li>scrollbox uses a mask to clip to desired boxWidth/boxHeight size</li>
+<li>scrollbox scrolls with scrollbars (options.overflow=scroll)</li>
+<li>scrollbox's scrollbars may be hidden when not needed (options.overflow=auto or hidden)</li>
+<li>scrollbox may also be scrolled by dragging on the content window (options.dragScroll=true)</li>
+</ul>
+<p><a target="_blank" href="https://davidfig.github.io/pixi-scrollbox/"><strong>Live Example</strong></a></p>
+<h2>Rationale</h2><p>I needed a scrollbox for the UI of my game and since I had this nifty pixi-viewport, I figured it wouldn't be much work to create it. Five hours later and I realized I was a bit off on my estimates. Hopefully others will find it useful.</p>
+<h2>Simple Example</h2><pre class="prettyprint source lang-js"><code>var PIXI = require('pixi.js');
+var Viewport = require('pixi-scrollbox');
+
+// create the scrollbox
+var scrollbox = new Scrollbox({ boxWidth: 200, boxHeight: 200});
+
+// add a sprite to the scrollbox's content
+var sprite = scrollbox.content.addChild(new PIXI.Sprite(PIXI.Texture.WHITE));
+sprite.width = sprite.height = 500;
+sprite.tint = 0xff0000;
+
+// add the viewport to the stage
+var app = new PIXI.Application();
+document.body.appendChild(app.view);
+app.stage.addChild(scrollbox);</code></pre><h2>Usage</h2><p><a target="_blank" href="https://npmjs.org/package/pixi-scrollbox/"><img src="https://nodei.co/npm/pixi-scrollbox.png?mini=true" alt="npm i pixi-scrollbox"></a></p>
+<h2>API Documentation</h2><p><a target="_blank" href="https://davidfig.github.io/pixi-scrollbox/jsdoc/">https://davidfig.github.io/pixi-scrollbox/jsdoc/</a></p>
+<h2>license</h2><p>MIT License<br>(c) 2018 <a target="_blank" href="https://yopeyopey.com/">YOPEY YOPEY LLC</a> by <a target="_blank" href="https://twitter.com/yopey_yopey/">David Figatner</a></p></article>
+    </section>
+
+
+
+
+
+
+        
+
+        <footer class="content-size">
+            <div class="footer">
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue May 15 2018 13:48:22 GMT+0800 (DST)
+            </div>
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/main.js"></script>
+</body>
+</html>
