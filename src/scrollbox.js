@@ -37,7 +37,7 @@ class Scrollbox extends PIXI.Container
             .on('moved', () => this._drawScrollbars())
         if (this.options.dragScroll)
         {
-            this.content.drag()
+            this.content.drag({ clampWheel: true })
         }
 
         /**

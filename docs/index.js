@@ -1,4 +1,4 @@
-(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 const PIXI = require('pixi.js')
 const FPS = require('yy-fps')
 const Random = require('yy-random')
@@ -98,7 +98,7 @@ window.onload = function ()
     })
     require('./highlight')()
 }
-},{"../src/scrollbox":415,"./highlight":2,"pixi.js":349,"yy-fps":411,"yy-random":412}],2:[function(require,module,exports){
+},{"../src/scrollbox":406,"./highlight":2,"pixi.js":347,"yy-fps":402,"yy-random":403}],2:[function(require,module,exports){
 const forkMe = require('fork-me-github')
 
 module.exports = function highlight()
@@ -118,7 +118,7 @@ module.exports = function highlight()
 
 // for eslint
 /* globals window, XMLHttpRequest, document */
-},{"fork-me-github":8,"highlight.js":10}],3:[function(require,module,exports){
+},{"fork-me-github":7,"highlight.js":9}],3:[function(require,module,exports){
 /**
  * Bit twiddling hacks for JavaScript.
  *
@@ -325,8 +325,6 @@ exports.nextCombination = function(v) {
 
 
 },{}],4:[function(require,module,exports){
-
-},{}],5:[function(require,module,exports){
 'use strict';
 
 module.exports = earcut;
@@ -978,7 +976,7 @@ earcut.flatten = function (data) {
     return result;
 };
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var has = Object.prototype.hasOwnProperty
@@ -1316,7 +1314,7 @@ if ('undefined' !== typeof module) {
   module.exports = EventEmitter;
 }
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = exists;
 
 module.exports.allExist = allExist;
@@ -1329,7 +1327,7 @@ function allExist (/* vals */) {
   var vals = Array.prototype.slice.call(arguments);
   return vals.every(exists);
 }
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 // Programatically add fork me on github ribbon from javascript without making changes to CSS, HTML, or adding image files
@@ -1504,7 +1502,7 @@ module.exports = function forkMe(url, options) {
     sheet.insertRule('.' + a.className + '::after' + after + '}');
 };
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*
 Syntax highlighting with language autodetection.
 https://highlightjs.org/
@@ -2322,7 +2320,7 @@ https://highlightjs.org/
   return hljs;
 }));
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var hljs = require('./highlight');
 
 hljs.registerLanguage('1c', require('./languages/1c'));
@@ -2503,7 +2501,7 @@ hljs.registerLanguage('xquery', require('./languages/xquery'));
 hljs.registerLanguage('zephir', require('./languages/zephir'));
 
 module.exports = hljs;
-},{"./highlight":9,"./languages/1c":11,"./languages/abnf":12,"./languages/accesslog":13,"./languages/actionscript":14,"./languages/ada":15,"./languages/apache":16,"./languages/applescript":17,"./languages/arduino":18,"./languages/armasm":19,"./languages/asciidoc":20,"./languages/aspectj":21,"./languages/autohotkey":22,"./languages/autoit":23,"./languages/avrasm":24,"./languages/awk":25,"./languages/axapta":26,"./languages/bash":27,"./languages/basic":28,"./languages/bnf":29,"./languages/brainfuck":30,"./languages/cal":31,"./languages/capnproto":32,"./languages/ceylon":33,"./languages/clean":34,"./languages/clojure":36,"./languages/clojure-repl":35,"./languages/cmake":37,"./languages/coffeescript":38,"./languages/coq":39,"./languages/cos":40,"./languages/cpp":41,"./languages/crmsh":42,"./languages/crystal":43,"./languages/cs":44,"./languages/csp":45,"./languages/css":46,"./languages/d":47,"./languages/dart":48,"./languages/delphi":49,"./languages/diff":50,"./languages/django":51,"./languages/dns":52,"./languages/dockerfile":53,"./languages/dos":54,"./languages/dsconfig":55,"./languages/dts":56,"./languages/dust":57,"./languages/ebnf":58,"./languages/elixir":59,"./languages/elm":60,"./languages/erb":61,"./languages/erlang":63,"./languages/erlang-repl":62,"./languages/excel":64,"./languages/fix":65,"./languages/flix":66,"./languages/fortran":67,"./languages/fsharp":68,"./languages/gams":69,"./languages/gauss":70,"./languages/gcode":71,"./languages/gherkin":72,"./languages/glsl":73,"./languages/go":74,"./languages/golo":75,"./languages/gradle":76,"./languages/groovy":77,"./languages/haml":78,"./languages/handlebars":79,"./languages/haskell":80,"./languages/haxe":81,"./languages/hsp":82,"./languages/htmlbars":83,"./languages/http":84,"./languages/hy":85,"./languages/inform7":86,"./languages/ini":87,"./languages/irpf90":88,"./languages/java":89,"./languages/javascript":90,"./languages/jboss-cli":91,"./languages/json":92,"./languages/julia":94,"./languages/julia-repl":93,"./languages/kotlin":95,"./languages/lasso":96,"./languages/ldif":97,"./languages/leaf":98,"./languages/less":99,"./languages/lisp":100,"./languages/livecodeserver":101,"./languages/livescript":102,"./languages/llvm":103,"./languages/lsl":104,"./languages/lua":105,"./languages/makefile":106,"./languages/markdown":107,"./languages/mathematica":108,"./languages/matlab":109,"./languages/maxima":110,"./languages/mel":111,"./languages/mercury":112,"./languages/mipsasm":113,"./languages/mizar":114,"./languages/mojolicious":115,"./languages/monkey":116,"./languages/moonscript":117,"./languages/n1ql":118,"./languages/nginx":119,"./languages/nimrod":120,"./languages/nix":121,"./languages/nsis":122,"./languages/objectivec":123,"./languages/ocaml":124,"./languages/openscad":125,"./languages/oxygene":126,"./languages/parser3":127,"./languages/perl":128,"./languages/pf":129,"./languages/php":130,"./languages/pony":131,"./languages/powershell":132,"./languages/processing":133,"./languages/profile":134,"./languages/prolog":135,"./languages/protobuf":136,"./languages/puppet":137,"./languages/purebasic":138,"./languages/python":139,"./languages/q":140,"./languages/qml":141,"./languages/r":142,"./languages/rib":143,"./languages/roboconf":144,"./languages/routeros":145,"./languages/rsl":146,"./languages/ruby":147,"./languages/ruleslanguage":148,"./languages/rust":149,"./languages/scala":150,"./languages/scheme":151,"./languages/scilab":152,"./languages/scss":153,"./languages/shell":154,"./languages/smali":155,"./languages/smalltalk":156,"./languages/sml":157,"./languages/sqf":158,"./languages/sql":159,"./languages/stan":160,"./languages/stata":161,"./languages/step21":162,"./languages/stylus":163,"./languages/subunit":164,"./languages/swift":165,"./languages/taggerscript":166,"./languages/tap":167,"./languages/tcl":168,"./languages/tex":169,"./languages/thrift":170,"./languages/tp":171,"./languages/twig":172,"./languages/typescript":173,"./languages/vala":174,"./languages/vbnet":175,"./languages/vbscript":177,"./languages/vbscript-html":176,"./languages/verilog":178,"./languages/vhdl":179,"./languages/vim":180,"./languages/x86asm":181,"./languages/xl":182,"./languages/xml":183,"./languages/xquery":184,"./languages/yaml":185,"./languages/zephir":186}],11:[function(require,module,exports){
+},{"./highlight":8,"./languages/1c":10,"./languages/abnf":11,"./languages/accesslog":12,"./languages/actionscript":13,"./languages/ada":14,"./languages/apache":15,"./languages/applescript":16,"./languages/arduino":17,"./languages/armasm":18,"./languages/asciidoc":19,"./languages/aspectj":20,"./languages/autohotkey":21,"./languages/autoit":22,"./languages/avrasm":23,"./languages/awk":24,"./languages/axapta":25,"./languages/bash":26,"./languages/basic":27,"./languages/bnf":28,"./languages/brainfuck":29,"./languages/cal":30,"./languages/capnproto":31,"./languages/ceylon":32,"./languages/clean":33,"./languages/clojure":35,"./languages/clojure-repl":34,"./languages/cmake":36,"./languages/coffeescript":37,"./languages/coq":38,"./languages/cos":39,"./languages/cpp":40,"./languages/crmsh":41,"./languages/crystal":42,"./languages/cs":43,"./languages/csp":44,"./languages/css":45,"./languages/d":46,"./languages/dart":47,"./languages/delphi":48,"./languages/diff":49,"./languages/django":50,"./languages/dns":51,"./languages/dockerfile":52,"./languages/dos":53,"./languages/dsconfig":54,"./languages/dts":55,"./languages/dust":56,"./languages/ebnf":57,"./languages/elixir":58,"./languages/elm":59,"./languages/erb":60,"./languages/erlang":62,"./languages/erlang-repl":61,"./languages/excel":63,"./languages/fix":64,"./languages/flix":65,"./languages/fortran":66,"./languages/fsharp":67,"./languages/gams":68,"./languages/gauss":69,"./languages/gcode":70,"./languages/gherkin":71,"./languages/glsl":72,"./languages/go":73,"./languages/golo":74,"./languages/gradle":75,"./languages/groovy":76,"./languages/haml":77,"./languages/handlebars":78,"./languages/haskell":79,"./languages/haxe":80,"./languages/hsp":81,"./languages/htmlbars":82,"./languages/http":83,"./languages/hy":84,"./languages/inform7":85,"./languages/ini":86,"./languages/irpf90":87,"./languages/java":88,"./languages/javascript":89,"./languages/jboss-cli":90,"./languages/json":91,"./languages/julia":93,"./languages/julia-repl":92,"./languages/kotlin":94,"./languages/lasso":95,"./languages/ldif":96,"./languages/leaf":97,"./languages/less":98,"./languages/lisp":99,"./languages/livecodeserver":100,"./languages/livescript":101,"./languages/llvm":102,"./languages/lsl":103,"./languages/lua":104,"./languages/makefile":105,"./languages/markdown":106,"./languages/mathematica":107,"./languages/matlab":108,"./languages/maxima":109,"./languages/mel":110,"./languages/mercury":111,"./languages/mipsasm":112,"./languages/mizar":113,"./languages/mojolicious":114,"./languages/monkey":115,"./languages/moonscript":116,"./languages/n1ql":117,"./languages/nginx":118,"./languages/nimrod":119,"./languages/nix":120,"./languages/nsis":121,"./languages/objectivec":122,"./languages/ocaml":123,"./languages/openscad":124,"./languages/oxygene":125,"./languages/parser3":126,"./languages/perl":127,"./languages/pf":128,"./languages/php":129,"./languages/pony":130,"./languages/powershell":131,"./languages/processing":132,"./languages/profile":133,"./languages/prolog":134,"./languages/protobuf":135,"./languages/puppet":136,"./languages/purebasic":137,"./languages/python":138,"./languages/q":139,"./languages/qml":140,"./languages/r":141,"./languages/rib":142,"./languages/roboconf":143,"./languages/routeros":144,"./languages/rsl":145,"./languages/ruby":146,"./languages/ruleslanguage":147,"./languages/rust":148,"./languages/scala":149,"./languages/scheme":150,"./languages/scilab":151,"./languages/scss":152,"./languages/shell":153,"./languages/smali":154,"./languages/smalltalk":155,"./languages/sml":156,"./languages/sqf":157,"./languages/sql":158,"./languages/stan":159,"./languages/stata":160,"./languages/step21":161,"./languages/stylus":162,"./languages/subunit":163,"./languages/swift":164,"./languages/taggerscript":165,"./languages/tap":166,"./languages/tcl":167,"./languages/tex":168,"./languages/thrift":169,"./languages/tp":170,"./languages/twig":171,"./languages/typescript":172,"./languages/vala":173,"./languages/vbnet":174,"./languages/vbscript":176,"./languages/vbscript-html":175,"./languages/verilog":177,"./languages/vhdl":178,"./languages/vim":179,"./languages/x86asm":180,"./languages/xl":181,"./languages/xml":182,"./languages/xquery":183,"./languages/yaml":184,"./languages/zephir":185}],10:[function(require,module,exports){
 module.exports = function(hljs){
 
   // общий паттерн для определения идентификаторов
@@ -3013,7 +3011,7 @@ module.exports = function(hljs){
     ]  
   }
 };
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = function(hljs) {
     var regexes = {
         ruleDeclaration: "^[a-zA-Z][a-zA-Z0-9-]*",
@@ -3084,7 +3082,7 @@ module.exports = function(hljs) {
       ]
     };
 };
-},{}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -3122,7 +3120,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -3196,7 +3194,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = // We try to support full Ada2012
 //
 // We highlight all appearances of types, keywords, literals (string, char, number, bool)
@@ -3369,7 +3367,7 @@ function(hljs) {
         ]
     };
 };
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {className: 'number', begin: '[\\$%]\\d+'};
   return {
@@ -3415,7 +3413,7 @@ module.exports = function(hljs) {
     illegal: /\S/
   };
 };
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: ''});
   var PARAMS = {
@@ -3501,7 +3499,7 @@ module.exports = function(hljs) {
     illegal: '//|->|=>|\\[\\['
   };
 };
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP = hljs.getLanguage('cpp').exports;
 	return {
@@ -3601,7 +3599,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = function(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
@@ -3693,7 +3691,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['adoc'],
@@ -3881,7 +3879,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS =
     'false synchronized int abstract float private char boolean static null if const ' +
@@ -4026,7 +4024,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 module.exports = function(hljs) {
   var BACKTICK_ESCAPE = {
     begin: '`[\\s\\S]'
@@ -4085,7 +4083,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = function(hljs) {
     var KEYWORDS = 'ByRef Case Const ContinueCase ContinueLoop ' +
         'Default Dim Do Else ElseIf EndFunc EndIf EndSelect ' +
@@ -4221,7 +4219,7 @@ module.exports = function(hljs) {
         ]
     }
 };
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -4283,7 +4281,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     className: 'variable',
@@ -4336,7 +4334,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: 'false int abstract private char boolean static null if for true ' +
@@ -4367,7 +4365,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -4442,7 +4440,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -4493,7 +4491,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],29:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = function(hljs){
   return {
     contains: [
@@ -4522,7 +4520,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],30:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = function(hljs){
   var LITERAL = {
     className: 'literal',
@@ -4559,7 +4557,7 @@ module.exports = function(hljs){
     ]
   };
 };
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'div mod in and or not xor asserterror begin case do downto else end exit for if of repeat then to ' +
@@ -4639,7 +4637,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],32:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['capnp'],
@@ -4688,7 +4686,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],33:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 module.exports = function(hljs) {
   // 2.3. Identifiers and keywords
   var KEYWORDS =
@@ -4755,7 +4753,7 @@ module.exports = function(hljs) {
     ].concat(EXPRESSIONS)
   };
 };
-},{}],34:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['clean','icl','dcl'],
@@ -4780,7 +4778,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],35:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -4795,7 +4793,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],36:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 module.exports = function(hljs) {
   var keywords = {
     'builtin-name':
@@ -4891,7 +4889,7 @@ module.exports = function(hljs) {
     contains: [LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL]
   }
 };
-},{}],37:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['cmake.in'],
@@ -4929,7 +4927,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],38:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -5075,7 +5073,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],39:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -5142,7 +5140,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],40:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 module.exports = function cos (hljs) {
 
   var STRINGS = {
@@ -5266,7 +5264,7 @@ module.exports = function cos (hljs) {
     ]
   };
 };
-},{}],41:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP_PRIMITIVE_TYPES = {
     className: 'keyword',
@@ -5441,7 +5439,7 @@ module.exports = function(hljs) {
     }
   };
 };
-},{}],42:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 module.exports = function(hljs) {
   var RESOURCES = 'primitive rsc_template';
 
@@ -5535,7 +5533,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],43:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '(_[uif](8|16|32|64))?';
   var CRYSTAL_IDENT_RE = '[a-zA-Z_]\\w*[!?=]?';
@@ -5729,7 +5727,7 @@ module.exports = function(hljs) {
     contains: CRYSTAL_DEFAULT_CONTAINS
   };
 };
-},{}],44:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -5906,7 +5904,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],45:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: false,
@@ -5928,7 +5926,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],46:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var RULE = {
@@ -6033,7 +6031,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],47:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 module.exports = /**
  * Known issues:
  *
@@ -6291,7 +6289,7 @@ function(hljs) {
     ]
   };
 };
-},{}],48:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 module.exports = function (hljs) {
   var SUBST = {
     className: 'subst',
@@ -6392,7 +6390,7 @@ module.exports = function (hljs) {
     ]
   }
 };
-},{}],49:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS =
     'exports register file shl array record property for mod while set ally label uses raise not ' +
@@ -6461,7 +6459,7 @@ module.exports = function(hljs) {
     ].concat(COMMENT_MODES)
   };
 };
-},{}],50:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['patch'],
@@ -6501,7 +6499,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],51:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 module.exports = function(hljs) {
   var FILTER = {
     begin: /\|[A-Za-z]+:?/,
@@ -6565,7 +6563,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],52:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['bind', 'zone'],
@@ -6594,7 +6592,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],53:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['docker'],
@@ -6616,7 +6614,7 @@ module.exports = function(hljs) {
     illegal: '</'
   }
 };
-},{}],54:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = hljs.COMMENT(
     /^\s*@?rem\b/, /$/,
@@ -6668,7 +6666,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],55:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 module.exports = function(hljs) {
   var QUOTED_PROPERTY = {
     className: 'string',
@@ -6715,7 +6713,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],56:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRINGS = {
     className: 'string',
@@ -6839,7 +6837,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],57:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 module.exports = function(hljs) {
   var EXPRESSION_KEYWORDS = 'if eq ne lt lte gt gte select default math sep';
   return {
@@ -6871,7 +6869,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],58:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 module.exports = function(hljs) {
     var commentMode = hljs.COMMENT(/\(\*/, /\*\)/);
 
@@ -6904,7 +6902,7 @@ module.exports = function(hljs) {
         ]
     };
 };
-},{}],59:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 module.exports = function(hljs) {
   var ELIXIR_IDENT_RE = '[a-zA-Z_][a-zA-Z0-9_]*(\\!|\\?)?';
   var ELIXIR_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
@@ -7001,7 +6999,7 @@ module.exports = function(hljs) {
     contains: ELIXIR_DEFAULT_CONTAINS
   };
 };
-},{}],60:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = {
     variants: [
@@ -7085,7 +7083,7 @@ module.exports = function(hljs) {
     illegal: /;/
   };
 };
-},{}],61:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -7100,7 +7098,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],62:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -7146,7 +7144,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],63:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 module.exports = function(hljs) {
   var BASIC_ATOM_RE = '[a-z\'][a-zA-Z0-9_\']*';
   var FUNCTION_NAME_RE = '(' + BASIC_ATOM_RE + ':' + BASIC_ATOM_RE + '|' + BASIC_ATOM_RE + ')';
@@ -7292,7 +7290,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],64:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['xlsx', 'xls'],
@@ -7340,7 +7338,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],65:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -7369,7 +7367,7 @@ module.exports = function(hljs) {
     case_insensitive: true
   };
 };
-},{}],66:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = function (hljs) {
 
     var CHAR = {
@@ -7414,7 +7412,7 @@ module.exports = function (hljs) {
         ]
     };
 };
-},{}],67:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -7485,7 +7483,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],68:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 module.exports = function(hljs) {
   var TYPEPARAM = {
     begin: '<', end: '>',
@@ -7544,7 +7542,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],69:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 module.exports = function (hljs) {
   var KEYWORDS = {
     'keyword':
@@ -7698,7 +7696,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],70:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword: 'and bool break call callexe checkinterrupt clear clearg closeall cls comlog compile ' +
@@ -7922,7 +7920,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],71:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 module.exports = function(hljs) {
     var GCODE_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
     var GCODE_CLOSE_RE = '\\%';
@@ -7989,7 +7987,7 @@ module.exports = function(hljs) {
         ].concat(GCODE_CODE)
     };
 };
-},{}],72:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = function (hljs) {
   return {
     aliases: ['feature'],
@@ -8026,7 +8024,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],73:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -8143,7 +8141,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],74:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 module.exports = function(hljs) {
   var GO_KEYWORDS = {
     keyword:
@@ -8197,7 +8195,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],75:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
       keywords: {
@@ -8220,7 +8218,7 @@ module.exports = function(hljs) {
       ]
     }
 };
-},{}],76:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -8255,7 +8253,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],77:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 module.exports = function(hljs) {
     return {
         keywords: {
@@ -8349,7 +8347,7 @@ module.exports = function(hljs) {
         illegal: /#|<\//
     }
 };
-},{}],78:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 module.exports = // TODO support filter tags like :javascript, support inline HTML
 function(hljs) {
   return {
@@ -8456,7 +8454,7 @@ function(hljs) {
     ]
   };
 };
-},{}],79:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_INS = {'builtin-name': 'each in with if else unless bindattr action collection debugger log outlet template unbound view yield'};
   return {
@@ -8490,7 +8488,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],80:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT = {
     variants: [
@@ -8612,7 +8610,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],81:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z_$][a-zA-Z0-9_$]*';
   var IDENT_FUNC_RETURN_TYPE_RE = '([*]|[a-zA-Z_$][a-zA-Z0-9_$]*)';
@@ -8724,7 +8722,7 @@ module.exports = function(hljs) {
     illegal: /<\//
   };
 };
-},{}],82:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -8770,7 +8768,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],83:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_INS = 'action collection component concat debugger each each-in else get hash if input link-to loc log mut outlet partial query-params render textarea unbound unless with yield view';
 
@@ -8841,7 +8839,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],84:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 module.exports = function(hljs) {
   var VERSION = 'HTTP/[0-9\\.]+';
   return {
@@ -8882,7 +8880,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],85:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 module.exports = function(hljs) {
   var keywords = {
     'builtin-name':
@@ -8984,7 +8982,7 @@ module.exports = function(hljs) {
     contains: [SHEBANG, LIST, STRING, HINT, HINT_COL, COMMENT, KEY, COLLECTION, NUMBER, LITERAL]
   }
 };
-},{}],86:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 module.exports = function(hljs) {
   var START_BRACKET = '\\[';
   var END_BRACKET = '\\]';
@@ -9041,7 +9039,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],87:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: "string",
@@ -9107,7 +9105,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],88:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -9183,7 +9181,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],89:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 module.exports = function(hljs) {
   var JAVA_IDENT_RE = '[\u00C0-\u02B8a-zA-Z_$][\u00C0-\u02B8a-zA-Z_$0-9]*';
   var GENERIC_IDENT_RE = JAVA_IDENT_RE + '(<' + JAVA_IDENT_RE + '(\\s*,\\s*' + JAVA_IDENT_RE + ')*>)?';
@@ -9291,7 +9289,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],90:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
   var KEYWORDS = {
@@ -9462,7 +9460,7 @@ module.exports = function(hljs) {
     illegal: /#(?!!)/
   };
 };
-},{}],91:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 module.exports = function (hljs) {
   var PARAM = {
     begin: /[\w-]+ *=/, returnBegin: true,
@@ -9509,7 +9507,7 @@ module.exports = function (hljs) {
     ]
   }
 };
-},{}],92:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 module.exports = function(hljs) {
   var LITERALS = {literal: 'true false null'};
   var TYPES = [
@@ -9546,7 +9544,7 @@ module.exports = function(hljs) {
     illegal: '\\S'
   };
 };
-},{}],93:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -9570,7 +9568,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],94:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 module.exports = function(hljs) {
   // Since there are numerous special names in Julia, it is too much trouble
   // to maintain them by hand. Hence these names (i.e. keywords, literals and
@@ -9732,7 +9730,7 @@ module.exports = function(hljs) {
 
   return DEFAULT;
 };
-},{}],95:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -9906,7 +9904,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],96:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 module.exports = function(hljs) {
   var LASSO_IDENT_RE = '[a-zA-Z_][\\w.]*';
   var LASSO_ANGLE_RE = '<\\?(lasso(script)?|=)';
@@ -10069,7 +10067,7 @@ module.exports = function(hljs) {
     ].concat(LASSO_CODE)
   };
 };
-},{}],97:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -10092,7 +10090,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],98:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 module.exports = function (hljs) {
   return {
     contains: [
@@ -10132,7 +10130,7 @@ module.exports = function (hljs) {
     ]
   };
 };
-},{}],99:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE        = '[\\w-]+'; // yes, Less identifiers may begin with a digit
   var INTERP_IDENT_RE = '(' + IDENT_RE + '|@{' + IDENT_RE + '})';
@@ -10272,7 +10270,7 @@ module.exports = function(hljs) {
     contains: RULES
   };
 };
-},{}],100:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 module.exports = function(hljs) {
   var LISP_IDENT_RE = '[a-zA-Z_\\-\\+\\*\\/\\<\\=\\>\\&\\#][a-zA-Z0-9_\\-\\+\\*\\/\\<\\=\\>\\&\\#!]*';
   var MEC_RE = '\\|[^]*?\\|';
@@ -10375,7 +10373,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],101:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     begin: '\\b[gtps][A-Z]+[A-Za-z0-9_\\-]*\\b|\\$_[A-Z]+',
@@ -10532,7 +10530,7 @@ module.exports = function(hljs) {
     illegal: ';$|^\\[|^=|&|{'
   };
 };
-},{}],102:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -10681,7 +10679,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],103:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 module.exports = function(hljs) {
   var identifier = '([-a-zA-Z$._][\\w\\-$.]*)';
   return {
@@ -10770,7 +10768,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],104:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 module.exports = function(hljs) {
 
     var LSL_STRING_ESCAPE_CHARS = {
@@ -10853,7 +10851,7 @@ module.exports = function(hljs) {
         ]
     };
 };
-},{}],105:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 module.exports = function(hljs) {
   var OPENING_LONG_BRACKET = '\\[=*\\[';
   var CLOSING_LONG_BRACKET = '\\]=*\\]';
@@ -10919,7 +10917,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],106:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 module.exports = function(hljs) {
   /* Variables: simple (eg $(var)) and special (eg $@) */
   var VARIABLE = {
@@ -11000,7 +10998,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],107:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['md', 'mkdown', 'mkd'],
@@ -11108,7 +11106,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],108:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['mma'],
@@ -11166,7 +11164,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],109:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMON_CONTAINS = [
     hljs.C_NUMBER_MODE,
@@ -11254,7 +11252,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],110:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = 'if then else elseif for thru do while unless step in and or not';
   var LITERALS = 'true false unknown inf minf ind und %e %i %pi %phi %gamma';
@@ -11660,7 +11658,7 @@ module.exports = function(hljs) {
     illegal: /@/
   }
 };
-},{}],111:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -11885,7 +11883,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],112:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -11967,7 +11965,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],113:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 module.exports = function(hljs) {
     //local labels: %?[FB]?[AT]?\d{1,2}\w+
   return {
@@ -12053,7 +12051,7 @@ module.exports = function(hljs) {
     illegal: '\/'
   };
 };
-},{}],114:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -12072,7 +12070,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],115:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -12097,7 +12095,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],116:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUMBER = {
     className: 'number', relevance: 0,
@@ -12172,7 +12170,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],117:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -12284,7 +12282,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],118:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -12353,7 +12351,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],119:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR = {
     className: 'variable',
@@ -12446,7 +12444,7 @@ module.exports = function(hljs) {
     illegal: '[^\\s\\}]'
   };
 };
-},{}],120:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['nim'],
@@ -12501,7 +12499,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],121:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 module.exports = function(hljs) {
   var NIX_KEYWORDS = {
     keyword:
@@ -12550,7 +12548,7 @@ module.exports = function(hljs) {
     contains: EXPRESSIONS
   };
 };
-},{}],122:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 module.exports = function(hljs) {
   var CONSTANTS = {
     className: 'variable',
@@ -12656,7 +12654,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],123:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 module.exports = function(hljs) {
   var API_CLASS = {
     className: 'built_in',
@@ -12747,7 +12745,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],124:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 module.exports = function(hljs) {
   /* missing support for heredoc-like string (OCaml 4.0.2+) */
   return {
@@ -12818,7 +12816,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],125:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 module.exports = function(hljs) {
 	var SPECIAL_VARS = {
 		className: 'keyword',
@@ -12875,7 +12873,7 @@ module.exports = function(hljs) {
 		]
 	}
 };
-},{}],126:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 module.exports = function(hljs) {
   var OXYGENE_KEYWORDS = 'abstract add and array as asc aspect assembly async begin break block by case class concat const copy constructor continue '+
     'create default delegate desc distinct div do downto dynamic each else empty end ensure enum equals event except exit extension external false '+
@@ -12945,7 +12943,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],127:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 module.exports = function(hljs) {
   var CURLY_SUBCOMMENT = hljs.COMMENT(
     '{',
@@ -12993,7 +12991,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],128:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 module.exports = function(hljs) {
   var PERL_KEYWORDS = 'getpwent getservent quotemeta msgrcv scalar kill dbmclose undef lc ' +
     'ma syswrite tr send umask sysopen shmwrite vec qx utime local oct semctl localtime ' +
@@ -13150,7 +13148,7 @@ module.exports = function(hljs) {
     contains: PERL_DEFAULT_CONTAINS
   };
 };
-},{}],129:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 module.exports = function(hljs) {
   var MACRO = {
     className: 'variable',
@@ -13202,7 +13200,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],130:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 module.exports = function(hljs) {
   var VARIABLE = {
     begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
@@ -13329,7 +13327,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],131:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -13420,7 +13418,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],132:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 module.exports = function(hljs) {
   var BACKTICK_ESCAPE = {
     begin: '`[\\s\\S]',
@@ -13501,7 +13499,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],133:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -13549,7 +13547,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],134:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -13579,7 +13577,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],135:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ATOM = {
@@ -13667,7 +13665,7 @@ module.exports = function(hljs) {
     ])
   };
 };
-},{}],136:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -13703,7 +13701,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],137:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var PUPPET_KEYWORDS = {
@@ -13818,7 +13816,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],138:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 module.exports = // Base deafult colors in PB IDE: background: #FFFFDF; foreground: #000000;
 
 function(hljs) {
@@ -13876,7 +13874,7 @@ function(hljs) {
     ]
   };
 };
-},{}],139:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -13992,7 +13990,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],140:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 module.exports = function(hljs) {
   var Q_KEYWORDS = {
   keyword:
@@ -14015,7 +14013,7 @@ module.exports = function(hljs) {
      ]
   };
 };
-},{}],141:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
       keyword:
@@ -14184,7 +14182,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],142:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '([a-zA-Z]|\\.[a-zA-Z.])[a-zA-Z0-9._]*';
 
@@ -14254,7 +14252,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],143:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords:
@@ -14281,7 +14279,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],144:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENTIFIER = '[a-zA-Z-_][^\\n{]+\\{';
 
@@ -14348,7 +14346,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],145:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 module.exports = // Colors from RouterOS terminal:
 //   green        - #0E9A00
 //   teal         - #0C9A9A
@@ -14507,7 +14505,7 @@ function(hljs) {
     ]
   };
 };
-},{}],146:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -14543,7 +14541,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],147:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 module.exports = function(hljs) {
   var RUBY_METHOD_RE = '[a-zA-Z_]\\w*[!?=]?|[-+~]\\@|<<|>>|=~|===?|<=>|[<>]=?|\\*\\*|[-/+%^&*~`|]|\\[\\]=?';
   var RUBY_KEYWORDS = {
@@ -14720,7 +14718,7 @@ module.exports = function(hljs) {
     contains: COMMENT_MODES.concat(IRB_DEFAULT).concat(RUBY_DEFAULT_CONTAINS)
   };
 };
-},{}],148:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -14781,7 +14779,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],149:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 module.exports = function(hljs) {
   var NUM_SUFFIX = '([ui](8|16|32|64|128|size)|f(32|64))\?';
   var KEYWORDS =
@@ -14889,7 +14887,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],150:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var ANNOTATION = { className: 'meta', begin: '@[A-Za-z]+' };
@@ -15004,7 +15002,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],151:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 module.exports = function(hljs) {
   var SCHEME_IDENT_RE = '[^\\(\\)\\[\\]\\{\\}",\'`;#|\\\\\\s]+';
   var SCHEME_SIMPLE_NUMBER_RE = '(\\-|\\+)?\\d+([./]\\d+)?';
@@ -15148,7 +15146,7 @@ module.exports = function(hljs) {
     contains: [SHEBANG, NUMBER, STRING, QUOTED_IDENT, QUOTED_LIST, LIST].concat(COMMENT_MODES)
   };
 };
-},{}],152:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var COMMON_CONTAINS = [
@@ -15202,7 +15200,7 @@ module.exports = function(hljs) {
     ].concat(COMMON_CONTAINS)
   };
 };
-},{}],153:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 module.exports = function(hljs) {
   var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
   var VARIABLE = {
@@ -15300,7 +15298,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],154:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['console'],
@@ -15315,7 +15313,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],155:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 module.exports = function(hljs) {
   var smali_instr_low_prio = ['add', 'and', 'cmp', 'cmpg', 'cmpl', 'const', 'div', 'double', 'float', 'goto', 'if', 'int', 'long', 'move', 'mul', 'neg', 'new', 'nop', 'not', 'or', 'rem', 'return', 'shl', 'shr', 'sput', 'sub', 'throw', 'ushr', 'xor'];
   var smali_instr_high_prio = ['aget', 'aput', 'array', 'check', 'execute', 'fill', 'filled', 'goto/16', 'goto/32', 'iget', 'instance', 'invoke', 'iput', 'monitor', 'packed', 'sget', 'sparse'];
@@ -15371,7 +15369,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],156:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 module.exports = function(hljs) {
   var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
   var CHAR = {
@@ -15421,7 +15419,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],157:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['ml'],
@@ -15487,7 +15485,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],158:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 module.exports = function(hljs) {
   var CPP = hljs.getLanguage('cpp').exports;
 
@@ -15858,7 +15856,7 @@ module.exports = function(hljs) {
     illegal: /#/
   };
 };
-},{}],159:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMENT_MODE = hljs.COMMENT('--', '$');
   return {
@@ -16018,7 +16016,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],160:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     contains: [
@@ -16101,7 +16099,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],161:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['do', 'ado'],
@@ -16139,7 +16137,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],162:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 module.exports = function(hljs) {
   var STEP21_IDENT_RE = '[A-Z_][A-Z0-9_.]*';
   var STEP21_KEYWORDS = {
@@ -16186,7 +16184,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],163:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var VARIABLE = {
@@ -16640,7 +16638,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],164:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 module.exports = function(hljs) {
   var DETAILS = {
     className: 'string',
@@ -16674,7 +16672,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],165:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 module.exports = function(hljs) {
   var SWIFT_KEYWORDS = {
       keyword: '__COLUMN__ __FILE__ __FUNCTION__ __LINE__ as as! as? associativity ' +
@@ -16791,7 +16789,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],166:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 module.exports = function(hljs) {
 
   var COMMENT = {
@@ -16835,7 +16833,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],167:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -16871,7 +16869,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],168:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['tk'],
@@ -16932,7 +16930,7 @@ module.exports = function(hljs) {
     ]
   }
 };
-},{}],169:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 module.exports = function(hljs) {
   var COMMAND = {
     className: 'tag',
@@ -16994,7 +16992,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],170:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILT_IN_TYPES = 'bool byte i16 i32 i64 double string binary';
   return {
@@ -17029,7 +17027,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],171:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 module.exports = function(hljs) {
   var TPID = {
     className: 'number',
@@ -17113,7 +17111,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],172:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 module.exports = function(hljs) {
   var PARAMS = {
     className: 'params',
@@ -17179,7 +17177,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],173:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = {
     keyword:
@@ -17335,7 +17333,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],174:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     keywords: {
@@ -17385,7 +17383,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],175:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vb'],
@@ -17441,7 +17439,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],176:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     subLanguage: 'xml',
@@ -17453,7 +17451,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],177:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     aliases: ['vbs'],
@@ -17492,7 +17490,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],178:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 module.exports = function(hljs) {
   var SV_KEYWORDS = {
     keyword:
@@ -17591,7 +17589,7 @@ module.exports = function(hljs) {
     ]
   }; // return
 };
-},{}],179:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 module.exports = function(hljs) {
   // Regular expression for VHDL numeric literals.
 
@@ -17652,7 +17650,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],180:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     lexemes: /[!#@\w]+/,
@@ -17758,7 +17756,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],181:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
 module.exports = function(hljs) {
   return {
     case_insensitive: true,
@@ -17894,7 +17892,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],182:[function(require,module,exports){
+},{}],181:[function(require,module,exports){
 module.exports = function(hljs) {
   var BUILTIN_MODULES =
     'ObjectLoader Animate MovieCredits Slides Filters Shading Materials LensFlare Mapping VLCAudioVideo ' +
@@ -17967,7 +17965,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],183:[function(require,module,exports){
+},{}],182:[function(require,module,exports){
 module.exports = function(hljs) {
   var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
   var TAG_INTERNALS = {
@@ -18070,7 +18068,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],184:[function(require,module,exports){
+},{}],183:[function(require,module,exports){
 module.exports = function(hljs) {
   var KEYWORDS = 'for let if while then else return where group by xquery encoding version' +
     'module namespace boundary-space preserve strip default collation base-uri ordering' +
@@ -18141,7 +18139,7 @@ module.exports = function(hljs) {
     contains: CONTAINS
   };
 };
-},{}],185:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 module.exports = function(hljs) {
   var LITERALS = 'true false yes no null';
 
@@ -18229,7 +18227,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],186:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 module.exports = function(hljs) {
   var STRING = {
     className: 'string',
@@ -18336,7 +18334,7 @@ module.exports = function(hljs) {
     ]
   };
 };
-},{}],187:[function(require,module,exports){
+},{}],186:[function(require,module,exports){
 /**
  * isMobile.js v0.4.1
  *
@@ -18475,7 +18473,7 @@ module.exports = function(hljs) {
 
 })(this);
 
-},{}],188:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -18642,7 +18640,7 @@ MiniSignal.MiniSignalBinding = MiniSignalBinding;
 exports['default'] = MiniSignal;
 module.exports = exports['default'];
 
-},{}],189:[function(require,module,exports){
+},{}],188:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -18734,7 +18732,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],190:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 'use strict'
 
 module.exports = function parseURI (str, opts) {
@@ -18766,235 +18764,7 @@ module.exports = function parseURI (str, opts) {
   return uri
 }
 
-},{}],191:[function(require,module,exports){
-(function (process){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
-    }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// Split a filename into [root, dir, basename, ext], unix version
-// 'root' is just a slash, or nothing.
-var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-var splitPath = function(filename) {
-  return splitPathRe.exec(filename).slice(1);
-};
-
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
-
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
-
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
-    }
-
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
-  }
-
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
-
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
-
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
-
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
-
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
-
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
-
-  return (isAbsolute ? '/' : '') + path;
-};
-
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
-
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
-    }
-    return p;
-  }).join('/'));
-};
-
-
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
-
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
-
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
-exports.sep = '/';
-exports.delimiter = ':';
-
-exports.dirname = function(path) {
-  var result = splitPath(path),
-      root = result[0],
-      dir = result[1];
-
-  if (!root && !dir) {
-    // No dirname whatsoever
-    return '.';
-  }
-
-  if (dir) {
-    // It has a dirname, strip trailing slash
-    dir = dir.substr(0, dir.length - 1);
-  }
-
-  return root + dir;
-};
-
-
-exports.basename = function(path, ext) {
-  var f = splitPath(path)[2];
-  // TODO: make this comparison case-insensitive on windows?
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
-
-
-exports.extname = function(path) {
-  return splitPath(path)[3];
-};
-
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
-
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
-
-}).call(this,require('_process'))
-},{"_process":385}],192:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 
 /*
 	Copyright © 2001 Robert Penner
@@ -19262,7 +19032,7 @@ var substr = 'ab'.substr(-1) === 'b'
 
 }).call(this);
 
-},{}],193:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -19350,7 +19120,7 @@ var angle = function (_wait) {
 
 module.exports = angle;
 
-},{"./wait":203}],194:[function(require,module,exports){
+},{"./wait":201}],192:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -19437,7 +19207,7 @@ var face = function (_wait) {
 
 module.exports = face;
 
-},{"./wait":203,"yy-angle":408}],195:[function(require,module,exports){
+},{"./wait":201,"yy-angle":399}],193:[function(require,module,exports){
 'use strict';
 
 var list = require('./list');
@@ -19455,7 +19225,7 @@ module.exports = {
     load: require('./load')
 };
 
-},{"./angle":193,"./face":194,"./list":196,"./load":197,"./movie":198,"./shake":199,"./target":200,"./tint":201,"./to":202,"./wait":203}],196:[function(require,module,exports){
+},{"./angle":191,"./face":192,"./list":194,"./load":195,"./movie":196,"./shake":197,"./target":198,"./tint":199,"./to":200,"./wait":201}],194:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -19806,7 +19576,7 @@ var Ease = function (_Events) {
 
 module.exports = Ease;
 
-},{"./angle":193,"./face":194,"./load":197,"./movie":198,"./shake":199,"./target":200,"./tint":201,"./to":202,"./wait":203,"eventemitter3":6,"pixi.js":349}],197:[function(require,module,exports){
+},{"./angle":191,"./face":192,"./load":195,"./movie":196,"./shake":197,"./target":198,"./tint":199,"./to":200,"./wait":201,"eventemitter3":5,"pixi.js":347}],195:[function(require,module,exports){
 'use strict';
 
 var wait = require('./wait');
@@ -19849,7 +19619,7 @@ function load(object, load) {
 
 module.exports = load;
 
-},{"./angle":193,"./face":194,"./movie":198,"./shake":199,"./target":200,"./tint":201,"./to":202,"./wait":203}],198:[function(require,module,exports){
+},{"./angle":191,"./face":192,"./movie":196,"./shake":197,"./target":198,"./tint":199,"./to":200,"./wait":201}],196:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -19968,7 +19738,7 @@ var movie = function (_wait) {
 
 module.exports = movie;
 
-},{"./wait":203}],199:[function(require,module,exports){
+},{"./wait":201}],197:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20084,7 +19854,7 @@ var shake = function (_wait) {
 
 module.exports = shake;
 
-},{"./wait":203}],200:[function(require,module,exports){
+},{"./wait":201}],198:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20173,7 +19943,7 @@ var target = function (_wait) {
 
 module.exports = target;
 
-},{"./wait":203}],201:[function(require,module,exports){
+},{"./wait":201}],199:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20335,7 +20105,7 @@ var tint = function (_wait) {
 
 module.exports = tint;
 
-},{"./wait":203,"yy-color":409}],202:[function(require,module,exports){
+},{"./wait":201,"yy-color":400}],200:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20534,7 +20304,7 @@ var to = function (_wait) {
 
 module.exports = to;
 
-},{"./wait":203}],203:[function(require,module,exports){
+},{"./wait":201}],201:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20743,7 +20513,7 @@ var wait = function (_EventEmitter) {
 
 module.exports = wait;
 
-},{"eventemitter3":6,"penner":192}],204:[function(require,module,exports){
+},{"eventemitter3":5,"penner":190}],202:[function(require,module,exports){
 var EMPTY_ARRAY_BUFFER = new ArrayBuffer(0);
 
 /**
@@ -20864,7 +20634,7 @@ Buffer.prototype.destroy = function(){
 
 module.exports = Buffer;
 
-},{}],205:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 
 var Texture = require('./GLTexture');
 
@@ -21092,7 +20862,7 @@ Framebuffer.createFloat32 = function(gl, width, height, data)
 
 module.exports = Framebuffer;
 
-},{"./GLTexture":207}],206:[function(require,module,exports){
+},{"./GLTexture":205}],204:[function(require,module,exports){
 
 var compileProgram = require('./shader/compileProgram'),
 	extractAttributes = require('./shader/extractAttributes'),
@@ -21188,7 +20958,7 @@ Shader.prototype.destroy = function()
 
 module.exports = Shader;
 
-},{"./shader/compileProgram":212,"./shader/extractAttributes":214,"./shader/extractUniforms":215,"./shader/generateUniformAccessObject":216,"./shader/setPrecision":220}],207:[function(require,module,exports){
+},{"./shader/compileProgram":210,"./shader/extractAttributes":212,"./shader/extractUniforms":213,"./shader/generateUniformAccessObject":214,"./shader/setPrecision":218}],205:[function(require,module,exports){
 
 /**
  * Helper class to create a WebGL Texture
@@ -21523,7 +21293,7 @@ Texture.fromData = function(gl, data, width, height)
 
 module.exports = Texture;
 
-},{}],208:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 
 // state object//
 var setVertexAttribArrays = require( './setVertexAttribArrays' );
@@ -21791,7 +21561,7 @@ VertexArrayObject.prototype.getSize = function()
     return attrib.buffer.data.length / (( attrib.stride/4 ) || attrib.attribute.size);
 };
 
-},{"./setVertexAttribArrays":211}],209:[function(require,module,exports){
+},{"./setVertexAttribArrays":209}],207:[function(require,module,exports){
 
 /**
  * Helper class to create a webGL Context
@@ -21819,7 +21589,7 @@ var createContext = function(canvas, options)
 
 module.exports = createContext;
 
-},{}],210:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 var gl = {
     createContext:          require('./createContext'),
     setVertexAttribArrays:  require('./setVertexAttribArrays'),
@@ -21846,7 +21616,7 @@ if (typeof window !== 'undefined')
     window.PIXI.glCore = gl;
 }
 
-},{"./GLBuffer":204,"./GLFramebuffer":205,"./GLShader":206,"./GLTexture":207,"./VertexArrayObject":208,"./createContext":209,"./setVertexAttribArrays":211,"./shader":217}],211:[function(require,module,exports){
+},{"./GLBuffer":202,"./GLFramebuffer":203,"./GLShader":204,"./GLTexture":205,"./VertexArrayObject":206,"./createContext":207,"./setVertexAttribArrays":209,"./shader":215}],209:[function(require,module,exports){
 // var GL_MAP = {};
 
 /**
@@ -21903,7 +21673,7 @@ var setVertexAttribArrays = function (gl, attribs, state)
 
 module.exports = setVertexAttribArrays;
 
-},{}],212:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 
 /**
  * @class
@@ -21985,7 +21755,7 @@ var compileShader = function (gl, type, src)
 
 module.exports = compileProgram;
 
-},{}],213:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 /**
  * @class
  * @memberof PIXI.glCore.shader
@@ -22065,7 +21835,7 @@ var booleanArray = function(size)
 
 module.exports = defaultValue;
 
-},{}],214:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 
 var mapType = require('./mapType');
 var mapSize = require('./mapSize');
@@ -22108,7 +21878,7 @@ var pointer = function(type, normalized, stride, start){
 
 module.exports = extractAttributes;
 
-},{"./mapSize":218,"./mapType":219}],215:[function(require,module,exports){
+},{"./mapSize":216,"./mapType":217}],213:[function(require,module,exports){
 var mapType = require('./mapType');
 var defaultValue = require('./defaultValue');
 
@@ -22145,7 +21915,7 @@ var extractUniforms = function(gl, program)
 
 module.exports = extractUniforms;
 
-},{"./defaultValue":213,"./mapType":219}],216:[function(require,module,exports){
+},{"./defaultValue":211,"./mapType":217}],214:[function(require,module,exports){
 /**
  * Extracts the attributes
  * @class
@@ -22268,7 +22038,7 @@ function getUniformGroup(nameTokens, uniform)
 
 module.exports = generateUniformAccessObject;
 
-},{}],217:[function(require,module,exports){
+},{}],215:[function(require,module,exports){
 module.exports = {
     compileProgram: require('./compileProgram'),
     defaultValue: require('./defaultValue'),
@@ -22279,7 +22049,7 @@ module.exports = {
     mapSize: require('./mapSize'),
     mapType: require('./mapType')
 };
-},{"./compileProgram":212,"./defaultValue":213,"./extractAttributes":214,"./extractUniforms":215,"./generateUniformAccessObject":216,"./mapSize":218,"./mapType":219,"./setPrecision":220}],218:[function(require,module,exports){
+},{"./compileProgram":210,"./defaultValue":211,"./extractAttributes":212,"./extractUniforms":213,"./generateUniformAccessObject":214,"./mapSize":216,"./mapType":217,"./setPrecision":218}],216:[function(require,module,exports){
 /**
  * @class
  * @memberof PIXI.glCore.shader
@@ -22317,7 +22087,7 @@ var GLSL_TO_SIZE = {
 
 module.exports = mapSize;
 
-},{}],219:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 
 
 var mapType = function(gl, type) 
@@ -22365,7 +22135,7 @@ var GL_TO_GLSL_TYPES = {
 
 module.exports = mapType;
 
-},{}],220:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 /**
  * Sets the float precision on the shader. If the precision is already present this function will do nothing
  * @param {string} src       the shader source
@@ -22385,7 +22155,7 @@ var setPrecision = function(src, precision)
 
 module.exports = setPrecision;
 
-},{}],221:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -22586,7 +22356,7 @@ module.exports = function (_Plugin) {
     return Bounce;
 }(Plugin);
 
-},{"./plugin":229,"exists":7,"pixi-ease":195}],222:[function(require,module,exports){
+},{"./plugin":227,"exists":6,"pixi-ease":193}],220:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -22660,7 +22430,7 @@ module.exports = function (_Plugin) {
     return ClampZoom;
 }(Plugin);
 
-},{"./plugin":229}],223:[function(require,module,exports){
+},{"./plugin":227}],221:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -22795,7 +22565,7 @@ module.exports = function (_Plugin) {
     return clamp;
 }(Plugin);
 
-},{"./plugin":229,"exists":7}],224:[function(require,module,exports){
+},{"./plugin":227,"exists":6}],222:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -22951,7 +22721,7 @@ module.exports = function (_Plugin) {
     return Decelerate;
 }(Plugin);
 
-},{"./plugin":229,"exists":7}],225:[function(require,module,exports){
+},{"./plugin":227,"exists":6}],223:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -23092,6 +22862,7 @@ module.exports = function (_Plugin) {
                         this.clamp();
                     }
                     this.parent.emit('wheel-scroll', this.parent);
+                    this.parent.emit('moved', this.parent);
                     this.parent.dirty = true;
                     e.preventDefault();
                     return true;
@@ -23123,11 +22894,11 @@ module.exports = function (_Plugin) {
                             this.parent.x = (this.parent.screenWidth - this.parent.screenWorldWidth) / 2;
                     }
                 } else {
-                    if (oob.left) {
+                    if (this.parent.left < 0) {
                         this.parent.x = 0;
                         decelerate.x = 0;
-                    } else if (oob.right) {
-                        this.parent.x = -point.x;
+                    } else if (this.parent.right > this.parent.worldWidth) {
+                        this.parent.x = -this.parent.worldWidth * this.parent.scale.x + this.parent.screenWidth;
                         decelerate.x = 0;
                     }
                 }
@@ -23145,11 +22916,12 @@ module.exports = function (_Plugin) {
                             this.parent.y = (this.parent.screenHeight - this.parent.screenWorldHeight) / 2;
                     }
                 } else {
-                    if (oob.top) {
+                    if (this.parent.top < 0) {
                         this.parent.y = 0;
                         decelerate.y = 0;
-                    } else if (oob.bottom) {
-                        this.parent.y = -point.y;
+                    }
+                    if (this.parent.bottom > this.parent.worldHeight) {
+                        this.parent.y = -this.parent.worldHeight * this.parent.scale.y + this.parent.screenHeight;
                         decelerate.y = 0;
                     }
                 }
@@ -23165,7 +22937,7 @@ module.exports = function (_Plugin) {
     return Drag;
 }(Plugin);
 
-},{"./plugin":229,"exists":7}],226:[function(require,module,exports){
+},{"./plugin":227,"exists":6}],224:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -23243,7 +23015,7 @@ module.exports = function (_Plugin) {
     return Follow;
 }(Plugin);
 
-},{"./plugin":229}],227:[function(require,module,exports){
+},{"./plugin":227}],225:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -23418,7 +23190,7 @@ module.exports = function (_Plugin) {
     return MouseEdges;
 }(Plugin);
 
-},{"./plugin":229,"exists":7,"yy-angle":408}],228:[function(require,module,exports){
+},{"./plugin":227,"exists":6,"yy-angle":399}],226:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -23535,7 +23307,7 @@ module.exports = function (_Plugin) {
     return Pinch;
 }(Plugin);
 
-},{"./plugin":229}],229:[function(require,module,exports){
+},{"./plugin":227}],227:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -23586,7 +23358,7 @@ module.exports = function () {
     return Plugin;
 }();
 
-},{}],230:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -23747,7 +23519,7 @@ module.exports = function (_Plugin) {
     return SnapZoom;
 }(Plugin);
 
-},{"./plugin":229,"exists":7,"pixi-ease":195}],231:[function(require,module,exports){
+},{"./plugin":227,"exists":6,"pixi-ease":193}],229:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -23885,7 +23657,7 @@ module.exports = function (_Plugin) {
     return Snap;
 }(Plugin);
 
-},{"./plugin":229,"exists":7,"pixi-ease":195}],232:[function(require,module,exports){
+},{"./plugin":227,"exists":6,"pixi-ease":193}],230:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -24298,37 +24070,41 @@ var Viewport = function (_PIXI$Container) {
     }, {
         key: 'handleWheel',
         value: function handleWheel(e) {
-            var result = void 0;
-            var _iteratorNormalCompletion6 = true;
-            var _didIteratorError6 = false;
-            var _iteratorError6 = undefined;
+            // only handle wheel events where the mouse is over the viewport
+            var point = this.toLocal({ x: e.clientX, y: e.clientY });
+            if (this.left <= point.x && point.x <= this.right && this.top <= point.y && point.y <= this.bottom) {
+                var result = void 0;
+                var _iteratorNormalCompletion6 = true;
+                var _didIteratorError6 = false;
+                var _iteratorError6 = undefined;
 
-            try {
-                for (var _iterator6 = PLUGIN_ORDER[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                    var type = _step6.value;
+                try {
+                    for (var _iterator6 = PLUGIN_ORDER[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+                        var type = _step6.value;
 
-                    if (this.plugins[type]) {
-                        if (this.plugins[type].wheel(e)) {
-                            result = true;
+                        if (this.plugins[type]) {
+                            if (this.plugins[type].wheel(e)) {
+                                result = true;
+                            }
+                        }
+                    }
+                } catch (err) {
+                    _didIteratorError6 = true;
+                    _iteratorError6 = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                            _iterator6.return();
+                        }
+                    } finally {
+                        if (_didIteratorError6) {
+                            throw _iteratorError6;
                         }
                     }
                 }
-            } catch (err) {
-                _didIteratorError6 = true;
-                _iteratorError6 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                        _iterator6.return();
-                    }
-                } finally {
-                    if (_didIteratorError6) {
-                        throw _iteratorError6;
-                    }
-                }
-            }
 
-            return result;
+                return result;
+            }
         }
 
         /**
@@ -25256,7 +25032,7 @@ var Viewport = function (_PIXI$Container) {
 
 module.exports = Viewport;
 
-},{"./bounce":221,"./clamp":223,"./clamp-zoom":222,"./decelerate":224,"./drag":225,"./follow":226,"./mouse-edges":227,"./pinch":228,"./snap":231,"./snap-zoom":230,"./wheel":233,"exists":7,"pixi.js":349}],233:[function(require,module,exports){
+},{"./bounce":219,"./clamp":221,"./clamp-zoom":220,"./decelerate":222,"./drag":223,"./follow":224,"./mouse-edges":225,"./pinch":226,"./snap":229,"./snap-zoom":228,"./wheel":231,"exists":6,"pixi.js":347}],231:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -25349,7 +25125,7 @@ module.exports = function (_Plugin) {
     return Wheel;
 }(Plugin);
 
-},{"./plugin":229,"pixi.js":349}],234:[function(require,module,exports){
+},{"./plugin":227,"pixi.js":347}],232:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -25591,7 +25367,7 @@ var AccessibilityManager = function () {
 
         var children = displayObject.children;
 
-        for (var i = children.length - 1; i >= 0; i--) {
+        for (var i = 0; i < children.length; i++) {
             this.updateAccessibleObjects(children[i]);
         }
     };
@@ -25660,6 +25436,14 @@ var AccessibilityManager = function () {
 
                     div.style.width = hitArea.width * sx + 'px';
                     div.style.height = hitArea.height * sy + 'px';
+
+                    // update button titles and hints if they exist and they've changed
+                    if (div.title !== child.accessibleTitle && child.accessibleTitle !== null) {
+                        div.title = child.accessibleTitle;
+                    }
+                    if (div.getAttribute('aria-label') !== child.accessibleHint && child.accessibleHint !== null) {
+                        div.setAttribute('aria-label', child.accessibleHint);
+                    }
                 }
             }
         }
@@ -25718,18 +25502,34 @@ var AccessibilityManager = function () {
             div.style.zIndex = DIV_TOUCH_ZINDEX;
             div.style.borderStyle = 'none';
 
+            // ARIA attributes ensure that button title and hint updates are announced properly
+            if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+                // Chrome doesn't need aria-live to work as intended; in fact it just gets more confused.
+                div.setAttribute('aria-live', 'off');
+            } else {
+                div.setAttribute('aria-live', 'polite');
+            }
+
+            if (navigator.userAgent.match(/rv:.*Gecko\//)) {
+                // FireFox needs this to announce only the new button name
+                div.setAttribute('aria-relevant', 'additions');
+            } else {
+                // required by IE, other browsers don't much care
+                div.setAttribute('aria-relevant', 'text');
+            }
+
             div.addEventListener('click', this._onClick.bind(this));
             div.addEventListener('focus', this._onFocus.bind(this));
             div.addEventListener('focusout', this._onFocusOut.bind(this));
         }
 
-        if (displayObject.accessibleTitle) {
+        if (displayObject.accessibleTitle && displayObject.accessibleTitle !== null) {
             div.title = displayObject.accessibleTitle;
-        } else if (!displayObject.accessibleTitle && !displayObject.accessibleHint) {
-            div.title = 'displayObject ' + this.tabIndex;
+        } else if (!displayObject.accessibleHint || displayObject.accessibleHint === null) {
+            div.title = 'displayObject ' + displayObject.tabIndex;
         }
 
-        if (displayObject.accessibleHint) {
+        if (displayObject.accessibleHint && displayObject.accessibleHint !== null) {
             div.setAttribute('aria-label', displayObject.accessibleHint);
         }
 
@@ -25767,6 +25567,9 @@ var AccessibilityManager = function () {
 
 
     AccessibilityManager.prototype._onFocus = function _onFocus(e) {
+        if (!e.target.getAttribute('aria-live', 'off')) {
+            e.target.setAttribute('aria-live', 'assertive');
+        }
         var interactionManager = this.renderer.plugins.interaction;
 
         interactionManager.dispatchEvent(e.target.displayObject, 'mouseover', interactionManager.eventData);
@@ -25781,6 +25584,9 @@ var AccessibilityManager = function () {
 
 
     AccessibilityManager.prototype._onFocusOut = function _onFocusOut(e) {
+        if (!e.target.getAttribute('aria-live', 'off')) {
+            e.target.setAttribute('aria-live', 'polite');
+        }
         var interactionManager = this.renderer.plugins.interaction;
 
         interactionManager.dispatchEvent(e.target.displayObject, 'mouseout', interactionManager.eventData);
@@ -25806,10 +25612,15 @@ var AccessibilityManager = function () {
      * Is called when the mouse moves across the renderer element
      *
      * @private
+     * @param {MouseEvent} e - The mouse event.
      */
 
 
-    AccessibilityManager.prototype._onMouseMove = function _onMouseMove() {
+    AccessibilityManager.prototype._onMouseMove = function _onMouseMove(e) {
+        if (e.movementX === 0 && e.movementY === 0) {
+            return;
+        }
+
         this.deactivate();
     };
 
@@ -25843,7 +25654,7 @@ exports.default = AccessibilityManager;
 core.WebGLRenderer.registerPlugin('accessibility', AccessibilityManager);
 core.CanvasRenderer.registerPlugin('accessibility', AccessibilityManager);
 
-},{"../core":259,"./accessibleTarget":235,"ismobilejs":187}],235:[function(require,module,exports){
+},{"../core":257,"./accessibleTarget":233,"ismobilejs":186}],233:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -25901,7 +25712,7 @@ exports.default = {
   _accessibleDiv: false
 };
 
-},{}],236:[function(require,module,exports){
+},{}],234:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -25926,7 +25737,7 @@ Object.defineProperty(exports, 'AccessibilityManager', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./AccessibilityManager":234,"./accessibleTarget":235}],237:[function(require,module,exports){
+},{"./AccessibilityManager":232,"./accessibleTarget":233}],235:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26092,8 +25903,16 @@ var Application = function () {
     /**
      * Destroy and don't use after this.
      * @param {Boolean} [removeView=false] Automatically remove canvas from DOM.
+     * @param {object|boolean} [stageOptions] - Options parameter. A boolean will act as if all options
+     *  have been set to that value
+     * @param {boolean} [stageOptions.children=false] - if set to true, all the children will have their destroy
+     *  method called as well. 'stageOptions' will be passed on to those calls.
+     * @param {boolean} [stageOptions.texture=false] - Only used for child Sprites if stageOptions.children is set
+     *  to true. Should it destroy the texture of the child sprite
+     * @param {boolean} [stageOptions.baseTexture=false] - Only used for child Sprites if stageOptions.children is set
+     *  to true. Should it destroy the base texture of the child sprite
      */
-    Application.prototype.destroy = function destroy(removeView) {
+    Application.prototype.destroy = function destroy(removeView, stageOptions) {
         if (this._ticker) {
             var oldTicker = this._ticker;
 
@@ -26101,7 +25920,7 @@ var Application = function () {
             oldTicker.destroy();
         }
 
-        this.stage.destroy();
+        this.stage.destroy(stageOptions);
         this.stage = null;
 
         this.renderer.destroy(removeView);
@@ -26150,7 +25969,7 @@ var Application = function () {
 
 exports.default = Application;
 
-},{"./autoDetectRenderer":239,"./const":240,"./display/Container":242,"./settings":295,"./ticker":315}],238:[function(require,module,exports){
+},{"./autoDetectRenderer":237,"./const":238,"./display/Container":240,"./settings":293,"./ticker":313}],236:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26217,7 +26036,7 @@ var Shader = function (_GLShader) {
 
 exports.default = Shader;
 
-},{"./settings":295,"pixi-gl-core":210}],239:[function(require,module,exports){
+},{"./settings":293,"pixi-gl-core":208}],237:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26286,7 +26105,7 @@ function autoDetectRenderer(options, arg1, arg2, arg3) {
     return new _CanvasRenderer2.default(options, arg1, arg2);
 }
 
-},{"./renderers/canvas/CanvasRenderer":271,"./renderers/webgl/WebGLRenderer":278,"./utils":319}],240:[function(require,module,exports){
+},{"./renderers/canvas/CanvasRenderer":269,"./renderers/webgl/WebGLRenderer":276,"./utils":317}],238:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26299,7 +26118,7 @@ exports.__esModule = true;
  * @name VERSION
  * @type {string}
  */
-var VERSION = exports.VERSION = '4.7.3';
+var VERSION = exports.VERSION = '4.8.0';
 
 /**
  * Two Pi.
@@ -26519,7 +26338,7 @@ var URL_FILE_EXTENSION = exports.URL_FILE_EXTENSION = /\.(\w{3,4})(?:$|\?|#)/i;
  * @type {RegExp|string}
  * @example data:image/png;base64
  */
-var DATA_URI = exports.DATA_URI = /^\s*data:(?:([\w-]+)\/([\w+.-]+))?(?:;(charset=[\w-]+|base64))?,(.*)/i;
+var DATA_URI = exports.DATA_URI = /^\s*data:(?:([\w-]+)\/([\w+.-]+))?(?:;charset=([\w-]+))?(?:;(base64))?,(.*)/i;
 
 /**
  * Regexp for SVG size.
@@ -26629,7 +26448,7 @@ var UPDATE_PRIORITY = exports.UPDATE_PRIORITY = {
   UTILITY: -50
 };
 
-},{}],241:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26972,7 +26791,7 @@ var Bounds = function () {
 
 exports.default = Bounds;
 
-},{"../math":264}],242:[function(require,module,exports){
+},{"../math":262}],240:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27590,7 +27409,7 @@ var Container = function (_DisplayObject) {
 exports.default = Container;
 Container.prototype.containerUpdateTransform = Container.prototype.updateTransform;
 
-},{"../utils":319,"./DisplayObject":243}],243:[function(require,module,exports){
+},{"../utils":317,"./DisplayObject":241}],241:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -28284,7 +28103,7 @@ var DisplayObject = function (_EventEmitter) {
 exports.default = DisplayObject;
 DisplayObject.prototype.displayObjectUpdateTransform = DisplayObject.prototype.updateTransform;
 
-},{"../const":240,"../math":264,"../settings":295,"./Bounds":241,"./Transform":244,"./TransformStatic":246,"eventemitter3":384}],244:[function(require,module,exports){
+},{"../const":238,"../math":262,"../settings":293,"./Bounds":239,"./Transform":242,"./TransformStatic":244,"eventemitter3":382}],242:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -28465,7 +28284,7 @@ var Transform = function (_TransformBase) {
 
 exports.default = Transform;
 
-},{"../math":264,"./TransformBase":245}],245:[function(require,module,exports){
+},{"../math":262,"./TransformBase":243}],243:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -28552,7 +28371,7 @@ TransformBase.prototype.updateWorldTransform = TransformBase.prototype.updateTra
 
 TransformBase.IDENTITY = new TransformBase();
 
-},{"../math":264}],246:[function(require,module,exports){
+},{"../math":262}],244:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -28762,7 +28581,7 @@ var TransformStatic = function (_TransformBase) {
 
 exports.default = TransformStatic;
 
-},{"../math":264,"./TransformBase":245}],247:[function(require,module,exports){
+},{"../math":262,"./TransformBase":243}],245:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -28872,6 +28691,14 @@ var Graphics = function (_Container) {
          * @default 0
          */
         _this.lineColor = 0;
+
+        /**
+         * The alignment of any lines drawn (0.5 = middle, 1 = outter, 0 = inner).
+         *
+         * @member {number}
+         * @default 0
+         */
+        _this.lineAlignment = 0.5;
 
         /**
          * Graphics data
@@ -29017,6 +28844,7 @@ var Graphics = function (_Container) {
         clone.fillAlpha = this.fillAlpha;
         clone.lineWidth = this.lineWidth;
         clone.lineColor = this.lineColor;
+        clone.lineAlignment = this.lineAlignment;
         clone.tint = this.tint;
         clone.blendMode = this.blendMode;
         clone.isMask = this.isMask;
@@ -29037,12 +28865,123 @@ var Graphics = function (_Container) {
     };
 
     /**
+     * Calculate length of quadratic curve
+     * @see {@link http://www.malczak.linuxpl.com/blog/quadratic-bezier-curve-length/}
+     * for the detailed explanation of math behind this.
+     *
+     * @private
+     * @param {number} fromX - x-coordinate of curve start point
+     * @param {number} fromY - y-coordinate of curve start point
+     * @param {number} cpX - x-coordinate of curve control point
+     * @param {number} cpY - y-coordinate of curve control point
+     * @param {number} toX - x-coordinate of curve end point
+     * @param {number} toY - y-coordinate of curve end point
+     * @return {number} Length of quadratic curve
+     */
+
+
+    Graphics.prototype._quadraticCurveLength = function _quadraticCurveLength(fromX, fromY, cpX, cpY, toX, toY) {
+        var ax = fromX - (2.0 * cpX + toX);
+        var ay = fromY - (2.0 * cpY + toY);
+        var bx = 2.0 * ((cpX - 2.0) * fromX);
+        var by = 2.0 * ((cpY - 2.0) * fromY);
+        var a = 4.0 * (ax * ax + ay * ay);
+        var b = 4.0 * (ax * bx + ay * by);
+        var c = bx * bx + by * by;
+
+        var s = 2.0 * Math.sqrt(a + b + c);
+        var a2 = Math.sqrt(a);
+        var a32 = 2.0 * a * a2;
+        var c2 = 2.0 * Math.sqrt(c);
+        var ba = b / a2;
+
+        return (a32 * s + a2 * b * (s - c2) + (4.0 * c * a - b * b) * Math.log((2.0 * a2 + ba + s) / (ba + c2))) / (4.0 * a32);
+    };
+
+    /**
+     * Calculate length of bezier curve.
+     * Analytical solution is impossible, since it involves an integral that does not integrate in general.
+     * Therefore numerical solution is used.
+     *
+     * @private
+     * @param {number} fromX - Starting point x
+     * @param {number} fromY - Starting point y
+     * @param {number} cpX - Control point x
+     * @param {number} cpY - Control point y
+     * @param {number} cpX2 - Second Control point x
+     * @param {number} cpY2 - Second Control point y
+     * @param {number} toX - Destination point x
+     * @param {number} toY - Destination point y
+     * @return {number} Length of bezier curve
+     */
+
+
+    Graphics.prototype._bezierCurveLength = function _bezierCurveLength(fromX, fromY, cpX, cpY, cpX2, cpY2, toX, toY) {
+        var n = 10;
+        var result = 0.0;
+        var t = 0.0;
+        var t2 = 0.0;
+        var t3 = 0.0;
+        var nt = 0.0;
+        var nt2 = 0.0;
+        var nt3 = 0.0;
+        var x = 0.0;
+        var y = 0.0;
+        var dx = 0.0;
+        var dy = 0.0;
+        var prevX = fromX;
+        var prevY = fromY;
+
+        for (var i = 1; i <= n; ++i) {
+            t = i / n;
+            t2 = t * t;
+            t3 = t2 * t;
+            nt = 1.0 - t;
+            nt2 = nt * nt;
+            nt3 = nt2 * nt;
+
+            x = nt3 * fromX + 3.0 * nt2 * t * cpX + 3.0 * nt * t2 * cpX2 + t3 * toX;
+            y = nt3 * fromY + 3.0 * nt2 * t * cpY + 3 * nt * t2 * cpY2 + t3 * toY;
+            dx = prevX - x;
+            dy = prevY - y;
+            prevX = x;
+            prevY = y;
+
+            result += Math.sqrt(dx * dx + dy * dy);
+        }
+
+        return result;
+    };
+
+    /**
+     * Calculate number of segments for the curve based on its length to ensure its smoothness.
+     *
+     * @private
+     * @param {number} length - length of curve
+     * @return {number} Number of segments
+     */
+
+
+    Graphics.prototype._segmentsCount = function _segmentsCount(length) {
+        var result = Math.ceil(length / Graphics.CURVES.maxLength);
+
+        if (result < Graphics.CURVES.minSegments) {
+            result = Graphics.CURVES.minSegments;
+        } else if (result > Graphics.CURVES.maxSegments) {
+            result = Graphics.CURVES.maxSegments;
+        }
+
+        return result;
+    };
+
+    /**
      * Specifies the line style used for subsequent calls to Graphics methods such as the lineTo()
      * method or the drawCircle() method.
      *
      * @param {number} [lineWidth=0] - width of the line to draw, will update the objects stored style
      * @param {number} [color=0] - color of the line to draw, will update the objects stored style
      * @param {number} [alpha=1] - alpha of the line to draw, will update the objects stored style
+     * @param {number} [alignment=1] - alignment of the line to draw, (0 = inner, 0.5 = middle, 1 = outter)
      * @return {PIXI.Graphics} This Graphics object. Good for chaining method calls
      */
 
@@ -29051,10 +28990,12 @@ var Graphics = function (_Container) {
         var lineWidth = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
         var color = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
         var alpha = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+        var alignment = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0.5;
 
         this.lineWidth = lineWidth;
         this.lineColor = color;
         this.lineAlpha = alpha;
+        this.lineAlignment = alignment;
 
         if (this.currentPath) {
             if (this.currentPath.shape.points.length) {
@@ -29069,6 +29010,7 @@ var Graphics = function (_Container) {
                 this.currentPath.lineWidth = this.lineWidth;
                 this.currentPath.lineColor = this.lineColor;
                 this.currentPath.lineAlpha = this.lineAlpha;
+                this.currentPath.lineAlignment = this.lineAlignment;
             }
         }
 
@@ -29131,7 +29073,6 @@ var Graphics = function (_Container) {
             this.moveTo(0, 0);
         }
 
-        var n = 20;
         var points = this.currentPath.shape.points;
         var xa = 0;
         var ya = 0;
@@ -29142,6 +29083,7 @@ var Graphics = function (_Container) {
 
         var fromX = points[points.length - 2];
         var fromY = points[points.length - 1];
+        var n = Graphics.CURVES.adaptive ? this._segmentsCount(this._quadraticCurveLength(fromX, fromY, cpX, cpY, toX, toY)) : 20;
 
         for (var i = 1; i <= n; ++i) {
             var j = i / n;
@@ -29186,7 +29128,9 @@ var Graphics = function (_Container) {
 
         points.length -= 2;
 
-        (0, _bezierCurveTo3.default)(fromX, fromY, cpX, cpY, cpX2, cpY2, toX, toY, points);
+        var n = Graphics.CURVES.adaptive ? this._segmentsCount(this._bezierCurveLength(fromX, fromY, cpX, cpY, cpX2, cpY2, toX, toY)) : 20;
+
+        (0, _bezierCurveTo3.default)(fromX, fromY, cpX, cpY, cpX2, cpY2, toX, toY, n, points);
 
         this.dirty++;
 
@@ -29284,7 +29228,7 @@ var Graphics = function (_Container) {
         }
 
         var sweep = endAngle - startAngle;
-        var segs = Math.ceil(Math.abs(sweep) / _const.PI_2) * 40;
+        var segs = Graphics.CURVES.adaptive ? this._segmentsCount(Math.abs(sweep) * radius) : Math.ceil(Math.abs(sweep) / _const.PI_2) * 40;
 
         if (sweep === 0) {
             return this;
@@ -29523,6 +29467,8 @@ var Graphics = function (_Container) {
     Graphics.prototype.clear = function clear() {
         if (this.lineWidth || this.filling || this.graphicsData.length > 0) {
             this.lineWidth = 0;
+            this.lineAlignment = 0.5;
+
             this.filling = false;
 
             this.boundsDirty = -1;
@@ -29830,7 +29776,7 @@ var Graphics = function (_Container) {
 
         this.currentPath = null;
 
-        var data = new _GraphicsData2.default(this.lineWidth, this.lineColor, this.lineAlpha, this.fillColor, this.fillAlpha, this.filling, this.nativeLines, shape);
+        var data = new _GraphicsData2.default(this.lineWidth, this.lineColor, this.lineAlpha, this.fillColor, this.fillAlpha, this.filling, this.nativeLines, shape, this.lineAlignment);
 
         this.graphicsData.push(data);
 
@@ -29942,9 +29888,9 @@ var Graphics = function (_Container) {
         }
 
         // for each webgl data entry, destroy the WebGLGraphicsData
-        for (var id in this._webgl) {
-            for (var j = 0; j < this._webgl[id].data.length; ++j) {
-                this._webgl[id].data[j].destroy();
+        for (var id in this._webGL) {
+            for (var j = 0; j < this._webGL[id].data.length; ++j) {
+                this._webGL[id].data[j].destroy();
             }
         }
 
@@ -29955,7 +29901,7 @@ var Graphics = function (_Container) {
         this.graphicsData = null;
 
         this.currentPath = null;
-        this._webgl = null;
+        this._webGL = null;
         this._localBounds = null;
     };
 
@@ -29967,7 +29913,29 @@ exports.default = Graphics;
 
 Graphics._SPRITE_TEXTURE = null;
 
-},{"../const":240,"../display/Bounds":241,"../display/Container":242,"../math":264,"../renderers/canvas/CanvasRenderer":271,"../sprites/Sprite":296,"../textures/RenderTexture":307,"../textures/Texture":309,"../utils":319,"./GraphicsData":248,"./utils/bezierCurveTo":250}],248:[function(require,module,exports){
+/**
+ * Graphics curves resolution settings. If `adaptive` flag is set to `true`,
+ * the resolution is calculated based on the curve's length to ensure better visual quality.
+ * Adaptive draw works with `bezierCurveTo` and `quadraticCurveTo`.
+ *
+ * @static
+ * @constant
+ * @memberof PIXI.Graphics
+ * @name CURVES
+ * @type {object}
+ * @property {boolean} adaptive=false - flag indicating if the resolution should be adaptive
+ * @property {number} maxLength=10 - maximal length of a single segment of the curve (if adaptive = false, ignored)
+ * @property {number} minSegments=8 - minimal number of segments in the curve (if adaptive = false, ignored)
+ * @property {number} maxSegments=2048 - maximal number of segments in the curve (if adaptive = false, ignored)
+ */
+Graphics.CURVES = {
+    adaptive: false,
+    maxLength: 10,
+    minSegments: 8,
+    maxSegments: 2048
+};
+
+},{"../const":238,"../display/Bounds":239,"../display/Container":240,"../math":262,"../renderers/canvas/CanvasRenderer":269,"../sprites/Sprite":294,"../textures/RenderTexture":305,"../textures/Texture":307,"../utils":317,"./GraphicsData":246,"./utils/bezierCurveTo":248}],246:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -29991,8 +29959,9 @@ var GraphicsData = function () {
    * @param {boolean} fill - whether or not the shape is filled with a colour
    * @param {boolean} nativeLines - the method for drawing lines
    * @param {PIXI.Circle|PIXI.Rectangle|PIXI.Ellipse|PIXI.Polygon} shape - The shape object to draw.
+   * @param {number} lineAlignment - the alignment of the line.
    */
-  function GraphicsData(lineWidth, lineColor, lineAlpha, fillColor, fillAlpha, fill, nativeLines, shape) {
+  function GraphicsData(lineWidth, lineColor, lineAlpha, fillColor, fillAlpha, fill, nativeLines, shape, lineAlignment) {
     _classCallCheck(this, GraphicsData);
 
     /**
@@ -30000,6 +29969,14 @@ var GraphicsData = function () {
      * @member {number}
      */
     this.lineWidth = lineWidth;
+
+    /**
+     * The alignment of any lines drawn (0.5 = middle, 1 = outter, 0 = inner).
+     *
+     * @member {number}
+     * @default 0
+     */
+    this.lineAlignment = lineAlignment;
 
     /**
      * if true the liens will be draw using LINES instead of TRIANGLE_STRIP
@@ -30103,7 +30080,7 @@ var GraphicsData = function () {
 
 exports.default = GraphicsData;
 
-},{}],249:[function(require,module,exports){
+},{}],247:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -30326,7 +30303,7 @@ var CanvasGraphicsRenderer = function () {
             var fillColor = data.fillColor | 0;
             var lineColor = data.lineColor | 0;
 
-            // super inline cos im an optimization NAZI :)
+            // super inline, cos optimization :)
             data._fillTint = ((fillColor >> 16 & 0xFF) / 255 * tintR * 255 << 16) + ((fillColor >> 8 & 0xFF) / 255 * tintG * 255 << 8) + (fillColor & 0xFF) / 255 * tintB * 255;
 
             data._lineTint = ((lineColor >> 16 & 0xFF) / 255 * tintR * 255 << 16) + ((lineColor >> 8 & 0xFF) / 255 * tintG * 255 << 8) + (lineColor & 0xFF) / 255 * tintB * 255;
@@ -30372,7 +30349,7 @@ exports.default = CanvasGraphicsRenderer;
 
 _CanvasRenderer2.default.registerPlugin('graphics', CanvasGraphicsRenderer);
 
-},{"../../const":240,"../../renderers/canvas/CanvasRenderer":271}],250:[function(require,module,exports){
+},{"../../const":238,"../../renderers/canvas/CanvasRenderer":269}],248:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -30391,13 +30368,13 @@ exports.default = bezierCurveTo;
  * @param {number} cpY2 - Second Control point y
  * @param {number} toX - Destination point x
  * @param {number} toY - Destination point y
+ * @param {number} n - Number of segments approximating the bezier curve
  * @param {number[]} [path=[]] - Path array to push points into
  * @return {number[]} Array of points of the curve
  */
-function bezierCurveTo(fromX, fromY, cpX, cpY, cpX2, cpY2, toX, toY) {
-    var path = arguments.length > 8 && arguments[8] !== undefined ? arguments[8] : [];
+function bezierCurveTo(fromX, fromY, cpX, cpY, cpX2, cpY2, toX, toY, n) {
+    var path = arguments.length > 9 && arguments[9] !== undefined ? arguments[9] : [];
 
-    var n = 20;
     var dt = 0;
     var dt2 = 0;
     var dt3 = 0;
@@ -30422,7 +30399,7 @@ function bezierCurveTo(fromX, fromY, cpX, cpY, cpX2, cpY2, toX, toY) {
     return path;
 }
 
-},{}],251:[function(require,module,exports){
+},{}],249:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -30687,7 +30664,7 @@ exports.default = GraphicsRenderer;
 
 _WebGLRenderer2.default.registerPlugin('graphics', GraphicsRenderer);
 
-},{"../../const":240,"../../renderers/webgl/WebGLRenderer":278,"../../renderers/webgl/utils/ObjectRenderer":288,"../../utils":319,"./WebGLGraphicsData":252,"./shaders/PrimitiveShader":253,"./utils/buildCircle":254,"./utils/buildPoly":256,"./utils/buildRectangle":257,"./utils/buildRoundedRectangle":258}],252:[function(require,module,exports){
+},{"../../const":238,"../../renderers/webgl/WebGLRenderer":276,"../../renderers/webgl/utils/ObjectRenderer":286,"../../utils":317,"./WebGLGraphicsData":250,"./shaders/PrimitiveShader":251,"./utils/buildCircle":252,"./utils/buildPoly":254,"./utils/buildRectangle":255,"./utils/buildRoundedRectangle":256}],250:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -30830,7 +30807,7 @@ var WebGLGraphicsData = function () {
 
 exports.default = WebGLGraphicsData;
 
-},{"pixi-gl-core":210}],253:[function(require,module,exports){
+},{"pixi-gl-core":208}],251:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -30875,7 +30852,7 @@ var PrimitiveShader = function (_Shader) {
 
 exports.default = PrimitiveShader;
 
-},{"../../../Shader":238}],254:[function(require,module,exports){
+},{"../../../Shader":236}],252:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -30959,7 +30936,7 @@ function buildCircle(graphicsData, webGLData, webGLDataNativeLines) {
         graphicsData.points = [];
 
         for (var _i = 0; _i < totalSegs + 1; _i++) {
-            graphicsData.points.push(x + Math.sin(seg * _i) * width, y + Math.cos(seg * _i) * height);
+            graphicsData.points.push(x + Math.sin(seg * -_i) * width, y + Math.cos(seg * -_i) * height);
         }
 
         (0, _buildLine2.default)(graphicsData, webGLData, webGLDataNativeLines);
@@ -30968,7 +30945,7 @@ function buildCircle(graphicsData, webGLData, webGLDataNativeLines) {
     }
 }
 
-},{"../../../const":240,"../../../utils":319,"./buildLine":255}],255:[function(require,module,exports){
+},{"../../../const":238,"../../../utils":317,"./buildLine":253}],253:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -31070,10 +31047,14 @@ function buildLine(graphicsData, webGLData) {
     perpx *= width;
     perpy *= width;
 
-    // start
-    verts.push(p1x - perpx, p1y - perpy, r, g, b, alpha);
+    var ratio = graphicsData.lineAlignment; // 0.5;
+    var r1 = (1 - ratio) * 2;
+    var r2 = ratio * 2;
 
-    verts.push(p1x + perpx, p1y + perpy, r, g, b, alpha);
+    // start
+    verts.push(p1x - perpx * r1, p1y - perpy * r1, r, g, b, alpha);
+
+    verts.push(p1x + perpx * r2, p1y + perpy * r2, r, g, b, alpha);
 
     for (var i = 1; i < length - 1; ++i) {
         p1x = points[(i - 1) * 2];
@@ -31114,9 +31095,9 @@ function buildLine(graphicsData, webGLData) {
 
         if (Math.abs(denom) < 0.1) {
             denom += 10.1;
-            verts.push(p2x - perpx, p2y - perpy, r, g, b, alpha);
+            verts.push(p2x - perpx * r1, p2y - perpy * r1, r, g, b, alpha);
 
-            verts.push(p2x + perpx, p2y + perpy, r, g, b, alpha);
+            verts.push(p2x + perpx * r2, p2y + perpy * r2, r, g, b, alpha);
 
             continue;
         }
@@ -31135,21 +31116,21 @@ function buildLine(graphicsData, webGLData) {
             perp3x *= width;
             perp3y *= width;
 
-            verts.push(p2x - perp3x, p2y - perp3y);
+            verts.push(p2x - perp3x * r1, p2y - perp3y * r1);
             verts.push(r, g, b, alpha);
 
-            verts.push(p2x + perp3x, p2y + perp3y);
+            verts.push(p2x + perp3x * r2, p2y + perp3y * r2);
             verts.push(r, g, b, alpha);
 
-            verts.push(p2x - perp3x, p2y - perp3y);
+            verts.push(p2x - perp3x * r2 * r1, p2y - perp3y * r1);
             verts.push(r, g, b, alpha);
 
             indexCount++;
         } else {
-            verts.push(px, py);
+            verts.push(p2x + (px - p2x) * r1, p2y + (py - p2y) * r1);
             verts.push(r, g, b, alpha);
 
-            verts.push(p2x - (px - p2x), p2y - (py - p2y));
+            verts.push(p2x - (px - p2x) * r2, p2y - (py - p2y) * r2);
             verts.push(r, g, b, alpha);
         }
     }
@@ -31169,10 +31150,10 @@ function buildLine(graphicsData, webGLData) {
     perpx *= width;
     perpy *= width;
 
-    verts.push(p2x - perpx, p2y - perpy);
+    verts.push(p2x - perpx * r1, p2y - perpy * r1);
     verts.push(r, g, b, alpha);
 
-    verts.push(p2x + perpx, p2y + perpy);
+    verts.push(p2x + perpx * r2, p2y + perpy * r2);
     verts.push(r, g, b, alpha);
 
     indices.push(indexStart);
@@ -31238,7 +31219,7 @@ function buildNativeLine(graphicsData, webGLData) {
     }
 }
 
-},{"../../../math":264,"../../../utils":319}],256:[function(require,module,exports){
+},{"../../../math":262,"../../../utils":317}],254:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -31324,7 +31305,7 @@ function buildPoly(graphicsData, webGLData, webGLDataNativeLines) {
     }
 }
 
-},{"../../../utils":319,"./buildLine":255,"earcut":5}],257:[function(require,module,exports){
+},{"../../../utils":317,"./buildLine":253,"earcut":4}],255:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -31400,7 +31381,7 @@ function buildRectangle(graphicsData, webGLData, webGLDataNativeLines) {
     }
 }
 
-},{"../../../utils":319,"./buildLine":255}],258:[function(require,module,exports){
+},{"../../../utils":317,"./buildLine":253}],256:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -31556,7 +31537,7 @@ function quadraticBezierCurve(fromX, fromY, cpX, cpY, toX, toY) {
     return points;
 }
 
-},{"../../../utils":319,"./buildLine":255,"earcut":5}],259:[function(require,module,exports){
+},{"../../../utils":317,"./buildLine":253,"earcut":4}],257:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -31942,7 +31923,7 @@ exports.WebGLRenderer = _WebGLRenderer2.default; /**
                                                   * @namespace PIXI
                                                   */
 
-},{"./Application":237,"./Shader":238,"./autoDetectRenderer":239,"./const":240,"./display/Bounds":241,"./display/Container":242,"./display/DisplayObject":243,"./display/Transform":244,"./display/TransformBase":245,"./display/TransformStatic":246,"./graphics/Graphics":247,"./graphics/GraphicsData":248,"./graphics/canvas/CanvasGraphicsRenderer":249,"./graphics/webgl/GraphicsRenderer":251,"./math":264,"./renderers/canvas/CanvasRenderer":271,"./renderers/canvas/utils/CanvasRenderTarget":273,"./renderers/webgl/WebGLRenderer":278,"./renderers/webgl/filters/Filter":280,"./renderers/webgl/filters/spriteMask/SpriteMaskFilter":283,"./renderers/webgl/managers/WebGLManager":287,"./renderers/webgl/utils/ObjectRenderer":288,"./renderers/webgl/utils/Quad":289,"./renderers/webgl/utils/RenderTarget":290,"./settings":295,"./sprites/Sprite":296,"./sprites/canvas/CanvasSpriteRenderer":297,"./sprites/canvas/CanvasTinter":298,"./sprites/webgl/SpriteRenderer":300,"./text/Text":302,"./text/TextMetrics":303,"./text/TextStyle":304,"./textures/BaseRenderTexture":305,"./textures/BaseTexture":306,"./textures/RenderTexture":307,"./textures/Spritesheet":308,"./textures/Texture":309,"./textures/TextureMatrix":310,"./textures/TextureUvs":311,"./textures/VideoBaseTexture":312,"./ticker":315,"./utils":319,"pixi-gl-core":210}],260:[function(require,module,exports){
+},{"./Application":235,"./Shader":236,"./autoDetectRenderer":237,"./const":238,"./display/Bounds":239,"./display/Container":240,"./display/DisplayObject":241,"./display/Transform":242,"./display/TransformBase":243,"./display/TransformStatic":244,"./graphics/Graphics":245,"./graphics/GraphicsData":246,"./graphics/canvas/CanvasGraphicsRenderer":247,"./graphics/webgl/GraphicsRenderer":249,"./math":262,"./renderers/canvas/CanvasRenderer":269,"./renderers/canvas/utils/CanvasRenderTarget":271,"./renderers/webgl/WebGLRenderer":276,"./renderers/webgl/filters/Filter":278,"./renderers/webgl/filters/spriteMask/SpriteMaskFilter":281,"./renderers/webgl/managers/WebGLManager":285,"./renderers/webgl/utils/ObjectRenderer":286,"./renderers/webgl/utils/Quad":287,"./renderers/webgl/utils/RenderTarget":288,"./settings":293,"./sprites/Sprite":294,"./sprites/canvas/CanvasSpriteRenderer":295,"./sprites/canvas/CanvasTinter":296,"./sprites/webgl/SpriteRenderer":298,"./text/Text":300,"./text/TextMetrics":301,"./text/TextStyle":302,"./textures/BaseRenderTexture":303,"./textures/BaseTexture":304,"./textures/RenderTexture":305,"./textures/Spritesheet":306,"./textures/Texture":307,"./textures/TextureMatrix":308,"./textures/TextureUvs":309,"./textures/VideoBaseTexture":310,"./ticker":313,"./utils":317,"pixi-gl-core":208}],258:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -32135,7 +32116,7 @@ var GroupD8 = {
 
 exports.default = GroupD8;
 
-},{"./Matrix":261}],261:[function(require,module,exports){
+},{"./Matrix":259}],259:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -32657,7 +32638,7 @@ var Matrix = function () {
 
 exports.default = Matrix;
 
-},{"../const":240,"./Point":263}],262:[function(require,module,exports){
+},{"../const":238,"./Point":261}],260:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -32774,7 +32755,7 @@ var ObservablePoint = function () {
 
 exports.default = ObservablePoint;
 
-},{}],263:[function(require,module,exports){
+},{}],261:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -32865,7 +32846,7 @@ var Point = function () {
 
 exports.default = Point;
 
-},{}],264:[function(require,module,exports){
+},{}],262:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -32953,7 +32934,7 @@ Object.defineProperty(exports, 'RoundedRectangle', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./GroupD8":260,"./Matrix":261,"./ObservablePoint":262,"./Point":263,"./shapes/Circle":265,"./shapes/Ellipse":266,"./shapes/Polygon":267,"./shapes/Rectangle":268,"./shapes/RoundedRectangle":269}],265:[function(require,module,exports){
+},{"./GroupD8":258,"./Matrix":259,"./ObservablePoint":260,"./Point":261,"./shapes/Circle":263,"./shapes/Ellipse":264,"./shapes/Polygon":265,"./shapes/Rectangle":266,"./shapes/RoundedRectangle":267}],263:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -33067,7 +33048,7 @@ var Circle = function () {
 
 exports.default = Circle;
 
-},{"../../const":240,"./Rectangle":268}],266:[function(require,module,exports){
+},{"../../const":238,"./Rectangle":266}],264:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -33189,7 +33170,7 @@ var Ellipse = function () {
 
 exports.default = Ellipse;
 
-},{"../../const":240,"./Rectangle":268}],267:[function(require,module,exports){
+},{"../../const":238,"./Rectangle":266}],265:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -33320,7 +33301,7 @@ var Polygon = function () {
 
 exports.default = Polygon;
 
-},{"../../const":240,"../Point":263}],268:[function(require,module,exports){
+},{"../../const":238,"../Point":261}],266:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -33583,7 +33564,7 @@ var Rectangle = function () {
 
 exports.default = Rectangle;
 
-},{"../../const":240}],269:[function(require,module,exports){
+},{"../../const":238}],267:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -33716,7 +33697,7 @@ var RoundedRectangle = function () {
 
 exports.default = RoundedRectangle;
 
-},{"../../const":240}],270:[function(require,module,exports){
+},{"../../const":238}],268:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -34081,7 +34062,7 @@ var SystemRenderer = function (_EventEmitter) {
 
 exports.default = SystemRenderer;
 
-},{"../const":240,"../display/Container":242,"../math":264,"../settings":295,"../textures/RenderTexture":307,"../utils":319,"eventemitter3":384}],271:[function(require,module,exports){
+},{"../const":238,"../display/Container":240,"../math":262,"../settings":293,"../textures/RenderTexture":305,"../utils":317,"eventemitter3":382}],269:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -34446,7 +34427,7 @@ var CanvasRenderer = function (_SystemRenderer) {
 exports.default = CanvasRenderer;
 _utils.pluginTarget.mixin(CanvasRenderer);
 
-},{"../../const":240,"../../settings":295,"../../utils":319,"../SystemRenderer":270,"./utils/CanvasMaskManager":272,"./utils/CanvasRenderTarget":273,"./utils/mapCanvasBlendModesToPixi":275}],272:[function(require,module,exports){
+},{"../../const":238,"../../settings":293,"../../utils":317,"../SystemRenderer":268,"./utils/CanvasMaskManager":270,"./utils/CanvasRenderTarget":271,"./utils/mapCanvasBlendModesToPixi":273}],270:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -34615,7 +34596,7 @@ var CanvasMaskManager = function () {
 
 exports.default = CanvasMaskManager;
 
-},{"../../../const":240}],273:[function(require,module,exports){
+},{"../../../const":238}],271:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -34739,7 +34720,7 @@ var CanvasRenderTarget = function () {
 
 exports.default = CanvasRenderTarget;
 
-},{"../../../settings":295}],274:[function(require,module,exports){
+},{"../../../settings":293}],272:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -34800,7 +34781,7 @@ function canUseNewCanvasBlendModes() {
     return data[0] === 255 && data[1] === 0 && data[2] === 0;
 }
 
-},{}],275:[function(require,module,exports){
+},{}],273:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -34872,7 +34853,7 @@ function mapCanvasBlendModesToPixi() {
     return array;
 }
 
-},{"../../../const":240,"./canUseNewCanvasBlendModes":274}],276:[function(require,module,exports){
+},{"../../../const":238,"./canUseNewCanvasBlendModes":272}],274:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -34992,7 +34973,7 @@ var TextureGarbageCollector = function () {
 
 exports.default = TextureGarbageCollector;
 
-},{"../../const":240,"../../settings":295}],277:[function(require,module,exports){
+},{"../../const":238,"../../settings":293}],275:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -35248,7 +35229,7 @@ var TextureManager = function () {
 
 exports.default = TextureManager;
 
-},{"../../const":240,"../../utils":319,"./utils/RenderTarget":290,"pixi-gl-core":210}],278:[function(require,module,exports){
+},{"../../const":238,"../../utils":317,"./utils/RenderTarget":288,"pixi-gl-core":208}],276:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -36065,7 +36046,7 @@ var WebGLRenderer = function (_SystemRenderer) {
 exports.default = WebGLRenderer;
 _utils.pluginTarget.mixin(WebGLRenderer);
 
-},{"../../const":240,"../../textures/BaseTexture":306,"../../utils":319,"../SystemRenderer":270,"./TextureGarbageCollector":276,"./TextureManager":277,"./WebGLState":279,"./managers/FilterManager":284,"./managers/MaskManager":285,"./managers/StencilManager":286,"./utils/ObjectRenderer":288,"./utils/RenderTarget":290,"./utils/mapWebGLDrawModesToPixi":293,"./utils/validateContext":294,"pixi-gl-core":210}],279:[function(require,module,exports){
+},{"../../const":238,"../../textures/BaseTexture":304,"../../utils":317,"../SystemRenderer":268,"./TextureGarbageCollector":274,"./TextureManager":275,"./WebGLState":277,"./managers/FilterManager":282,"./managers/MaskManager":283,"./managers/StencilManager":284,"./utils/ObjectRenderer":286,"./utils/RenderTarget":288,"./utils/mapWebGLDrawModesToPixi":291,"./utils/validateContext":292,"pixi-gl-core":208}],277:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -36345,7 +36326,7 @@ var WebGLState = function () {
 
 exports.default = WebGLState;
 
-},{"./utils/mapWebGLBlendModesToPixi":292}],280:[function(require,module,exports){
+},{"./utils/mapWebGLBlendModesToPixi":290}],278:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -36541,7 +36522,7 @@ var Filter = function () {
 
 exports.default = Filter;
 
-},{"../../../const":240,"../../../settings":295,"../../../utils":319,"./extractUniformsFromSrc":281}],281:[function(require,module,exports){
+},{"../../../const":238,"../../../settings":293,"../../../utils":317,"./extractUniformsFromSrc":279}],279:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -36603,7 +36584,7 @@ function extractUniformsFromString(string) {
     return uniforms;
 }
 
-},{"pixi-gl-core":210}],282:[function(require,module,exports){
+},{"pixi-gl-core":208}],280:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -36663,7 +36644,7 @@ function calculateSpriteMatrix(outputMatrix, filterArea, textureSize, sprite) {
     return mappedMatrix;
 }
 
-},{"../../../math":264}],283:[function(require,module,exports){
+},{"../../../math":262}],281:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -36751,7 +36732,7 @@ var SpriteMaskFilter = function (_Filter) {
 
 exports.default = SpriteMaskFilter;
 
-},{"../../../../math":264,"../../../../textures/TextureMatrix":310,"../Filter":280,"path":191}],284:[function(require,module,exports){
+},{"../../../../math":262,"../../../../textures/TextureMatrix":308,"../Filter":278,"path":408}],282:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -36796,20 +36777,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @ignore
  * @class
  */
-var FilterState =
-/**
- *
- */
-function FilterState() {
-    _classCallCheck(this, FilterState);
+var FilterState = function () {
+    /**
+     *
+     */
+    function FilterState() {
+        _classCallCheck(this, FilterState);
 
-    this.renderTarget = null;
-    this.sourceFrame = new _math.Rectangle();
-    this.destinationFrame = new _math.Rectangle();
-    this.filters = [];
-    this.target = null;
-    this.resolution = 1;
-};
+        this.renderTarget = null;
+        this.target = null;
+        this.resolution = 1;
+
+        // those three objects are used only for root
+        // re-assigned for everything else
+        this.sourceFrame = new _math.Rectangle();
+        this.destinationFrame = new _math.Rectangle();
+        this.filters = [];
+    }
+
+    /**
+     * clears the state
+     */
+
+
+    FilterState.prototype.clear = function clear() {
+        this.filters = null;
+        this.target = null;
+        this.renderTarget = null;
+    };
+
+    return FilterState;
+}();
 
 var screenKey = 'screen';
 
@@ -36981,6 +36979,7 @@ var FilterManager = function (_WebGLManager) {
             this.freePotRenderTarget(flop);
         }
 
+        currentState.clear();
         filterData.index--;
 
         if (filterData.index === 0) {
@@ -37320,6 +37319,7 @@ var FilterManager = function (_WebGLManager) {
         renderTarget.resolution = resolution;
         renderTarget.defaultFrame.width = renderTarget.size.width = minWidth / resolution;
         renderTarget.defaultFrame.height = renderTarget.size.height = minHeight / resolution;
+        renderTarget.filterPoolKey = key;
 
         return renderTarget;
     };
@@ -37352,16 +37352,7 @@ var FilterManager = function (_WebGLManager) {
 
 
     FilterManager.prototype.freePotRenderTarget = function freePotRenderTarget(renderTarget) {
-        var minWidth = renderTarget.size.width * renderTarget.resolution;
-        var minHeight = renderTarget.size.height * renderTarget.resolution;
-
-        var key = screenKey;
-
-        if (minWidth !== this._screenWidth || minHeight !== this._screenHeight) {
-            key = (minWidth & 0xFFFF) << 16 | minHeight & 0xFFFF;
-        }
-
-        this.pool[key].push(renderTarget);
+        this.pool[renderTarget.filterPoolKey].push(renderTarget);
     };
 
     /**
@@ -37391,7 +37382,7 @@ var FilterManager = function (_WebGLManager) {
 
 exports.default = FilterManager;
 
-},{"../../../Shader":238,"../../../math":264,"../filters/filterTransforms":282,"../utils/Quad":289,"../utils/RenderTarget":290,"./WebGLManager":287,"bit-twiddle":3}],285:[function(require,module,exports){
+},{"../../../Shader":236,"../../../math":262,"../filters/filterTransforms":280,"../utils/Quad":287,"../utils/RenderTarget":288,"./WebGLManager":285,"bit-twiddle":3}],283:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -37601,7 +37592,7 @@ var MaskManager = function (_WebGLManager) {
 
 exports.default = MaskManager;
 
-},{"../filters/spriteMask/SpriteMaskFilter":283,"./WebGLManager":287}],286:[function(require,module,exports){
+},{"../filters/spriteMask/SpriteMaskFilter":281,"./WebGLManager":285}],284:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -37754,7 +37745,7 @@ var StencilManager = function (_WebGLManager) {
 
 exports.default = StencilManager;
 
-},{"./WebGLManager":287}],287:[function(require,module,exports){
+},{"./WebGLManager":285}],285:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -37809,7 +37800,7 @@ var WebGLManager = function () {
 
 exports.default = WebGLManager;
 
-},{}],288:[function(require,module,exports){
+},{}],286:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -37887,7 +37878,7 @@ var ObjectRenderer = function (_WebGLManager) {
 
 exports.default = ObjectRenderer;
 
-},{"../managers/WebGLManager":287}],289:[function(require,module,exports){
+},{"../managers/WebGLManager":285}],287:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -38068,7 +38059,7 @@ var Quad = function () {
 
 exports.default = Quad;
 
-},{"../../../utils/createIndicesForQuads":317,"pixi-gl-core":210}],290:[function(require,module,exports){
+},{"../../../utils/createIndicesForQuads":315,"pixi-gl-core":208}],288:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -38200,6 +38191,13 @@ var RenderTarget = function () {
      * @member {object[]}
      */
     this.filterData = null;
+
+    /**
+     * The key for pooled texture of FilterSystem
+     * @private
+     * @member {string}
+     */
+    this.filterPoolKey = '';
 
     /**
      * The scale mode.
@@ -38395,7 +38393,7 @@ var RenderTarget = function () {
 
 exports.default = RenderTarget;
 
-},{"../../../const":240,"../../../math":264,"../../../settings":295,"pixi-gl-core":210}],291:[function(require,module,exports){
+},{"../../../const":238,"../../../math":262,"../../../settings":293,"pixi-gl-core":208}],289:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -38470,7 +38468,7 @@ function generateIfTestSrc(maxIfs) {
     return src;
 }
 
-},{"pixi-gl-core":210}],292:[function(require,module,exports){
+},{"pixi-gl-core":208}],290:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -38519,7 +38517,7 @@ function mapWebGLBlendModesToPixi(gl) {
     return array;
 }
 
-},{"../../../const":240}],293:[function(require,module,exports){
+},{"../../../const":238}],291:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -38551,7 +38549,7 @@ function mapWebGLDrawModesToPixi(gl) {
   return object;
 }
 
-},{"../../../const":240}],294:[function(require,module,exports){
+},{"../../../const":238}],292:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -38567,7 +38565,7 @@ function validateContext(gl) {
     }
 }
 
-},{}],295:[function(require,module,exports){
+},{}],293:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -38812,7 +38810,7 @@ exports.default = {
   MESH_CANVAS_PADDING: 0
 };
 
-},{"./utils/canUploadSameBuffer":316,"./utils/maxRecommendedTextures":321}],296:[function(require,module,exports){
+},{"./utils/canUploadSameBuffer":314,"./utils/maxRecommendedTextures":319}],294:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -39435,7 +39433,7 @@ var Sprite = function (_Container) {
 
 exports.default = Sprite;
 
-},{"../const":240,"../display/Container":242,"../math":264,"../textures/Texture":309,"../utils":319}],297:[function(require,module,exports){
+},{"../const":238,"../display/Container":240,"../math":262,"../textures/Texture":307,"../utils":317}],295:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -39588,7 +39586,7 @@ exports.default = CanvasSpriteRenderer;
 
 _CanvasRenderer2.default.registerPlugin('sprite', CanvasSpriteRenderer);
 
-},{"../../const":240,"../../math":264,"../../renderers/canvas/CanvasRenderer":271,"./CanvasTinter":298}],298:[function(require,module,exports){
+},{"../../const":238,"../../math":262,"../../renderers/canvas/CanvasRenderer":269,"./CanvasTinter":296}],296:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -39839,7 +39837,7 @@ CanvasTinter.tintMethod = CanvasTinter.canUseMultiply ? CanvasTinter.tintWithMul
 
 exports.default = CanvasTinter;
 
-},{"../../renderers/canvas/utils/canUseNewCanvasBlendModes":274,"../../utils":319}],299:[function(require,module,exports){
+},{"../../renderers/canvas/utils/canUseNewCanvasBlendModes":272,"../../utils":317}],297:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -39892,7 +39890,7 @@ var Buffer = function () {
 
 exports.default = Buffer;
 
-},{}],300:[function(require,module,exports){
+},{}],298:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -40185,6 +40183,8 @@ var SpriteRenderer = function (_ObjectRenderer) {
             // they have all ready been calculated so we just need to push them into the buffer.
             var sprite = sprites[i];
 
+            sprites[i] = null;
+
             nextTexture = sprite._texture.baseTexture;
 
             var spriteBlendMode = _utils.premultiplyBlendMode[Number(nextTexture.premultipliedAlpha)][sprite.blendMode];
@@ -40443,7 +40443,7 @@ exports.default = SpriteRenderer;
 
 _WebGLRenderer2.default.registerPlugin('sprite', SpriteRenderer);
 
-},{"../../renderers/webgl/WebGLRenderer":278,"../../renderers/webgl/utils/ObjectRenderer":288,"../../renderers/webgl/utils/checkMaxIfStatmentsInShader":291,"../../settings":295,"../../utils":319,"../../utils/createIndicesForQuads":317,"./BatchBuffer":299,"./generateMultiTextureShader":301,"bit-twiddle":3,"pixi-gl-core":210}],301:[function(require,module,exports){
+},{"../../renderers/webgl/WebGLRenderer":276,"../../renderers/webgl/utils/ObjectRenderer":286,"../../renderers/webgl/utils/checkMaxIfStatmentsInShader":289,"../../settings":293,"../../utils":317,"../../utils/createIndicesForQuads":315,"./BatchBuffer":297,"./generateMultiTextureShader":299,"bit-twiddle":3,"pixi-gl-core":208}],299:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -40506,7 +40506,7 @@ function generateSampleSrc(maxTextures) {
     return src;
 }
 
-},{"../../Shader":238,"path":191}],302:[function(require,module,exports){
+},{"../../Shader":236,"path":408}],300:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -41161,7 +41161,7 @@ var Text = function (_Sprite) {
 
 exports.default = Text;
 
-},{"../const":240,"../math":264,"../settings":295,"../sprites/Sprite":296,"../textures/Texture":309,"../utils":319,"../utils/trimCanvas":324,"./TextMetrics":303,"./TextStyle":304}],303:[function(require,module,exports){
+},{"../const":238,"../math":262,"../settings":293,"../sprites/Sprite":294,"../textures/Texture":307,"../utils":317,"../utils/trimCanvas":322,"./TextMetrics":301,"./TextStyle":302}],301:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -41270,54 +41270,116 @@ var TextMetrics = function () {
 
         var context = canvas.getContext('2d');
 
-        var line = '';
         var width = 0;
+        var line = '';
         var lines = '';
-        var cache = {};
-        var ls = style.letterSpacing;
 
-        // ideally there is letterSpacing after every char except the last one
+        var cache = {};
+        var letterSpacing = style.letterSpacing,
+            whiteSpace = style.whiteSpace;
+
+        // How to handle whitespaces
+
+        var collapseSpaces = TextMetrics.collapseSpaces(whiteSpace);
+        var collapseNewlines = TextMetrics.collapseNewlines(whiteSpace);
+
+        // whether or not spaces may be added to the beginning of lines
+        var canPrependSpaces = !collapseSpaces;
+
+        // There is letterSpacing after every char except the last one
         // t_h_i_s_' '_i_s_' '_a_n_' '_e_x_a_m_p_l_e_' '_!
-        // so for convenience the above needs to be compared to width + 1 extra space
+        // so for convenience the above needs to be compared to width + 1 extra letterSpace
         // t_h_i_s_' '_i_s_' '_a_n_' '_e_x_a_m_p_l_e_' '_!_
         // ________________________________________________
         // And then the final space is simply no appended to each line
-        var wordWrapWidth = style.wordWrapWidth + style.letterSpacing;
+        var wordWrapWidth = style.wordWrapWidth + letterSpacing;
 
-        // get the width of a space and add it to cache
-        var spaceWidth = TextMetrics.getFromCache(' ', ls, cache, context);
+        // break text into words, spaces and newline chars
+        var tokens = TextMetrics.tokenize(text);
 
-        // break text into words
-        var words = text.split(' ');
+        for (var i = 0; i < tokens.length; i++) {
+            // get the word, space or newlineChar
+            var token = tokens[i];
 
-        for (var i = 0; i < words.length; i++) {
-            var word = words[i];
+            // if word is a new line
+            if (TextMetrics.isNewline(token)) {
+                // keep the new line
+                if (!collapseNewlines) {
+                    lines += TextMetrics.addLine(line);
+                    canPrependSpaces = !collapseSpaces;
+                    line = '';
+                    width = 0;
+                    continue;
+                }
+
+                // if we should collapse new lines
+                // we simply convert it into a space
+                token = ' ';
+            }
+
+            // if we should collapse repeated whitespaces
+            if (collapseSpaces) {
+                // check both this and the last tokens for spaces
+                var currIsBreakingSpace = TextMetrics.isBreakingSpace(token);
+                var lastIsBreakingSpace = TextMetrics.isBreakingSpace(line[line.length - 1]);
+
+                if (currIsBreakingSpace && lastIsBreakingSpace) {
+                    continue;
+                }
+            }
 
             // get word width from cache if possible
-            var wordWidth = TextMetrics.getFromCache(word, ls, cache, context);
+            var tokenWidth = TextMetrics.getFromCache(token, letterSpacing, cache, context);
 
             // word is longer than desired bounds
-            if (wordWidth > wordWrapWidth) {
-                // break large word over multiple lines
-                if (style.breakWords) {
-                    // add a space to the start of the word unless its at the beginning of the line
-                    var tmpWord = line.length > 0 ? ' ' + word : word;
+            if (tokenWidth > wordWrapWidth) {
+                // if we are not already at the beginning of a line
+                if (line !== '') {
+                    // start newlines for overflow words
+                    lines += TextMetrics.addLine(line);
+                    line = '';
+                    width = 0;
+                }
 
+                // break large word over multiple lines
+                if (TextMetrics.canBreakWords(token, style.breakWords)) {
                     // break word into characters
-                    var characters = tmpWord.split('');
+                    var characters = token.split('');
 
                     // loop the characters
                     for (var j = 0; j < characters.length; j++) {
-                        var character = characters[j];
-                        var characterWidth = TextMetrics.getFromCache(character, ls, cache, context);
+                        var char = characters[j];
+
+                        var k = 1;
+                        // we are not at the end of the token
+
+                        while (characters[j + k]) {
+                            var nextChar = characters[j + k];
+                            var lastChar = char[char.length - 1];
+
+                            // should not split chars
+                            if (!TextMetrics.canBreakChars(lastChar, nextChar, token, j, style.breakWords)) {
+                                // combine chars & move forward one
+                                char += nextChar;
+                            } else {
+                                break;
+                            }
+
+                            k++;
+                        }
+
+                        j += char.length - 1;
+
+                        var characterWidth = TextMetrics.getFromCache(char, letterSpacing, cache, context);
 
                         if (characterWidth + width > wordWrapWidth) {
                             lines += TextMetrics.addLine(line);
+                            canPrependSpaces = false;
                             line = '';
                             width = 0;
                         }
 
-                        line += character;
+                        line += char;
                         width += characterWidth;
                     }
                 }
@@ -41333,7 +41395,8 @@ var TextMetrics = function () {
                         }
 
                         // give it its own line
-                        lines += TextMetrics.addLine(word);
+                        lines += TextMetrics.addLine(token);
+                        canPrependSpaces = false;
                         line = '';
                         width = 0;
                     }
@@ -41341,23 +41404,28 @@ var TextMetrics = function () {
 
             // word could fit
             else {
-                    // word won't fit, start a new line
-                    if (wordWidth + width > wordWrapWidth) {
+                    // word won't fit because of existing words
+                    // start a new line
+                    if (tokenWidth + width > wordWrapWidth) {
+                        // if its a space we don't want it
+                        canPrependSpaces = false;
+
+                        // add a new line
                         lines += TextMetrics.addLine(line);
+
+                        // start a new line
                         line = '';
                         width = 0;
                     }
 
-                    // add the word to the current line
-                    if (line.length > 0) {
-                        // add a space if it is not the beginning
-                        line += ' ' + word;
-                    } else {
-                        // add without a space if it is the beginning
-                        line += word;
-                    }
+                    // don't add spaces to the beginning of lines
+                    if (line.length > 0 || !TextMetrics.isBreakingSpace(token) || canPrependSpaces) {
+                        // add the word to the current line
+                        line += token;
 
-                    width += wordWidth + spaceWidth;
+                        // update width counter
+                        width += tokenWidth;
+                    }
                 }
         }
 
@@ -41367,17 +41435,20 @@ var TextMetrics = function () {
     };
 
     /**
-     *  Convienience function for logging each line added
-     *  during the wordWrap method
+     * Convienience function for logging each line added during the wordWrap
+     * method
      *
-     * @param  {string}   line    - The line of text to add
-     * @param  {boolean}  newLine - Add new line character to end
+     * @private
+     * @param  {string}   line        - The line of text to add
+     * @param  {boolean}  newLine     - Add new line character to end
      * @return {string}   A formatted line
      */
 
 
     TextMetrics.addLine = function addLine(line) {
         var newLine = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+        line = TextMetrics.trimRight(line);
 
         line = newLine ? line + '\n' : line;
 
@@ -41387,6 +41458,7 @@ var TextMetrics = function () {
     /**
      * Gets & sets the widths of calculated characters in a cache object
      *
+     * @private
      * @param  {string}                    key            The key
      * @param  {number}                    letterSpacing  The letter spacing
      * @param  {object}                    cache          The cache
@@ -41406,6 +41478,173 @@ var TextMetrics = function () {
         }
 
         return width;
+    };
+
+    /**
+     * Determines whether we should collapse breaking spaces
+     *
+     * @private
+     * @param  {string}   whiteSpace  The TextStyle property whiteSpace
+     * @return {boolean}  should collapse
+     */
+
+
+    TextMetrics.collapseSpaces = function collapseSpaces(whiteSpace) {
+        return whiteSpace === 'normal' || whiteSpace === 'pre-line';
+    };
+
+    /**
+     * Determines whether we should collapse newLine chars
+     *
+     * @private
+     * @param  {string}   whiteSpace  The white space
+     * @return {boolean}  should collapse
+     */
+
+
+    TextMetrics.collapseNewlines = function collapseNewlines(whiteSpace) {
+        return whiteSpace === 'normal';
+    };
+
+    /**
+     * trims breaking whitespaces from string
+     *
+     * @private
+     * @param  {string}  text  The text
+     * @return {string}  trimmed string
+     */
+
+
+    TextMetrics.trimRight = function trimRight(text) {
+        if (typeof text !== 'string') {
+            return '';
+        }
+
+        for (var i = text.length - 1; i >= 0; i--) {
+            var char = text[i];
+
+            if (!TextMetrics.isBreakingSpace(char)) {
+                break;
+            }
+
+            text = text.slice(0, -1);
+        }
+
+        return text;
+    };
+
+    /**
+     * Determines if char is a newline.
+     *
+     * @private
+     * @param  {string}  char  The character
+     * @return {boolean}  True if newline, False otherwise.
+     */
+
+
+    TextMetrics.isNewline = function isNewline(char) {
+        if (typeof char !== 'string') {
+            return false;
+        }
+
+        return TextMetrics._newlines.indexOf(char.charCodeAt(0)) >= 0;
+    };
+
+    /**
+     * Determines if char is a breaking whitespace.
+     *
+     * @private
+     * @param  {string}  char  The character
+     * @return {boolean}  True if whitespace, False otherwise.
+     */
+
+
+    TextMetrics.isBreakingSpace = function isBreakingSpace(char) {
+        if (typeof char !== 'string') {
+            return false;
+        }
+
+        return TextMetrics._breakingSpaces.indexOf(char.charCodeAt(0)) >= 0;
+    };
+
+    /**
+     * Splits a string into words, breaking-spaces and newLine characters
+     *
+     * @private
+     * @param  {string}  text       The text
+     * @return {array}  A tokenized array
+     */
+
+
+    TextMetrics.tokenize = function tokenize(text) {
+        var tokens = [];
+        var token = '';
+
+        if (typeof text !== 'string') {
+            return tokens;
+        }
+
+        for (var i = 0; i < text.length; i++) {
+            var char = text[i];
+
+            if (TextMetrics.isBreakingSpace(char) || TextMetrics.isNewline(char)) {
+                if (token !== '') {
+                    tokens.push(token);
+                    token = '';
+                }
+
+                tokens.push(char);
+
+                continue;
+            }
+
+            token += char;
+        }
+
+        if (token !== '') {
+            tokens.push(token);
+        }
+
+        return tokens;
+    };
+
+    /**
+     * This method exists to be easily overridden
+     * It allows one to customise which words should break
+     * Examples are if the token is CJK or numbers.
+     * It must return a boolean.
+     *
+     * @private
+     * @param  {string}  token       The token
+     * @param  {boolean}  breakWords  The style attr break words
+     * @return {boolean} whether to break word or not
+     */
+
+
+    TextMetrics.canBreakWords = function canBreakWords(token, breakWords) {
+        return breakWords;
+    };
+
+    /**
+     * This method exists to be easily overridden
+     * It allows one to determine whether a pair of characters
+     * should be broken by newlines
+     * For example certain characters in CJK langs or numbers.
+     * It must return a boolean.
+     *
+     * @private
+     * @param  {string}  char      The character
+     * @param  {string}  nextChar  The next character
+     * @param  {string}  token     The token/word the characters are from
+     * @param  {number}  index     The index in the token of the char
+     * @param  {boolean}  breakWords  The style attr break words
+     * @return {boolean} whether to break word or not
+     */
+
+
+    TextMetrics.canBreakChars = function canBreakChars(char, nextChar, token, index, breakWords) // eslint-disable-line no-unused-vars
+    {
+        return true;
     };
 
     /**
@@ -41430,11 +41669,12 @@ var TextMetrics = function () {
 
         context.font = font;
 
-        var width = Math.ceil(context.measureText('|MÉq').width);
-        var baseline = Math.ceil(context.measureText('M').width);
+        var metricsString = TextMetrics.METRICS_STRING + TextMetrics.BASELINE_SYMBOL;
+        var width = Math.ceil(context.measureText(metricsString).width);
+        var baseline = Math.ceil(context.measureText(TextMetrics.BASELINE_SYMBOL).width);
         var height = 2 * baseline;
 
-        baseline = baseline * 1.4 | 0;
+        baseline = baseline * TextMetrics.BASELINE_MULTIPLIER | 0;
 
         canvas.width = width;
         canvas.height = height;
@@ -41446,7 +41686,7 @@ var TextMetrics = function () {
 
         context.textBaseline = 'alphabetic';
         context.fillStyle = '#000';
-        context.fillText('|MÉq', 0, baseline);
+        context.fillText(metricsString, 0, baseline);
 
         var imagedata = context.getImageData(0, 0, width, height).data;
         var pixels = imagedata.length;
@@ -41500,6 +41740,24 @@ var TextMetrics = function () {
         return properties;
     };
 
+    /**
+     * Clear font metrics in metrics cache.
+     *
+     * @static
+     * @param {string} [font] - font name. If font name not set then clear cache for all fonts.
+     */
+
+
+    TextMetrics.clearMetrics = function clearMetrics() {
+        var font = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+        if (font) {
+            delete TextMetrics._fonts[font];
+        } else {
+            TextMetrics._fonts = {};
+        }
+    };
+
     return TextMetrics;
 }();
 
@@ -41541,7 +41799,67 @@ TextMetrics._context = canvas.getContext('2d');
  */
 TextMetrics._fonts = {};
 
-},{}],304:[function(require,module,exports){
+/**
+ * String used for calculate font metrics.
+ * @static
+ * @memberof PIXI.TextMetrics
+ * @name METRICS_STRING
+ * @type {string}
+ * @default |Éq
+ */
+TextMetrics.METRICS_STRING = '|Éq';
+
+/**
+ * Baseline symbol for calculate font metrics.
+ * @static
+ * @memberof PIXI.TextMetrics
+ * @name BASELINE_SYMBOL
+ * @type {string}
+ * @default M
+ */
+TextMetrics.BASELINE_SYMBOL = 'M';
+
+/**
+ * Baseline multiplier for calculate font metrics.
+ * @static
+ * @memberof PIXI.TextMetrics
+ * @name BASELINE_MULTIPLIER
+ * @type {number}
+ * @default 1.4
+ */
+TextMetrics.BASELINE_MULTIPLIER = 1.4;
+
+/**
+ * Cache of new line chars.
+ * @memberof PIXI.TextMetrics
+ * @type {number[]}
+ * @private
+ */
+TextMetrics._newlines = [0x000A, // line feed
+0x000D];
+
+/**
+ * Cache of breaking spaces.
+ * @memberof PIXI.TextMetrics
+ * @type {number[]}
+ * @private
+ */
+TextMetrics._breakingSpaces = [0x0009, // character tabulation
+0x0020, // space
+0x2000, // en quad
+0x2001, // em quad
+0x2002, // en space
+0x2003, // em space
+0x2004, // three-per-em space
+0x2005, // four-per-em space
+0x2006, // six-per-em space
+0x2008, // punctuation space
+0x2009, // thin space
+0x200A, // hair space
+0x205F, // medium mathematical space
+0x3000];
+
+},{}],302:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -41581,6 +41899,7 @@ var defaultStyle = {
     strokeThickness: 0,
     textBaseline: 'alphabetic',
     trim: false,
+    whiteSpace: 'pre',
     wordWrap: false,
     wordWrapWidth: 100,
     leading: 0
@@ -41638,6 +41957,8 @@ var TextStyle = function () {
      *  Default is 0 (no stroke)
      * @param {boolean} [style.trim=false] - Trim transparent borders
      * @param {string} [style.textBaseline='alphabetic'] - The baseline of the text that is rendered.
+     * @param {boolean} [style.whiteSpace='pre'] - Determines whether newlines & spaces are collapsed or preserved "normal"
+     *      (collapse, collapse), "pre" (preserve, preserve) | "pre-line" (preserve, collapse). It needs wordWrap to be set to true
      * @param {boolean} [style.wordWrap=false] - Indicates if word wrap should be used
      * @param {number} [style.wordWrapWidth=100] - The width at which text will wrap, it needs wordWrap to be set to true
      */
@@ -42219,6 +42540,32 @@ var TextStyle = function () {
         }
 
         /**
+         * How newlines and spaces should be handled.
+         * Default is 'pre' (preserve, preserve).
+         *
+         *  value       | New lines     |   Spaces
+         *  ---         | ---           |   ---
+         * 'normal'     | Collapse      |   Collapse
+         * 'pre'        | Preserve      |   Preserve
+         * 'pre-line'   | Preserve      |   Collapse
+         *
+         * @member {string}
+         */
+
+    }, {
+        key: 'whiteSpace',
+        get: function get() {
+            return this._whiteSpace;
+        },
+        set: function set(whiteSpace) // eslint-disable-line require-jsdoc
+        {
+            if (this._whiteSpace !== whiteSpace) {
+                this._whiteSpace = whiteSpace;
+                this.styleID++;
+            }
+        }
+
+        /**
          * Indicates if word wrap should be used
          *
          * @member {boolean}
@@ -42343,7 +42690,7 @@ function deepCopyProperties(target, source, propertyObj) {
     }
 }
 
-},{"../const":240,"../utils":319}],305:[function(require,module,exports){
+},{"../const":238,"../utils":317}],303:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -42505,7 +42852,7 @@ var BaseRenderTexture = function (_BaseTexture) {
 
 exports.default = BaseRenderTexture;
 
-},{"../settings":295,"./BaseTexture":306}],306:[function(require,module,exports){
+},{"../settings":293,"./BaseTexture":304}],304:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -43351,7 +43698,7 @@ var BaseTexture = function (_EventEmitter) {
 
 exports.default = BaseTexture;
 
-},{"../settings":295,"../utils":319,"../utils/determineCrossOrigin":318,"bit-twiddle":3,"eventemitter3":384}],307:[function(require,module,exports){
+},{"../settings":293,"../utils":317,"../utils/determineCrossOrigin":316,"bit-twiddle":3,"eventemitter3":382}],305:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -43505,7 +43852,7 @@ var RenderTexture = function (_Texture) {
 
 exports.default = RenderTexture;
 
-},{"./BaseRenderTexture":305,"./Texture":309}],308:[function(require,module,exports){
+},{"./BaseRenderTexture":303,"./Texture":307}],306:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -43770,7 +44117,7 @@ var Spritesheet = function () {
 
 exports.default = Spritesheet;
 
-},{"../":259,"../utils":319}],309:[function(require,module,exports){
+},{"../":257,"../utils":317}],307:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -44462,7 +44809,7 @@ Texture.WHITE = createWhiteTexture();
 removeAllHandlers(Texture.WHITE);
 removeAllHandlers(Texture.WHITE.baseTexture);
 
-},{"../math":264,"../settings":295,"../utils":319,"./BaseTexture":306,"./TextureUvs":311,"./VideoBaseTexture":312,"eventemitter3":384}],310:[function(require,module,exports){
+},{"../math":262,"../settings":293,"../utils":317,"./BaseTexture":304,"./TextureUvs":309,"./VideoBaseTexture":310,"eventemitter3":382}],308:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -44626,7 +44973,7 @@ var TextureMatrix = function () {
 
 exports.default = TextureMatrix;
 
-},{"../math/Matrix":261}],311:[function(require,module,exports){
+},{"../math/Matrix":259}],309:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -44731,7 +45078,7 @@ var TextureUvs = function () {
 
 exports.default = TextureUvs;
 
-},{"../math/GroupD8":260}],312:[function(require,module,exports){
+},{"../math/GroupD8":258}],310:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -45073,7 +45420,7 @@ function createSource(path, type) {
     return source;
 }
 
-},{"../const":240,"../ticker":315,"../utils":319,"../utils/determineCrossOrigin":318,"./BaseTexture":306}],313:[function(require,module,exports){
+},{"../const":238,"../ticker":313,"../utils":317,"../utils/determineCrossOrigin":316,"./BaseTexture":304}],311:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -45546,7 +45893,7 @@ var Ticker = function () {
 
 exports.default = Ticker;
 
-},{"../const":240,"../settings":295,"./TickerListener":314}],314:[function(require,module,exports){
+},{"../const":238,"../settings":293,"./TickerListener":312}],312:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -45706,7 +46053,7 @@ var TickerListener = function () {
         }
 
         // Redirect to the next item
-        var redirect = this.previous;
+        var redirect = this.next;
 
         // Remove references
         this.next = hard ? null : redirect;
@@ -45720,7 +46067,7 @@ var TickerListener = function () {
 
 exports.default = TickerListener;
 
-},{}],315:[function(require,module,exports){
+},{}],313:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -45800,7 +46147,7 @@ shared.destroy = function () {
 exports.shared = shared;
 exports.Ticker = _Ticker2.default;
 
-},{"./Ticker":313}],316:[function(require,module,exports){
+},{"./Ticker":311}],314:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -45814,7 +46161,7 @@ function canUploadSameBuffer() {
 	return !ios;
 }
 
-},{}],317:[function(require,module,exports){
+},{}],315:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -45848,7 +46195,7 @@ function createIndicesForQuads(size) {
     return indices;
 }
 
-},{}],318:[function(require,module,exports){
+},{}],316:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -45904,7 +46251,7 @@ function determineCrossOrigin(url) {
     return '';
 }
 
-},{"url":406}],319:[function(require,module,exports){
+},{"url":414}],317:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -46098,8 +46445,9 @@ function decomposeDataUri(dataUri) {
         return {
             mediaType: dataUriMatch[1] ? dataUriMatch[1].toLowerCase() : undefined,
             subType: dataUriMatch[2] ? dataUriMatch[2].toLowerCase() : undefined,
-            encoding: dataUriMatch[3] ? dataUriMatch[3].toLowerCase() : undefined,
-            data: dataUriMatch[4]
+            charset: dataUriMatch[3] ? dataUriMatch[3].toLowerCase() : undefined,
+            encoding: dataUriMatch[4] ? dataUriMatch[4].toLowerCase() : undefined,
+            data: dataUriMatch[5]
         };
     }
 
@@ -46386,7 +46734,7 @@ function premultiplyTintToRgba(tint, alpha, out, premultiply) {
     return out;
 }
 
-},{"../const":240,"../settings":295,"./mapPremultipliedBlendModes":320,"./mixin":322,"./pluginTarget":323,"earcut":5,"eventemitter3":384,"ismobilejs":187,"remove-array-items":390}],320:[function(require,module,exports){
+},{"../const":238,"../settings":293,"./mapPremultipliedBlendModes":318,"./mixin":320,"./pluginTarget":321,"earcut":4,"eventemitter3":382,"ismobilejs":186,"remove-array-items":383}],318:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -46429,7 +46777,7 @@ function mapPremultipliedBlendModes() {
     return array;
 }
 
-},{"../const":240}],321:[function(require,module,exports){
+},{"../const":238}],319:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -46451,7 +46799,7 @@ function maxRecommendedTextures(max) {
     return max;
 }
 
-},{"ismobilejs":187}],322:[function(require,module,exports){
+},{"ismobilejs":186}],320:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -46513,7 +46861,7 @@ function performMixins() {
     mixins.length = 0;
 }
 
-},{}],323:[function(require,module,exports){
+},{}],321:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -46579,7 +46927,7 @@ exports.default = {
     }
 };
 
-},{}],324:[function(require,module,exports){
+},{}],322:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -46655,7 +47003,7 @@ function trimCanvas(canvas) {
     };
 }
 
-},{}],325:[function(require,module,exports){
+},{}],323:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -47811,7 +48159,7 @@ function deprecation(core) {
     }
 }
 
-},{}],326:[function(require,module,exports){
+},{}],324:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -47991,7 +48339,7 @@ exports.default = CanvasExtract;
 
 core.CanvasRenderer.registerPlugin('extract', CanvasExtract);
 
-},{"../../core":259}],327:[function(require,module,exports){
+},{"../../core":257}],325:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -48016,7 +48364,7 @@ Object.defineProperty(exports, 'canvas', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./canvas/CanvasExtract":326,"./webgl/WebGLExtract":328}],328:[function(require,module,exports){
+},{"./canvas/CanvasExtract":324,"./webgl/WebGLExtract":326}],326:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -48251,7 +48599,7 @@ exports.default = WebGLExtract;
 
 core.WebGLRenderer.registerPlugin('extract', WebGLExtract);
 
-},{"../../core":259}],329:[function(require,module,exports){
+},{"../../core":257}],327:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -48660,7 +49008,7 @@ var AnimatedSprite = function (_core$Sprite) {
 
 exports.default = AnimatedSprite;
 
-},{"../core":259}],330:[function(require,module,exports){
+},{"../core":257}],328:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -48803,6 +49151,13 @@ var BitmapText = function (_core$Container) {
         _this._maxLineHeight = 0;
 
         /**
+         * Letter spacing. This is useful for setting the space between characters.
+         * @member {number}
+         * @private
+         */
+        _this._letterSpacing = 0;
+
+        /**
          * Text anchor. read-only
          *
          * @member {PIXI.ObservablePoint}
@@ -48836,44 +49191,33 @@ var BitmapText = function (_core$Container) {
         var pos = new core.Point();
         var chars = [];
         var lineWidths = [];
+        var text = this.text.replace(/(?:\r\n|\r)/g, '\n');
+        var textLength = text.length;
+        var maxWidth = this._maxWidth * data.size / this._font.size;
 
         var prevCharCode = null;
         var lastLineWidth = 0;
         var maxLineWidth = 0;
         var line = 0;
-        var lastSpace = -1;
-        var lastSpaceWidth = 0;
+        var lastBreakPos = -1;
+        var lastBreakWidth = 0;
         var spacesRemoved = 0;
         var maxLineHeight = 0;
 
-        for (var i = 0; i < this.text.length; i++) {
-            var charCode = this.text.charCodeAt(i);
+        for (var i = 0; i < textLength; i++) {
+            var charCode = text.charCodeAt(i);
+            var char = text.charAt(i);
 
-            if (/(\s)/.test(this.text.charAt(i))) {
-                lastSpace = i;
-                lastSpaceWidth = lastLineWidth;
+            if (/(?:\s)/.test(char)) {
+                lastBreakPos = i;
+                lastBreakWidth = lastLineWidth;
             }
 
-            if (/(?:\r\n|\r|\n)/.test(this.text.charAt(i))) {
+            if (char === '\r' || char === '\n') {
                 lineWidths.push(lastLineWidth);
                 maxLineWidth = Math.max(maxLineWidth, lastLineWidth);
-                line++;
-
-                pos.x = 0;
-                pos.y += data.lineHeight;
-                prevCharCode = null;
-                continue;
-            }
-
-            if (lastSpace !== -1 && this._maxWidth > 0 && pos.x * scale > this._maxWidth) {
-                core.utils.removeItems(chars, lastSpace - spacesRemoved, i - lastSpace);
-                i = lastSpace;
-                lastSpace = -1;
+                ++line;
                 ++spacesRemoved;
-
-                lineWidths.push(lastSpaceWidth);
-                maxLineWidth = Math.max(maxLineWidth, lastSpaceWidth);
-                line++;
 
                 pos.x = 0;
                 pos.y += data.lineHeight;
@@ -48895,16 +49239,39 @@ var BitmapText = function (_core$Container) {
                 texture: charData.texture,
                 line: line,
                 charCode: charCode,
-                position: new core.Point(pos.x + charData.xOffset, pos.y + charData.yOffset)
+                position: new core.Point(pos.x + charData.xOffset + this._letterSpacing / 2, pos.y + charData.yOffset)
             });
-            lastLineWidth = pos.x + (charData.texture.width + charData.xOffset);
-            pos.x += charData.xAdvance;
+            pos.x += charData.xAdvance + this._letterSpacing;
+            lastLineWidth = pos.x;
             maxLineHeight = Math.max(maxLineHeight, charData.yOffset + charData.texture.height);
             prevCharCode = charCode;
+
+            if (lastBreakPos !== -1 && maxWidth > 0 && pos.x > maxWidth) {
+                ++spacesRemoved;
+                core.utils.removeItems(chars, 1 + lastBreakPos - spacesRemoved, 1 + i - lastBreakPos);
+                i = lastBreakPos;
+                lastBreakPos = -1;
+
+                lineWidths.push(lastBreakWidth);
+                maxLineWidth = Math.max(maxLineWidth, lastBreakWidth);
+                line++;
+
+                pos.x = 0;
+                pos.y += data.lineHeight;
+                prevCharCode = null;
+            }
         }
 
-        lineWidths.push(lastLineWidth);
-        maxLineWidth = Math.max(maxLineWidth, lastLineWidth);
+        var lastChar = text.charAt(text.length - 1);
+
+        if (lastChar !== '\r' && lastChar !== '\n') {
+            if (/(?:\s)/.test(lastChar)) {
+                lastLineWidth = lastBreakWidth;
+            }
+
+            lineWidths.push(lastLineWidth);
+            maxLineWidth = Math.max(maxLineWidth, lastLineWidth);
+        }
 
         var lineAlignOffsets = [];
 
@@ -49012,10 +49379,10 @@ var BitmapText = function (_core$Container) {
      *
      * @static
      * @param {XMLDocument} xml - The XML document data.
-     * @param {PIXI.Texture} texture - Texture with all symbols.
+     * @param {PIXI.Texture|PIXI.Texture[]} textures - List of textures for each page.
      * @return {Object} Result font object with font, size, lineHeight and char fields.
      */
-    BitmapText.registerFont = function registerFont(xml, texture) {
+    BitmapText.registerFont = function registerFont(xml, textures) {
         var data = {};
         var info = xml.getElementsByTagName('info')[0];
         var common = xml.getElementsByTagName('common')[0];
@@ -49026,23 +49393,34 @@ var BitmapText = function (_core$Container) {
         data.size = parseInt(info.getAttribute('size'), 10);
         data.lineHeight = parseInt(common.getAttribute('lineHeight'), 10) / res;
         data.chars = {};
+        if (!(textures instanceof Array)) {
+            textures = [textures];
+        }
 
         // parse letters
         var letters = xml.getElementsByTagName('char');
+        var page = void 0;
 
         for (var i = 0; i < letters.length; i++) {
             var letter = letters[i];
             var charCode = parseInt(letter.getAttribute('id'), 10);
+            var textureRect = void 0;
 
-            var textureRect = new core.Rectangle(parseInt(letter.getAttribute('x'), 10) / res + texture.frame.x / res, parseInt(letter.getAttribute('y'), 10) / res + texture.frame.y / res, parseInt(letter.getAttribute('width'), 10) / res, parseInt(letter.getAttribute('height'), 10) / res);
+            page = parseInt(letter.getAttribute('page'), 10);
+            if (isNaN(page)) {
+                textureRect = new core.Rectangle(0, 0, 0, 0);
+                page = 0;
+            } else {
+                textureRect = new core.Rectangle(parseInt(letter.getAttribute('x'), 10) / res + textures[page].frame.x / res, parseInt(letter.getAttribute('y'), 10) / res + textures[page].frame.y / res, parseInt(letter.getAttribute('width'), 10) / res, parseInt(letter.getAttribute('height'), 10) / res);
+            }
 
             data.chars[charCode] = {
                 xOffset: parseInt(letter.getAttribute('xoffset'), 10) / res,
                 yOffset: parseInt(letter.getAttribute('yoffset'), 10) / res,
                 xAdvance: parseInt(letter.getAttribute('xadvance'), 10) / res,
                 kerning: {},
-                texture: new core.Texture(texture.baseTexture, textureRect)
-
+                texture: new core.Texture(textures[page].baseTexture, textureRect),
+                page: page
             };
         }
 
@@ -49227,6 +49605,25 @@ var BitmapText = function (_core$Container) {
         }
 
         /**
+         * Additional space between characters.
+         *
+         * @member {number}
+         */
+
+    }, {
+        key: 'letterSpacing',
+        get: function get() {
+            return this._letterSpacing;
+        },
+        set: function set(value) // eslint-disable-line require-jsdoc
+        {
+            if (this._letterSpacing !== value) {
+                this._letterSpacing = value;
+                this.dirty = true;
+            }
+        }
+
+        /**
          * The height of the overall text, different from fontSize,
          * which is defined in the style object
          *
@@ -49251,7 +49648,7 @@ exports.default = BitmapText;
 
 BitmapText.fonts = {};
 
-},{"../core":259,"../core/math/ObservablePoint":262,"../core/settings":295,"../core/utils":319}],331:[function(require,module,exports){
+},{"../core":257,"../core/math/ObservablePoint":260,"../core/settings":293,"../core/utils":317}],329:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -49498,7 +49895,7 @@ var TilingSprite = function (_core$Sprite) {
             this._bounds.minX = this._width * -this._anchor._x;
             this._bounds.minY = this._height * -this._anchor._y;
             this._bounds.maxX = this._width * (1 - this._anchor._x);
-            this._bounds.maxY = this._height * (1 - this._anchor._x);
+            this._bounds.maxY = this._height * (1 - this._anchor._y);
 
             if (!rect) {
                 if (!this._localBoundsRect) {
@@ -49697,7 +50094,7 @@ var TilingSprite = function (_core$Sprite) {
 
 exports.default = TilingSprite;
 
-},{"../core":259,"../core/sprites/canvas/CanvasTinter":298}],332:[function(require,module,exports){
+},{"../core":257,"../core/sprites/canvas/CanvasTinter":296}],330:[function(require,module,exports){
 'use strict';
 
 var _core = require('../core');
@@ -50101,7 +50498,7 @@ DisplayObject.prototype._cacheAsBitmapDestroy = function _cacheAsBitmapDestroy(o
     this.destroy(options);
 };
 
-},{"../core":259,"../core/textures/BaseTexture":306,"../core/textures/Texture":309,"../core/utils":319}],333:[function(require,module,exports){
+},{"../core":257,"../core/textures/BaseTexture":304,"../core/textures/Texture":307,"../core/utils":317}],331:[function(require,module,exports){
 'use strict';
 
 var _core = require('../core');
@@ -50136,7 +50533,7 @@ core.Container.prototype.getChildByName = function getChildByName(name) {
     return null;
 };
 
-},{"../core":259}],334:[function(require,module,exports){
+},{"../core":257}],332:[function(require,module,exports){
 'use strict';
 
 var _core = require('../core');
@@ -50170,7 +50567,7 @@ core.DisplayObject.prototype.getGlobalPosition = function getGlobalPosition() {
     return point;
 };
 
-},{"../core":259}],335:[function(require,module,exports){
+},{"../core":257}],333:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -50222,7 +50619,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // imported for side effect of extending the prototype only, contains no exports
 
-},{"./AnimatedSprite":329,"./BitmapText":330,"./TilingSprite":331,"./cacheAsBitmap":332,"./getChildByName":333,"./getGlobalPosition":334,"./webgl/TilingSpriteRenderer":336}],336:[function(require,module,exports){
+},{"./AnimatedSprite":327,"./BitmapText":328,"./TilingSprite":329,"./cacheAsBitmap":330,"./getChildByName":331,"./getGlobalPosition":332,"./webgl/TilingSpriteRenderer":334}],334:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -50384,7 +50781,7 @@ exports.default = TilingSpriteRenderer;
 
 core.WebGLRenderer.registerPlugin('tilingSprite', TilingSpriteRenderer);
 
-},{"../../core":259,"../../core/const":240,"path":191}],337:[function(require,module,exports){
+},{"../../core":257,"../../core/const":238,"path":408}],335:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -50468,7 +50865,7 @@ var AlphaFilter = function (_core$Filter) {
 
 exports.default = AlphaFilter;
 
-},{"../../core":259,"path":191}],338:[function(require,module,exports){
+},{"../../core":257,"path":408}],336:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -50642,7 +51039,7 @@ var BlurFilter = function (_core$Filter) {
 
 exports.default = BlurFilter;
 
-},{"../../core":259,"./BlurXFilter":339,"./BlurYFilter":340}],339:[function(require,module,exports){
+},{"../../core":257,"./BlurXFilter":337,"./BlurYFilter":338}],337:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -50808,7 +51205,7 @@ var BlurXFilter = function (_core$Filter) {
 
 exports.default = BlurXFilter;
 
-},{"../../core":259,"./generateBlurFragSource":341,"./generateBlurVertSource":342,"./getMaxBlurKernelSize":343}],340:[function(require,module,exports){
+},{"../../core":257,"./generateBlurFragSource":339,"./generateBlurVertSource":340,"./getMaxBlurKernelSize":341}],338:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -50973,7 +51370,7 @@ var BlurYFilter = function (_core$Filter) {
 
 exports.default = BlurYFilter;
 
-},{"../../core":259,"./generateBlurFragSource":341,"./generateBlurVertSource":342,"./getMaxBlurKernelSize":343}],341:[function(require,module,exports){
+},{"../../core":257,"./generateBlurFragSource":339,"./generateBlurVertSource":340,"./getMaxBlurKernelSize":341}],339:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -51020,7 +51417,7 @@ function generateFragBlurSource(kernelSize) {
     return fragSource;
 }
 
-},{}],342:[function(require,module,exports){
+},{}],340:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -51064,7 +51461,7 @@ function generateVertBlurSource(kernelSize, x) {
     return vertSource;
 }
 
-},{}],343:[function(require,module,exports){
+},{}],341:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -51080,7 +51477,7 @@ function getMaxKernelSize(gl) {
     return kernelSize;
 }
 
-},{}],344:[function(require,module,exports){
+},{}],342:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -51631,7 +52028,7 @@ var ColorMatrixFilter = function (_core$Filter) {
 exports.default = ColorMatrixFilter;
 ColorMatrixFilter.prototype.grayscale = ColorMatrixFilter.prototype.greyscale;
 
-},{"../../core":259,"path":191}],345:[function(require,module,exports){
+},{"../../core":257,"path":408}],343:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -51739,7 +52136,7 @@ var DisplacementFilter = function (_core$Filter) {
 
 exports.default = DisplacementFilter;
 
-},{"../../core":259,"path":191}],346:[function(require,module,exports){
+},{"../../core":257,"path":408}],344:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -51793,7 +52190,7 @@ var FXAAFilter = function (_core$Filter) {
 
 exports.default = FXAAFilter;
 
-},{"../../core":259,"path":191}],347:[function(require,module,exports){
+},{"../../core":257,"path":408}],345:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -51872,7 +52269,7 @@ Object.defineProperty(exports, 'AlphaFilter', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./alpha/AlphaFilter":337,"./blur/BlurFilter":338,"./blur/BlurXFilter":339,"./blur/BlurYFilter":340,"./colormatrix/ColorMatrixFilter":344,"./displacement/DisplacementFilter":345,"./fxaa/FXAAFilter":346,"./noise/NoiseFilter":348}],348:[function(require,module,exports){
+},{"./alpha/AlphaFilter":335,"./blur/BlurFilter":336,"./blur/BlurXFilter":337,"./blur/BlurYFilter":338,"./colormatrix/ColorMatrixFilter":342,"./displacement/DisplacementFilter":343,"./fxaa/FXAAFilter":344,"./noise/NoiseFilter":346}],346:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -51969,7 +52366,7 @@ var NoiseFilter = function (_core$Filter) {
 
 exports.default = NoiseFilter;
 
-},{"../../core":259,"path":191}],349:[function(require,module,exports){
+},{"../../core":257,"path":408}],347:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -52083,7 +52480,7 @@ if (typeof _deprecation2.default === 'function') {
 global.PIXI = exports; // eslint-disable-line
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./accessibility":236,"./core":259,"./deprecation":325,"./extract":327,"./extras":335,"./filters":347,"./interaction":354,"./loaders":357,"./mesh":366,"./particles":369,"./polyfill":376,"./prepare":380}],350:[function(require,module,exports){
+},{"./accessibility":234,"./core":257,"./deprecation":323,"./extract":325,"./extras":333,"./filters":345,"./interaction":352,"./loaders":355,"./mesh":364,"./particles":367,"./polyfill":374,"./prepare":378}],348:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -52306,7 +52703,7 @@ var InteractionData = function () {
 
 exports.default = InteractionData;
 
-},{"../core":259}],351:[function(require,module,exports){
+},{"../core":257}],349:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -52389,7 +52786,7 @@ var InteractionEvent = function () {
 
 exports.default = InteractionEvent;
 
-},{}],352:[function(require,module,exports){
+},{}],350:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -53708,6 +54105,9 @@ var InteractionManager = function (_EventEmitter) {
         var isTouch = data.pointerType === 'touch';
 
         var isMouse = data.pointerType === 'mouse' || data.pointerType === 'pen';
+        // need to track mouse down status in the mouse block so that we can emit
+        // event in a later block
+        var isMouseTap = false;
 
         // Mouse only
         if (isMouse) {
@@ -53724,6 +54124,8 @@ var InteractionManager = function (_EventEmitter) {
 
                 if (isDown) {
                     this.dispatchEvent(displayObject, isRightButton ? 'rightclick' : 'click', interactionEvent);
+                    // because we can confirm that the mousedown happened on this object, flag for later emit of pointertap
+                    isMouseTap = true;
                 }
             } else if (isDown) {
                 this.dispatchEvent(displayObject, isRightButton ? 'rightupoutside' : 'mouseupoutside', interactionEvent);
@@ -53744,7 +54146,10 @@ var InteractionManager = function (_EventEmitter) {
             if (isTouch) this.dispatchEvent(displayObject, 'touchend', interactionEvent);
 
             if (trackingData) {
-                this.dispatchEvent(displayObject, 'pointertap', interactionEvent);
+                // emit pointertap if not a mouse, or if the mouse block decided it was a tap
+                if (!isMouse || isMouseTap) {
+                    this.dispatchEvent(displayObject, 'pointertap', interactionEvent);
+                }
                 if (isTouch) {
                     this.dispatchEvent(displayObject, 'tap', interactionEvent);
                     // touches are no longer over (if they ever were) when we get the touchend
@@ -54160,7 +54565,7 @@ exports.default = InteractionManager;
 core.WebGLRenderer.registerPlugin('interaction', InteractionManager);
 core.CanvasRenderer.registerPlugin('interaction', InteractionManager);
 
-},{"../core":259,"./InteractionData":350,"./InteractionEvent":351,"./InteractionTrackingData":353,"./interactiveTarget":355,"eventemitter3":384}],353:[function(require,module,exports){
+},{"../core":257,"./InteractionData":348,"./InteractionEvent":349,"./InteractionTrackingData":351,"./interactiveTarget":353,"eventemitter3":382}],351:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -54336,7 +54741,7 @@ InteractionTrackingData.FLAGS = Object.freeze({
     RIGHT_DOWN: 1 << 2
 });
 
-},{}],354:[function(require,module,exports){
+},{}],352:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -54388,7 +54793,7 @@ Object.defineProperty(exports, 'InteractionEvent', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./InteractionData":350,"./InteractionEvent":351,"./InteractionManager":352,"./InteractionTrackingData":353,"./interactiveTarget":355}],355:[function(require,module,exports){
+},{"./InteractionData":348,"./InteractionEvent":349,"./InteractionManager":350,"./InteractionTrackingData":351,"./interactiveTarget":353}],353:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -54505,7 +54910,7 @@ exports.default = {
   _trackedPointers: undefined
 };
 
-},{}],356:[function(require,module,exports){
+},{}],354:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -54550,25 +54955,43 @@ exports.default = function () {
             xmlUrl += '/';
         }
 
-        var textureUrl = xmlUrl + resource.data.getElementsByTagName('page')[0].getAttribute('file');
+        var pages = resource.data.getElementsByTagName('page');
+        var textures = [];
+        var loadOptions = {
+            crossOrigin: resource.crossOrigin,
+            loadType: _resourceLoader.Resource.LOAD_TYPE.IMAGE,
+            metadata: resource.metadata.imageMetadata,
+            parentResource: resource
+        };
 
-        if (_core.utils.TextureCache[textureUrl]) {
-            // reuse existing texture
-            parse(resource, _core.utils.TextureCache[textureUrl]);
+        for (var x = 0; x < pages.length; ++x) {
+            var textureUrl = xmlUrl + pages[x].getAttribute('file');
+
+            if (_core.utils.TextureCache[textureUrl]) {
+                textures.push(_core.utils.TextureCache[textureUrl]);
+            } else {
+                // load the texture for the font
+                this.add(resource.name + '_image' + x, textureUrl, loadOptions, function () {
+                    var nextTextures = [];
+
+                    for (var _x = 0; _x < pages.length; ++_x) {
+                        var nextTextureUrl = xmlUrl + pages[_x].getAttribute('file');
+
+                        if (_core.utils.TextureCache[nextTextureUrl]) {
+                            nextTextures.push(_core.utils.TextureCache[nextTextureUrl]);
+                        } else {
+                            return;
+                        }
+                    }
+                    parse(resource, nextTextures);
+                    next();
+                });
+            }
+        }
+
+        if (textures.length === pages.length) {
+            parse(resource, textures);
             next();
-        } else {
-            var loadOptions = {
-                crossOrigin: resource.crossOrigin,
-                loadType: _resourceLoader.Resource.LOAD_TYPE.IMAGE,
-                metadata: resource.metadata.imageMetadata,
-                parentResource: resource
-            };
-
-            // load the texture for the font
-            this.add(resource.name + '_image', textureUrl, loadOptions, function (res) {
-                parse(resource, res.texture);
-                next();
-            });
         }
     };
 };
@@ -54591,13 +55014,13 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
  * @function parseBitmapFontData
  * @memberof PIXI.loaders
  * @param {PIXI.loaders.Resource} resource - Loader resource.
- * @param {PIXI.Texture} texture - Reference to texture.
+ * @param {PIXI.Texture|PIXI.Texture[]} textures - List of textures for each page.
  */
-function parse(resource, texture) {
-    resource.bitmapFont = _extras.BitmapText.registerFont(resource.data, texture);
+function parse(resource, textures) {
+    resource.bitmapFont = _extras.BitmapText.registerFont(resource.data, textures);
 }
 
-},{"../core":259,"../extras":335,"path":191,"resource-loader":395}],357:[function(require,module,exports){
+},{"../core":257,"../extras":333,"path":408,"resource-loader":388}],355:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -54717,15 +55140,15 @@ Object.defineProperty(AppPrototype, 'loader', {
 // Override the destroy function
 // making sure to destroy the current Loader
 AppPrototype._parentDestroy = AppPrototype.destroy;
-AppPrototype.destroy = function destroy(removeView) {
+AppPrototype.destroy = function destroy(removeView, stageOptions) {
     if (this._loader) {
         this._loader.destroy();
         this._loader = null;
     }
-    this._parentDestroy(removeView);
+    this._parentDestroy(removeView, stageOptions);
 };
 
-},{"../core/Application":237,"./bitmapFontParser":356,"./loader":358,"./spritesheetParser":359,"./textureParser":360,"resource-loader":395}],358:[function(require,module,exports){
+},{"../core/Application":235,"./bitmapFontParser":354,"./loader":356,"./spritesheetParser":357,"./textureParser":358,"resource-loader":388}],356:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -54896,7 +55319,7 @@ var Resource = _resourceLoader2.default.Resource;
 
 Resource.setExtensionXhrType('fnt', Resource.XHR_RESPONSE_TYPE.DOCUMENT);
 
-},{"./bitmapFontParser":356,"./spritesheetParser":359,"./textureParser":360,"eventemitter3":384,"resource-loader":395,"resource-loader/lib/middlewares/parsing/blob":396}],359:[function(require,module,exports){
+},{"./bitmapFontParser":354,"./spritesheetParser":357,"./textureParser":358,"eventemitter3":382,"resource-loader":388,"resource-loader/lib/middlewares/parsing/blob":389}],357:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -54960,7 +55383,7 @@ function getResourcePath(resource, baseUrl) {
     return _url2.default.resolve(resource.url.replace(baseUrl, ''), resource.data.meta.image);
 }
 
-},{"../core":259,"resource-loader":395,"url":406}],360:[function(require,module,exports){
+},{"../core":257,"resource-loader":388,"url":414}],358:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -54983,7 +55406,7 @@ var _Texture2 = _interopRequireDefault(_Texture);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"../core/textures/Texture":309,"resource-loader":395}],361:[function(require,module,exports){
+},{"../core/textures/Texture":307,"resource-loader":388}],359:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -55019,320 +55442,382 @@ var tempPolygon = new core.Polygon();
  */
 
 var Mesh = function (_core$Container) {
-  _inherits(Mesh, _core$Container);
-
-  /**
-   * @param {PIXI.Texture} texture - The texture to use
-   * @param {Float32Array} [vertices] - if you want to specify the vertices
-   * @param {Float32Array} [uvs] - if you want to specify the uvs
-   * @param {Uint16Array} [indices] - if you want to specify the indices
-   * @param {number} [drawMode] - the drawMode, can be any of the Mesh.DRAW_MODES consts
-   */
-  function Mesh(texture, vertices, uvs, indices, drawMode) {
-    _classCallCheck(this, Mesh);
+    _inherits(Mesh, _core$Container);
 
     /**
-     * The texture of the Mesh
+     * @param {PIXI.Texture} texture - The texture to use
+     * @param {Float32Array} [vertices] - if you want to specify the vertices
+     * @param {Float32Array} [uvs] - if you want to specify the uvs
+     * @param {Uint16Array} [indices] - if you want to specify the indices
+     * @param {number} [drawMode] - the drawMode, can be any of the Mesh.DRAW_MODES consts
+     */
+    function Mesh(texture, vertices, uvs, indices, drawMode) {
+        _classCallCheck(this, Mesh);
+
+        /**
+         * The texture of the Mesh
+         *
+         * @member {PIXI.Texture}
+         * @default PIXI.Texture.EMPTY
+         * @private
+         */
+        var _this = _possibleConstructorReturn(this, _core$Container.call(this));
+
+        _this._texture = texture || _Texture2.default.EMPTY;
+
+        /**
+         * The Uvs of the Mesh
+         *
+         * @member {Float32Array}
+         */
+        _this.uvs = uvs || new Float32Array([0, 0, 1, 0, 1, 1, 0, 1]);
+
+        /**
+         * An array of vertices
+         *
+         * @member {Float32Array}
+         */
+        _this.vertices = vertices || new Float32Array([0, 0, 100, 0, 100, 100, 0, 100]);
+
+        /**
+         * An array containing the indices of the vertices
+         *
+         * @member {Uint16Array}
+         */
+        //  TODO auto generate this based on draw mode!
+        _this.indices = indices || new Uint16Array([0, 1, 3, 2]);
+
+        /**
+         * Version of mesh uvs are dirty or not
+         *
+         * @member {number}
+         */
+        _this.dirty = 0;
+
+        /**
+         * Version of mesh indices
+         *
+         * @member {number}
+         */
+        _this.indexDirty = 0;
+
+        /**
+         * Version of mesh verticies array
+         *
+         * @member {number}
+         */
+        _this.vertexDirty = 0;
+
+        /**
+         * For backwards compatibility the default is to re-upload verticies each render call.
+         * Set this to `false` and increase `vertexDirty` to manually re-upload the buffer.
+         *
+         * @member {boolean}
+         */
+        _this.autoUpdate = true;
+
+        /**
+         * The blend mode to be applied to the sprite. Set to `PIXI.BLEND_MODES.NORMAL` to remove
+         * any blend mode.
+         *
+         * @member {number}
+         * @default PIXI.BLEND_MODES.NORMAL
+         * @see PIXI.BLEND_MODES
+         */
+        _this.blendMode = core.BLEND_MODES.NORMAL;
+
+        /**
+         * Triangles in canvas mode are automatically antialiased, use this value to force triangles
+         * to overlap a bit with each other.
+         *
+         * @member {number}
+         */
+        _this.canvasPadding = core.settings.MESH_CANVAS_PADDING;
+
+        /**
+         * The way the Mesh should be drawn, can be any of the {@link PIXI.mesh.Mesh.DRAW_MODES} consts
+         *
+         * @member {number}
+         * @see PIXI.mesh.Mesh.DRAW_MODES
+         */
+        _this.drawMode = drawMode || Mesh.DRAW_MODES.TRIANGLE_MESH;
+
+        /**
+         * The default shader that is used if a mesh doesn't have a more specific one.
+         *
+         * @member {PIXI.Shader}
+         */
+        _this.shader = null;
+
+        /**
+         * The tint applied to the mesh. This is a [r,g,b] value. A value of [1,1,1] will remove any
+         * tint effect.
+         *
+         * @member {number}
+         */
+        _this.tintRgb = new Float32Array([1, 1, 1]);
+
+        /**
+         * A map of renderer IDs to webgl render data
+         *
+         * @private
+         * @member {object<number, object>}
+         */
+        _this._glDatas = {};
+
+        /**
+         * transform that is applied to UV to get the texture coords
+         * its updated independently from texture uvTransform
+         * updates of uvs are tied to that thing
+         *
+         * @member {PIXI.TextureMatrix}
+         * @private
+         */
+        _this._uvTransform = new core.TextureMatrix(_this._texture);
+
+        /**
+         * whether or not upload uvTransform to shader
+         * if its false, then uvs should be pre-multiplied
+         * if you change it for generated mesh, please call 'refresh(true)'
+         * @member {boolean}
+         * @default false
+         */
+        _this.uploadUvTransform = false;
+
+        /**
+         * Plugin that is responsible for rendering this element.
+         * Allows to customize the rendering process without overriding '_renderWebGL' & '_renderCanvas' methods.
+         * @member {string}
+         * @default 'mesh'
+         */
+        _this.pluginName = 'mesh';
+        return _this;
+    }
+
+    /**
+     * Renders the object using the WebGL renderer
+     *
+     * @private
+     * @param {PIXI.WebGLRenderer} renderer - a reference to the WebGL renderer
+     */
+
+
+    Mesh.prototype._renderWebGL = function _renderWebGL(renderer) {
+        this.refresh();
+        renderer.setObjectRenderer(renderer.plugins[this.pluginName]);
+        renderer.plugins[this.pluginName].render(this);
+    };
+
+    /**
+     * Renders the object using the Canvas renderer
+     *
+     * @private
+     * @param {PIXI.CanvasRenderer} renderer - The canvas renderer.
+     */
+
+
+    Mesh.prototype._renderCanvas = function _renderCanvas(renderer) {
+        this.refresh();
+        renderer.plugins[this.pluginName].render(this);
+    };
+
+    /**
+     * When the texture is updated, this event will fire to update the scale and frame
+     *
+     * @private
+     */
+
+
+    Mesh.prototype._onTextureUpdate = function _onTextureUpdate() {
+        this._uvTransform.texture = this._texture;
+        this.refresh();
+    };
+
+    /**
+     * multiplies uvs only if uploadUvTransform is false
+     * call it after you change uvs manually
+     * make sure that texture is valid
+     */
+
+
+    Mesh.prototype.multiplyUvs = function multiplyUvs() {
+        if (!this.uploadUvTransform) {
+            this._uvTransform.multiplyUvs(this.uvs);
+        }
+    };
+
+    /**
+     * Refreshes uvs for generated meshes (rope, plane)
+     * sometimes refreshes vertices too
+     *
+     * @param {boolean} [forceUpdate=false] if true, matrices will be updated any case
+     */
+
+
+    Mesh.prototype.refresh = function refresh(forceUpdate) {
+        if (this.autoUpdate) {
+            this.vertexDirty++;
+        }
+        if (this._uvTransform.update(forceUpdate)) {
+            this._refresh();
+        }
+    };
+
+    /**
+     * re-calculates mesh coords
+     * @protected
+     */
+
+
+    Mesh.prototype._refresh = function _refresh() {}
+    /* empty */
+
+
+    /**
+     * Returns the bounds of the mesh as a rectangle. The bounds calculation takes the worldTransform into account.
+     *
+     */
+    ;
+
+    Mesh.prototype._calculateBounds = function _calculateBounds() {
+        // TODO - we can cache local bounds and use them if they are dirty (like graphics)
+        this._bounds.addVertices(this.transform, this.vertices, 0, this.vertices.length);
+    };
+
+    /**
+     * Tests if a point is inside this mesh. Works only for TRIANGLE_MESH
+     *
+     * @param {PIXI.Point} point - the point to test
+     * @return {boolean} the result of the test
+     */
+
+
+    Mesh.prototype.containsPoint = function containsPoint(point) {
+        if (!this.getBounds().contains(point.x, point.y)) {
+            return false;
+        }
+
+        this.worldTransform.applyInverse(point, tempPoint);
+
+        var vertices = this.vertices;
+        var points = tempPolygon.points;
+        var indices = this.indices;
+        var len = this.indices.length;
+        var step = this.drawMode === Mesh.DRAW_MODES.TRIANGLES ? 3 : 1;
+
+        for (var i = 0; i + 2 < len; i += step) {
+            var ind0 = indices[i] * 2;
+            var ind1 = indices[i + 1] * 2;
+            var ind2 = indices[i + 2] * 2;
+
+            points[0] = vertices[ind0];
+            points[1] = vertices[ind0 + 1];
+            points[2] = vertices[ind1];
+            points[3] = vertices[ind1 + 1];
+            points[4] = vertices[ind2];
+            points[5] = vertices[ind2 + 1];
+
+            if (tempPolygon.contains(tempPoint.x, tempPoint.y)) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    /**
+     * The texture that the mesh uses.
      *
      * @member {PIXI.Texture}
-     * @default PIXI.Texture.EMPTY
-     * @private
      */
-    var _this = _possibleConstructorReturn(this, _core$Container.call(this));
 
-    _this._texture = texture || _Texture2.default.EMPTY;
 
     /**
-     * The Uvs of the Mesh
+     * Destroys the Mesh object.
      *
-     * @member {Float32Array}
+     * @param {object|boolean} [options] - Options parameter. A boolean will act as if all
+     *  options have been set to that value
+     * @param {boolean} [options.children=false] - if set to true, all the children will have
+     *  their destroy method called as well. 'options' will be passed on to those calls.
+     * @param {boolean} [options.texture=false] - Only used for child Sprites if options.children is set to true
+     *  Should it destroy the texture of the child sprite
+     * @param {boolean} [options.baseTexture=false] - Only used for child Sprites if options.children is set to true
+     *  Should it destroy the base texture of the child sprite
      */
-    _this.uvs = uvs || new Float32Array([0, 0, 1, 0, 1, 1, 0, 1]);
+    Mesh.prototype.destroy = function destroy(options) {
+        // for each webgl data entry, destroy the WebGLGraphicsData
+        for (var id in this._glDatas) {
+            var data = this._glDatas[id];
 
-    /**
-     * An array of vertices
-     *
-     * @member {Float32Array}
-     */
-    _this.vertices = vertices || new Float32Array([0, 0, 100, 0, 100, 100, 0, 100]);
-
-    /**
-     * An array containing the indices of the vertices
-     *
-     * @member {Uint16Array}
-     */
-    //  TODO auto generate this based on draw mode!
-    _this.indices = indices || new Uint16Array([0, 1, 3, 2]);
-
-    /**
-     * Version of mesh uvs are dirty or not
-     *
-     * @member {number}
-     */
-    _this.dirty = 0;
-
-    /**
-     * Version of mesh indices
-     *
-     * @member {number}
-     */
-    _this.indexDirty = 0;
-
-    /**
-     * The blend mode to be applied to the sprite. Set to `PIXI.BLEND_MODES.NORMAL` to remove
-     * any blend mode.
-     *
-     * @member {number}
-     * @default PIXI.BLEND_MODES.NORMAL
-     * @see PIXI.BLEND_MODES
-     */
-    _this.blendMode = core.BLEND_MODES.NORMAL;
-
-    /**
-     * Triangles in canvas mode are automatically antialiased, use this value to force triangles
-     * to overlap a bit with each other.
-     *
-     * @member {number}
-     */
-    _this.canvasPadding = core.settings.MESH_CANVAS_PADDING;
-
-    /**
-     * The way the Mesh should be drawn, can be any of the {@link PIXI.mesh.Mesh.DRAW_MODES} consts
-     *
-     * @member {number}
-     * @see PIXI.mesh.Mesh.DRAW_MODES
-     */
-    _this.drawMode = drawMode || Mesh.DRAW_MODES.TRIANGLE_MESH;
-
-    /**
-     * The default shader that is used if a mesh doesn't have a more specific one.
-     *
-     * @member {PIXI.Shader}
-     */
-    _this.shader = null;
-
-    /**
-     * The tint applied to the mesh. This is a [r,g,b] value. A value of [1,1,1] will remove any
-     * tint effect.
-     *
-     * @member {number}
-     */
-    _this.tintRgb = new Float32Array([1, 1, 1]);
-
-    /**
-     * A map of renderer IDs to webgl render data
-     *
-     * @private
-     * @member {object<number, object>}
-     */
-    _this._glDatas = {};
-
-    /**
-     * transform that is applied to UV to get the texture coords
-     * its updated independently from texture uvTransform
-     * updates of uvs are tied to that thing
-     *
-     * @member {PIXI.TextureMatrix}
-     * @private
-     */
-    _this._uvTransform = new core.TextureMatrix(_this._texture);
-
-    /**
-     * whether or not upload uvTransform to shader
-     * if its false, then uvs should be pre-multiplied
-     * if you change it for generated mesh, please call 'refresh(true)'
-     * @member {boolean}
-     * @default false
-     */
-    _this.uploadUvTransform = false;
-
-    /**
-     * Plugin that is responsible for rendering this element.
-     * Allows to customize the rendering process without overriding '_renderWebGL' & '_renderCanvas' methods.
-     * @member {string}
-     * @default 'mesh'
-     */
-    _this.pluginName = 'mesh';
-    return _this;
-  }
-
-  /**
-   * Renders the object using the WebGL renderer
-   *
-   * @private
-   * @param {PIXI.WebGLRenderer} renderer - a reference to the WebGL renderer
-   */
-
-
-  Mesh.prototype._renderWebGL = function _renderWebGL(renderer) {
-    this.refresh();
-    renderer.setObjectRenderer(renderer.plugins[this.pluginName]);
-    renderer.plugins[this.pluginName].render(this);
-  };
-
-  /**
-   * Renders the object using the Canvas renderer
-   *
-   * @private
-   * @param {PIXI.CanvasRenderer} renderer - The canvas renderer.
-   */
-
-
-  Mesh.prototype._renderCanvas = function _renderCanvas(renderer) {
-    this.refresh();
-    renderer.plugins[this.pluginName].render(this);
-  };
-
-  /**
-   * When the texture is updated, this event will fire to update the scale and frame
-   *
-   * @private
-   */
-
-
-  Mesh.prototype._onTextureUpdate = function _onTextureUpdate() {
-    this._uvTransform.texture = this._texture;
-    this.refresh();
-  };
-
-  /**
-   * multiplies uvs only if uploadUvTransform is false
-   * call it after you change uvs manually
-   * make sure that texture is valid
-   */
-
-
-  Mesh.prototype.multiplyUvs = function multiplyUvs() {
-    if (!this.uploadUvTransform) {
-      this._uvTransform.multiplyUvs(this.uvs);
-    }
-  };
-
-  /**
-   * Refreshes uvs for generated meshes (rope, plane)
-   * sometimes refreshes vertices too
-   *
-   * @param {boolean} [forceUpdate=false] if true, matrices will be updated any case
-   */
-
-
-  Mesh.prototype.refresh = function refresh(forceUpdate) {
-    if (this._uvTransform.update(forceUpdate)) {
-      this._refresh();
-    }
-  };
-
-  /**
-   * re-calculates mesh coords
-   * @protected
-   */
-
-
-  Mesh.prototype._refresh = function _refresh() {}
-  /* empty */
-
-
-  /**
-   * Returns the bounds of the mesh as a rectangle. The bounds calculation takes the worldTransform into account.
-   *
-   */
-  ;
-
-  Mesh.prototype._calculateBounds = function _calculateBounds() {
-    // TODO - we can cache local bounds and use them if they are dirty (like graphics)
-    this._bounds.addVertices(this.transform, this.vertices, 0, this.vertices.length);
-  };
-
-  /**
-   * Tests if a point is inside this mesh. Works only for TRIANGLE_MESH
-   *
-   * @param {PIXI.Point} point - the point to test
-   * @return {boolean} the result of the test
-   */
-
-
-  Mesh.prototype.containsPoint = function containsPoint(point) {
-    if (!this.getBounds().contains(point.x, point.y)) {
-      return false;
-    }
-
-    this.worldTransform.applyInverse(point, tempPoint);
-
-    var vertices = this.vertices;
-    var points = tempPolygon.points;
-    var indices = this.indices;
-    var len = this.indices.length;
-    var step = this.drawMode === Mesh.DRAW_MODES.TRIANGLES ? 3 : 1;
-
-    for (var i = 0; i + 2 < len; i += step) {
-      var ind0 = indices[i] * 2;
-      var ind1 = indices[i + 1] * 2;
-      var ind2 = indices[i + 2] * 2;
-
-      points[0] = vertices[ind0];
-      points[1] = vertices[ind0 + 1];
-      points[2] = vertices[ind1];
-      points[3] = vertices[ind1 + 1];
-      points[4] = vertices[ind2];
-      points[5] = vertices[ind2 + 1];
-
-      if (tempPolygon.contains(tempPoint.x, tempPoint.y)) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-
-  /**
-   * The texture that the mesh uses.
-   *
-   * @member {PIXI.Texture}
-   */
-
-
-  _createClass(Mesh, [{
-    key: 'texture',
-    get: function get() {
-      return this._texture;
-    },
-    set: function set(value) // eslint-disable-line require-jsdoc
-    {
-      if (this._texture === value) {
-        return;
-      }
-
-      this._texture = value;
-
-      if (value) {
-        // wait for the texture to load
-        if (value.baseTexture.hasLoaded) {
-          this._onTextureUpdate();
-        } else {
-          value.once('update', this._onTextureUpdate, this);
+            if (data.destroy) {
+                data.destroy();
+            } else {
+                if (data.vertexBuffer) {
+                    data.vertexBuffer.destroy();
+                    data.vertexBuffer = null;
+                }
+                if (data.indexBuffer) {
+                    data.indexBuffer.destroy();
+                    data.indexBuffer = null;
+                }
+                if (data.uvBuffer) {
+                    data.uvBuffer.destroy();
+                    data.uvBuffer = null;
+                }
+                if (data.vao) {
+                    data.vao.destroy();
+                    data.vao = null;
+                }
+            }
         }
-      }
-    }
 
-    /**
-     * The tint applied to the mesh. This is a hex value. A value of 0xFFFFFF will remove any tint effect.
-     *
-     * @member {number}
-     * @default 0xFFFFFF
-     */
+        this._glDatas = null;
 
-  }, {
-    key: 'tint',
-    get: function get() {
-      return core.utils.rgb2hex(this.tintRgb);
-    },
-    set: function set(value) // eslint-disable-line require-jsdoc
-    {
-      this.tintRgb = core.utils.hex2rgb(value, this.tintRgb);
-    }
-  }]);
+        _core$Container.prototype.destroy.call(this, options);
+    };
 
-  return Mesh;
+    _createClass(Mesh, [{
+        key: 'texture',
+        get: function get() {
+            return this._texture;
+        },
+        set: function set(value) // eslint-disable-line require-jsdoc
+        {
+            if (this._texture === value) {
+                return;
+            }
+
+            this._texture = value;
+
+            if (value) {
+                // wait for the texture to load
+                if (value.baseTexture.hasLoaded) {
+                    this._onTextureUpdate();
+                } else {
+                    value.once('update', this._onTextureUpdate, this);
+                }
+            }
+        }
+
+        /**
+         * The tint applied to the mesh. This is a hex value. A value of 0xFFFFFF will remove any tint effect.
+         *
+         * @member {number}
+         * @default 0xFFFFFF
+         */
+
+    }, {
+        key: 'tint',
+        get: function get() {
+            return core.utils.rgb2hex(this.tintRgb);
+        },
+        set: function set(value) // eslint-disable-line require-jsdoc
+        {
+            this.tintRgb = core.utils.hex2rgb(value, this.tintRgb);
+        }
+    }]);
+
+    return Mesh;
 }(core.Container);
 
 /**
@@ -55348,11 +55833,11 @@ var Mesh = function (_core$Container) {
 
 exports.default = Mesh;
 Mesh.DRAW_MODES = {
-  TRIANGLE_MESH: 0,
-  TRIANGLES: 1
+    TRIANGLE_MESH: 0,
+    TRIANGLES: 1
 };
 
-},{"../core":259,"../core/textures/Texture":309}],362:[function(require,module,exports){
+},{"../core":257,"../core/textures/Texture":307}],360:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -55448,7 +55933,7 @@ var NineSlicePlane = function (_Plane) {
          * @memberof PIXI.NineSlicePlane#
          * @override
          */
-        _this.leftWidth = typeof leftWidth !== 'undefined' ? leftWidth : DEFAULT_BORDER_SIZE;
+        _this._leftWidth = typeof leftWidth !== 'undefined' ? leftWidth : DEFAULT_BORDER_SIZE;
 
         /**
          * The width of the right column (b)
@@ -55457,7 +55942,7 @@ var NineSlicePlane = function (_Plane) {
          * @memberof PIXI.NineSlicePlane#
          * @override
          */
-        _this.rightWidth = typeof rightWidth !== 'undefined' ? rightWidth : DEFAULT_BORDER_SIZE;
+        _this._rightWidth = typeof rightWidth !== 'undefined' ? rightWidth : DEFAULT_BORDER_SIZE;
 
         /**
          * The height of the top row (c)
@@ -55466,7 +55951,7 @@ var NineSlicePlane = function (_Plane) {
          * @memberof PIXI.NineSlicePlane#
          * @override
          */
-        _this.topHeight = typeof topHeight !== 'undefined' ? topHeight : DEFAULT_BORDER_SIZE;
+        _this._topHeight = typeof topHeight !== 'undefined' ? topHeight : DEFAULT_BORDER_SIZE;
 
         /**
          * The height of the bottom row (d)
@@ -55475,7 +55960,7 @@ var NineSlicePlane = function (_Plane) {
          * @memberof PIXI.NineSlicePlane#
          * @override
          */
-        _this.bottomHeight = typeof bottomHeight !== 'undefined' ? bottomHeight : DEFAULT_BORDER_SIZE;
+        _this._bottomHeight = typeof bottomHeight !== 'undefined' ? bottomHeight : DEFAULT_BORDER_SIZE;
 
         _this.refresh(true);
         return _this;
@@ -55490,8 +55975,11 @@ var NineSlicePlane = function (_Plane) {
     NineSlicePlane.prototype.updateHorizontalVertices = function updateHorizontalVertices() {
         var vertices = this.vertices;
 
-        vertices[9] = vertices[11] = vertices[13] = vertices[15] = this._topHeight;
-        vertices[17] = vertices[19] = vertices[21] = vertices[23] = this._height - this._bottomHeight;
+        var h = this._topHeight + this._bottomHeight;
+        var scale = this._height > h ? 1.0 : this._height / h;
+
+        vertices[9] = vertices[11] = vertices[13] = vertices[15] = this._topHeight * scale;
+        vertices[17] = vertices[19] = vertices[21] = vertices[23] = this._height - this._bottomHeight * scale;
         vertices[25] = vertices[27] = vertices[29] = vertices[31] = this._height;
     };
 
@@ -55504,8 +55992,11 @@ var NineSlicePlane = function (_Plane) {
     NineSlicePlane.prototype.updateVerticalVertices = function updateVerticalVertices() {
         var vertices = this.vertices;
 
-        vertices[2] = vertices[10] = vertices[18] = vertices[26] = this._leftWidth;
-        vertices[4] = vertices[12] = vertices[20] = vertices[28] = this._width - this._rightWidth;
+        var w = this._leftWidth + this._rightWidth;
+        var scale = this._width > w ? 1.0 : this._width / w;
+
+        vertices[2] = vertices[10] = vertices[18] = vertices[26] = this._leftWidth * scale;
+        vertices[4] = vertices[12] = vertices[20] = vertices[28] = this._width - this._rightWidth * scale;
         vertices[6] = vertices[14] = vertices[22] = vertices[30] = this._width;
     };
 
@@ -55739,7 +56230,7 @@ var NineSlicePlane = function (_Plane) {
 
 exports.default = NineSlicePlane;
 
-},{"./Plane":363}],363:[function(require,module,exports){
+},{"./Plane":361}],361:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -55880,7 +56371,7 @@ var Plane = function (_Mesh) {
 
 exports.default = Plane;
 
-},{"./Mesh":361}],364:[function(require,module,exports){
+},{"./Mesh":359}],362:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -56116,7 +56607,7 @@ var Rope = function (_Mesh) {
 
 exports.default = Rope;
 
-},{"./Mesh":361}],365:[function(require,module,exports){
+},{"./Mesh":359}],363:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -56402,7 +56893,7 @@ exports.default = MeshSpriteRenderer;
 
 core.CanvasRenderer.registerPlugin('mesh', MeshSpriteRenderer);
 
-},{"../../core":259,"../Mesh":361}],366:[function(require,module,exports){
+},{"../../core":257,"../Mesh":359}],364:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -56463,7 +56954,7 @@ Object.defineProperty(exports, 'Rope', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./Mesh":361,"./NineSlicePlane":362,"./Plane":363,"./Rope":364,"./canvas/CanvasMeshRenderer":365,"./webgl/MeshRenderer":367}],367:[function(require,module,exports){
+},{"./Mesh":359,"./NineSlicePlane":360,"./Plane":361,"./Rope":362,"./canvas/CanvasMeshRenderer":363,"./webgl/MeshRenderer":365}],365:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -56561,7 +57052,8 @@ var MeshRenderer = function (_core$ObjectRenderer) {
                 // build the vao object that will render..
                 vao: null,
                 dirty: mesh.dirty,
-                indexDirty: mesh.indexDirty
+                indexDirty: mesh.indexDirty,
+                vertexDirty: mesh.vertexDirty
             };
 
             // build the vao object that will render..
@@ -56582,7 +57074,10 @@ var MeshRenderer = function (_core$ObjectRenderer) {
             glData.indexBuffer.upload(mesh.indices);
         }
 
-        glData.vertexBuffer.upload(mesh.vertices);
+        if (mesh.vertexDirty !== glData.vertexDirty) {
+            glData.vertexDirty = mesh.vertexDirty;
+            glData.vertexBuffer.upload(mesh.vertices);
+        }
 
         renderer.bindShader(glData.shader);
 
@@ -56614,7 +57109,7 @@ exports.default = MeshRenderer;
 
 core.WebGLRenderer.registerPlugin('mesh', MeshRenderer);
 
-},{"../../core":259,"../Mesh":361,"path":191,"pixi-gl-core":210}],368:[function(require,module,exports){
+},{"../../core":257,"../Mesh":359,"path":408,"pixi-gl-core":208}],366:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -57004,7 +57499,7 @@ var ParticleContainer = function (_core$Container) {
 
 exports.default = ParticleContainer;
 
-},{"../core":259,"../core/utils":319}],369:[function(require,module,exports){
+},{"../core":257,"../core/utils":317}],367:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -57029,7 +57524,7 @@ Object.defineProperty(exports, 'ParticleRenderer', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./ParticleContainer":368,"./webgl/ParticleRenderer":371}],370:[function(require,module,exports){
+},{"./ParticleContainer":366,"./webgl/ParticleRenderer":369}],368:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -57278,7 +57773,7 @@ var ParticleBuffer = function () {
 
 exports.default = ParticleBuffer;
 
-},{"../../core/utils/createIndicesForQuads":317,"pixi-gl-core":210}],371:[function(require,module,exports){
+},{"../../core/utils/createIndicesForQuads":315,"pixi-gl-core":208}],369:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -57489,7 +57984,7 @@ var ParticleRenderer = function (_core$ObjectRenderer) {
             // we always upload the dynamic
             buffer.uploadDynamic(children, i, amount);
 
-            var bid = container._bufferUpdateIDs[i] || 0;
+            var bid = container._bufferUpdateIDs[j] || 0;
 
             updateStatic = updateStatic || buffer._updateID < bid;
             // we only upload the static content when we have to!
@@ -57759,7 +58254,7 @@ exports.default = ParticleRenderer;
 
 core.WebGLRenderer.registerPlugin('particle', ParticleRenderer);
 
-},{"../../core":259,"../../core/utils":319,"./ParticleBuffer":370,"./ParticleShader":372}],372:[function(require,module,exports){
+},{"../../core":257,"../../core/utils":317,"./ParticleBuffer":368,"./ParticleShader":370}],370:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -57802,7 +58297,7 @@ var ParticleShader = function (_Shader) {
 
 exports.default = ParticleShader;
 
-},{"../../core/Shader":238}],373:[function(require,module,exports){
+},{"../../core/Shader":236}],371:[function(require,module,exports){
 "use strict";
 
 // References:
@@ -57820,7 +58315,7 @@ if (!Math.sign) {
     };
 }
 
-},{}],374:[function(require,module,exports){
+},{}],372:[function(require,module,exports){
 'use strict';
 
 // References:
@@ -57832,7 +58327,7 @@ if (!Number.isInteger) {
     };
 }
 
-},{}],375:[function(require,module,exports){
+},{}],373:[function(require,module,exports){
 'use strict';
 
 var _objectAssign = require('object-assign');
@@ -57847,7 +58342,7 @@ if (!Object.assign) {
 // https://github.com/sindresorhus/object-assign
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
 
-},{"object-assign":189}],376:[function(require,module,exports){
+},{"object-assign":188}],374:[function(require,module,exports){
 'use strict';
 
 require('./Object.assign');
@@ -57874,7 +58369,7 @@ if (!window.Uint16Array) {
     window.Uint16Array = Array;
 }
 
-},{"./Math.sign":373,"./Number.isInteger":374,"./Object.assign":375,"./requestAnimationFrame":377}],377:[function(require,module,exports){
+},{"./Math.sign":371,"./Number.isInteger":372,"./Object.assign":373,"./requestAnimationFrame":375}],375:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -57951,7 +58446,7 @@ if (!global.cancelAnimationFrame) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],378:[function(require,module,exports){
+},{}],376:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -58439,7 +58934,7 @@ function findTextStyle(item, queue) {
     return false;
 }
 
-},{"../core":259,"./limiters/CountLimiter":381}],379:[function(require,module,exports){
+},{"../core":257,"./limiters/CountLimiter":379}],377:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -58559,7 +59054,7 @@ function uploadBaseTextures(prepare, item) {
 
 core.CanvasRenderer.registerPlugin('prepare', CanvasPrepare);
 
-},{"../../core":259,"../BasePrepare":378}],380:[function(require,module,exports){
+},{"../../core":257,"../BasePrepare":376}],378:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -58611,7 +59106,7 @@ Object.defineProperty(exports, 'TimeLimiter', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./BasePrepare":378,"./canvas/CanvasPrepare":379,"./limiters/CountLimiter":381,"./limiters/TimeLimiter":382,"./webgl/WebGLPrepare":383}],381:[function(require,module,exports){
+},{"./BasePrepare":376,"./canvas/CanvasPrepare":377,"./limiters/CountLimiter":379,"./limiters/TimeLimiter":380,"./webgl/WebGLPrepare":381}],379:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -58669,7 +59164,7 @@ var CountLimiter = function () {
 
 exports.default = CountLimiter;
 
-},{}],382:[function(require,module,exports){
+},{}],380:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -58727,7 +59222,7 @@ var TimeLimiter = function () {
 
 exports.default = TimeLimiter;
 
-},{}],383:[function(require,module,exports){
+},{}],381:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -58849,7 +59344,7 @@ function findGraphics(item, queue) {
 
 core.WebGLRenderer.registerPlugin('prepare', WebGLPrepare);
 
-},{"../../core":259,"../BasePrepare":378}],384:[function(require,module,exports){
+},{"../../core":257,"../BasePrepare":376}],382:[function(require,module,exports){
 'use strict';
 
 var has = Object.prototype.hasOwnProperty
@@ -59162,909 +59657,7 @@ if ('undefined' !== typeof module) {
   module.exports = EventEmitter;
 }
 
-},{}],385:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],386:[function(require,module,exports){
-(function (global){
-/*! https://mths.be/punycode v1.4.1 by @mathias */
-;(function(root) {
-
-	/** Detect free variables */
-	var freeExports = typeof exports == 'object' && exports &&
-		!exports.nodeType && exports;
-	var freeModule = typeof module == 'object' && module &&
-		!module.nodeType && module;
-	var freeGlobal = typeof global == 'object' && global;
-	if (
-		freeGlobal.global === freeGlobal ||
-		freeGlobal.window === freeGlobal ||
-		freeGlobal.self === freeGlobal
-	) {
-		root = freeGlobal;
-	}
-
-	/**
-	 * The `punycode` object.
-	 * @name punycode
-	 * @type Object
-	 */
-	var punycode,
-
-	/** Highest positive signed 32-bit float value */
-	maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
-
-	/** Bootstring parameters */
-	base = 36,
-	tMin = 1,
-	tMax = 26,
-	skew = 38,
-	damp = 700,
-	initialBias = 72,
-	initialN = 128, // 0x80
-	delimiter = '-', // '\x2D'
-
-	/** Regular expressions */
-	regexPunycode = /^xn--/,
-	regexNonASCII = /[^\x20-\x7E]/, // unprintable ASCII chars + non-ASCII chars
-	regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g, // RFC 3490 separators
-
-	/** Error messages */
-	errors = {
-		'overflow': 'Overflow: input needs wider integers to process',
-		'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
-		'invalid-input': 'Invalid input'
-	},
-
-	/** Convenience shortcuts */
-	baseMinusTMin = base - tMin,
-	floor = Math.floor,
-	stringFromCharCode = String.fromCharCode,
-
-	/** Temporary variable */
-	key;
-
-	/*--------------------------------------------------------------------------*/
-
-	/**
-	 * A generic error utility function.
-	 * @private
-	 * @param {String} type The error type.
-	 * @returns {Error} Throws a `RangeError` with the applicable error message.
-	 */
-	function error(type) {
-		throw new RangeError(errors[type]);
-	}
-
-	/**
-	 * A generic `Array#map` utility function.
-	 * @private
-	 * @param {Array} array The array to iterate over.
-	 * @param {Function} callback The function that gets called for every array
-	 * item.
-	 * @returns {Array} A new array of values returned by the callback function.
-	 */
-	function map(array, fn) {
-		var length = array.length;
-		var result = [];
-		while (length--) {
-			result[length] = fn(array[length]);
-		}
-		return result;
-	}
-
-	/**
-	 * A simple `Array#map`-like wrapper to work with domain name strings or email
-	 * addresses.
-	 * @private
-	 * @param {String} domain The domain name or email address.
-	 * @param {Function} callback The function that gets called for every
-	 * character.
-	 * @returns {Array} A new string of characters returned by the callback
-	 * function.
-	 */
-	function mapDomain(string, fn) {
-		var parts = string.split('@');
-		var result = '';
-		if (parts.length > 1) {
-			// In email addresses, only the domain name should be punycoded. Leave
-			// the local part (i.e. everything up to `@`) intact.
-			result = parts[0] + '@';
-			string = parts[1];
-		}
-		// Avoid `split(regex)` for IE8 compatibility. See #17.
-		string = string.replace(regexSeparators, '\x2E');
-		var labels = string.split('.');
-		var encoded = map(labels, fn).join('.');
-		return result + encoded;
-	}
-
-	/**
-	 * Creates an array containing the numeric code points of each Unicode
-	 * character in the string. While JavaScript uses UCS-2 internally,
-	 * this function will convert a pair of surrogate halves (each of which
-	 * UCS-2 exposes as separate characters) into a single code point,
-	 * matching UTF-16.
-	 * @see `punycode.ucs2.encode`
-	 * @see <https://mathiasbynens.be/notes/javascript-encoding>
-	 * @memberOf punycode.ucs2
-	 * @name decode
-	 * @param {String} string The Unicode input string (UCS-2).
-	 * @returns {Array} The new array of code points.
-	 */
-	function ucs2decode(string) {
-		var output = [],
-		    counter = 0,
-		    length = string.length,
-		    value,
-		    extra;
-		while (counter < length) {
-			value = string.charCodeAt(counter++);
-			if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
-				// high surrogate, and there is a next character
-				extra = string.charCodeAt(counter++);
-				if ((extra & 0xFC00) == 0xDC00) { // low surrogate
-					output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
-				} else {
-					// unmatched surrogate; only append this code unit, in case the next
-					// code unit is the high surrogate of a surrogate pair
-					output.push(value);
-					counter--;
-				}
-			} else {
-				output.push(value);
-			}
-		}
-		return output;
-	}
-
-	/**
-	 * Creates a string based on an array of numeric code points.
-	 * @see `punycode.ucs2.decode`
-	 * @memberOf punycode.ucs2
-	 * @name encode
-	 * @param {Array} codePoints The array of numeric code points.
-	 * @returns {String} The new Unicode string (UCS-2).
-	 */
-	function ucs2encode(array) {
-		return map(array, function(value) {
-			var output = '';
-			if (value > 0xFFFF) {
-				value -= 0x10000;
-				output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
-				value = 0xDC00 | value & 0x3FF;
-			}
-			output += stringFromCharCode(value);
-			return output;
-		}).join('');
-	}
-
-	/**
-	 * Converts a basic code point into a digit/integer.
-	 * @see `digitToBasic()`
-	 * @private
-	 * @param {Number} codePoint The basic numeric code point value.
-	 * @returns {Number} The numeric value of a basic code point (for use in
-	 * representing integers) in the range `0` to `base - 1`, or `base` if
-	 * the code point does not represent a value.
-	 */
-	function basicToDigit(codePoint) {
-		if (codePoint - 48 < 10) {
-			return codePoint - 22;
-		}
-		if (codePoint - 65 < 26) {
-			return codePoint - 65;
-		}
-		if (codePoint - 97 < 26) {
-			return codePoint - 97;
-		}
-		return base;
-	}
-
-	/**
-	 * Converts a digit/integer into a basic code point.
-	 * @see `basicToDigit()`
-	 * @private
-	 * @param {Number} digit The numeric value of a basic code point.
-	 * @returns {Number} The basic code point whose value (when used for
-	 * representing integers) is `digit`, which needs to be in the range
-	 * `0` to `base - 1`. If `flag` is non-zero, the uppercase form is
-	 * used; else, the lowercase form is used. The behavior is undefined
-	 * if `flag` is non-zero and `digit` has no uppercase form.
-	 */
-	function digitToBasic(digit, flag) {
-		//  0..25 map to ASCII a..z or A..Z
-		// 26..35 map to ASCII 0..9
-		return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
-	}
-
-	/**
-	 * Bias adaptation function as per section 3.4 of RFC 3492.
-	 * https://tools.ietf.org/html/rfc3492#section-3.4
-	 * @private
-	 */
-	function adapt(delta, numPoints, firstTime) {
-		var k = 0;
-		delta = firstTime ? floor(delta / damp) : delta >> 1;
-		delta += floor(delta / numPoints);
-		for (/* no initialization */; delta > baseMinusTMin * tMax >> 1; k += base) {
-			delta = floor(delta / baseMinusTMin);
-		}
-		return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
-	}
-
-	/**
-	 * Converts a Punycode string of ASCII-only symbols to a string of Unicode
-	 * symbols.
-	 * @memberOf punycode
-	 * @param {String} input The Punycode string of ASCII-only symbols.
-	 * @returns {String} The resulting string of Unicode symbols.
-	 */
-	function decode(input) {
-		// Don't use UCS-2
-		var output = [],
-		    inputLength = input.length,
-		    out,
-		    i = 0,
-		    n = initialN,
-		    bias = initialBias,
-		    basic,
-		    j,
-		    index,
-		    oldi,
-		    w,
-		    k,
-		    digit,
-		    t,
-		    /** Cached calculation results */
-		    baseMinusT;
-
-		// Handle the basic code points: let `basic` be the number of input code
-		// points before the last delimiter, or `0` if there is none, then copy
-		// the first basic code points to the output.
-
-		basic = input.lastIndexOf(delimiter);
-		if (basic < 0) {
-			basic = 0;
-		}
-
-		for (j = 0; j < basic; ++j) {
-			// if it's not a basic code point
-			if (input.charCodeAt(j) >= 0x80) {
-				error('not-basic');
-			}
-			output.push(input.charCodeAt(j));
-		}
-
-		// Main decoding loop: start just after the last delimiter if any basic code
-		// points were copied; start at the beginning otherwise.
-
-		for (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */) {
-
-			// `index` is the index of the next character to be consumed.
-			// Decode a generalized variable-length integer into `delta`,
-			// which gets added to `i`. The overflow checking is easier
-			// if we increase `i` as we go, then subtract off its starting
-			// value at the end to obtain `delta`.
-			for (oldi = i, w = 1, k = base; /* no condition */; k += base) {
-
-				if (index >= inputLength) {
-					error('invalid-input');
-				}
-
-				digit = basicToDigit(input.charCodeAt(index++));
-
-				if (digit >= base || digit > floor((maxInt - i) / w)) {
-					error('overflow');
-				}
-
-				i += digit * w;
-				t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
-
-				if (digit < t) {
-					break;
-				}
-
-				baseMinusT = base - t;
-				if (w > floor(maxInt / baseMinusT)) {
-					error('overflow');
-				}
-
-				w *= baseMinusT;
-
-			}
-
-			out = output.length + 1;
-			bias = adapt(i - oldi, out, oldi == 0);
-
-			// `i` was supposed to wrap around from `out` to `0`,
-			// incrementing `n` each time, so we'll fix that now:
-			if (floor(i / out) > maxInt - n) {
-				error('overflow');
-			}
-
-			n += floor(i / out);
-			i %= out;
-
-			// Insert `n` at position `i` of the output
-			output.splice(i++, 0, n);
-
-		}
-
-		return ucs2encode(output);
-	}
-
-	/**
-	 * Converts a string of Unicode symbols (e.g. a domain name label) to a
-	 * Punycode string of ASCII-only symbols.
-	 * @memberOf punycode
-	 * @param {String} input The string of Unicode symbols.
-	 * @returns {String} The resulting Punycode string of ASCII-only symbols.
-	 */
-	function encode(input) {
-		var n,
-		    delta,
-		    handledCPCount,
-		    basicLength,
-		    bias,
-		    j,
-		    m,
-		    q,
-		    k,
-		    t,
-		    currentValue,
-		    output = [],
-		    /** `inputLength` will hold the number of code points in `input`. */
-		    inputLength,
-		    /** Cached calculation results */
-		    handledCPCountPlusOne,
-		    baseMinusT,
-		    qMinusT;
-
-		// Convert the input in UCS-2 to Unicode
-		input = ucs2decode(input);
-
-		// Cache the length
-		inputLength = input.length;
-
-		// Initialize the state
-		n = initialN;
-		delta = 0;
-		bias = initialBias;
-
-		// Handle the basic code points
-		for (j = 0; j < inputLength; ++j) {
-			currentValue = input[j];
-			if (currentValue < 0x80) {
-				output.push(stringFromCharCode(currentValue));
-			}
-		}
-
-		handledCPCount = basicLength = output.length;
-
-		// `handledCPCount` is the number of code points that have been handled;
-		// `basicLength` is the number of basic code points.
-
-		// Finish the basic string - if it is not empty - with a delimiter
-		if (basicLength) {
-			output.push(delimiter);
-		}
-
-		// Main encoding loop:
-		while (handledCPCount < inputLength) {
-
-			// All non-basic code points < n have been handled already. Find the next
-			// larger one:
-			for (m = maxInt, j = 0; j < inputLength; ++j) {
-				currentValue = input[j];
-				if (currentValue >= n && currentValue < m) {
-					m = currentValue;
-				}
-			}
-
-			// Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
-			// but guard against overflow
-			handledCPCountPlusOne = handledCPCount + 1;
-			if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
-				error('overflow');
-			}
-
-			delta += (m - n) * handledCPCountPlusOne;
-			n = m;
-
-			for (j = 0; j < inputLength; ++j) {
-				currentValue = input[j];
-
-				if (currentValue < n && ++delta > maxInt) {
-					error('overflow');
-				}
-
-				if (currentValue == n) {
-					// Represent delta as a generalized variable-length integer
-					for (q = delta, k = base; /* no condition */; k += base) {
-						t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
-						if (q < t) {
-							break;
-						}
-						qMinusT = q - t;
-						baseMinusT = base - t;
-						output.push(
-							stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0))
-						);
-						q = floor(qMinusT / baseMinusT);
-					}
-
-					output.push(stringFromCharCode(digitToBasic(q, 0)));
-					bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
-					delta = 0;
-					++handledCPCount;
-				}
-			}
-
-			++delta;
-			++n;
-
-		}
-		return output.join('');
-	}
-
-	/**
-	 * Converts a Punycode string representing a domain name or an email address
-	 * to Unicode. Only the Punycoded parts of the input will be converted, i.e.
-	 * it doesn't matter if you call it on a string that has already been
-	 * converted to Unicode.
-	 * @memberOf punycode
-	 * @param {String} input The Punycoded domain name or email address to
-	 * convert to Unicode.
-	 * @returns {String} The Unicode representation of the given Punycode
-	 * string.
-	 */
-	function toUnicode(input) {
-		return mapDomain(input, function(string) {
-			return regexPunycode.test(string)
-				? decode(string.slice(4).toLowerCase())
-				: string;
-		});
-	}
-
-	/**
-	 * Converts a Unicode string representing a domain name or an email address to
-	 * Punycode. Only the non-ASCII parts of the domain name will be converted,
-	 * i.e. it doesn't matter if you call it with a domain that's already in
-	 * ASCII.
-	 * @memberOf punycode
-	 * @param {String} input The domain name or email address to convert, as a
-	 * Unicode string.
-	 * @returns {String} The Punycode representation of the given domain name or
-	 * email address.
-	 */
-	function toASCII(input) {
-		return mapDomain(input, function(string) {
-			return regexNonASCII.test(string)
-				? 'xn--' + encode(string)
-				: string;
-		});
-	}
-
-	/*--------------------------------------------------------------------------*/
-
-	/** Define the public API */
-	punycode = {
-		/**
-		 * A string representing the current Punycode.js version number.
-		 * @memberOf punycode
-		 * @type String
-		 */
-		'version': '1.4.1',
-		/**
-		 * An object of methods to convert from JavaScript's internal character
-		 * representation (UCS-2) to Unicode code points, and back.
-		 * @see <https://mathiasbynens.be/notes/javascript-encoding>
-		 * @memberOf punycode
-		 * @type Object
-		 */
-		'ucs2': {
-			'decode': ucs2decode,
-			'encode': ucs2encode
-		},
-		'decode': decode,
-		'encode': encode,
-		'toASCII': toASCII,
-		'toUnicode': toUnicode
-	};
-
-	/** Expose `punycode` */
-	// Some AMD build optimizers, like r.js, check for specific condition patterns
-	// like the following:
-	if (
-		typeof define == 'function' &&
-		typeof define.amd == 'object' &&
-		define.amd
-	) {
-		define('punycode', function() {
-			return punycode;
-		});
-	} else if (freeExports && freeModule) {
-		if (module.exports == freeExports) {
-			// in Node.js, io.js, or RingoJS v0.8.0+
-			freeModule.exports = punycode;
-		} else {
-			// in Narwhal or RingoJS v0.7.0-
-			for (key in punycode) {
-				punycode.hasOwnProperty(key) && (freeExports[key] = punycode[key]);
-			}
-		}
-	} else {
-		// in Rhino or a web browser
-		root.punycode = punycode;
-	}
-
-}(this));
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],387:[function(require,module,exports){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-'use strict';
-
-// If obj.hasOwnProperty has been overridden, then calling
-// obj.hasOwnProperty(prop) will break.
-// See: https://github.com/joyent/node/issues/1707
-function hasOwnProperty(obj, prop) {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
-}
-
-module.exports = function(qs, sep, eq, options) {
-  sep = sep || '&';
-  eq = eq || '=';
-  var obj = {};
-
-  if (typeof qs !== 'string' || qs.length === 0) {
-    return obj;
-  }
-
-  var regexp = /\+/g;
-  qs = qs.split(sep);
-
-  var maxKeys = 1000;
-  if (options && typeof options.maxKeys === 'number') {
-    maxKeys = options.maxKeys;
-  }
-
-  var len = qs.length;
-  // maxKeys <= 0 means that we should not limit keys count
-  if (maxKeys > 0 && len > maxKeys) {
-    len = maxKeys;
-  }
-
-  for (var i = 0; i < len; ++i) {
-    var x = qs[i].replace(regexp, '%20'),
-        idx = x.indexOf(eq),
-        kstr, vstr, k, v;
-
-    if (idx >= 0) {
-      kstr = x.substr(0, idx);
-      vstr = x.substr(idx + 1);
-    } else {
-      kstr = x;
-      vstr = '';
-    }
-
-    k = decodeURIComponent(kstr);
-    v = decodeURIComponent(vstr);
-
-    if (!hasOwnProperty(obj, k)) {
-      obj[k] = v;
-    } else if (isArray(obj[k])) {
-      obj[k].push(v);
-    } else {
-      obj[k] = [obj[k], v];
-    }
-  }
-
-  return obj;
-};
-
-var isArray = Array.isArray || function (xs) {
-  return Object.prototype.toString.call(xs) === '[object Array]';
-};
-
-},{}],388:[function(require,module,exports){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-'use strict';
-
-var stringifyPrimitive = function(v) {
-  switch (typeof v) {
-    case 'string':
-      return v;
-
-    case 'boolean':
-      return v ? 'true' : 'false';
-
-    case 'number':
-      return isFinite(v) ? v : '';
-
-    default:
-      return '';
-  }
-};
-
-module.exports = function(obj, sep, eq, name) {
-  sep = sep || '&';
-  eq = eq || '=';
-  if (obj === null) {
-    obj = undefined;
-  }
-
-  if (typeof obj === 'object') {
-    return map(objectKeys(obj), function(k) {
-      var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
-      if (isArray(obj[k])) {
-        return map(obj[k], function(v) {
-          return ks + encodeURIComponent(stringifyPrimitive(v));
-        }).join(sep);
-      } else {
-        return ks + encodeURIComponent(stringifyPrimitive(obj[k]));
-      }
-    }).join(sep);
-
-  }
-
-  if (!name) return '';
-  return encodeURIComponent(stringifyPrimitive(name)) + eq +
-         encodeURIComponent(stringifyPrimitive(obj));
-};
-
-var isArray = Array.isArray || function (xs) {
-  return Object.prototype.toString.call(xs) === '[object Array]';
-};
-
-function map (xs, f) {
-  if (xs.map) return xs.map(f);
-  var res = [];
-  for (var i = 0; i < xs.length; i++) {
-    res.push(f(xs[i], i));
-  }
-  return res;
-}
-
-var objectKeys = Object.keys || function (obj) {
-  var res = [];
-  for (var key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) res.push(key);
-  }
-  return res;
-};
-
-},{}],389:[function(require,module,exports){
-'use strict';
-
-exports.decode = exports.parse = require('./decode');
-exports.encode = exports.stringify = require('./encode');
-
-},{"./decode":387,"./encode":388}],390:[function(require,module,exports){
+},{}],383:[function(require,module,exports){
 'use strict'
 
 /**
@@ -60094,7 +59687,7 @@ module.exports = function removeItems(arr, startIdx, removeCount)
   arr.length = len
 }
 
-},{}],391:[function(require,module,exports){
+},{}],384:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -60747,7 +60340,7 @@ var Loader = function () {
 
 exports.default = Loader;
 
-},{"./Resource":392,"./async":393,"mini-signals":188,"parse-uri":190}],392:[function(require,module,exports){
+},{"./Resource":385,"./async":386,"mini-signals":187,"parse-uri":189}],385:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -61903,7 +61496,7 @@ function reqType(xhr) {
     return xhr.toString().replace('object ', '');
 }
 
-},{"mini-signals":188,"parse-uri":190}],393:[function(require,module,exports){
+},{"mini-signals":187,"parse-uri":189}],386:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -62112,7 +61705,7 @@ function queue(worker, concurrency) {
     return q;
 }
 
-},{}],394:[function(require,module,exports){
+},{}],387:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -62180,7 +61773,7 @@ function encodeBinary(input) {
     return output;
 }
 
-},{}],395:[function(require,module,exports){
+},{}],388:[function(require,module,exports){
 'use strict';
 
 // import Loader from './Loader';
@@ -62204,7 +61797,7 @@ module.exports = Loader;
 // export default Loader;
 module.exports.default = Loader;
 
-},{"./Loader":391,"./Resource":392,"./async":393,"./b64":394}],396:[function(require,module,exports){
+},{"./Loader":384,"./Resource":385,"./async":386,"./b64":387}],389:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -62292,7 +61885,7 @@ function blobMiddlewareFactory() {
     };
 }
 
-},{"../../Resource":392,"../../b64":394}],397:[function(require,module,exports){
+},{"../../Resource":385,"../../b64":387}],390:[function(require,module,exports){
 // A library of seedable RNGs implemented in Javascript.
 //
 // Usage:
@@ -62354,7 +61947,7 @@ sr.tychei = tychei;
 
 module.exports = sr;
 
-},{"./lib/alea":398,"./lib/tychei":399,"./lib/xor128":400,"./lib/xor4096":401,"./lib/xorshift7":402,"./lib/xorwow":403,"./seedrandom":404}],398:[function(require,module,exports){
+},{"./lib/alea":391,"./lib/tychei":392,"./lib/xor128":393,"./lib/xor4096":394,"./lib/xorshift7":395,"./lib/xorwow":396,"./seedrandom":397}],391:[function(require,module,exports){
 // A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010
 // http://baagoe.com/en/RandomMusings/javascript/
 // https://github.com/nquinlan/better-random-numbers-for-javascript-mirror
@@ -62470,7 +62063,7 @@ if (module && module.exports) {
 
 
 
-},{}],399:[function(require,module,exports){
+},{}],392:[function(require,module,exports){
 // A Javascript implementaion of the "Tyche-i" prng algorithm by
 // Samuel Neves and Filipe Araujo.
 // See https://eden.dei.uc.pt/~sneves/pubs/2011-snfa2.pdf
@@ -62575,7 +62168,7 @@ if (module && module.exports) {
 
 
 
-},{}],400:[function(require,module,exports){
+},{}],393:[function(require,module,exports){
 // A Javascript implementaion of the "xor128" prng algorithm by
 // George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
 
@@ -62658,7 +62251,7 @@ if (module && module.exports) {
 
 
 
-},{}],401:[function(require,module,exports){
+},{}],394:[function(require,module,exports){
 // A Javascript implementaion of Richard Brent's Xorgens xor4096 algorithm.
 //
 // This fast non-cryptographic random number generator is designed for
@@ -62806,7 +62399,7 @@ if (module && module.exports) {
   (typeof define) == 'function' && define   // present with an AMD loader
 );
 
-},{}],402:[function(require,module,exports){
+},{}],395:[function(require,module,exports){
 // A Javascript implementaion of the "xorshift7" algorithm by
 // François Panneton and Pierre L'ecuyer:
 // "On the Xorgshift Random Number Generators"
@@ -62905,7 +62498,7 @@ if (module && module.exports) {
 );
 
 
-},{}],403:[function(require,module,exports){
+},{}],396:[function(require,module,exports){
 // A Javascript implementaion of the "xorwow" prng algorithm by
 // George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
 
@@ -62993,7 +62586,7 @@ if (module && module.exports) {
 
 
 
-},{}],404:[function(require,module,exports){
+},{}],397:[function(require,module,exports){
 /*
 Copyright 2014 David Bau.
 
@@ -63242,7 +62835,7 @@ if ((typeof module) == 'object' && module.exports) {
   Math    // math: package containing random, pow, and seedrandom
 );
 
-},{"crypto":4}],405:[function(require,module,exports){
+},{"crypto":407}],398:[function(require,module,exports){
 // TinyColor v1.4.1
 // https://github.com/bgrins/TinyColor
 // Brian Grinstead, MIT License
@@ -64439,7 +64032,2938 @@ else {
 
 })(Math);
 
+},{}],399:[function(require,module,exports){
+// angle.js <https://github.com/davidfig/anglejs>
+// Released under MIT license <https://github.com/davidfig/angle/blob/master/LICENSE>
+// Author: David Figatner
+// Copyright (c) 2016-17 YOPEY YOPEY LLC
+
+const _toDegreeConversion = 180 / Math.PI
+const _toRadianConversion = Math.PI / 180
+
+
+/** @constant {number} */
+const UP = Math.PI / 2
+const DOWN = 3 * Math.PI / 2
+const LEFT = Math.PI
+const RIGHT = 0
+
+const NORTH = UP
+const SOUTH = DOWN
+const WEST = LEFT
+const EAST = RIGHT
+
+const PI_2 = Math.PI * 2
+const PI_QUARTER = Math.PI / 4
+const PI_HALF = Math.PI / 2
+
+/**
+ * converts from radians to degrees (all other functions expect radians)
+ * @param {number} radians
+ * @return {number} degrees
+ */
+function toDegrees(radians)
+{
+    return radians * _toDegreeConversion
+}
+
+/**
+ * converts from degrees to radians (all other functions expect radians)
+ * @param {number} degrees
+ * @return {number} radians
+ */
+function toRadians(degrees)
+{
+    return degrees * _toRadianConversion
+}
+
+/**
+ * returns whether the target angle is between angle1 and angle2 (in radians)
+ * (based on: http://stackoverflow.com/questions/11406189/determine-if-angle-lies-between-2-other-angles)
+ * @param {number} target angle
+ * @param {number} angle1
+ * @param {number} angle2
+ * @return {boolean}
+ */
+function isAngleBetween(target, angle1, angle2)
+{
+    const rAngle = ((angle2 - angle1) % PI_2 + PI_2) % PI_2
+    if (rAngle >= Math.PI)
+    {
+        const swap = angle1
+        angle1 = angle2
+        angle2 = swap
+    }
+
+    if (angle1 <= angle2)
+    {
+        return target >= angle1 && target <= angle2
+    }
+    else
+    {
+        return target >= angle1 || target <= angle2
+    }
+}
+
+/**
+ * returns +1 or -1 based on whether the difference between two angles is positive or negative (in radians)
+ * @param {number} target angle
+ * @param {number} source angle
+ * @return {number} 1 or -1
+ */
+function differenceAnglesSign(target, source)
+{
+    function mod(a, n)
+    {
+        return (a % n + n) % n
+    }
+
+    const a = target - source
+    return mod((a + Math.PI), PI_2) - Math.PI > 0 ? 1 : -1
+}
+
+/**
+ * returns the normalized difference between two angles (in radians)
+ * @param {number} a - first angle
+ * @param {number} b - second angle
+ * @return {number} normalized difference between a and b
+ */
+function differenceAngles(a, b)
+{
+    const c = Math.abs(a - b) % PI_2
+    return c > Math.PI ? (PI_2 - c) : c
+}
+
+/**
+ * returns a target angle that is the shortest way to rotate an object between start and to--may choose a negative angle
+ * @param {number} start
+ * @param {number} to
+ * @return {number} shortest target angle
+ */
+function shortestAngle(start, to)
+{
+    const difference = differenceAngles(to, start)
+    const sign = differenceAnglesSign(to, start)
+    const delta = difference * sign
+    return delta + start
+}
+
+/**
+ * returns the normalized angle (0 - PI x 2)
+ * @param {number} radians
+ * @return {number} normalized angle in radians
+ */
+function normalize(radians)
+{
+    return radians - PI_2 * Math.floor(radians / PI_2)
+}
+
+/**
+ * returns angle between two points (in radians)
+ * @param {Point} [point1] {x: x, y: y}
+ * @param {Point} [point2] {x: x, y: y}
+ * @param {number} [x1]
+ * @param {number} [y1]
+ * @param {number} [x2]
+ * @param {number} [y2]
+ * @return {number} angle
+ */
+function angleTwoPoints(/* (point1, point2) OR (x1, y1, x2, y2) */)
+{
+    if (arguments.length === 4)
+    {
+        return Math.atan2(arguments[3] - arguments[1], arguments[2] - arguments[0])
+    }
+    else
+    {
+        return Math.atan2(arguments[1].y - arguments[0].y, arguments[1].x - arguments[0].x)
+    }
+}
+
+/**
+ * returns distance between two points
+ * @param {Point} [point1] {x: x, y: y}
+ * @param {Point} [point2] {x: x, y: y}
+ * @param {number} [x1]
+ * @param {number} [y1]
+ * @param {number} [x2]
+ * @param {number} [y2]
+ * @return {number} distance
+ */
+function distanceTwoPoints(/* (point1, point2) OR (x1, y1, x2, y2) */)
+{
+    if (arguments.length === 2)
+    {
+        return Math.sqrt(Math.pow(arguments[1].x - arguments[0].x, 2) + Math.pow(arguments[1].y - arguments[0].y, 2))
+    }
+    else
+    {
+        return Math.sqrt(Math.pow(arguments[2] - arguments[0], 2) + Math.pow(arguments[3] - arguments[1], 2))
+    }
+}
+
+/**
+ * returns the squared distance between two points
+ * @param {Point} [point1] {x: x, y: y}
+ * @param {Point} [point2] {x: x, y: y}
+ * @param {number} [x1]
+ * @param {number} [y1]
+ * @param {number} [x2]
+ * @param {number} [y2]
+ * @return {number} squared distance
+ */
+function distanceTwoPointsSquared(/* (point1, point2) OR (x1, y1, x2, y2) */)
+{
+    if (arguments.length === 2)
+    {
+        return Math.pow(arguments[1].x - arguments[0].x, 2) + Math.pow(arguments[1].y - arguments[0].y, 2)
+    }
+    else
+    {
+        return Math.pow(arguments[2] - arguments[0], 2) + Math.pow(arguments[3] - arguments[1], 2)
+    }
+}
+
+/**
+ * returns the closest cardinal (N, S, E, W) to the given angle (in radians)
+ * @param {number} angle
+ * @return {number} closest cardinal in radians
+ */
+function closestAngle(angle)
+{
+    const left = differenceAngles(angle, LEFT)
+    const right = differenceAngles(angle, RIGHT)
+    const up = differenceAngles(angle, UP)
+    const down = differenceAngles(angle, DOWN)
+    if (left <= right && left <= up && left <= down)
+    {
+        return LEFT
+    }
+    else if (right <= up && right <= down)
+    {
+        return RIGHT
+    }
+    else if (up <= down)
+    {
+        return UP
+    }
+    else
+    {
+        return DOWN
+    }
+}
+
+/**
+ * checks whether angles a1 and a2 are equal (after normalizing)
+ * @param {number} a1
+ * @param {number} a2
+ * @param {number} [wiggle] return true if the difference between the angles is <= wiggle
+ * @return {boolean} a1 === a2
+ */
+function equals(a1, a2, wiggle)
+{
+    if (wiggle)
+    {
+        return differenceAngles(a1, a2) < wiggle
+    }
+    else
+    {
+        return normalize(a1) === normalize(a2)
+    }
+}
+
+/**
+ * return a text representation of the cardinal direction
+ * @param {number} angle
+ * @returns {string} UP, DOWN, LEFT, RIGHT, or NOT CARDINAL
+ */
+function explain(angle)
+{
+    switch (angle)
+    {
+        case UP: return 'UP'
+        case DOWN: return 'DOWN'
+        case LEFT: return 'LEFT'
+        case RIGHT: return 'RIGHT'
+        default: return 'NOT CARDINAL'
+    }
+}
+
+module.exports = {
+    UP, DOWN, LEFT, RIGHT,
+    NORTH, SOUTH, WEST, EAST,
+    PI_2, PI_QUARTER, PI_HALF,
+
+    toDegrees,
+    toRadians,
+    isAngleBetween,
+    differenceAnglesSign,
+    differenceAngles,
+    shortestAngle,
+    normalize,
+    angleTwoPoints,
+    distanceTwoPoints,
+    distanceTwoPointsSquared,
+    closestAngle,
+    equals,
+    explain
+}
+},{}],400:[function(require,module,exports){
+/**
+ * @file color.js
+ * @author David Figatner
+ * @license MIT
+ * @copyright YOPEY YOPEY LLC 2016
+ * {@link https://github.com/davidfig/color}
+ */
+
+const Random = require('yy-random');
+
+/** @class */
+class Color
+{
+    /**
+     * converts a #FFFFFF to 0x123456
+     * @param  {string} color
+     * @return {string}
+     */
+    poundToHex(color)
+    {
+        return '0x' + parseInt(color.substr(1)).toString(16);
+    }
+
+    /**
+     * converts a 0x123456 to #FFFFFF
+     * @param  {string} color
+     * @return {string}
+     */
+    hexToPound(color)
+    {
+        return '#' + color.substr(2);
+    }
+
+    /**
+     * converts a number to #FFFFFF
+     * @param  {number} color
+     * @return {string}
+     */
+    valueToPound(color)
+    {
+        return '#' + color.toString(16);
+    }
+
+    /**
+     * based on tinycolor
+     * https://github.com/bgrins/TinyColor
+     * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+     * @param {string} color
+     * @returns {object}
+     */
+    hexToHsl (color)
+    {
+        var rgb = this.hexToRgb(color),
+            r = rgb.r,
+            g = rgb.g,
+            b = rgb.b;
+        var max = Math.max(r, g, b),
+            min = Math.min(r, g, b);
+        var h, s, l = (max + min) / 2;
+
+        if (max === min)
+        {
+            h = s = 0; // achromatic
+        }
+        else
+        {
+            var d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+            case g: h = (b - r) / d + 2; break;
+            case b: h = (r - g) / d + 4; break;
+            }
+
+            h /= 6;
+        }
+
+        return { h: h, s: s, l: l };
+    }
+
+    /** based on tinycolor
+    * https://github.com/bgrins/TinyColor
+    * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+    * @param {object|number} color {h, s, b} or h
+    * @param {number} [s]
+    * @param {number} [l]
+    * @returns number
+    */
+    hslToHex(color)
+    {
+        var r, g, b, h, s, l;
+        if (arguments.length === 1)
+        {
+            h = color.h,
+            s = color.s,
+            l = color.l;
+        }
+        else
+        {
+            h = arguments[0];
+            s = arguments[1];
+            l = arguments[2];
+        }
+
+        function hue2rgb(p, q, t) {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1/6) return p + (q - p) * 6 * t;
+            if (t < 1/2) return q;
+            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+            return p;
+        }
+
+        if (s === 0)
+        {
+            r = g = b = l; // achromatic
+        }
+        else
+        {
+            var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            var p = 2 * l - q;
+            r = hue2rgb(p, q, h + 1/3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1/3);
+        }
+
+        return this.rgbToHex(r * 255, g * 255, b * 255);
+    }
+
+    /* darkens a color by the percentage
+    * @param {object} color in hex (0xabcdef)
+    * @param {number} amount
+    * @return {number}
+    */
+    darken(color, amount)
+    {
+        return this.blend(amount, color, 0);
+    }
+
+    /** based on tinycolor
+    * https://github.com/bgrins/TinyColor
+    * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+    * @param {object} color
+    * @param {number} amount
+    */
+    saturate(color, amount)
+    {
+        amount = (amount === 0) ? 0 : (amount || 10);
+        var hsl = this.hexToHsl(color);
+        hsl.s += amount / 100;
+        hsl.s = Math.min(1, Math.max(0, hsl.s));
+        return this.hslToHex(hsl);
+    }
+
+    /** based on tinycolor
+    * https://github.com/bgrins/TinyColor
+    * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+    * @param {object} color
+    * @param {number} amount
+    */
+    desaturate(color, amount) {
+        amount = (amount === 0) ? 0 : (amount || 10);
+        var hsl = this.hexToHsl(color);
+        hsl.s -= amount / 100;
+        hsl.s = Math.min(1, Math.max(0, hsl.s));
+        return this.hslToHex(hsl);
+    }
+
+    /**
+     * blends two colors together
+     * @param  {number} percent [0.0 - 1.0]
+     * @param  {string} color1 first color in 0x123456 format
+     * @param  {string} color2 second color in 0x123456 format
+     * @return {number}
+     */
+    blend(percent, color1, color2)
+    {
+        if (percent === 0)
+        {
+            return color1;
+        }
+        if (percent === 1)
+        {
+            return color2;
+        }
+        var r1 = color1 >> 16;
+        var g1 = color1 >> 8 & 0x0000ff;
+        var b1 = color1 & 0x0000ff;
+        var r2 = color2 >> 16;
+        var g2 = color2 >> 8 & 0x0000ff;
+        var b2 = color2 & 0x0000ff;
+        var percent1 = 1 - percent;
+        var r = percent1 * r1 + percent * r2;
+        var g = percent1 * g1 + percent * g2;
+        var b = percent1 * b1 + percent * b2;
+        return r << 16 | g << 8 | b;
+    }
+
+    /**
+     * returns a hex color into an rgb value
+     * @param  {number} hex
+     * @return {string}
+     */
+    hexToRgb(hex)
+    {
+        if (hex === 0)
+        {
+            hex = '0x000000';
+        }
+        else if (typeof hex !== 'string')
+        {
+            var s = '000000' + hex.toString(16);
+            hex = '0x' + s.substr(s.length - 6);
+        }
+        var result = /^0x?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+
+    /**
+     * rgb color to hex in the form of 0x123456
+     * @param  {number|string} r first number or 'rgb(...)' string
+     * @param  {number|null} g
+     * @param  {number|null} b
+     * @return {string}
+     */
+    rgbToHex(r, g, b)
+    {
+        if (arguments.length === 1) {
+            if (Array.isArray(arguments[0])) {
+                var number = arguments[0];
+                r = number[0];
+                g = number[1];
+                b = number[2];
+            } else {
+                var parse = r.replace(/( *rgb *\( *)|( )|(\) *;?)/,'');
+                var numbers = parse.split(',');
+                r = numbers[0];
+                g = numbers[1];
+                b = numbers[2];
+            }
+        }
+        return '0x' + ((1 << 24) + (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b)).toString(16).slice(1);
+    }
+
+    /**
+     * returns a random color with balanced r, g, b values (i.e., r, g, b either have the same value or are 0)
+     * @param {number} min value for random number
+     * @param {number} max value for random number
+     * @return {number} color
+     */
+    random(min, max)
+    {
+        function random()
+        {
+            return Random.range(min, max);
+        }
+
+        var colors = [{r:1, g:1, b:1}, {r:1, g:1, b:0}, {r:1,g:0,b:1}, {r:0,g:1,b:1}, {r:1,g:0,b:0}, {r:0,g:1,b:0}, {r:0,g:0,b:1}];
+        var color = Random.pick(colors);
+        min = min || 0;
+        max = max || 255;
+        return this.rgbToHex(color.r ? random() : 0, color.g ? random() : 0, color.b ? random() : 0);
+    }
+
+    // h: 0-360, s: 0-1, l: 0-1
+    /**
+     * returns a random color based on hsl
+     * @param {number} hMin [0, 360]
+     * @param {number} hMax [hMin, 360]
+     * @param {number} sMin [0, 1]
+     * @param {number} sMax [sMin, 1]
+     * @param {number} lMin [0, 1]
+     * @param {number} lMax [lMin, 1]
+     */
+    randomHSL(hMin, hMax, sMin, sMax, lMin, lMax)
+    {
+        var color = {
+            h: Random.range(hMin, hMax),
+            s: Random.range(sMin, sMax, true),
+            l: Random.range(lMin, lMax, true)
+        };
+        return this.hslToHex(color);
+    }
+
+    /**
+     * returns random colors based on HSL with different hues
+     * based on http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+     * @returns {number[]} colors in hex format (0x123456)
+     */
+    randomGoldenRatioHSL(count, saturation, luminosity)
+    {
+        const goldenRatio = 0.618033988749895;
+        let h = Random.get(1, true);
+        const colors = [];
+        for (let i = 0; i < count; i++)
+        {
+            colors.push(this.hslToHex(h, saturation, luminosity));
+            h = (h + goldenRatio) % 1;
+        }
+        return colors;
+    }
+};
+
+module.exports = new Color();
+},{"yy-random":403}],401:[function(require,module,exports){
+// yy-counter
+// In-browser counter to watch changeable values like counters or FPS
+// David Figatner
+// (c) YOPEY YOPEY LLC 2017
+// MIT License
+// https://github.com/davidfig/counter
+
+module.exports = class Counter
+{
+    /**
+     * @param {object} [options]
+     * @param {string} [options.side=rightbottom] side to place the panel (combination of right/left and bottom/top)
+     * @param {number} [options.padding=7px]
+     * @param {string} [options.color=white]
+     * @param {string} [options.background=rgba(0,0,0,0.5)]
+     * @param {*} {options.xxx} where xxx is a CSS style for the div
+     */
+    constructor(options)
+    {
+        options = options || {}
+        options.side = options.side || 'rightbottom'
+        options.side.toLowerCase()
+        options.padding = options.padding || '7px'
+        options.color = options.color || 'white'
+        options.background = options.background || 'rgba(0,0,0,0.5)'
+        this.div = document.createElement('div')
+        Counter.findParent(options.side).appendChild(this.div)
+        for (let style in options)
+        {
+            if (style !== 'parent' && style !== 'side')
+            {
+                this.div.style[style] = options[style]
+            }
+        }
+    }
+
+    /**
+     * find the parent div for one of the corners
+     * @param {string} [options.side] side to place the panel (combination of right/left and bottom/top)
+     * @return {HTMLElement}
+     */
+    static findParent(side)
+    {
+        const styles = []
+        let name = 'yy-counter-'
+        if (side.indexOf('left') !== -1)
+        {
+            name += 'left-'
+            styles['left'] = 0
+        }
+        else
+        {
+            name += 'right-'
+            styles['right'] = 0
+        }
+        if (side.indexOf('top') !== -1)
+        {
+            name += 'top'
+            styles['top'] = 0
+        }
+        else
+        {
+            name += 'bottom'
+            styles['bottom'] = 0
+        }
+        const test = document.getElementById(name)
+        if (test)
+        {
+            return test
+        }
+        const container = document.createElement('div')
+        container.id = name
+        container.style.overflow = 'hidden'
+        container.style.position = 'fixed'
+        container.style.zIndex = 10000
+        container.style.pointerEvents = 'none'
+        container.style.userSelect = 'none'
+        for (let style in styles)
+        {
+            container.style[style] = styles[style]
+        }
+        document.body.appendChild(container)
+        return container
+    }
+
+    /**
+     * replaces the innerHTML of the console
+     * @param {string|number} text1
+     * @param {string|number} [text2]
+     * @param {string|number} [...textn] any number of arguments
+     */
+    log()
+    {
+        let s = ''
+        for (let arg of arguments)
+        {
+            s += '<div>' + arg + '</div>'
+        }
+        this.div.innerHTML =  s
+    }
+
+    /**
+     * appends to the innerHTML of the console
+     * @param {string|number} text1
+     * @param {string|number} [text2]
+     * @param {string|number} [...textn] any number of arguments
+     */
+    append()
+    {
+        let s = this.div.innerHTML
+        for (let arg of arguments)
+        {
+            s += '<div>' + arg + '</div>'
+        }
+        this.div.innerHTML = s
+    }
+}
+},{}],402:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Color = require('tinycolor2');
+var Counter = require('yy-counter');
+
+var STYLES = {
+    'background': 'rgba(0, 0, 0, 0.5)',
+    'color': 'white'
+};
+
+var STYLES_FPS = {
+    'padding': '0.1em 0.5em'
+};
+
+var STYLES_METER = {};
+
+module.exports = function () {
+    /**
+     * @param {object} [options]
+     * @param {boolean} [options.meter=true] include a meter with the FPS
+     * @param {string} [options.side=bottom-right] include any combination of left/right and top/bottom
+     * @param {number} [options.FPS=60] desired FPS
+     * @param {number} [options.tolerance=1] minimum tolerance for fluctuations in FPS number
+     * @param {number} [options.meterWidth=100] width of meter div
+     * @param {number} [options.meterHeight=25] height of meter div
+     * @param {number} [options.meterLineHeight=4] height of meter line
+     * @param {styles[]} [options.styles] CSS styles to apply to the div (in javascript format)
+     * @param {styles[]} [options.stylesFPS] CSS styles to apply to the FPS text (in javascript format)
+     * @param {styles[]} [options.stylesMeter] CSS styles to apply to the FPS meter (in javascript format)
+     * @param {string} [options.text=" FPS"] change the text to the right of the FPS
+     */
+    function FPS(options) {
+        _classCallCheck(this, FPS);
+
+        this.options = options || {};
+        this.tolerance = this.options.tolerance || 1;
+        this.FPS = this.options.FPS || 60;
+        this.meterWidth = this.options.meterWidth || 100;
+        this.meterHeight = this.options.meterHeight || 25;
+        this.meterLineHeight = this.options.meterLineHeight || 4;
+        this.div = document.createElement('div');
+        Counter.findParent(this.options.side || 'bottom-right').appendChild(this.div);
+        this.style(this.div, STYLES, this.options.styles);
+        this.divFPS();
+        this.meter = typeof this.options.meter === 'undefined' || this.options.meter;
+        this.lastTime = 0;
+        this.frameNumber = 0;
+        this.lastUpdate = 0;
+        this.lastFPS = '--';
+    }
+
+    /**
+     * change desired FPS
+     * @type {number}
+     */
+
+
+    _createClass(FPS, [{
+        key: 'remove',
+
+
+        /**
+         * remove meter from DOM
+         */
+        value: function remove() {
+            this.div.remove();
+        }
+
+        /**
+         * @type {boolean} meter (the FPS graph) is on or off
+         */
+
+    }, {
+        key: 'style',
+        value: function style(div, style1, style2) {
+            for (var style in style1) {
+                div.style[style] = style1[style];
+            }
+            if (style2) {
+                for (var _style in style2) {
+                    div.style[_style] = style2[_style];
+                }
+            }
+        }
+
+        /**
+         * create div for text FPS
+         * @private
+         * @param {HTMLElement} div
+         * @param {object} options (see contructor)
+         */
+
+    }, {
+        key: 'divFPS',
+        value: function divFPS() {
+            var div = this.div;
+            var options = this.options;
+            var divFPS = document.createElement('div');
+            div.appendChild(divFPS);
+            this.fpsSpan = document.createElement('span');
+            divFPS.appendChild(this.fpsSpan);
+            var span = document.createElement('span');
+            divFPS.appendChild(span);
+            span.innerText = typeof options.text !== 'undefined' ? options.text : ' FPS';
+            this.style(div, STYLES_FPS, options.stylesFPS);
+        }
+
+        /**
+         * create div for FPS meter
+         * @private
+         * @param {HTMLElement} div
+         * @param {object} options (see contructor)
+         */
+
+    }, {
+        key: 'divMeter',
+        value: function divMeter() {
+            var div = this.div;
+            var options = this.options;
+            if (!this.meterCanvas) {
+                this.meterCanvas = document.createElement('canvas');
+                div.appendChild(this.meterCanvas);
+                this.meterCanvas.width = this.meterWidth;
+                this.meterCanvas.height = this.meterHeight;
+                this.meterCanvas.style.width = div.width + 'px';
+                this.meterCanvas.style.height = div.height + 'px';
+                this.style(this.meterCanvas, STYLES_METER, options.stylesMeter);
+            } else {
+                this.meterCanvas.style.display = 'block';
+            }
+        }
+
+        /**
+         * call this at the start of the frame to calculate FPS
+         */
+
+    }, {
+        key: 'frame',
+        value: function frame() {
+            this.frameNumber++;
+            var currentTime = performance.now() - this.lastTime;
+
+            // skip large differences to remove garbage
+            if (currentTime > 500) {
+                if (this.lastTime !== 0) {
+                    this.lastFPS = Math.floor(this.frameNumber / (currentTime / 1000));
+                    if (this.lastFPS >= this.FPS - this.tolerance && this.lastFPS <= this.FPS + this.tolerance) {
+                        this.lastFPS = this.FPS;
+                    }
+                }
+                this.lastTime = performance.now();
+                this.frameNumber = 0;
+            }
+            this.fpsSpan.innerText = this.lastFPS;
+            if (this.meterCanvas && this.lastFPS !== '--') {
+                this.meterUpdate(this.lastFPS / this.FPS);
+            }
+        }
+    }, {
+        key: 'meterUpdate',
+        value: function meterUpdate(percent) {
+            var c = this.meterCanvas.getContext('2d');
+            var data = c.getImageData(0, 0, this.meterCanvas.width, this.meterCanvas.height);
+            c.putImageData(data, -1, 0);
+            c.clearRect(this.meterCanvas.width - 1, 0, 1, this.meterCanvas.height);
+            if (percent < 0.5) {
+                c.fillStyle = Color.mix('#ff0000', '0xffa500', percent * 200).toHexString();
+            } else {
+                c.fillStyle = Color.mix('#ffa500', '#00ff00', (percent - 0.5) * 200).toHexString();
+            }
+            var height = (this.meterCanvas.height - this.meterLineHeight) * (1 - percent);
+            c.fillRect(this.meterCanvas.width - 1, height, 1, this.meterLineHeight);
+        }
+    }, {
+        key: 'side',
+        value: function side(options) {
+            if (options.side) {
+                options.side = options.side.toLowerCase();
+                if (options.side.indexOf('left') !== -1) {
+                    STYLES['left'] = 0;
+                    delete STYLES['right'];
+                } else {
+                    STYLES['right'] = 0;
+                    delete STYLES['left'];
+                }
+                if (options.side.indexOf('top') !== -1) {
+                    STYLES['top'] = 0;
+                    delete STYLES['bottom'];
+                } else {
+                    STYLES['bottom'] = 0;
+                    delete STYLES['top'];
+                }
+            } else {
+                STYLES['right'] = 0;
+                STYLES['bottom'] = 0;
+            }
+        }
+    }, {
+        key: 'fps',
+        get: function get() {
+            return this.FPS;
+        },
+        set: function set(value) {
+            this.FPS = value;
+        }
+    }, {
+        key: 'meter',
+        get: function get() {
+            return this._meter;
+        },
+        set: function set(value) {
+            if (value) {
+                this.divMeter();
+            } else if (this.meterCanvas) {
+                this.meterCanvas.style.display = 'none';
+            }
+        }
+    }]);
+
+    return FPS;
+}();
+
+},{"tinycolor2":398,"yy-counter":401}],403:[function(require,module,exports){
+// yy-random
+// by David Figatner
+// MIT license
+// copyright YOPEY YOPEY LLC 2016-17
+// https://github.com/davidfig/random
+
+const seedrandom = require('seedrandom')
+
+class Random
+{
+    constructor()
+    {
+        this.generator = Math.random
+    }
+
+    /**
+     * generates a seeded number
+     * @param {number} seed
+     * @param {object} [options]
+     * @param {string} [PRNG="alea"] - name of algorithm, see https://github.com/davidbau/seedrandom
+     * @param {boolean} [save=true]
+     */
+    seed(seed, options)
+    {
+        options = options || {}
+        this.generator = seedrandom[options.PRNG || 'alea'](seed, { state: options.state })
+        this.options = options
+    }
+
+    /**
+     * saves the state of the random generator
+     * can only be used after Random.seed() is called
+     * @returns {number} state
+     */
+    save()
+    {
+        if (this.generator !== Math.random)
+        {
+            return this.generator.state()
+        }
+    }
+
+    /**
+     * restores the state of the random generator
+     * @param {number} state
+     */
+    restore(state)
+    {
+        this.generator = seedrandom[this.options.PRNG || 'alea']('', { state })
+    }
+
+    /**
+     * changes the generator to use the old Math.sin-based random function
+     * based on : http://stackoverflow.com/questions/521295/javascript-random-seeds
+     * (deprecated) Use only for compatibility purposes
+     * @param {number} seed
+     */
+    seedOld(seed)
+    {
+        this.generator = function()
+        {
+            const x = Math.sin(seed++) * 10000
+            return x - Math.floor(x)
+        }
+    }
+
+    /**
+     * create a separate random generator using the seed
+     * @param {number} seed
+     * @return {object}
+     */
+    separateSeed(seed)
+    {
+        const random = new Random()
+        random.seed(seed)
+        return random
+    }
+
+    /**
+     * resets the random number this.generator to Math.random()
+     */
+    reset()
+    {
+        this.generator = Math.random
+    }
+
+    /**
+     * returns a random number using the this.generator between [0, ceiling - 1]
+     * @param {number} ceiling
+     * @param {boolean} [useFloat=false]
+     * @return {number}
+     */
+    get(ceiling, useFloat)
+    {
+        const negative = ceiling < 0 ? -1 : 1
+        ceiling *= negative
+        let result
+        if (useFloat)
+        {
+            result = this.generator() * ceiling
+        }
+        else
+        {
+            result = Math.floor(this.generator() * ceiling)
+        }
+        return result * negative
+    }
+
+    /**
+     * returns a random integer between 0 - Number.MAX_SAFE_INTEGER
+     * @return {number}
+     */
+    getHuge()
+    {
+        return this.get(Number.MAX_SAFE_INTEGER)
+    }
+
+    /**
+     * random number [middle - range, middle + range]
+     * @param {number} middle
+     * @param {number} delta
+     * @param {boolean} [useFloat=false]
+     * @return {number}
+     */
+    middle(middle, delta, useFloat)
+    {
+        const half = delta / 2
+        return this.range(middle - half, middle + half, useFloat)
+    }
+
+    /**
+     * random number [start, end]
+     * @param {number} start
+     * @param {number} end
+     * @param {boolean} [useFloat=false] if true, then range is (start, end)--i.e., not inclusive to start and end
+     * @return {number}
+     */
+    range(start, end, useFloat)
+    {
+        // case where there is no range
+        if (end === start)
+        {
+            return end
+        }
+
+        if (useFloat)
+        {
+            return this.get(end - start, true) + start
+        }
+        else
+        {
+            let range
+            if (start < 0 && end > 0)
+            {
+                range = -start + end + 1
+            }
+            else if (start === 0 && end > 0)
+            {
+                range = end + 1
+            }
+            else if (start < 0 && end === 0)
+            {
+                range = start - 1
+                start = 1
+            }
+            else if (start < 0 && end < 0)
+            {
+                range = end - start - 1
+            }
+            else
+            {
+                range = end - start + 1
+            }
+            return Math.floor(this.generator() * range) + start
+        }
+    }
+
+    /**
+     * an array of random numbers between [start, end]
+     * @param {number} start
+     * @param {number} end
+     * @param {number} count
+     * @param {boolean} [useFloat=false]
+     * @return {number[]}
+     */
+    rangeMultiple(start, end, count, useFloat)
+    {
+        var array = []
+        for (let i = 0; i < count; i++)
+        {
+            array.push(this.range(start, end, useFloat))
+        }
+        return array
+    }
+
+    /**
+     * an array of random numbers between [middle - range, middle + range]
+     * @param {number} middle
+     * @param {number} range
+     * @param {number} count
+     * @param {boolean} [useFloat=false]
+     * @return {number[]}
+     */
+    middleMultiple(middle, range, count, useFloat)
+    {
+        const array = []
+        for (let i = 0; i < count; i++)
+        {
+            array.push(middle(middle, range, useFloat))
+        }
+        return array
+    }
+
+    /**
+     * @param {number} [chance=0.5]
+     * returns random sign (either +1 or -1)
+     * @return {number}
+     */
+    sign(chance)
+    {
+        chance = chance || 0.5
+        return this.generator() < chance ? 1 : -1
+    }
+
+    /**
+     * tells you whether a random chance was achieved
+     * @param {number} [percent=0.5]
+     * @return {boolean}
+     */
+    chance(percent)
+    {
+        return this.generator() < (percent || 0.5)
+    }
+
+    /**
+     * returns a random angle in radians [0 - 2 * Math.PI)
+     */
+    angle()
+    {
+        return this.get(Math.PI * 2, true)
+    }
+
+    /**
+     * Shuffle array (either in place or copied)
+     * from http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+     * @param {Array} array
+     * @param {boolean} [copy=false] whether to shuffle in place (default) or return a new shuffled array
+     * @return {Array} a shuffled array
+     */
+    shuffle(array, copy)
+    {
+        if (copy)
+        {
+            array = array.slice()
+        }
+        if (array.length === 0)
+        {
+            return array
+        }
+
+        let currentIndex = array.length, temporaryValue, randomIndex
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex)
+        {
+            // Pick a remaining element...
+            randomIndex = this.get(currentIndex)
+            currentIndex -= 1
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex]
+            array[currentIndex] = array[randomIndex]
+            array[randomIndex] = temporaryValue
+        }
+        return array
+    }
+
+    /**
+     * picks a random element from an array
+     * @param {Array} array
+     * @return {*}
+     */
+    pick(array, remove)
+    {
+        if (!remove)
+        {
+            return array[this.get(array.length)]
+        }
+        else
+        {
+            const pick = this.get(array.length)
+            const temp = array[pick]
+            array.splice(pick, 1)
+            return temp
+        }
+    }
+
+    /**
+     * returns a random property from an object
+     * from http://stackoverflow.com/questions/2532218/pick-random-property-from-a-javascript-object
+     * @param {object} obj
+     * @return {*}
+     */
+    property(obj)
+    {
+        var result
+        var count = 0
+        for (var prop in obj)
+        {
+            if (this.chance(1 / ++count))
+            {
+                result = prop
+            }
+        }
+        return result
+    }
+
+    /**
+     * creates a random set where each entry is a value between [min, max]
+     * @param {number} min
+     * @param {number} max
+     * @param {number} amount of numbers in set
+     * @param {number[]}
+     */
+    set(min, max, amount)
+    {
+        var set = [], all = [], i
+        for (i = min; i < max; i++)
+        {
+            all.push(i)
+        }
+
+        for (i = 0; i < amount; i++)
+        {
+            var found = this.get(all.length)
+            set.push(all[found])
+            all.splice(found, 1)
+        }
+        return set
+    }
+
+
+    /**
+     * returns a set of numbers with a randomly even distribution (i.e., no overlapping and filling the space)
+     * @param {number} start position
+     * @param {number} end position
+     * @param {number} count of non-start/end points
+     * @param {boolean} [includeStart=false] includes start point (count++)
+     * @param {boolean} [includeEnd=false] includes end point (count++)
+     * @param {boolean} [useFloat=false]
+     * @param {number[]}
+     */
+    distribution(start, end, count, includeStart, includeEnd, useFloat)
+    {
+        var interval = Math.floor((end - start) / count)
+        var halfInterval = interval / 2
+        var quarterInterval = interval / 4
+        var set = []
+        if (includeStart)
+        {
+            set.push(start)
+        }
+        for (var i = 0; i < count; i++)
+        {
+            set.push(start + i * interval + halfInterval + this.range(-quarterInterval, quarterInterval, useFloat))
+        }
+        if (includeEnd)
+        {
+            set.push(end)
+        }
+        return set
+    }
+
+    /**
+     * returns a random number based on weighted probability between [min, max]
+     * from http://stackoverflow.com/questions/22656126/javascript-random-number-with-weighted-probability
+     * @param {number} min value
+     * @param {number} max value
+     * @param {number} target for average value
+     * @param {number} stddev - standard deviation
+     */
+    weightedProbabilityInt(min, max, target, stddev)
+    {
+        function normRand()
+        {
+            let x1, x2, rad
+            do
+            {
+                x1 = 2 * this.get(1, true) - 1
+                x2 = 2 * this.get(1, true) - 1
+                rad = x1 * x1 + x2 * x2
+            } while (rad >= 1 || rad === 0)
+            const c = Math.sqrt(-2 * Math.log(rad) / rad)
+            return x1 * c
+        }
+
+        stddev = stddev || 1
+        if (Math.random() < 0.81546)
+        {
+            while (true)
+            {
+                const sample = ((normRand() * stddev) + target)
+                if (sample >= min && sample <= max)
+                {
+                    return sample
+                }
+            }
+        }
+        else
+        {
+            return this.range(min, max)
+        }
+    }
+
+    /*
+     * returns a random hex color (0 - 0xffffff)
+     * @return {number}
+     */
+    color()
+    {
+        return this.get(0xffffff)
+    }
+}
+
+module.exports = new Random()
+},{"seedrandom":390}],404:[function(require,module,exports){
+module.exports={
+    "boxWidth": 100,
+    "boxHeight": 100,
+    "scrollbarSize": 10,
+    "scrollbarBackground": 14540253,
+    "scrollbarForeground": 8947848,
+    "dragScroll": true
+}
+},{}],405:[function(require,module,exports){
+module.exports = function (options, defaults)
+{
+    options = options || {}
+    for (let item in defaults)
+    {
+        if (typeof options[item] === 'undefined')
+        {
+            options[item] = defaults[item]
+        }
+    }
+    return options
+}
 },{}],406:[function(require,module,exports){
+const PIXI = require('pixi.js')
+const Viewport = require('pixi-viewport')
+
+const defaults = require('./defaults')
+const DEFAULTS = require('./defaults.json')
+
+/**
+ * pixi.js scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
+ */
+class Scrollbox extends PIXI.Container
+{
+    /**
+     * create a scrollbox
+     * @param {object} options
+     * @param {boolean} [options.dragScroll=true] user may drag the content area to scroll content
+     * @param {string} [options.overflowX=auto] (scroll, hidden, auto) this changes whether the scrollbar is shown
+     * @param {string} [options.overflowY=auto] (scroll, hidden, auto) this changes whether the scrollbar is shown
+     * @param {string} [options.overflow] (scroll, hidden, auto) sets overflowX and overflowY to this value
+     * @param {number} [options.boxWidth=100] width of scrollbox including scrollbar (in pixels)
+     * @param {number} [options.boxHeight=100] height of scrollbox including scrollbar (in pixels)
+     * @param {number} [options.scrollbarSize=10] size of scrollbar (in pixels)
+     * @param {number} [options.scrollbarBackground=0xdddddd] background color of scrollbar
+     * @param {number} [options.scrollbarForeground=0x888888] foreground color of scrollbar
+     */
+    constructor(options)
+    {
+        super()
+        this.options = defaults(options, DEFAULTS)
+
+        /**
+         * content in placed in here
+         * @type {PIXI.Container}
+         */
+        this.content = this.addChild(new Viewport({ screenWidth: this.boxWidth, screenHeight: this.boxHeight }))
+        this.content
+            .decelerate()
+            .on('moved', () => this._drawScrollbars())
+        if (this.options.dragScroll)
+        {
+            this.content.drag({ clampWheel: true })
+        }
+
+        /**
+         * graphics element for drawing the scrollbars
+         * @type {PIXI.Graphics}
+         */
+        this.scrollbar = this.addChild(new PIXI.Graphics())
+        this.scrollbar.interactive = true
+        this.scrollbar.on('pointerdown', this.scrollbarDown, this)
+        this.interactive = true
+        this.on('pointermove', this.scrollbarMove, this)
+        this.on('pointerup', this.scrollbarUp, this)
+        this.on('pointercancel', this.scrollbarUp, this)
+        this.on('pointerupoutside', this.scrollbarUp, this)
+        this._maskContent = this.addChild(new PIXI.Graphics())
+    }
+
+    /**
+     * user may drag the content area to scroll content
+     * @type {boolean}
+     */
+    get dragScroll()
+    {
+        return this.options.dragScroll
+    }
+    set dragScroll(value)
+    {
+        this.options.dragScroll = value
+        if (value)
+        {
+            this.content.drag()
+        }
+        else
+        {
+            this.content.removePlugin('drag')
+        }
+        this.update()
+    }
+
+    /**
+     * width of scrollbox including the scrollbar (if visible)- this changes the size and not the scale of the box
+     * @type {number}
+     */
+    get boxWidth()
+    {
+        return this.options.boxWidth
+    }
+    set boxWidth(value)
+    {
+        this.options.boxWidth = value
+        this.content.screenWidth = value
+        this.update()
+    }
+
+    /**
+     * sets overflowX and overflowY to (scroll, hidden, auto) changing whether the scrollbar is shown
+     * scroll = always show scrollbar
+     * hidden = hide overflow and do not show scrollbar
+     * auto = if content is larger than box size, then show scrollbar
+     * @type {string}
+     */
+    get overflow()
+    {
+        return this.options.overflow
+    }
+    set overflow(value)
+    {
+        this.options.overflow = value
+        this.options.overflowX = value
+        this.options.overflowY = value
+        this.update()
+    }
+
+    /**
+     * sets overflowX to (scroll, hidden, auto) changing whether the scrollbar is shown
+     * scroll = always show scrollbar
+     * hidden = hide overflow and do not show scrollbar
+     * auto = if content is larger than box size, then show scrollbar
+     * @type {string}
+     */
+    get overflowX()
+    {
+        return this.options.overflowX
+    }
+    set overflowX(value)
+    {
+        this.options.overflowX = value
+        this.update()
+    }
+
+    /**
+     * sets overflowY to (scroll, hidden, auto) changing whether the scrollbar is shown
+     * scroll = always show scrollbar
+     * hidden = hide overflow and do not show scrollbar
+     * auto = if content is larger than box size, then show scrollbar
+     * @type {string}
+     */
+    get overflowY()
+    {
+        return this.options.overflowY
+    }
+    set overflowY(value)
+    {
+        this.options.overflowY = value
+        this.update()
+    }
+
+    /**
+     * height of scrollbox including the scrollbar (if visible) - this changes the size and not the scale of the box
+     * @type {number}
+     */
+    get boxHeight()
+    {
+        return this.options.boxHeight
+    }
+    set boxHeight(value)
+    {
+        this.options.boxHeight = value
+        this.content.screenHeight = value
+        this.update()
+    }
+
+    /**
+     * scrollbar size in pixels
+     * @type {number}
+     */
+    get scrollbarSize()
+    {
+        return this.options.scrollbarSize
+    }
+    set scrollbarSize(value)
+    {
+        this.options.scrollbarSize = value
+    }
+
+    /**
+     * width of scrollbox less the scrollbar (if visible)
+     * @type {number}
+     * @readonly
+     */
+    get contentWidth()
+    {
+        return this.options.boxWidth - (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
+    }
+
+    /**
+     * height of scrollbox less the scrollbar (if visible)
+     * @type {number}
+     * @readonly
+     */
+    get contentHeight()
+    {
+        return this.options.boxHeight - (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
+    }
+
+    /**
+     * is the vertical scrollbar visible
+     * @type {boolean}
+     * @readonly
+     */
+    get isScrollbarVertical()
+    {
+        return this._isScrollbarVertical
+    }
+
+    /**
+     * is the horizontal scrollbar visible
+     * @type {boolean}
+     * @readonly
+     */
+    get isScrollbarHorizontal()
+    {
+        return this._isScrollbarHorizontal
+    }
+
+    /**
+     * top coordinate of scrollbar
+     */
+    get scrollTop()
+    {
+        return this.content.top
+    }
+
+    /**
+     * left coordinate of scrollbar
+     */
+    get scrollLeft()
+    {
+        return this.content.left
+    }
+
+    /**
+     * width of content area
+     */
+    get scrollWidth()
+    {
+        return this.content.width
+    }
+
+    /**
+     * height of content area
+     */
+    get scrollHeight()
+    {
+        return this.content.height
+    }
+
+    /**
+     * draws scrollbars
+     * @private
+     */
+    _drawScrollbars()
+    {
+        this._isScrollbarHorizontal = this.overflowX === 'scroll' ? true : this.overflowX === 'hidden' ? false : this.content.width > this.options.boxWidth
+        this._isScrollbarVertical = this.overflowY === 'scroll' ? true : this.overflowY === 'hidden' ? false : this.content.height > this.options.boxHeight
+        this.scrollbar.clear()
+        let options = {}
+        options.left = 0
+        options.right = this.content.width + (this._isScrollbarVertical ? this.options.scrollbarSize : 0)
+        options.top = 0
+        options.bottom = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
+        const width = this.content.width + (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
+        const height = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
+        this.scrollbarTop = (this.content.top / height) * this.boxHeight
+        this.scrollbarHeight = (this.boxHeight / height) * this.boxHeight
+        this.scrollbarLeft = (this.content.left / width) * this.boxWidth
+        this.scrollbarWidth = (this.boxWidth / width) * this.boxWidth
+        if (this.isScrollbarVertical)
+        {
+            this.scrollbar
+                .beginFill(this.options.scrollbarBackground)
+                .drawRect(this.boxWidth - this.scrollbarSize, 0, this.scrollbarSize, this.boxHeight)
+                .endFill()
+        }
+        if (this.isScrollbarHorizontal)
+        {
+            this.scrollbar
+                .beginFill(this.options.scrollbarBackground)
+                .drawRect(0, this.boxHeight - this.scrollbarSize, this.boxWidth, this.scrollbarSize)
+                .endFill()
+        }
+        if (this.isScrollbarVertical)
+        {
+            this.scrollbar
+                .beginFill(this.options.scrollbarForeground)
+                .drawRect(this.boxWidth - this.scrollbarSize, this.scrollbarTop, this.scrollbarSize, this.scrollbarHeight)
+                .endFill()
+        }
+        if (this.isScrollbarHorizontal)
+        {
+            this.scrollbar
+                .beginFill(this.options.scrollbarForeground)
+                .drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize, this.scrollbarWidth, this.scrollbarSize)
+                .endFill()
+        }
+        this.content.clamp(options)
+    }
+
+    /**
+     * draws mask layer
+     * @private
+     */
+    _drawMask()
+    {
+        this._maskContent
+            .beginFill(0)
+            .drawRect(0, 0, this.boxWidth, this.boxHeight)
+            .endFill()
+        this.mask = this._maskContent
+    }
+
+    /**
+     * call when scrollbox content changes
+     */
+    update()
+    {
+        this.mask = null
+        this._maskContent.clear()
+        this._drawScrollbars()
+        this._drawMask()
+    }
+
+    /**
+     * handle pointer down on scrollbar
+     * @param {PIXI.interaction.InteractionEvent} e
+     * @private
+     */
+    scrollbarDown(e)
+    {
+        const local = this.toLocal(e.data.global)
+        if (this.isScrollbarHorizontal)
+        {
+            if (local.y > this.boxHeight - this.scrollbarSize)
+            {
+                if (local.x >= this.scrollbarLeft && local.x <= this.scrollbarLeft + this.scrollbarWidth)
+                {
+                    this.pointerDown = { type: 'horizontal', last: local }
+                }
+                else
+                {
+                    if (local.x > this.scrollbarLeft)
+                    {
+                        this.content.left += this.content.worldScreenWidth
+                        this.update()
+                    }
+                    else
+                    {
+                        this.content.left -= this.content.worldScreenWidth
+                        this.update()
+                    }
+                }
+                e.stopPropagation()
+                return
+            }
+        }
+        if (this.isScrollbarVertical)
+        {
+            if (local.x > this.boxWidth - this.scrollbarSize)
+            {
+                if (local.y >= this.scrollbarTop && local.y <= this.scrollbarTop + this.scrollbarWidth)
+                {
+                    this.pointerDown = { type: 'vertical', last: local }
+                }
+                else
+                {
+                    if (local.y > this.scrollbarTop)
+                    {
+                        this.content.top += this.content.worldScreenHeight
+                        this.update()
+                    }
+                    else
+                    {
+                        this.content.top -= this.content.worldScreenHeight
+                        this.update()
+                    }
+                }
+                e.stopPropagation()
+                return
+            }
+        }
+    }
+
+    /**
+     * handle pointer move on scrollbar
+     * @param {PIXI.interaction.InteractionEvent} e
+     * @private
+     */
+    scrollbarMove(e)
+    {
+        if (this.pointerDown)
+        {
+            if (this.pointerDown.type === 'horizontal')
+            {
+                const local = this.toLocal(e.data.global)
+                this.content.left += local.x - this.pointerDown.last.x
+                this.pointerDown.last = local
+                this.update()
+            }
+            else if (this.pointerDown.type === 'vertical')
+            {
+                const local = this.toLocal(e.data.global)
+                this.content.top += local.y - this.pointerDown.last.y
+                this.pointerDown.last = local
+                this.update()
+            }
+            e.stopPropagation()
+        }
+    }
+
+    /**
+     * handle pointer down on scrollbar
+     * @private
+     */
+    scrollbarUp()
+    {
+        this.pointerDown = null
+    }
+}
+
+module.exports = Scrollbox
+},{"./defaults":405,"./defaults.json":404,"pixi-viewport":230,"pixi.js":347}],407:[function(require,module,exports){
+
+},{}],408:[function(require,module,exports){
+(function (process){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
+function normalizeArray(parts, allowAboveRoot) {
+  // if the path tries to go above the root, `up` ends up > 0
+  var up = 0;
+  for (var i = parts.length - 1; i >= 0; i--) {
+    var last = parts[i];
+    if (last === '.') {
+      parts.splice(i, 1);
+    } else if (last === '..') {
+      parts.splice(i, 1);
+      up++;
+    } else if (up) {
+      parts.splice(i, 1);
+      up--;
+    }
+  }
+
+  // if the path is allowed to go above the root, restore leading ..s
+  if (allowAboveRoot) {
+    for (; up--; up) {
+      parts.unshift('..');
+    }
+  }
+
+  return parts;
+}
+
+// Split a filename into [root, dir, basename, ext], unix version
+// 'root' is just a slash, or nothing.
+var splitPathRe =
+    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+var splitPath = function(filename) {
+  return splitPathRe.exec(filename).slice(1);
+};
+
+// path.resolve([from ...], to)
+// posix version
+exports.resolve = function() {
+  var resolvedPath = '',
+      resolvedAbsolute = false;
+
+  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    var path = (i >= 0) ? arguments[i] : process.cwd();
+
+    // Skip empty and invalid entries
+    if (typeof path !== 'string') {
+      throw new TypeError('Arguments to path.resolve must be strings');
+    } else if (!path) {
+      continue;
+    }
+
+    resolvedPath = path + '/' + resolvedPath;
+    resolvedAbsolute = path.charAt(0) === '/';
+  }
+
+  // At this point the path should be resolved to a full absolute path, but
+  // handle relative paths to be safe (might happen when process.cwd() fails)
+
+  // Normalize the path
+  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
+    return !!p;
+  }), !resolvedAbsolute).join('/');
+
+  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
+};
+
+// path.normalize(path)
+// posix version
+exports.normalize = function(path) {
+  var isAbsolute = exports.isAbsolute(path),
+      trailingSlash = substr(path, -1) === '/';
+
+  // Normalize the path
+  path = normalizeArray(filter(path.split('/'), function(p) {
+    return !!p;
+  }), !isAbsolute).join('/');
+
+  if (!path && !isAbsolute) {
+    path = '.';
+  }
+  if (path && trailingSlash) {
+    path += '/';
+  }
+
+  return (isAbsolute ? '/' : '') + path;
+};
+
+// posix version
+exports.isAbsolute = function(path) {
+  return path.charAt(0) === '/';
+};
+
+// posix version
+exports.join = function() {
+  var paths = Array.prototype.slice.call(arguments, 0);
+  return exports.normalize(filter(paths, function(p, index) {
+    if (typeof p !== 'string') {
+      throw new TypeError('Arguments to path.join must be strings');
+    }
+    return p;
+  }).join('/'));
+};
+
+
+// path.relative(from, to)
+// posix version
+exports.relative = function(from, to) {
+  from = exports.resolve(from).substr(1);
+  to = exports.resolve(to).substr(1);
+
+  function trim(arr) {
+    var start = 0;
+    for (; start < arr.length; start++) {
+      if (arr[start] !== '') break;
+    }
+
+    var end = arr.length - 1;
+    for (; end >= 0; end--) {
+      if (arr[end] !== '') break;
+    }
+
+    if (start > end) return [];
+    return arr.slice(start, end - start + 1);
+  }
+
+  var fromParts = trim(from.split('/'));
+  var toParts = trim(to.split('/'));
+
+  var length = Math.min(fromParts.length, toParts.length);
+  var samePartsLength = length;
+  for (var i = 0; i < length; i++) {
+    if (fromParts[i] !== toParts[i]) {
+      samePartsLength = i;
+      break;
+    }
+  }
+
+  var outputParts = [];
+  for (var i = samePartsLength; i < fromParts.length; i++) {
+    outputParts.push('..');
+  }
+
+  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+
+  return outputParts.join('/');
+};
+
+exports.sep = '/';
+exports.delimiter = ':';
+
+exports.dirname = function(path) {
+  var result = splitPath(path),
+      root = result[0],
+      dir = result[1];
+
+  if (!root && !dir) {
+    // No dirname whatsoever
+    return '.';
+  }
+
+  if (dir) {
+    // It has a dirname, strip trailing slash
+    dir = dir.substr(0, dir.length - 1);
+  }
+
+  return root + dir;
+};
+
+
+exports.basename = function(path, ext) {
+  var f = splitPath(path)[2];
+  // TODO: make this comparison case-insensitive on windows?
+  if (ext && f.substr(-1 * ext.length) === ext) {
+    f = f.substr(0, f.length - ext.length);
+  }
+  return f;
+};
+
+
+exports.extname = function(path) {
+  return splitPath(path)[3];
+};
+
+function filter (xs, f) {
+    if (xs.filter) return xs.filter(f);
+    var res = [];
+    for (var i = 0; i < xs.length; i++) {
+        if (f(xs[i], i, xs)) res.push(xs[i]);
+    }
+    return res;
+}
+
+// String.prototype.substr - negative index don't work in IE8
+var substr = 'ab'.substr(-1) === 'b'
+    ? function (str, start, len) { return str.substr(start, len) }
+    : function (str, start, len) {
+        if (start < 0) start = str.length + start;
+        return str.substr(start, len);
+    }
+;
+
+}).call(this,require('_process'))
+},{"_process":409}],409:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],410:[function(require,module,exports){
+(function (global){
+/*! https://mths.be/punycode v1.4.1 by @mathias */
+;(function(root) {
+
+	/** Detect free variables */
+	var freeExports = typeof exports == 'object' && exports &&
+		!exports.nodeType && exports;
+	var freeModule = typeof module == 'object' && module &&
+		!module.nodeType && module;
+	var freeGlobal = typeof global == 'object' && global;
+	if (
+		freeGlobal.global === freeGlobal ||
+		freeGlobal.window === freeGlobal ||
+		freeGlobal.self === freeGlobal
+	) {
+		root = freeGlobal;
+	}
+
+	/**
+	 * The `punycode` object.
+	 * @name punycode
+	 * @type Object
+	 */
+	var punycode,
+
+	/** Highest positive signed 32-bit float value */
+	maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
+
+	/** Bootstring parameters */
+	base = 36,
+	tMin = 1,
+	tMax = 26,
+	skew = 38,
+	damp = 700,
+	initialBias = 72,
+	initialN = 128, // 0x80
+	delimiter = '-', // '\x2D'
+
+	/** Regular expressions */
+	regexPunycode = /^xn--/,
+	regexNonASCII = /[^\x20-\x7E]/, // unprintable ASCII chars + non-ASCII chars
+	regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g, // RFC 3490 separators
+
+	/** Error messages */
+	errors = {
+		'overflow': 'Overflow: input needs wider integers to process',
+		'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
+		'invalid-input': 'Invalid input'
+	},
+
+	/** Convenience shortcuts */
+	baseMinusTMin = base - tMin,
+	floor = Math.floor,
+	stringFromCharCode = String.fromCharCode,
+
+	/** Temporary variable */
+	key;
+
+	/*--------------------------------------------------------------------------*/
+
+	/**
+	 * A generic error utility function.
+	 * @private
+	 * @param {String} type The error type.
+	 * @returns {Error} Throws a `RangeError` with the applicable error message.
+	 */
+	function error(type) {
+		throw new RangeError(errors[type]);
+	}
+
+	/**
+	 * A generic `Array#map` utility function.
+	 * @private
+	 * @param {Array} array The array to iterate over.
+	 * @param {Function} callback The function that gets called for every array
+	 * item.
+	 * @returns {Array} A new array of values returned by the callback function.
+	 */
+	function map(array, fn) {
+		var length = array.length;
+		var result = [];
+		while (length--) {
+			result[length] = fn(array[length]);
+		}
+		return result;
+	}
+
+	/**
+	 * A simple `Array#map`-like wrapper to work with domain name strings or email
+	 * addresses.
+	 * @private
+	 * @param {String} domain The domain name or email address.
+	 * @param {Function} callback The function that gets called for every
+	 * character.
+	 * @returns {Array} A new string of characters returned by the callback
+	 * function.
+	 */
+	function mapDomain(string, fn) {
+		var parts = string.split('@');
+		var result = '';
+		if (parts.length > 1) {
+			// In email addresses, only the domain name should be punycoded. Leave
+			// the local part (i.e. everything up to `@`) intact.
+			result = parts[0] + '@';
+			string = parts[1];
+		}
+		// Avoid `split(regex)` for IE8 compatibility. See #17.
+		string = string.replace(regexSeparators, '\x2E');
+		var labels = string.split('.');
+		var encoded = map(labels, fn).join('.');
+		return result + encoded;
+	}
+
+	/**
+	 * Creates an array containing the numeric code points of each Unicode
+	 * character in the string. While JavaScript uses UCS-2 internally,
+	 * this function will convert a pair of surrogate halves (each of which
+	 * UCS-2 exposes as separate characters) into a single code point,
+	 * matching UTF-16.
+	 * @see `punycode.ucs2.encode`
+	 * @see <https://mathiasbynens.be/notes/javascript-encoding>
+	 * @memberOf punycode.ucs2
+	 * @name decode
+	 * @param {String} string The Unicode input string (UCS-2).
+	 * @returns {Array} The new array of code points.
+	 */
+	function ucs2decode(string) {
+		var output = [],
+		    counter = 0,
+		    length = string.length,
+		    value,
+		    extra;
+		while (counter < length) {
+			value = string.charCodeAt(counter++);
+			if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+				// high surrogate, and there is a next character
+				extra = string.charCodeAt(counter++);
+				if ((extra & 0xFC00) == 0xDC00) { // low surrogate
+					output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+				} else {
+					// unmatched surrogate; only append this code unit, in case the next
+					// code unit is the high surrogate of a surrogate pair
+					output.push(value);
+					counter--;
+				}
+			} else {
+				output.push(value);
+			}
+		}
+		return output;
+	}
+
+	/**
+	 * Creates a string based on an array of numeric code points.
+	 * @see `punycode.ucs2.decode`
+	 * @memberOf punycode.ucs2
+	 * @name encode
+	 * @param {Array} codePoints The array of numeric code points.
+	 * @returns {String} The new Unicode string (UCS-2).
+	 */
+	function ucs2encode(array) {
+		return map(array, function(value) {
+			var output = '';
+			if (value > 0xFFFF) {
+				value -= 0x10000;
+				output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
+				value = 0xDC00 | value & 0x3FF;
+			}
+			output += stringFromCharCode(value);
+			return output;
+		}).join('');
+	}
+
+	/**
+	 * Converts a basic code point into a digit/integer.
+	 * @see `digitToBasic()`
+	 * @private
+	 * @param {Number} codePoint The basic numeric code point value.
+	 * @returns {Number} The numeric value of a basic code point (for use in
+	 * representing integers) in the range `0` to `base - 1`, or `base` if
+	 * the code point does not represent a value.
+	 */
+	function basicToDigit(codePoint) {
+		if (codePoint - 48 < 10) {
+			return codePoint - 22;
+		}
+		if (codePoint - 65 < 26) {
+			return codePoint - 65;
+		}
+		if (codePoint - 97 < 26) {
+			return codePoint - 97;
+		}
+		return base;
+	}
+
+	/**
+	 * Converts a digit/integer into a basic code point.
+	 * @see `basicToDigit()`
+	 * @private
+	 * @param {Number} digit The numeric value of a basic code point.
+	 * @returns {Number} The basic code point whose value (when used for
+	 * representing integers) is `digit`, which needs to be in the range
+	 * `0` to `base - 1`. If `flag` is non-zero, the uppercase form is
+	 * used; else, the lowercase form is used. The behavior is undefined
+	 * if `flag` is non-zero and `digit` has no uppercase form.
+	 */
+	function digitToBasic(digit, flag) {
+		//  0..25 map to ASCII a..z or A..Z
+		// 26..35 map to ASCII 0..9
+		return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
+	}
+
+	/**
+	 * Bias adaptation function as per section 3.4 of RFC 3492.
+	 * https://tools.ietf.org/html/rfc3492#section-3.4
+	 * @private
+	 */
+	function adapt(delta, numPoints, firstTime) {
+		var k = 0;
+		delta = firstTime ? floor(delta / damp) : delta >> 1;
+		delta += floor(delta / numPoints);
+		for (/* no initialization */; delta > baseMinusTMin * tMax >> 1; k += base) {
+			delta = floor(delta / baseMinusTMin);
+		}
+		return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
+	}
+
+	/**
+	 * Converts a Punycode string of ASCII-only symbols to a string of Unicode
+	 * symbols.
+	 * @memberOf punycode
+	 * @param {String} input The Punycode string of ASCII-only symbols.
+	 * @returns {String} The resulting string of Unicode symbols.
+	 */
+	function decode(input) {
+		// Don't use UCS-2
+		var output = [],
+		    inputLength = input.length,
+		    out,
+		    i = 0,
+		    n = initialN,
+		    bias = initialBias,
+		    basic,
+		    j,
+		    index,
+		    oldi,
+		    w,
+		    k,
+		    digit,
+		    t,
+		    /** Cached calculation results */
+		    baseMinusT;
+
+		// Handle the basic code points: let `basic` be the number of input code
+		// points before the last delimiter, or `0` if there is none, then copy
+		// the first basic code points to the output.
+
+		basic = input.lastIndexOf(delimiter);
+		if (basic < 0) {
+			basic = 0;
+		}
+
+		for (j = 0; j < basic; ++j) {
+			// if it's not a basic code point
+			if (input.charCodeAt(j) >= 0x80) {
+				error('not-basic');
+			}
+			output.push(input.charCodeAt(j));
+		}
+
+		// Main decoding loop: start just after the last delimiter if any basic code
+		// points were copied; start at the beginning otherwise.
+
+		for (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */) {
+
+			// `index` is the index of the next character to be consumed.
+			// Decode a generalized variable-length integer into `delta`,
+			// which gets added to `i`. The overflow checking is easier
+			// if we increase `i` as we go, then subtract off its starting
+			// value at the end to obtain `delta`.
+			for (oldi = i, w = 1, k = base; /* no condition */; k += base) {
+
+				if (index >= inputLength) {
+					error('invalid-input');
+				}
+
+				digit = basicToDigit(input.charCodeAt(index++));
+
+				if (digit >= base || digit > floor((maxInt - i) / w)) {
+					error('overflow');
+				}
+
+				i += digit * w;
+				t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+
+				if (digit < t) {
+					break;
+				}
+
+				baseMinusT = base - t;
+				if (w > floor(maxInt / baseMinusT)) {
+					error('overflow');
+				}
+
+				w *= baseMinusT;
+
+			}
+
+			out = output.length + 1;
+			bias = adapt(i - oldi, out, oldi == 0);
+
+			// `i` was supposed to wrap around from `out` to `0`,
+			// incrementing `n` each time, so we'll fix that now:
+			if (floor(i / out) > maxInt - n) {
+				error('overflow');
+			}
+
+			n += floor(i / out);
+			i %= out;
+
+			// Insert `n` at position `i` of the output
+			output.splice(i++, 0, n);
+
+		}
+
+		return ucs2encode(output);
+	}
+
+	/**
+	 * Converts a string of Unicode symbols (e.g. a domain name label) to a
+	 * Punycode string of ASCII-only symbols.
+	 * @memberOf punycode
+	 * @param {String} input The string of Unicode symbols.
+	 * @returns {String} The resulting Punycode string of ASCII-only symbols.
+	 */
+	function encode(input) {
+		var n,
+		    delta,
+		    handledCPCount,
+		    basicLength,
+		    bias,
+		    j,
+		    m,
+		    q,
+		    k,
+		    t,
+		    currentValue,
+		    output = [],
+		    /** `inputLength` will hold the number of code points in `input`. */
+		    inputLength,
+		    /** Cached calculation results */
+		    handledCPCountPlusOne,
+		    baseMinusT,
+		    qMinusT;
+
+		// Convert the input in UCS-2 to Unicode
+		input = ucs2decode(input);
+
+		// Cache the length
+		inputLength = input.length;
+
+		// Initialize the state
+		n = initialN;
+		delta = 0;
+		bias = initialBias;
+
+		// Handle the basic code points
+		for (j = 0; j < inputLength; ++j) {
+			currentValue = input[j];
+			if (currentValue < 0x80) {
+				output.push(stringFromCharCode(currentValue));
+			}
+		}
+
+		handledCPCount = basicLength = output.length;
+
+		// `handledCPCount` is the number of code points that have been handled;
+		// `basicLength` is the number of basic code points.
+
+		// Finish the basic string - if it is not empty - with a delimiter
+		if (basicLength) {
+			output.push(delimiter);
+		}
+
+		// Main encoding loop:
+		while (handledCPCount < inputLength) {
+
+			// All non-basic code points < n have been handled already. Find the next
+			// larger one:
+			for (m = maxInt, j = 0; j < inputLength; ++j) {
+				currentValue = input[j];
+				if (currentValue >= n && currentValue < m) {
+					m = currentValue;
+				}
+			}
+
+			// Increase `delta` enough to advance the decoder's <n,i> state to <m,0>,
+			// but guard against overflow
+			handledCPCountPlusOne = handledCPCount + 1;
+			if (m - n > floor((maxInt - delta) / handledCPCountPlusOne)) {
+				error('overflow');
+			}
+
+			delta += (m - n) * handledCPCountPlusOne;
+			n = m;
+
+			for (j = 0; j < inputLength; ++j) {
+				currentValue = input[j];
+
+				if (currentValue < n && ++delta > maxInt) {
+					error('overflow');
+				}
+
+				if (currentValue == n) {
+					// Represent delta as a generalized variable-length integer
+					for (q = delta, k = base; /* no condition */; k += base) {
+						t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+						if (q < t) {
+							break;
+						}
+						qMinusT = q - t;
+						baseMinusT = base - t;
+						output.push(
+							stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0))
+						);
+						q = floor(qMinusT / baseMinusT);
+					}
+
+					output.push(stringFromCharCode(digitToBasic(q, 0)));
+					bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
+					delta = 0;
+					++handledCPCount;
+				}
+			}
+
+			++delta;
+			++n;
+
+		}
+		return output.join('');
+	}
+
+	/**
+	 * Converts a Punycode string representing a domain name or an email address
+	 * to Unicode. Only the Punycoded parts of the input will be converted, i.e.
+	 * it doesn't matter if you call it on a string that has already been
+	 * converted to Unicode.
+	 * @memberOf punycode
+	 * @param {String} input The Punycoded domain name or email address to
+	 * convert to Unicode.
+	 * @returns {String} The Unicode representation of the given Punycode
+	 * string.
+	 */
+	function toUnicode(input) {
+		return mapDomain(input, function(string) {
+			return regexPunycode.test(string)
+				? decode(string.slice(4).toLowerCase())
+				: string;
+		});
+	}
+
+	/**
+	 * Converts a Unicode string representing a domain name or an email address to
+	 * Punycode. Only the non-ASCII parts of the domain name will be converted,
+	 * i.e. it doesn't matter if you call it with a domain that's already in
+	 * ASCII.
+	 * @memberOf punycode
+	 * @param {String} input The domain name or email address to convert, as a
+	 * Unicode string.
+	 * @returns {String} The Punycode representation of the given domain name or
+	 * email address.
+	 */
+	function toASCII(input) {
+		return mapDomain(input, function(string) {
+			return regexNonASCII.test(string)
+				? 'xn--' + encode(string)
+				: string;
+		});
+	}
+
+	/*--------------------------------------------------------------------------*/
+
+	/** Define the public API */
+	punycode = {
+		/**
+		 * A string representing the current Punycode.js version number.
+		 * @memberOf punycode
+		 * @type String
+		 */
+		'version': '1.4.1',
+		/**
+		 * An object of methods to convert from JavaScript's internal character
+		 * representation (UCS-2) to Unicode code points, and back.
+		 * @see <https://mathiasbynens.be/notes/javascript-encoding>
+		 * @memberOf punycode
+		 * @type Object
+		 */
+		'ucs2': {
+			'decode': ucs2decode,
+			'encode': ucs2encode
+		},
+		'decode': decode,
+		'encode': encode,
+		'toASCII': toASCII,
+		'toUnicode': toUnicode
+	};
+
+	/** Expose `punycode` */
+	// Some AMD build optimizers, like r.js, check for specific condition patterns
+	// like the following:
+	if (
+		typeof define == 'function' &&
+		typeof define.amd == 'object' &&
+		define.amd
+	) {
+		define('punycode', function() {
+			return punycode;
+		});
+	} else if (freeExports && freeModule) {
+		if (module.exports == freeExports) {
+			// in Node.js, io.js, or RingoJS v0.8.0+
+			freeModule.exports = punycode;
+		} else {
+			// in Narwhal or RingoJS v0.7.0-
+			for (key in punycode) {
+				punycode.hasOwnProperty(key) && (freeExports[key] = punycode[key]);
+			}
+		}
+	} else {
+		// in Rhino or a web browser
+		root.punycode = punycode;
+	}
+
+}(this));
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],411:[function(require,module,exports){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+'use strict';
+
+// If obj.hasOwnProperty has been overridden, then calling
+// obj.hasOwnProperty(prop) will break.
+// See: https://github.com/joyent/node/issues/1707
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+module.exports = function(qs, sep, eq, options) {
+  sep = sep || '&';
+  eq = eq || '=';
+  var obj = {};
+
+  if (typeof qs !== 'string' || qs.length === 0) {
+    return obj;
+  }
+
+  var regexp = /\+/g;
+  qs = qs.split(sep);
+
+  var maxKeys = 1000;
+  if (options && typeof options.maxKeys === 'number') {
+    maxKeys = options.maxKeys;
+  }
+
+  var len = qs.length;
+  // maxKeys <= 0 means that we should not limit keys count
+  if (maxKeys > 0 && len > maxKeys) {
+    len = maxKeys;
+  }
+
+  for (var i = 0; i < len; ++i) {
+    var x = qs[i].replace(regexp, '%20'),
+        idx = x.indexOf(eq),
+        kstr, vstr, k, v;
+
+    if (idx >= 0) {
+      kstr = x.substr(0, idx);
+      vstr = x.substr(idx + 1);
+    } else {
+      kstr = x;
+      vstr = '';
+    }
+
+    k = decodeURIComponent(kstr);
+    v = decodeURIComponent(vstr);
+
+    if (!hasOwnProperty(obj, k)) {
+      obj[k] = v;
+    } else if (isArray(obj[k])) {
+      obj[k].push(v);
+    } else {
+      obj[k] = [obj[k], v];
+    }
+  }
+
+  return obj;
+};
+
+var isArray = Array.isArray || function (xs) {
+  return Object.prototype.toString.call(xs) === '[object Array]';
+};
+
+},{}],412:[function(require,module,exports){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+'use strict';
+
+var stringifyPrimitive = function(v) {
+  switch (typeof v) {
+    case 'string':
+      return v;
+
+    case 'boolean':
+      return v ? 'true' : 'false';
+
+    case 'number':
+      return isFinite(v) ? v : '';
+
+    default:
+      return '';
+  }
+};
+
+module.exports = function(obj, sep, eq, name) {
+  sep = sep || '&';
+  eq = eq || '=';
+  if (obj === null) {
+    obj = undefined;
+  }
+
+  if (typeof obj === 'object') {
+    return map(objectKeys(obj), function(k) {
+      var ks = encodeURIComponent(stringifyPrimitive(k)) + eq;
+      if (isArray(obj[k])) {
+        return map(obj[k], function(v) {
+          return ks + encodeURIComponent(stringifyPrimitive(v));
+        }).join(sep);
+      } else {
+        return ks + encodeURIComponent(stringifyPrimitive(obj[k]));
+      }
+    }).join(sep);
+
+  }
+
+  if (!name) return '';
+  return encodeURIComponent(stringifyPrimitive(name)) + eq +
+         encodeURIComponent(stringifyPrimitive(obj));
+};
+
+var isArray = Array.isArray || function (xs) {
+  return Object.prototype.toString.call(xs) === '[object Array]';
+};
+
+function map (xs, f) {
+  if (xs.map) return xs.map(f);
+  var res = [];
+  for (var i = 0; i < xs.length; i++) {
+    res.push(f(xs[i], i));
+  }
+  return res;
+}
+
+var objectKeys = Object.keys || function (obj) {
+  var res = [];
+  for (var key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) res.push(key);
+  }
+  return res;
+};
+
+},{}],413:[function(require,module,exports){
+'use strict';
+
+exports.decode = exports.parse = require('./decode');
+exports.encode = exports.stringify = require('./encode');
+
+},{"./decode":411,"./encode":412}],414:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -65173,7 +67697,7 @@ Url.prototype.parseHost = function() {
   if (host) this.hostname = host;
 };
 
-},{"./util":407,"punycode":386,"querystring":389}],407:[function(require,module,exports){
+},{"./util":415,"punycode":410,"querystring":413}],415:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -65191,1804 +67715,4 @@ module.exports = {
   }
 };
 
-},{}],408:[function(require,module,exports){
-// angle.js <https://github.com/davidfig/anglejs>
-// Released under MIT license <https://github.com/davidfig/angle/blob/master/LICENSE>
-// Author: David Figatner
-// Copyright (c) 2016-17 YOPEY YOPEY LLC
-
-const _toDegreeConversion = 180 / Math.PI
-const _toRadianConversion = Math.PI / 180
-
-
-/** @constant {number} */
-const UP = Math.PI / 2
-const DOWN = 3 * Math.PI / 2
-const LEFT = Math.PI
-const RIGHT = 0
-
-const NORTH = UP
-const SOUTH = DOWN
-const WEST = LEFT
-const EAST = RIGHT
-
-const PI_2 = Math.PI * 2
-const PI_QUARTER = Math.PI / 4
-const PI_HALF = Math.PI / 2
-
-/**
- * converts from radians to degrees (all other functions expect radians)
- * @param {number} radians
- * @return {number} degrees
- */
-function toDegrees(radians)
-{
-    return radians * _toDegreeConversion
-}
-
-/**
- * converts from degrees to radians (all other functions expect radians)
- * @param {number} degrees
- * @return {number} radians
- */
-function toRadians(degrees)
-{
-    return degrees * _toRadianConversion
-}
-
-/**
- * returns whether the target angle is between angle1 and angle2 (in radians)
- * (based on: http://stackoverflow.com/questions/11406189/determine-if-angle-lies-between-2-other-angles)
- * @param {number} target angle
- * @param {number} angle1
- * @param {number} angle2
- * @return {boolean}
- */
-function isAngleBetween(target, angle1, angle2)
-{
-    const rAngle = ((angle2 - angle1) % PI_2 + PI_2) % PI_2
-    if (rAngle >= Math.PI)
-    {
-        const swap = angle1
-        angle1 = angle2
-        angle2 = swap
-    }
-
-    if (angle1 <= angle2)
-    {
-        return target >= angle1 && target <= angle2
-    }
-    else
-    {
-        return target >= angle1 || target <= angle2
-    }
-}
-
-/**
- * returns +1 or -1 based on whether the difference between two angles is positive or negative (in radians)
- * @param {number} target angle
- * @param {number} source angle
- * @return {number} 1 or -1
- */
-function differenceAnglesSign(target, source)
-{
-    function mod(a, n)
-    {
-        return (a % n + n) % n
-    }
-
-    const a = target - source
-    return mod((a + Math.PI), PI_2) - Math.PI > 0 ? 1 : -1
-}
-
-/**
- * returns the normalized difference between two angles (in radians)
- * @param {number} a - first angle
- * @param {number} b - second angle
- * @return {number} normalized difference between a and b
- */
-function differenceAngles(a, b)
-{
-    const c = Math.abs(a - b) % PI_2
-    return c > Math.PI ? (PI_2 - c) : c
-}
-
-/**
- * returns a target angle that is the shortest way to rotate an object between start and to--may choose a negative angle
- * @param {number} start
- * @param {number} to
- * @return {number} shortest target angle
- */
-function shortestAngle(start, to)
-{
-    const difference = differenceAngles(to, start)
-    const sign = differenceAnglesSign(to, start)
-    const delta = difference * sign
-    return delta + start
-}
-
-/**
- * returns the normalized angle (0 - PI x 2)
- * @param {number} radians
- * @return {number} normalized angle in radians
- */
-function normalize(radians)
-{
-    return radians - PI_2 * Math.floor(radians / PI_2)
-}
-
-/**
- * returns angle between two points (in radians)
- * @param {Point} [point1] {x: x, y: y}
- * @param {Point} [point2] {x: x, y: y}
- * @param {number} [x1]
- * @param {number} [y1]
- * @param {number} [x2]
- * @param {number} [y2]
- * @return {number} angle
- */
-function angleTwoPoints(/* (point1, point2) OR (x1, y1, x2, y2) */)
-{
-    if (arguments.length === 4)
-    {
-        return Math.atan2(arguments[3] - arguments[1], arguments[2] - arguments[0])
-    }
-    else
-    {
-        return Math.atan2(arguments[1].y - arguments[0].y, arguments[1].x - arguments[0].x)
-    }
-}
-
-/**
- * returns distance between two points
- * @param {Point} [point1] {x: x, y: y}
- * @param {Point} [point2] {x: x, y: y}
- * @param {number} [x1]
- * @param {number} [y1]
- * @param {number} [x2]
- * @param {number} [y2]
- * @return {number} distance
- */
-function distanceTwoPoints(/* (point1, point2) OR (x1, y1, x2, y2) */)
-{
-    if (arguments.length === 2)
-    {
-        return Math.sqrt(Math.pow(arguments[1].x - arguments[0].x, 2) + Math.pow(arguments[1].y - arguments[0].y, 2))
-    }
-    else
-    {
-        return Math.sqrt(Math.pow(arguments[2] - arguments[0], 2) + Math.pow(arguments[3] - arguments[1], 2))
-    }
-}
-
-/**
- * returns the squared distance between two points
- * @param {Point} [point1] {x: x, y: y}
- * @param {Point} [point2] {x: x, y: y}
- * @param {number} [x1]
- * @param {number} [y1]
- * @param {number} [x2]
- * @param {number} [y2]
- * @return {number} squared distance
- */
-function distanceTwoPointsSquared(/* (point1, point2) OR (x1, y1, x2, y2) */)
-{
-    if (arguments.length === 2)
-    {
-        return Math.pow(arguments[1].x - arguments[0].x, 2) + Math.pow(arguments[1].y - arguments[0].y, 2)
-    }
-    else
-    {
-        return Math.pow(arguments[2] - arguments[0], 2) + Math.pow(arguments[3] - arguments[1], 2)
-    }
-}
-
-/**
- * returns the closest cardinal (N, S, E, W) to the given angle (in radians)
- * @param {number} angle
- * @return {number} closest cardinal in radians
- */
-function closestAngle(angle)
-{
-    const left = differenceAngles(angle, LEFT)
-    const right = differenceAngles(angle, RIGHT)
-    const up = differenceAngles(angle, UP)
-    const down = differenceAngles(angle, DOWN)
-    if (left <= right && left <= up && left <= down)
-    {
-        return LEFT
-    }
-    else if (right <= up && right <= down)
-    {
-        return RIGHT
-    }
-    else if (up <= down)
-    {
-        return UP
-    }
-    else
-    {
-        return DOWN
-    }
-}
-
-/**
- * checks whether angles a1 and a2 are equal (after normalizing)
- * @param {number} a1
- * @param {number} a2
- * @param {number} [wiggle] return true if the difference between the angles is <= wiggle
- * @return {boolean} a1 === a2
- */
-function equals(a1, a2, wiggle)
-{
-    if (wiggle)
-    {
-        return differenceAngles(a1, a2) < wiggle
-    }
-    else
-    {
-        return normalize(a1) === normalize(a2)
-    }
-}
-
-/**
- * return a text representation of the cardinal direction
- * @param {number} angle
- * @returns {string} UP, DOWN, LEFT, RIGHT, or NOT CARDINAL
- */
-function explain(angle)
-{
-    switch (angle)
-    {
-        case UP: return 'UP'
-        case DOWN: return 'DOWN'
-        case LEFT: return 'LEFT'
-        case RIGHT: return 'RIGHT'
-        default: return 'NOT CARDINAL'
-    }
-}
-
-module.exports = {
-    UP, DOWN, LEFT, RIGHT,
-    NORTH, SOUTH, WEST, EAST,
-    PI_2, PI_QUARTER, PI_HALF,
-
-    toDegrees,
-    toRadians,
-    isAngleBetween,
-    differenceAnglesSign,
-    differenceAngles,
-    shortestAngle,
-    normalize,
-    angleTwoPoints,
-    distanceTwoPoints,
-    distanceTwoPointsSquared,
-    closestAngle,
-    equals,
-    explain
-}
-},{}],409:[function(require,module,exports){
-/**
- * @file color.js
- * @author David Figatner
- * @license MIT
- * @copyright YOPEY YOPEY LLC 2016
- * {@link https://github.com/davidfig/color}
- */
-
-const Random = require('yy-random');
-
-/** @class */
-class Color
-{
-    /**
-     * converts a #FFFFFF to 0x123456
-     * @param  {string} color
-     * @return {string}
-     */
-    poundToHex(color)
-    {
-        return '0x' + parseInt(color.substr(1)).toString(16);
-    }
-
-    /**
-     * converts a 0x123456 to #FFFFFF
-     * @param  {string} color
-     * @return {string}
-     */
-    hexToPound(color)
-    {
-        return '#' + color.substr(2);
-    }
-
-    /**
-     * converts a number to #FFFFFF
-     * @param  {number} color
-     * @return {string}
-     */
-    valueToPound(color)
-    {
-        return '#' + color.toString(16);
-    }
-
-    /**
-     * based on tinycolor
-     * https://github.com/bgrins/TinyColor
-     * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
-     * @param {string} color
-     * @returns {object}
-     */
-    hexToHsl (color)
-    {
-        var rgb = this.hexToRgb(color),
-            r = rgb.r,
-            g = rgb.g,
-            b = rgb.b;
-        var max = Math.max(r, g, b),
-            min = Math.min(r, g, b);
-        var h, s, l = (max + min) / 2;
-
-        if (max === min)
-        {
-            h = s = 0; // achromatic
-        }
-        else
-        {
-            var d = max - min;
-            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-            switch (max) {
-            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-            case g: h = (b - r) / d + 2; break;
-            case b: h = (r - g) / d + 4; break;
-            }
-
-            h /= 6;
-        }
-
-        return { h: h, s: s, l: l };
-    }
-
-    /** based on tinycolor
-    * https://github.com/bgrins/TinyColor
-    * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
-    * @param {object|number} color {h, s, b} or h
-    * @param {number} [s]
-    * @param {number} [l]
-    * @returns number
-    */
-    hslToHex(color)
-    {
-        var r, g, b, h, s, l;
-        if (arguments.length === 1)
-        {
-            h = color.h,
-            s = color.s,
-            l = color.l;
-        }
-        else
-        {
-            h = arguments[0];
-            s = arguments[1];
-            l = arguments[2];
-        }
-
-        function hue2rgb(p, q, t) {
-            if (t < 0) t += 1;
-            if (t > 1) t -= 1;
-            if (t < 1/6) return p + (q - p) * 6 * t;
-            if (t < 1/2) return q;
-            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-            return p;
-        }
-
-        if (s === 0)
-        {
-            r = g = b = l; // achromatic
-        }
-        else
-        {
-            var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-            var p = 2 * l - q;
-            r = hue2rgb(p, q, h + 1/3);
-            g = hue2rgb(p, q, h);
-            b = hue2rgb(p, q, h - 1/3);
-        }
-
-        return this.rgbToHex(r * 255, g * 255, b * 255);
-    }
-
-    /* darkens a color by the percentage
-    * @param {object} color in hex (0xabcdef)
-    * @param {number} amount
-    * @return {number}
-    */
-    darken(color, amount)
-    {
-        return this.blend(amount, color, 0);
-    }
-
-    /** based on tinycolor
-    * https://github.com/bgrins/TinyColor
-    * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
-    * @param {object} color
-    * @param {number} amount
-    */
-    saturate(color, amount)
-    {
-        amount = (amount === 0) ? 0 : (amount || 10);
-        var hsl = this.hexToHsl(color);
-        hsl.s += amount / 100;
-        hsl.s = Math.min(1, Math.max(0, hsl.s));
-        return this.hslToHex(hsl);
-    }
-
-    /** based on tinycolor
-    * https://github.com/bgrins/TinyColor
-    * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
-    * @param {object} color
-    * @param {number} amount
-    */
-    desaturate(color, amount) {
-        amount = (amount === 0) ? 0 : (amount || 10);
-        var hsl = this.hexToHsl(color);
-        hsl.s -= amount / 100;
-        hsl.s = Math.min(1, Math.max(0, hsl.s));
-        return this.hslToHex(hsl);
-    }
-
-    /**
-     * blends two colors together
-     * @param  {number} percent [0.0 - 1.0]
-     * @param  {string} color1 first color in 0x123456 format
-     * @param  {string} color2 second color in 0x123456 format
-     * @return {number}
-     */
-    blend(percent, color1, color2)
-    {
-        if (percent === 0)
-        {
-            return color1;
-        }
-        if (percent === 1)
-        {
-            return color2;
-        }
-        var r1 = color1 >> 16;
-        var g1 = color1 >> 8 & 0x0000ff;
-        var b1 = color1 & 0x0000ff;
-        var r2 = color2 >> 16;
-        var g2 = color2 >> 8 & 0x0000ff;
-        var b2 = color2 & 0x0000ff;
-        var percent1 = 1 - percent;
-        var r = percent1 * r1 + percent * r2;
-        var g = percent1 * g1 + percent * g2;
-        var b = percent1 * b1 + percent * b2;
-        return r << 16 | g << 8 | b;
-    }
-
-    /**
-     * returns a hex color into an rgb value
-     * @param  {number} hex
-     * @return {string}
-     */
-    hexToRgb(hex)
-    {
-        if (hex === 0)
-        {
-            hex = '0x000000';
-        }
-        else if (typeof hex !== 'string')
-        {
-            var s = '000000' + hex.toString(16);
-            hex = '0x' + s.substr(s.length - 6);
-        }
-        var result = /^0x?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16)
-        } : null;
-    }
-
-    /**
-     * rgb color to hex in the form of 0x123456
-     * @param  {number|string} r first number or 'rgb(...)' string
-     * @param  {number|null} g
-     * @param  {number|null} b
-     * @return {string}
-     */
-    rgbToHex(r, g, b)
-    {
-        if (arguments.length === 1) {
-            if (Array.isArray(arguments[0])) {
-                var number = arguments[0];
-                r = number[0];
-                g = number[1];
-                b = number[2];
-            } else {
-                var parse = r.replace(/( *rgb *\( *)|( )|(\) *;?)/,'');
-                var numbers = parse.split(',');
-                r = numbers[0];
-                g = numbers[1];
-                b = numbers[2];
-            }
-        }
-        return '0x' + ((1 << 24) + (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b)).toString(16).slice(1);
-    }
-
-    /**
-     * returns a random color with balanced r, g, b values (i.e., r, g, b either have the same value or are 0)
-     * @param {number} min value for random number
-     * @param {number} max value for random number
-     * @return {number} color
-     */
-    random(min, max)
-    {
-        function random()
-        {
-            return Random.range(min, max);
-        }
-
-        var colors = [{r:1, g:1, b:1}, {r:1, g:1, b:0}, {r:1,g:0,b:1}, {r:0,g:1,b:1}, {r:1,g:0,b:0}, {r:0,g:1,b:0}, {r:0,g:0,b:1}];
-        var color = Random.pick(colors);
-        min = min || 0;
-        max = max || 255;
-        return this.rgbToHex(color.r ? random() : 0, color.g ? random() : 0, color.b ? random() : 0);
-    }
-
-    // h: 0-360, s: 0-1, l: 0-1
-    /**
-     * returns a random color based on hsl
-     * @param {number} hMin [0, 360]
-     * @param {number} hMax [hMin, 360]
-     * @param {number} sMin [0, 1]
-     * @param {number} sMax [sMin, 1]
-     * @param {number} lMin [0, 1]
-     * @param {number} lMax [lMin, 1]
-     */
-    randomHSL(hMin, hMax, sMin, sMax, lMin, lMax)
-    {
-        var color = {
-            h: Random.range(hMin, hMax),
-            s: Random.range(sMin, sMax, true),
-            l: Random.range(lMin, lMax, true)
-        };
-        return this.hslToHex(color);
-    }
-
-    /**
-     * returns random colors based on HSL with different hues
-     * based on http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
-     * @returns {number[]} colors in hex format (0x123456)
-     */
-    randomGoldenRatioHSL(count, saturation, luminosity)
-    {
-        const goldenRatio = 0.618033988749895;
-        let h = Random.get(1, true);
-        const colors = [];
-        for (let i = 0; i < count; i++)
-        {
-            colors.push(this.hslToHex(h, saturation, luminosity));
-            h = (h + goldenRatio) % 1;
-        }
-        return colors;
-    }
-};
-
-module.exports = new Color();
-},{"yy-random":412}],410:[function(require,module,exports){
-// yy-counter
-// In-browser counter to watch changeable values like counters or FPS
-// David Figatner
-// (c) YOPEY YOPEY LLC 2017
-// MIT License
-// https://github.com/davidfig/counter
-
-module.exports = class Counter
-{
-    /**
-     * @param {object} [options]
-     * @param {string} [options.side=rightbottom] side to place the panel (combination of right/left and bottom/top)
-     * @param {number} [options.padding=7px]
-     * @param {string} [options.color=white]
-     * @param {string} [options.background=rgba(0,0,0,0.5)]
-     * @param {*} {options.xxx} where xxx is a CSS style for the div
-     */
-    constructor(options)
-    {
-        options = options || {}
-        options.side = options.side || 'rightbottom'
-        options.side.toLowerCase()
-        options.padding = options.padding || '7px'
-        options.color = options.color || 'white'
-        options.background = options.background || 'rgba(0,0,0,0.5)'
-        this.div = document.createElement('div')
-        Counter.findParent(options.side).appendChild(this.div)
-        for (let style in options)
-        {
-            if (style !== 'parent' && style !== 'side')
-            {
-                this.div.style[style] = options[style]
-            }
-        }
-    }
-
-    /**
-     * find the parent div for one of the corners
-     * @param {string} [options.side] side to place the panel (combination of right/left and bottom/top)
-     * @return {HTMLElement}
-     */
-    static findParent(side)
-    {
-        const styles = []
-        let name = 'yy-counter-'
-        if (side.indexOf('left') !== -1)
-        {
-            name += 'left-'
-            styles['left'] = 0
-        }
-        else
-        {
-            name += 'right-'
-            styles['right'] = 0
-        }
-        if (side.indexOf('top') !== -1)
-        {
-            name += 'top'
-            styles['top'] = 0
-        }
-        else
-        {
-            name += 'bottom'
-            styles['bottom'] = 0
-        }
-        const test = document.getElementById(name)
-        if (test)
-        {
-            return test
-        }
-        const container = document.createElement('div')
-        container.id = name
-        container.style.overflow = 'hidden'
-        container.style.position = 'fixed'
-        container.style.zIndex = 10000
-        container.style.pointerEvents = 'none'
-        container.style.userSelect = 'none'
-        for (let style in styles)
-        {
-            container.style[style] = styles[style]
-        }
-        document.body.appendChild(container)
-        return container
-    }
-
-    /**
-     * replaces the innerHTML of the console
-     * @param {string|number} text1
-     * @param {string|number} [text2]
-     * @param {string|number} [...textn] any number of arguments
-     */
-    log()
-    {
-        let s = ''
-        for (let arg of arguments)
-        {
-            s += '<div>' + arg + '</div>'
-        }
-        this.div.innerHTML =  s
-    }
-
-    /**
-     * appends to the innerHTML of the console
-     * @param {string|number} text1
-     * @param {string|number} [text2]
-     * @param {string|number} [...textn] any number of arguments
-     */
-    append()
-    {
-        let s = this.div.innerHTML
-        for (let arg of arguments)
-        {
-            s += '<div>' + arg + '</div>'
-        }
-        this.div.innerHTML = s
-    }
-}
-},{}],411:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Color = require('tinycolor2');
-var Counter = require('yy-counter');
-
-var STYLES = {
-    'background': 'rgba(0, 0, 0, 0.5)',
-    'color': 'white'
-};
-
-var STYLES_FPS = {
-    'padding': '0.1em 0.5em'
-};
-
-var STYLES_METER = {};
-
-module.exports = function () {
-    /**
-     * @param {object} [options]
-     * @param {boolean} [options.meter=true] include a meter with the FPS
-     * @param {string} [options.side=bottom-right] include any combination of left/right and top/bottom
-     * @param {number} [options.FPS=60] desired FPS
-     * @param {number} [options.tolerance=1] minimum tolerance for fluctuations in FPS number
-     * @param {number} [options.meterWidth=100] width of meter div
-     * @param {number} [options.meterHeight=25] height of meter div
-     * @param {number} [options.meterLineHeight=4] height of meter line
-     * @param {styles[]} [options.styles] CSS styles to apply to the div (in javascript format)
-     * @param {styles[]} [options.stylesFPS] CSS styles to apply to the FPS text (in javascript format)
-     * @param {styles[]} [options.stylesMeter] CSS styles to apply to the FPS meter (in javascript format)
-     * @param {string} [options.text=" FPS"] change the text to the right of the FPS
-     */
-    function FPS(options) {
-        _classCallCheck(this, FPS);
-
-        this.options = options || {};
-        this.tolerance = this.options.tolerance || 1;
-        this.FPS = this.options.FPS || 60;
-        this.meterWidth = this.options.meterWidth || 100;
-        this.meterHeight = this.options.meterHeight || 25;
-        this.meterLineHeight = this.options.meterLineHeight || 4;
-        this.div = document.createElement('div');
-        Counter.findParent(this.options.side || 'bottom-right').appendChild(this.div);
-        this.style(this.div, STYLES, this.options.styles);
-        this.divFPS();
-        this.meter = typeof this.options.meter === 'undefined' || this.options.meter;
-        this.lastTime = 0;
-        this.frameNumber = 0;
-        this.lastUpdate = 0;
-        this.lastFPS = '--';
-    }
-
-    /**
-     * change desired FPS
-     * @type {number}
-     */
-
-
-    _createClass(FPS, [{
-        key: 'remove',
-
-
-        /**
-         * remove meter from DOM
-         */
-        value: function remove() {
-            this.div.remove();
-        }
-
-        /**
-         * @type {boolean} meter (the FPS graph) is on or off
-         */
-
-    }, {
-        key: 'style',
-        value: function style(div, style1, style2) {
-            for (var style in style1) {
-                div.style[style] = style1[style];
-            }
-            if (style2) {
-                for (var _style in style2) {
-                    div.style[_style] = style2[_style];
-                }
-            }
-        }
-
-        /**
-         * create div for text FPS
-         * @private
-         * @param {HTMLElement} div
-         * @param {object} options (see contructor)
-         */
-
-    }, {
-        key: 'divFPS',
-        value: function divFPS() {
-            var div = this.div;
-            var options = this.options;
-            var divFPS = document.createElement('div');
-            div.appendChild(divFPS);
-            this.fpsSpan = document.createElement('span');
-            divFPS.appendChild(this.fpsSpan);
-            var span = document.createElement('span');
-            divFPS.appendChild(span);
-            span.innerText = typeof options.text !== 'undefined' ? options.text : ' FPS';
-            this.style(div, STYLES_FPS, options.stylesFPS);
-        }
-
-        /**
-         * create div for FPS meter
-         * @private
-         * @param {HTMLElement} div
-         * @param {object} options (see contructor)
-         */
-
-    }, {
-        key: 'divMeter',
-        value: function divMeter() {
-            var div = this.div;
-            var options = this.options;
-            if (!this.meterCanvas) {
-                this.meterCanvas = document.createElement('canvas');
-                div.appendChild(this.meterCanvas);
-                this.meterCanvas.width = this.meterWidth;
-                this.meterCanvas.height = this.meterHeight;
-                this.meterCanvas.style.width = div.width + 'px';
-                this.meterCanvas.style.height = div.height + 'px';
-                this.style(this.meterCanvas, STYLES_METER, options.stylesMeter);
-            } else {
-                this.meterCanvas.style.display = 'block';
-            }
-        }
-
-        /**
-         * call this at the start of the frame to calculate FPS
-         */
-
-    }, {
-        key: 'frame',
-        value: function frame() {
-            this.frameNumber++;
-            var currentTime = performance.now() - this.lastTime;
-
-            // skip large differences to remove garbage
-            if (currentTime > 500) {
-                if (this.lastTime !== 0) {
-                    this.lastFPS = Math.floor(this.frameNumber / (currentTime / 1000));
-                    if (this.lastFPS >= this.FPS - this.tolerance && this.lastFPS <= this.FPS + this.tolerance) {
-                        this.lastFPS = this.FPS;
-                    }
-                }
-                this.lastTime = performance.now();
-                this.frameNumber = 0;
-            }
-            this.fpsSpan.innerText = this.lastFPS;
-            if (this.meterCanvas && this.lastFPS !== '--') {
-                this.meterUpdate(this.lastFPS / this.FPS);
-            }
-        }
-    }, {
-        key: 'meterUpdate',
-        value: function meterUpdate(percent) {
-            var c = this.meterCanvas.getContext('2d');
-            var data = c.getImageData(0, 0, this.meterCanvas.width, this.meterCanvas.height);
-            c.putImageData(data, -1, 0);
-            c.clearRect(this.meterCanvas.width - 1, 0, 1, this.meterCanvas.height);
-            if (percent < 0.5) {
-                c.fillStyle = Color.mix('#ff0000', '0xffa500', percent * 200).toHexString();
-            } else {
-                c.fillStyle = Color.mix('#ffa500', '#00ff00', (percent - 0.5) * 200).toHexString();
-            }
-            var height = (this.meterCanvas.height - this.meterLineHeight) * (1 - percent);
-            c.fillRect(this.meterCanvas.width - 1, height, 1, this.meterLineHeight);
-        }
-    }, {
-        key: 'side',
-        value: function side(options) {
-            if (options.side) {
-                options.side = options.side.toLowerCase();
-                if (options.side.indexOf('left') !== -1) {
-                    STYLES['left'] = 0;
-                    delete STYLES['right'];
-                } else {
-                    STYLES['right'] = 0;
-                    delete STYLES['left'];
-                }
-                if (options.side.indexOf('top') !== -1) {
-                    STYLES['top'] = 0;
-                    delete STYLES['bottom'];
-                } else {
-                    STYLES['bottom'] = 0;
-                    delete STYLES['top'];
-                }
-            } else {
-                STYLES['right'] = 0;
-                STYLES['bottom'] = 0;
-            }
-        }
-    }, {
-        key: 'fps',
-        get: function get() {
-            return this.FPS;
-        },
-        set: function set(value) {
-            this.FPS = value;
-        }
-    }, {
-        key: 'meter',
-        get: function get() {
-            return this._meter;
-        },
-        set: function set(value) {
-            if (value) {
-                this.divMeter();
-            } else if (this.meterCanvas) {
-                this.meterCanvas.style.display = 'none';
-            }
-        }
-    }]);
-
-    return FPS;
-}();
-
-},{"tinycolor2":405,"yy-counter":410}],412:[function(require,module,exports){
-// yy-random
-// by David Figatner
-// MIT license
-// copyright YOPEY YOPEY LLC 2016-17
-// https://github.com/davidfig/random
-
-const seedrandom = require('seedrandom')
-
-class Random
-{
-    constructor()
-    {
-        this.generator = Math.random
-    }
-
-    /**
-     * generates a seeded number
-     * @param {number} seed
-     * @param {object} [options]
-     * @param {string} [PRNG="alea"] - name of algorithm, see https://github.com/davidbau/seedrandom
-     * @param {boolean} [save=true]
-     */
-    seed(seed, options)
-    {
-        options = options || {}
-        this.generator = seedrandom[options.PRNG || 'alea'](seed, { state: options.state })
-        this.options = options
-    }
-
-    /**
-     * saves the state of the random generator
-     * can only be used after Random.seed() is called
-     * @returns {number} state
-     */
-    save()
-    {
-        if (this.generator !== Math.random)
-        {
-            return this.generator.state()
-        }
-    }
-
-    /**
-     * restores the state of the random generator
-     * @param {number} state
-     */
-    restore(state)
-    {
-        this.generator = seedrandom[this.options.PRNG || 'alea']('', { state })
-    }
-
-    /**
-     * changes the generator to use the old Math.sin-based random function
-     * based on : http://stackoverflow.com/questions/521295/javascript-random-seeds
-     * (deprecated) Use only for compatibility purposes
-     * @param {number} seed
-     */
-    seedOld(seed)
-    {
-        this.generator = function()
-        {
-            const x = Math.sin(seed++) * 10000
-            return x - Math.floor(x)
-        }
-    }
-
-    /**
-     * create a separate random generator using the seed
-     * @param {number} seed
-     * @return {object}
-     */
-    separateSeed(seed)
-    {
-        const random = new Random()
-        random.seed(seed)
-        return random
-    }
-
-    /**
-     * resets the random number this.generator to Math.random()
-     */
-    reset()
-    {
-        this.generator = Math.random
-    }
-
-    /**
-     * returns a random number using the this.generator between [0, ceiling - 1]
-     * @param {number} ceiling
-     * @param {boolean} [useFloat=false]
-     * @return {number}
-     */
-    get(ceiling, useFloat)
-    {
-        const negative = ceiling < 0 ? -1 : 1
-        ceiling *= negative
-        let result
-        if (useFloat)
-        {
-            result = this.generator() * ceiling
-        }
-        else
-        {
-            result = Math.floor(this.generator() * ceiling)
-        }
-        return result * negative
-    }
-
-    /**
-     * returns a random integer between 0 - Number.MAX_SAFE_INTEGER
-     * @return {number}
-     */
-    getHuge()
-    {
-        return this.get(Number.MAX_SAFE_INTEGER)
-    }
-
-    /**
-     * random number [middle - range, middle + range]
-     * @param {number} middle
-     * @param {number} delta
-     * @param {boolean} [useFloat=false]
-     * @return {number}
-     */
-    middle(middle, delta, useFloat)
-    {
-        const half = delta / 2
-        return this.range(middle - half, middle + half, useFloat)
-    }
-
-    /**
-     * random number [start, end]
-     * @param {number} start
-     * @param {number} end
-     * @param {boolean} [useFloat=false] if true, then range is (start, end)--i.e., not inclusive to start and end
-     * @return {number}
-     */
-    range(start, end, useFloat)
-    {
-        // case where there is no range
-        if (end === start)
-        {
-            return end
-        }
-
-        if (useFloat)
-        {
-            return this.get(end - start, true) + start
-        }
-        else
-        {
-            let range
-            if (start < 0 && end > 0)
-            {
-                range = -start + end + 1
-            }
-            else if (start === 0 && end > 0)
-            {
-                range = end + 1
-            }
-            else if (start < 0 && end === 0)
-            {
-                range = start - 1
-                start = 1
-            }
-            else if (start < 0 && end < 0)
-            {
-                range = end - start - 1
-            }
-            else
-            {
-                range = end - start + 1
-            }
-            return Math.floor(this.generator() * range) + start
-        }
-    }
-
-    /**
-     * an array of random numbers between [start, end]
-     * @param {number} start
-     * @param {number} end
-     * @param {number} count
-     * @param {boolean} [useFloat=false]
-     * @return {number[]}
-     */
-    rangeMultiple(start, end, count, useFloat)
-    {
-        var array = []
-        for (let i = 0; i < count; i++)
-        {
-            array.push(this.range(start, end, useFloat))
-        }
-        return array
-    }
-
-    /**
-     * an array of random numbers between [middle - range, middle + range]
-     * @param {number} middle
-     * @param {number} range
-     * @param {number} count
-     * @param {boolean} [useFloat=false]
-     * @return {number[]}
-     */
-    middleMultiple(middle, range, count, useFloat)
-    {
-        const array = []
-        for (let i = 0; i < count; i++)
-        {
-            array.push(middle(middle, range, useFloat))
-        }
-        return array
-    }
-
-    /**
-     * @param {number} [chance=0.5]
-     * returns random sign (either +1 or -1)
-     * @return {number}
-     */
-    sign(chance)
-    {
-        chance = chance || 0.5
-        return this.generator() < chance ? 1 : -1
-    }
-
-    /**
-     * tells you whether a random chance was achieved
-     * @param {number} [percent=0.5]
-     * @return {boolean}
-     */
-    chance(percent)
-    {
-        return this.generator() < (percent || 0.5)
-    }
-
-    /**
-     * returns a random angle in radians [0 - 2 * Math.PI)
-     */
-    angle()
-    {
-        return this.get(Math.PI * 2, true)
-    }
-
-    /**
-     * Shuffle array (either in place or copied)
-     * from http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-     * @param {Array} array
-     * @param {boolean} [copy=false] whether to shuffle in place (default) or return a new shuffled array
-     * @return {Array} a shuffled array
-     */
-    shuffle(array, copy)
-    {
-        if (copy)
-        {
-            array = array.slice()
-        }
-        if (array.length === 0)
-        {
-            return array
-        }
-
-        let currentIndex = array.length, temporaryValue, randomIndex
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex)
-        {
-            // Pick a remaining element...
-            randomIndex = this.get(currentIndex)
-            currentIndex -= 1
-
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex]
-            array[currentIndex] = array[randomIndex]
-            array[randomIndex] = temporaryValue
-        }
-        return array
-    }
-
-    /**
-     * picks a random element from an array
-     * @param {Array} array
-     * @return {*}
-     */
-    pick(array, remove)
-    {
-        if (!remove)
-        {
-            return array[this.get(array.length)]
-        }
-        else
-        {
-            const pick = this.get(array.length)
-            const temp = array[pick]
-            array.splice(pick, 1)
-            return temp
-        }
-    }
-
-    /**
-     * returns a random property from an object
-     * from http://stackoverflow.com/questions/2532218/pick-random-property-from-a-javascript-object
-     * @param {object} obj
-     * @return {*}
-     */
-    property(obj)
-    {
-        var result
-        var count = 0
-        for (var prop in obj)
-        {
-            if (this.chance(1 / ++count))
-            {
-                result = prop
-            }
-        }
-        return result
-    }
-
-    /**
-     * creates a random set where each entry is a value between [min, max]
-     * @param {number} min
-     * @param {number} max
-     * @param {number} amount of numbers in set
-     * @param {number[]}
-     */
-    set(min, max, amount)
-    {
-        var set = [], all = [], i
-        for (i = min; i < max; i++)
-        {
-            all.push(i)
-        }
-
-        for (i = 0; i < amount; i++)
-        {
-            var found = this.get(all.length)
-            set.push(all[found])
-            all.splice(found, 1)
-        }
-        return set
-    }
-
-
-    /**
-     * returns a set of numbers with a randomly even distribution (i.e., no overlapping and filling the space)
-     * @param {number} start position
-     * @param {number} end position
-     * @param {number} count of non-start/end points
-     * @param {boolean} [includeStart=false] includes start point (count++)
-     * @param {boolean} [includeEnd=false] includes end point (count++)
-     * @param {boolean} [useFloat=false]
-     * @param {number[]}
-     */
-    distribution(start, end, count, includeStart, includeEnd, useFloat)
-    {
-        var interval = Math.floor((end - start) / count)
-        var halfInterval = interval / 2
-        var quarterInterval = interval / 4
-        var set = []
-        if (includeStart)
-        {
-            set.push(start)
-        }
-        for (var i = 0; i < count; i++)
-        {
-            set.push(start + i * interval + halfInterval + this.range(-quarterInterval, quarterInterval, useFloat))
-        }
-        if (includeEnd)
-        {
-            set.push(end)
-        }
-        return set
-    }
-
-    /**
-     * returns a random number based on weighted probability between [min, max]
-     * from http://stackoverflow.com/questions/22656126/javascript-random-number-with-weighted-probability
-     * @param {number} min value
-     * @param {number} max value
-     * @param {number} target for average value
-     * @param {number} stddev - standard deviation
-     */
-    weightedProbabilityInt(min, max, target, stddev)
-    {
-        function normRand()
-        {
-            let x1, x2, rad
-            do
-            {
-                x1 = 2 * this.get(1, true) - 1
-                x2 = 2 * this.get(1, true) - 1
-                rad = x1 * x1 + x2 * x2
-            } while (rad >= 1 || rad === 0)
-            const c = Math.sqrt(-2 * Math.log(rad) / rad)
-            return x1 * c
-        }
-
-        stddev = stddev || 1
-        if (Math.random() < 0.81546)
-        {
-            while (true)
-            {
-                const sample = ((normRand() * stddev) + target)
-                if (sample >= min && sample <= max)
-                {
-                    return sample
-                }
-            }
-        }
-        else
-        {
-            return this.range(min, max)
-        }
-    }
-
-    /*
-     * returns a random hex color (0 - 0xffffff)
-     * @return {number}
-     */
-    color()
-    {
-        return this.get(0xffffff)
-    }
-}
-
-module.exports = new Random()
-},{"seedrandom":397}],413:[function(require,module,exports){
-module.exports={
-    "boxWidth": 100,
-    "boxHeight": 100,
-    "scrollbarSize": 10,
-    "scrollbarBackground": 14540253,
-    "scrollbarForeground": 8947848,
-    "dragScroll": true
-}
-},{}],414:[function(require,module,exports){
-module.exports = function (options, defaults)
-{
-    options = options || {}
-    for (let item in defaults)
-    {
-        if (typeof options[item] === 'undefined')
-        {
-            options[item] = defaults[item]
-        }
-    }
-    return options
-}
-},{}],415:[function(require,module,exports){
-const PIXI = require('pixi.js')
-const Viewport = require('pixi-viewport')
-// const Viewport = require('../../pixi-viewport/src/viewport')
-
-const defaults = require('./defaults')
-const DEFAULTS = require('./defaults.json')
-
-/**
- * pixi.js scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
- */
-class Scrollbox extends PIXI.Container
-{
-    /**
-     * create a scrollbox
-     * @param {object} options
-     * @param {boolean} [options.dragScroll=true] user may drag the content area to scroll content
-     * @param {string} [options.overflowX=auto] (scroll, hidden, auto) this changes whether the scrollbar is shown
-     * @param {string} [options.overflowY=auto] (scroll, hidden, auto) this changes whether the scrollbar is shown
-     * @param {string} [options.overflow] (scroll, hidden, auto) sets overflowX and overflowY to this value
-     * @param {number} [options.boxWidth=100] width of scrollbox including scrollbar (in pixels)
-     * @param {number} [options.boxHeight=100] height of scrollbox including scrollbar (in pixels)
-     * @param {number} [options.scrollbarSize=10] size of scrollbar (in pixels)
-     * @param {number} [options.scrollbarBackground=0xdddddd] background color of scrollbar
-     * @param {number} [options.scrollbarForeground=0x888888] foreground color of scrollbar
-     */
-    constructor(options)
-    {
-        super()
-        this.options = defaults(options, DEFAULTS)
-
-        /**
-         * content in placed in here
-         * @type {PIXI.Container}
-         */
-        this.content = this.addChild(new Viewport({ screenWidth: this.boxWidth, screenHeight: this.boxHeight }))
-        this.content
-            .decelerate()
-            .on('moved', () => this._drawScrollbars())
-        if (this.options.dragScroll)
-        {
-            this.content.drag()
-        }
-
-        /**
-         * graphics element for drawing the scrollbars
-         * @type {PIXI.Graphics}
-         */
-        this.scrollbar = this.addChild(new PIXI.Graphics())
-        this.scrollbar.interactive = true
-        this.scrollbar.on('pointerdown', this.scrollbarDown, this)
-        this.interactive = true
-        this.on('pointermove', this.scrollbarMove, this)
-        this.on('pointerup', this.scrollbarUp, this)
-        this.on('pointercancel', this.scrollbarUp, this)
-        this.on('pointerupoutside', this.scrollbarUp, this)
-        this._maskContent = this.addChild(new PIXI.Graphics())
-    }
-
-    /**
-     * user may drag the content area to scroll content
-     * @type {boolean}
-     */
-    get dragScroll()
-    {
-        return this.options.dragScroll
-    }
-    set dragScroll(value)
-    {
-        this.options.dragScroll = value
-        if (value)
-        {
-            this.content.drag()
-        }
-        else
-        {
-            this.content.removePlugin('drag')
-        }
-        this.update()
-    }
-
-    /**
-     * width of scrollbox including the scrollbar (if visible)- this changes the size and not the scale of the box
-     * @type {number}
-     */
-    get boxWidth()
-    {
-        return this.options.boxWidth
-    }
-    set boxWidth(value)
-    {
-        this.options.boxWidth = value
-        this.content.screenWidth = value
-        this.update()
-    }
-
-    /**
-     * sets overflowX and overflowY to (scroll, hidden, auto) changing whether the scrollbar is shown
-     * scroll = always show scrollbar
-     * hidden = hide overflow and do not show scrollbar
-     * auto = if content is larger than box size, then show scrollbar
-     * @type {string}
-     */
-    get overflow()
-    {
-        return this.options.overflow
-    }
-    set overflow(value)
-    {
-        this.options.overflow = value
-        this.options.overflowX = value
-        this.options.overflowY = value
-        this.update()
-    }
-
-    /**
-     * sets overflowX to (scroll, hidden, auto) changing whether the scrollbar is shown
-     * scroll = always show scrollbar
-     * hidden = hide overflow and do not show scrollbar
-     * auto = if content is larger than box size, then show scrollbar
-     * @type {string}
-     */
-    get overflowX()
-    {
-        return this.options.overflowX
-    }
-    set overflowX(value)
-    {
-        this.options.overflowX = value
-        this.update()
-    }
-
-    /**
-     * sets overflowY to (scroll, hidden, auto) changing whether the scrollbar is shown
-     * scroll = always show scrollbar
-     * hidden = hide overflow and do not show scrollbar
-     * auto = if content is larger than box size, then show scrollbar
-     * @type {string}
-     */
-    get overflowY()
-    {
-        return this.options.overflowY
-    }
-    set overflowY(value)
-    {
-        this.options.overflowY = value
-        this.update()
-    }
-
-    /**
-     * height of scrollbox including the scrollbar (if visible) - this changes the size and not the scale of the box
-     * @type {number}
-     */
-    get boxHeight()
-    {
-        return this.options.boxHeight
-    }
-    set boxHeight(value)
-    {
-        this.options.boxHeight = value
-        this.content.screenHeight = value
-        this.update()
-    }
-
-    /**
-     * scrollbar size in pixels
-     * @type {number}
-     */
-    get scrollbarSize()
-    {
-        return this.options.scrollbarSize
-    }
-    set scrollbarSize(value)
-    {
-        this.options.scrollbarSize = value
-    }
-
-    /**
-     * width of scrollbox less the scrollbar (if visible)
-     * @type {number}
-     * @readonly
-     */
-    get contentWidth()
-    {
-        return this.options.boxWidth - (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
-    }
-
-    /**
-     * height of scrollbox less the scrollbar (if visible)
-     * @type {number}
-     * @readonly
-     */
-    get contentHeight()
-    {
-        return this.options.boxHeight - (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
-    }
-
-    /**
-     * is the vertical scrollbar visible
-     * @type {boolean}
-     * @readonly
-     */
-    get isScrollbarVertical()
-    {
-        return this._isScrollbarVertical
-    }
-
-    /**
-     * is the horizontal scrollbar visible
-     * @type {boolean}
-     * @readonly
-     */
-    get isScrollbarHorizontal()
-    {
-        return this._isScrollbarHorizontal
-    }
-
-    /**
-     * top coordinate of scrollbar
-     */
-    get scrollTop()
-    {
-        return this.content.top
-    }
-
-    /**
-     * left coordinate of scrollbar
-     */
-    get scrollLeft()
-    {
-        return this.content.left
-    }
-
-    /**
-     * width of content area
-     */
-    get scrollWidth()
-    {
-        return this.content.width
-    }
-
-    /**
-     * height of content area
-     */
-    get scrollHeight()
-    {
-        return this.content.height
-    }
-
-    /**
-     * draws scrollbars
-     * @private
-     */
-    _drawScrollbars()
-    {
-        this._isScrollbarHorizontal = this.overflowX === 'scroll' ? true : this.overflowX === 'hidden' ? false : this.content.width > this.options.boxWidth
-        this._isScrollbarVertical = this.overflowY === 'scroll' ? true : this.overflowY === 'hidden' ? false : this.content.height > this.options.boxHeight
-        this.scrollbar.clear()
-        let options = {}
-        options.left = 0
-        options.right = this.content.width + (this._isScrollbarVertical ? this.options.scrollbarSize : 0)
-        options.top = 0
-        options.bottom = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
-        const width = this.content.width + (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
-        const height = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
-        this.scrollbarTop = (this.content.top / height) * this.boxHeight
-        this.scrollbarHeight = (this.boxHeight / height) * this.boxHeight
-        this.scrollbarLeft = (this.content.left / width) * this.boxWidth
-        this.scrollbarWidth = (this.boxWidth / width) * this.boxWidth
-        if (this.isScrollbarVertical)
-        {
-            this.scrollbar
-                .beginFill(this.options.scrollbarBackground)
-                .drawRect(this.boxWidth - this.scrollbarSize, 0, this.scrollbarSize, this.boxHeight)
-                .endFill()
-        }
-        if (this.isScrollbarHorizontal)
-        {
-            this.scrollbar
-                .beginFill(this.options.scrollbarBackground)
-                .drawRect(0, this.boxHeight - this.scrollbarSize, this.boxWidth, this.scrollbarSize)
-                .endFill()
-        }
-        if (this.isScrollbarVertical)
-        {
-            this.scrollbar
-                .beginFill(this.options.scrollbarForeground)
-                .drawRect(this.boxWidth - this.scrollbarSize, this.scrollbarTop, this.scrollbarSize, this.scrollbarHeight)
-                .endFill()
-        }
-        if (this.isScrollbarHorizontal)
-        {
-            this.scrollbar
-                .beginFill(this.options.scrollbarForeground)
-                .drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize, this.scrollbarWidth, this.scrollbarSize)
-                .endFill()
-        }
-        this.content.clamp(options)
-    }
-
-    /**
-     * draws mask layer
-     * @private
-     */
-    _drawMask()
-    {
-        this._maskContent
-            .beginFill(0)
-            .drawRect(0, 0, this.boxWidth, this.boxHeight)
-            .endFill()
-        this.mask = this._maskContent
-    }
-
-    /**
-     * call when scrollbox content changes
-     */
-    update()
-    {
-        this.mask = null
-        this._maskContent.clear()
-        this._drawScrollbars()
-        this._drawMask()
-    }
-
-    /**
-     * handle pointer down on scrollbar
-     * @param {PIXI.interaction.InteractionEvent} e
-     * @private
-     */
-    scrollbarDown(e)
-    {
-        const local = this.toLocal(e.data.global)
-        if (this.isScrollbarHorizontal)
-        {
-            if (local.y > this.boxHeight - this.scrollbarSize)
-            {
-                if (local.x >= this.scrollbarLeft && local.x <= this.scrollbarLeft + this.scrollbarWidth)
-                {
-                    this.pointerDown = { type: 'horizontal', last: local }
-                }
-                else
-                {
-                    if (local.x > this.scrollbarLeft)
-                    {
-                        this.content.left += this.content.worldScreenWidth
-                        this.update()
-                    }
-                    else
-                    {
-                        this.content.left -= this.content.worldScreenWidth
-                        this.update()
-                    }
-                }
-                e.stopPropagation()
-                return
-            }
-        }
-        if (this.isScrollbarVertical)
-        {
-            if (local.x > this.boxWidth - this.scrollbarSize)
-            {
-                if (local.y >= this.scrollbarTop && local.y <= this.scrollbarTop + this.scrollbarWidth)
-                {
-                    this.pointerDown = { type: 'vertical', last: local }
-                }
-                else
-                {
-                    if (local.y > this.scrollbarTop)
-                    {
-                        this.content.top += this.content.worldScreenHeight
-                        this.update()
-                    }
-                    else
-                    {
-                        this.content.top -= this.content.worldScreenHeight
-                        this.update()
-                    }
-                }
-                e.stopPropagation()
-                return
-            }
-        }
-    }
-
-    /**
-     * handle pointer move on scrollbar
-     * @param {PIXI.interaction.InteractionEvent} e
-     * @private
-     */
-    scrollbarMove(e)
-    {
-        if (this.pointerDown)
-        {
-            if (this.pointerDown.type === 'horizontal')
-            {
-                const local = this.toLocal(e.data.global)
-                this.content.left += local.x - this.pointerDown.last.x
-                this.pointerDown.last = local
-                this.update()
-            }
-            else if (this.pointerDown.type === 'vertical')
-            {
-                const local = this.toLocal(e.data.global)
-                this.content.top += local.y - this.pointerDown.last.y
-                this.pointerDown.last = local
-                this.update()
-            }
-            e.stopPropagation()
-        }
-    }
-
-    /**
-     * handle pointer down on scrollbar
-     * @private
-     */
-    scrollbarUp()
-    {
-        this.pointerDown = null
-    }
-}
-
-module.exports = Scrollbox
-},{"./defaults":414,"./defaults.json":413,"pixi-viewport":232,"pixi.js":349}]},{},[1]);
+},{}]},{},[1]);
