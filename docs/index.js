@@ -19051,13 +19051,13 @@ var angle = function (_wait) {
     _inherits(angle, _wait);
 
     /**
-     * @private
      * animate object's {x, y} using an angle
      * @param {object} object to animate
      * @param {number} angle in radians
      * @param {number} speed in pixels/millisecond
      * @param {number} [duration=0] in milliseconds; if 0, then continues forever
      * @param {object} [options] @see {@link Wait}
+     * @private
      */
     function angle(object, _angle, speed, duration, options) {
         _classCallCheck(this, angle);
@@ -19210,10 +19210,8 @@ module.exports = face;
 },{"./wait":201,"yy-angle":399}],193:[function(require,module,exports){
 'use strict';
 
-var list = require('./list');
-
-module.exports = {
-    list: list,
+var Ease = {
+    list: require('./list'),
     wait: require('./wait'),
     to: require('./to'),
     shake: require('./shake'),
@@ -19224,6 +19222,10 @@ module.exports = {
     movie: require('./movie'),
     load: require('./load')
 };
+
+PIXI.extras.Ease = Ease;
+
+module.exports = Ease;
 
 },{"./angle":191,"./face":192,"./list":194,"./load":195,"./movie":196,"./shake":197,"./target":198,"./tint":199,"./to":200,"./wait":201}],194:[function(require,module,exports){
 'use strict';
@@ -19236,7 +19238,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PIXI = require('pixi.js');
 var Events = require('eventemitter3');
 
 var Angle = require('./angle');
@@ -19576,7 +19577,7 @@ var Ease = function (_Events) {
 
 module.exports = Ease;
 
-},{"./angle":191,"./face":192,"./load":195,"./movie":196,"./shake":197,"./target":198,"./tint":199,"./to":200,"./wait":201,"eventemitter3":5,"pixi.js":347}],195:[function(require,module,exports){
+},{"./angle":191,"./face":192,"./load":195,"./movie":196,"./shake":197,"./target":198,"./tint":199,"./to":200,"./wait":201,"eventemitter3":5}],195:[function(require,module,exports){
 'use strict';
 
 var wait = require('./wait');
@@ -23668,7 +23669,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var PIXI = require('pixi.js');
 var exists = require('exists');
 
 var Drag = require('./drag');
@@ -24333,6 +24333,7 @@ var Viewport = function (_PIXI$Container) {
         key: 'zoom',
         value: function zoom(change, center) {
             this.fitWidth(change + this.worldScreenWidth, center);
+            return this;
         }
 
         /**
@@ -24555,7 +24556,7 @@ var Viewport = function (_PIXI$Container) {
          * @param {string} [options.sides=all] all, horizontal, vertical, or combination of top, bottom, right, left (e.g., 'top-bottom-right')
          * @param {number} [options.friction=0.5] friction to apply to decelerate if active
          * @param {number} [options.time=150] time in ms to finish bounce
-         * @param {string|function} [ease=easeInOutSine] ease function or name (see http://easings.net/ for supported names)
+         * @param {string|function} [options.ease=easeInOutSine] ease function or name (see http://easings.net/ for supported names)
          * @param {string} [options.underflow=center] (top/bottom/center and left/right/center, or center) where to place world if too small for screen
          * @return {Viewport} this
          */
@@ -25030,9 +25031,11 @@ var Viewport = function (_PIXI$Container) {
  * @type {Viewport}
  */
 
+PIXI.extras.Viewport = Viewport;
+
 module.exports = Viewport;
 
-},{"./bounce":219,"./clamp":221,"./clamp-zoom":220,"./decelerate":222,"./drag":223,"./follow":224,"./mouse-edges":225,"./pinch":226,"./snap":229,"./snap-zoom":228,"./wheel":231,"exists":6,"pixi.js":347}],231:[function(require,module,exports){
+},{"./bounce":219,"./clamp":221,"./clamp-zoom":220,"./decelerate":222,"./drag":223,"./follow":224,"./mouse-edges":225,"./pinch":226,"./snap":229,"./snap-zoom":228,"./wheel":231,"exists":6}],231:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -25042,8 +25045,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var PIXI = require('pixi.js');
 
 var Plugin = require('./plugin');
 
@@ -25125,7 +25126,7 @@ module.exports = function (_Plugin) {
     return Wheel;
 }(Plugin);
 
-},{"./plugin":227,"pixi.js":347}],232:[function(require,module,exports){
+},{"./plugin":227}],232:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -64038,24 +64039,23 @@ else {
 // Author: David Figatner
 // Copyright (c) 2016-17 YOPEY YOPEY LLC
 
-const _toDegreeConversion = 180 / Math.PI
-const _toRadianConversion = Math.PI / 180
-
+var _toDegreeConversion = 180 / Math.PI
+var _toRadianConversion = Math.PI / 180
 
 /** @constant {number} */
-const UP = Math.PI / 2
-const DOWN = 3 * Math.PI / 2
-const LEFT = Math.PI
-const RIGHT = 0
+var UP = Math.PI / 2
+var DOWN = 3 * Math.PI / 2
+var LEFT = Math.PI
+var RIGHT = 0
 
-const NORTH = UP
-const SOUTH = DOWN
-const WEST = LEFT
-const EAST = RIGHT
+var NORTH = UP
+var SOUTH = DOWN
+var WEST = LEFT
+var EAST = RIGHT
 
-const PI_2 = Math.PI * 2
-const PI_QUARTER = Math.PI / 4
-const PI_HALF = Math.PI / 2
+var PI_2 = Math.PI * 2
+var PI_QUARTER = Math.PI / 4
+var PI_HALF = Math.PI / 2
 
 /**
  * converts from radians to degrees (all other functions expect radians)
@@ -64087,10 +64087,10 @@ function toRadians(degrees)
  */
 function isAngleBetween(target, angle1, angle2)
 {
-    const rAngle = ((angle2 - angle1) % PI_2 + PI_2) % PI_2
+    var rAngle = ((angle2 - angle1) % PI_2 + PI_2) % PI_2
     if (rAngle >= Math.PI)
     {
-        const swap = angle1
+        var swap = angle1
         angle1 = angle2
         angle2 = swap
     }
@@ -64118,7 +64118,7 @@ function differenceAnglesSign(target, source)
         return (a % n + n) % n
     }
 
-    const a = target - source
+    var a = target - source
     return mod((a + Math.PI), PI_2) - Math.PI > 0 ? 1 : -1
 }
 
@@ -64130,7 +64130,7 @@ function differenceAnglesSign(target, source)
  */
 function differenceAngles(a, b)
 {
-    const c = Math.abs(a - b) % PI_2
+    var c = Math.abs(a - b) % PI_2
     return c > Math.PI ? (PI_2 - c) : c
 }
 
@@ -64142,9 +64142,9 @@ function differenceAngles(a, b)
  */
 function shortestAngle(start, to)
 {
-    const difference = differenceAngles(to, start)
-    const sign = differenceAnglesSign(to, start)
-    const delta = difference * sign
+    var difference = differenceAngles(to, start)
+    var sign = differenceAnglesSign(to, start)
+    var delta = difference * sign
     return delta + start
 }
 
@@ -64231,10 +64231,10 @@ function distanceTwoPointsSquared(/* (point1, point2) OR (x1, y1, x2, y2) */)
  */
 function closestAngle(angle)
 {
-    const left = differenceAngles(angle, LEFT)
-    const right = differenceAngles(angle, RIGHT)
-    const up = differenceAngles(angle, UP)
-    const down = differenceAngles(angle, DOWN)
+    var left = differenceAngles(angle, LEFT)
+    var right = differenceAngles(angle, RIGHT)
+    var up = differenceAngles(angle, UP)
+    var down = differenceAngles(angle, DOWN)
     if (left <= right && left <= up && left <= down)
     {
         return LEFT
@@ -64290,333 +64290,352 @@ function explain(angle)
 }
 
 module.exports = {
-    UP, DOWN, LEFT, RIGHT,
-    NORTH, SOUTH, WEST, EAST,
-    PI_2, PI_QUARTER, PI_HALF,
+    UP: UP,
+    DOWN: DOWN,
+    LEFT: LEFT,
+    RIGHT: RIGHT,
+    NORTH: NORTH,
+    SOUTH: SOUTH,
+    WEST: WEST,
+    EAST: EAST,
+    PI_2: PI_2,
+    PI_QUARTER: PI_QUARTER,
+    PI_HALF: PI_HALF,
 
-    toDegrees,
-    toRadians,
-    isAngleBetween,
-    differenceAnglesSign,
-    differenceAngles,
-    shortestAngle,
-    normalize,
-    angleTwoPoints,
-    distanceTwoPoints,
-    distanceTwoPointsSquared,
-    closestAngle,
-    equals,
-    explain
+    toDegrees: toDegrees,
+    toRadians: toRadians,
+    isAngleBetween: isAngleBetween,
+    differenceAnglesSign: differenceAnglesSign,
+    differenceAngles: differenceAngles,
+    shortestAngle: shortestAngle,
+    normalize: normalize,
+    angleTwoPoints: angleTwoPoints,
+    distanceTwoPoints: distanceTwoPoints,
+    distanceTwoPointsSquared: distanceTwoPointsSquared,
+    closestAngle: closestAngle,
+    equals: equals,
+    explain: explain
 }
 },{}],400:[function(require,module,exports){
+// yy-color
+// by David Figatner
+// MIT License
+// (c) YOPEY YOPEY LLC 2017
+// https://github.com/davidfig/color
+
+var Random = require('yy-random')
+
 /**
- * @file color.js
- * @author David Figatner
- * @license MIT
- * @copyright YOPEY YOPEY LLC 2016
- * {@link https://github.com/davidfig/color}
+ * converts a #FFFFFF to 0x123456
+ * @param  {string} color
+ * @return {string}
  */
-
-const Random = require('yy-random');
-
-/** @class */
-class Color
+function poundToHex(color)
 {
-    /**
-     * converts a #FFFFFF to 0x123456
-     * @param  {string} color
-     * @return {string}
-     */
-    poundToHex(color)
+    return '0x' + parseInt(color.substr(1)).toString(16)
+}
+
+/**
+ * converts a 0x123456 to #FFFFFF
+ * @param  {string} color
+ * @return {string}
+ */
+function hexToPound(color)
+{
+    return '#' + color.substr(2)
+}
+
+/**
+ * converts a number to #FFFFFF
+ * @param  {number} color
+ * @return {string}
+ */
+function valueToPound(color)
+{
+    return '#' + color.toString(16)
+}
+
+/**
+ * based on tinycolor
+ * https://github.com/bgrins/TinyColor
+ * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+ * @param {string} color
+ * @returns {object}
+ */
+function hexToHsl (color)
+{
+    var rgb = this.hexToRgb(color),
+        r = rgb.r,
+        g = rgb.g,
+        b = rgb.b
+    var max = Math.max(r, g, b),
+        min = Math.min(r, g, b)
+    var h, s, l = (max + min) / 2
+
+    if (max === min)
     {
-        return '0x' + parseInt(color.substr(1)).toString(16);
+        h = s = 0 // achromatic
     }
-
-    /**
-     * converts a 0x123456 to #FFFFFF
-     * @param  {string} color
-     * @return {string}
-     */
-    hexToPound(color)
+    else
     {
-        return '#' + color.substr(2);
-    }
-
-    /**
-     * converts a number to #FFFFFF
-     * @param  {number} color
-     * @return {string}
-     */
-    valueToPound(color)
-    {
-        return '#' + color.toString(16);
-    }
-
-    /**
-     * based on tinycolor
-     * https://github.com/bgrins/TinyColor
-     * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
-     * @param {string} color
-     * @returns {object}
-     */
-    hexToHsl (color)
-    {
-        var rgb = this.hexToRgb(color),
-            r = rgb.r,
-            g = rgb.g,
-            b = rgb.b;
-        var max = Math.max(r, g, b),
-            min = Math.min(r, g, b);
-        var h, s, l = (max + min) / 2;
-
-        if (max === min)
+        var d = max - min
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+        switch (max)
         {
-            h = s = 0; // achromatic
-        }
-        else
-        {
-            var d = max - min;
-            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-            switch (max) {
-            case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-            case g: h = (b - r) / d + 2; break;
-            case b: h = (r - g) / d + 4; break;
-            }
-
-            h /= 6;
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break
+            case g: h = (b - r) / d + 2; break
+            case b: h = (r - g) / d + 4; break
         }
 
-        return { h: h, s: s, l: l };
+        h /= 6
     }
 
-    /** based on tinycolor
-    * https://github.com/bgrins/TinyColor
-    * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
-    * @param {object|number} color {h, s, b} or h
-    * @param {number} [s]
-    * @param {number} [l]
-    * @returns number
-    */
-    hslToHex(color)
+    return { h: h, s: s, l: l }
+}
+
+/** based on tinycolor
+* https://github.com/bgrins/TinyColor
+* BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+* @param {object|number} color {h, s, b} or h
+* @param {number} [s]
+* @param {number} [l]
+* @returns number
+*/
+function hslToHex(color)
+{
+    var r, g, b, h, s, l
+    if (arguments.length === 1)
     {
-        var r, g, b, h, s, l;
-        if (arguments.length === 1)
-        {
-            h = color.h,
-            s = color.s,
-            l = color.l;
-        }
-        else
-        {
-            h = arguments[0];
-            s = arguments[1];
-            l = arguments[2];
-        }
-
-        function hue2rgb(p, q, t) {
-            if (t < 0) t += 1;
-            if (t > 1) t -= 1;
-            if (t < 1/6) return p + (q - p) * 6 * t;
-            if (t < 1/2) return q;
-            if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-            return p;
-        }
-
-        if (s === 0)
-        {
-            r = g = b = l; // achromatic
-        }
-        else
-        {
-            var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-            var p = 2 * l - q;
-            r = hue2rgb(p, q, h + 1/3);
-            g = hue2rgb(p, q, h);
-            b = hue2rgb(p, q, h - 1/3);
-        }
-
-        return this.rgbToHex(r * 255, g * 255, b * 255);
+        h = color.h,
+        s = color.s,
+        l = color.l
     }
-
-    /* darkens a color by the percentage
-    * @param {object} color in hex (0xabcdef)
-    * @param {number} amount
-    * @return {number}
-    */
-    darken(color, amount)
+    else
     {
-        return this.blend(amount, color, 0);
+        h = arguments[0]
+        s = arguments[1]
+        l = arguments[2]
     }
 
-    /** based on tinycolor
-    * https://github.com/bgrins/TinyColor
-    * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
-    * @param {object} color
-    * @param {number} amount
-    */
-    saturate(color, amount)
+    function hue2rgb(p, q, t) {
+        if (t < 0) t += 1
+        if (t > 1) t -= 1
+        if (t < 1/6) return p + (q - p) * 6 * t
+        if (t < 1/2) return q
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6
+        return p
+    }
+
+    if (s === 0)
     {
-        amount = (amount === 0) ? 0 : (amount || 10);
-        var hsl = this.hexToHsl(color);
-        hsl.s += amount / 100;
-        hsl.s = Math.min(1, Math.max(0, hsl.s));
-        return this.hslToHex(hsl);
+        r = g = b = l // achromatic
     }
-
-    /** based on tinycolor
-    * https://github.com/bgrins/TinyColor
-    * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
-    * @param {object} color
-    * @param {number} amount
-    */
-    desaturate(color, amount) {
-        amount = (amount === 0) ? 0 : (amount || 10);
-        var hsl = this.hexToHsl(color);
-        hsl.s -= amount / 100;
-        hsl.s = Math.min(1, Math.max(0, hsl.s));
-        return this.hslToHex(hsl);
-    }
-
-    /**
-     * blends two colors together
-     * @param  {number} percent [0.0 - 1.0]
-     * @param  {string} color1 first color in 0x123456 format
-     * @param  {string} color2 second color in 0x123456 format
-     * @return {number}
-     */
-    blend(percent, color1, color2)
+    else
     {
-        if (percent === 0)
-        {
-            return color1;
-        }
-        if (percent === 1)
-        {
-            return color2;
-        }
-        var r1 = color1 >> 16;
-        var g1 = color1 >> 8 & 0x0000ff;
-        var b1 = color1 & 0x0000ff;
-        var r2 = color2 >> 16;
-        var g2 = color2 >> 8 & 0x0000ff;
-        var b2 = color2 & 0x0000ff;
-        var percent1 = 1 - percent;
-        var r = percent1 * r1 + percent * r2;
-        var g = percent1 * g1 + percent * g2;
-        var b = percent1 * b1 + percent * b2;
-        return r << 16 | g << 8 | b;
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s
+        var p = 2 * l - q
+        r = hue2rgb(p, q, h + 1/3)
+        g = hue2rgb(p, q, h)
+        b = hue2rgb(p, q, h - 1/3)
     }
 
-    /**
-     * returns a hex color into an rgb value
-     * @param  {number} hex
-     * @return {string}
-     */
-    hexToRgb(hex)
+    return this.rgbToHex(r * 255, g * 255, b * 255)
+}
+
+/* darkens a color by the percentage
+* @param {object} color in hex (0xabcdef)
+* @param {number} amount
+* @return {number}
+*/
+function darken(color, amount)
+{
+    return this.blend(amount, color, 0)
+}
+
+/** based on tinycolor
+* https://github.com/bgrins/TinyColor
+* BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+* @param {object} color
+* @param {number} amount
+*/
+function saturate(color, amount)
+{
+    amount = (amount === 0) ? 0 : (amount || 10)
+    var hsl = this.hexToHsl(color)
+    hsl.s += amount / 100
+    hsl.s = Math.min(1, Math.max(0, hsl.s))
+    return this.hslToHex(hsl)
+}
+
+/** based on tinycolor
+* https://github.com/bgrins/TinyColor
+* BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+* @param {object} color
+* @param {number} amount
+*/
+function desaturate(color, amount)
+{
+    amount = (amount === 0) ? 0 : (amount || 10)
+    var hsl = this.hexToHsl(color)
+    hsl.s -= amount / 100
+    hsl.s = Math.min(1, Math.max(0, hsl.s))
+    return this.hslToHex(hsl)
+}
+
+/**
+ * blends two colors together
+ * @param  {number} percent [0.0 - 1.0]
+ * @param  {string} color1 first color in 0x123456 format
+ * @param  {string} color2 second color in 0x123456 format
+ * @return {number}
+ */
+function blend(percent, color1, color2)
+{
+    if (percent === 0)
     {
-        if (hex === 0)
-        {
-            hex = '0x000000';
-        }
-        else if (typeof hex !== 'string')
-        {
-            var s = '000000' + hex.toString(16);
-            hex = '0x' + s.substr(s.length - 6);
-        }
-        var result = /^0x?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16)
-        } : null;
+        return color1
     }
-
-    /**
-     * rgb color to hex in the form of 0x123456
-     * @param  {number|string} r first number or 'rgb(...)' string
-     * @param  {number|null} g
-     * @param  {number|null} b
-     * @return {string}
-     */
-    rgbToHex(r, g, b)
+    if (percent === 1)
     {
-        if (arguments.length === 1) {
-            if (Array.isArray(arguments[0])) {
-                var number = arguments[0];
-                r = number[0];
-                g = number[1];
-                b = number[2];
-            } else {
-                var parse = r.replace(/( *rgb *\( *)|( )|(\) *;?)/,'');
-                var numbers = parse.split(',');
-                r = numbers[0];
-                g = numbers[1];
-                b = numbers[2];
-            }
-        }
-        return '0x' + ((1 << 24) + (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b)).toString(16).slice(1);
+        return color2
     }
+    var r1 = color1 >> 16
+    var g1 = color1 >> 8 & 0x0000ff
+    var b1 = color1 & 0x0000ff
+    var r2 = color2 >> 16
+    var g2 = color2 >> 8 & 0x0000ff
+    var b2 = color2 & 0x0000ff
+    var percent1 = 1 - percent
+    var r = percent1 * r1 + percent * r2
+    var g = percent1 * g1 + percent * g2
+    var b = percent1 * b1 + percent * b2
+    return r << 16 | g << 8 | b
+}
 
-    /**
-     * returns a random color with balanced r, g, b values (i.e., r, g, b either have the same value or are 0)
-     * @param {number} min value for random number
-     * @param {number} max value for random number
-     * @return {number} color
-     */
-    random(min, max)
+/**
+ * returns a hex color into an rgb value
+ * @param  {number} hex
+ * @return {string}
+ */
+function hexToRgb(hex)
+{
+    if (hex === 0)
     {
-        function random()
-        {
-            return Random.range(min, max);
-        }
-
-        var colors = [{r:1, g:1, b:1}, {r:1, g:1, b:0}, {r:1,g:0,b:1}, {r:0,g:1,b:1}, {r:1,g:0,b:0}, {r:0,g:1,b:0}, {r:0,g:0,b:1}];
-        var color = Random.pick(colors);
-        min = min || 0;
-        max = max || 255;
-        return this.rgbToHex(color.r ? random() : 0, color.g ? random() : 0, color.b ? random() : 0);
+        hex = '0x000000'
     }
-
-    // h: 0-360, s: 0-1, l: 0-1
-    /**
-     * returns a random color based on hsl
-     * @param {number} hMin [0, 360]
-     * @param {number} hMax [hMin, 360]
-     * @param {number} sMin [0, 1]
-     * @param {number} sMax [sMin, 1]
-     * @param {number} lMin [0, 1]
-     * @param {number} lMax [lMin, 1]
-     */
-    randomHSL(hMin, hMax, sMin, sMax, lMin, lMax)
+    else if (typeof hex !== 'string')
     {
-        var color = {
-            h: Random.range(hMin, hMax),
-            s: Random.range(sMin, sMax, true),
-            l: Random.range(lMin, lMax, true)
-        };
-        return this.hslToHex(color);
+        var s = '000000' + hex.toString(16)
+        hex = '0x' + s.substr(s.length - 6)
     }
+    var result = /^0x?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null
+}
 
-    /**
-     * returns random colors based on HSL with different hues
-     * based on http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
-     * @returns {number[]} colors in hex format (0x123456)
-     */
-    randomGoldenRatioHSL(count, saturation, luminosity)
-    {
-        const goldenRatio = 0.618033988749895;
-        let h = Random.get(1, true);
-        const colors = [];
-        for (let i = 0; i < count; i++)
-        {
-            colors.push(this.hslToHex(h, saturation, luminosity));
-            h = (h + goldenRatio) % 1;
+/**
+ * rgb color to hex in the form of 0x123456
+ * @param  {(number|string)} r first number or 'rgb(...)' string
+ * @param  {(number|null)} g
+ * @param  {(number|null)} b
+ * @return {string}
+ */
+function rgbToHex(r, g, b)
+{
+    if (arguments.length === 1) {
+        if (Array.isArray(arguments[0])) {
+            var number = arguments[0]
+            r = number[0]
+            g = number[1]
+            b = number[2]
+        } else {
+            var parse = r.replace(/( *rgb *\( *)|( )|(\) *;?)/,'')
+            var numbers = parse.split(',')
+            r = numbers[0]
+            g = numbers[1]
+            b = numbers[2]
         }
-        return colors;
     }
-};
+    return '0x' + ((1 << 24) + (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b)).toString(16).slice(1)
+}
 
-module.exports = new Color();
+/**
+ * returns a random color with balanced r, g, b values (i.e., r, g, b either have the same value or are 0)
+ * @param {number} min value for random number
+ * @param {number} max value for random number
+ * @return {number} color
+ */
+function random(min, max)
+{
+    function random()
+    {
+        return Random.range(min, max)
+    }
+
+    var colors = [{r:1, g:1, b:1}, {r:1, g:1, b:0}, {r:1,g:0,b:1}, {r:0,g:1,b:1}, {r:1,g:0,b:0}, {r:0,g:1,b:0}, {r:0,g:0,b:1}]
+    var color = Random.pick(colors)
+    min = min || 0
+    max = max || 255
+    return this.rgbToHex(color.r ? random() : 0, color.g ? random() : 0, color.b ? random() : 0)
+}
+
+// h: 0-360, s: 0-1, l: 0-1
+/**
+ * returns a random color based on hsl
+ * @param {number} hMin [0, 360]
+ * @param {number} hMax [hMin, 360]
+ * @param {number} sMin [0, 1]
+ * @param {number} sMax [sMin, 1]
+ * @param {number} lMin [0, 1]
+ * @param {number} lMax [lMin, 1]
+ */
+function randomHSL(hMin, hMax, sMin, sMax, lMin, lMax)
+{
+    var color = {
+        h: Random.range(hMin, hMax),
+        s: Random.range(sMin, sMax, true),
+        l: Random.range(lMin, lMax, true)
+    }
+    return this.hslToHex(color)
+}
+
+/**
+ * returns random colors based on HSL with different hues
+ * based on http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+ * @returns {number[]} colors in hex format (0x123456)
+ */
+function randomGoldenRatioHSL(count, saturation, luminosity)
+{
+    var goldenRatio = 0.618033988749895
+    var h = Random.get(1, true)
+    var colors = []
+    for (var i = 0; i < count; i++)
+    {
+        colors.push(this.hslToHex(h, saturation, luminosity))
+        h = (h + goldenRatio) % 1
+    }
+    return colors
+}
+
+module.exports = {
+    poundToHex: poundToHex,
+    hexToPound: hexToPound,
+    valueToPound: valueToPound,
+    hexToHsl: hexToHsl,
+    hslToHex: hslToHex,
+    hexToRgb: hexToRgb,
+    rgbToHex: rgbToHex,
+    darken: darken,
+    saturate: saturate,
+    desaturate: desaturate,
+    blend: blend,
+    random: random,
+    randomHSL: randomHSL,
+    randomGoldenRatioHSL: randomGoldenRatioHSL
+}
 },{"yy-random":403}],401:[function(require,module,exports){
 // yy-counter
 // In-browser counter to watch changeable values like counters or FPS
@@ -64963,19 +64982,25 @@ module.exports = function () {
 }();
 
 },{"tinycolor2":398,"yy-counter":401}],403:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 // yy-random
 // by David Figatner
 // MIT license
 // copyright YOPEY YOPEY LLC 2016-17
 // https://github.com/davidfig/random
 
-const seedrandom = require('seedrandom')
+var seedrandom = require('seedrandom');
 
-class Random
-{
-    constructor()
-    {
-        this.generator = Math.random
+var Random = function () {
+    function Random() {
+        _classCallCheck(this, Random);
+
+        this.generator = Math.random;
     }
 
     /**
@@ -64985,409 +65010,423 @@ class Random
      * @param {string} [PRNG="alea"] - name of algorithm, see https://github.com/davidbau/seedrandom
      * @param {boolean} [save=true]
      */
-    seed(seed, options)
-    {
-        options = options || {}
-        this.generator = seedrandom[options.PRNG || 'alea'](seed, { state: options.state })
-        this.options = options
-    }
 
-    /**
-     * saves the state of the random generator
-     * can only be used after Random.seed() is called
-     * @returns {number} state
-     */
-    save()
-    {
-        if (this.generator !== Math.random)
-        {
-            return this.generator.state()
-        }
-    }
 
-    /**
-     * restores the state of the random generator
-     * @param {number} state
-     */
-    restore(state)
-    {
-        this.generator = seedrandom[this.options.PRNG || 'alea']('', { state })
-    }
-
-    /**
-     * changes the generator to use the old Math.sin-based random function
-     * based on : http://stackoverflow.com/questions/521295/javascript-random-seeds
-     * (deprecated) Use only for compatibility purposes
-     * @param {number} seed
-     */
-    seedOld(seed)
-    {
-        this.generator = function()
-        {
-            const x = Math.sin(seed++) * 10000
-            return x - Math.floor(x)
-        }
-    }
-
-    /**
-     * create a separate random generator using the seed
-     * @param {number} seed
-     * @return {object}
-     */
-    separateSeed(seed)
-    {
-        const random = new Random()
-        random.seed(seed)
-        return random
-    }
-
-    /**
-     * resets the random number this.generator to Math.random()
-     */
-    reset()
-    {
-        this.generator = Math.random
-    }
-
-    /**
-     * returns a random number using the this.generator between [0, ceiling - 1]
-     * @param {number} ceiling
-     * @param {boolean} [useFloat=false]
-     * @return {number}
-     */
-    get(ceiling, useFloat)
-    {
-        const negative = ceiling < 0 ? -1 : 1
-        ceiling *= negative
-        let result
-        if (useFloat)
-        {
-            result = this.generator() * ceiling
-        }
-        else
-        {
-            result = Math.floor(this.generator() * ceiling)
-        }
-        return result * negative
-    }
-
-    /**
-     * returns a random integer between 0 - Number.MAX_SAFE_INTEGER
-     * @return {number}
-     */
-    getHuge()
-    {
-        return this.get(Number.MAX_SAFE_INTEGER)
-    }
-
-    /**
-     * random number [middle - range, middle + range]
-     * @param {number} middle
-     * @param {number} delta
-     * @param {boolean} [useFloat=false]
-     * @return {number}
-     */
-    middle(middle, delta, useFloat)
-    {
-        const half = delta / 2
-        return this.range(middle - half, middle + half, useFloat)
-    }
-
-    /**
-     * random number [start, end]
-     * @param {number} start
-     * @param {number} end
-     * @param {boolean} [useFloat=false] if true, then range is (start, end)--i.e., not inclusive to start and end
-     * @return {number}
-     */
-    range(start, end, useFloat)
-    {
-        // case where there is no range
-        if (end === start)
-        {
-            return end
+    _createClass(Random, [{
+        key: 'seed',
+        value: function seed(_seed, options) {
+            options = options || {};
+            this.generator = seedrandom[options.PRNG || 'alea'](_seed, { state: options.state });
+            this.options = options;
         }
 
-        if (useFloat)
-        {
-            return this.get(end - start, true) + start
-        }
-        else
-        {
-            let range
-            if (start < 0 && end > 0)
-            {
-                range = -start + end + 1
-            }
-            else if (start === 0 && end > 0)
-            {
-                range = end + 1
-            }
-            else if (start < 0 && end === 0)
-            {
-                range = start - 1
-                start = 1
-            }
-            else if (start < 0 && end < 0)
-            {
-                range = end - start - 1
-            }
-            else
-            {
-                range = end - start + 1
-            }
-            return Math.floor(this.generator() * range) + start
-        }
-    }
+        /**
+         * saves the state of the random generator
+         * can only be used after Random.seed() is called
+         * @returns {number} state
+         */
 
-    /**
-     * an array of random numbers between [start, end]
-     * @param {number} start
-     * @param {number} end
-     * @param {number} count
-     * @param {boolean} [useFloat=false]
-     * @return {number[]}
-     */
-    rangeMultiple(start, end, count, useFloat)
-    {
-        var array = []
-        for (let i = 0; i < count; i++)
-        {
-            array.push(this.range(start, end, useFloat))
-        }
-        return array
-    }
-
-    /**
-     * an array of random numbers between [middle - range, middle + range]
-     * @param {number} middle
-     * @param {number} range
-     * @param {number} count
-     * @param {boolean} [useFloat=false]
-     * @return {number[]}
-     */
-    middleMultiple(middle, range, count, useFloat)
-    {
-        const array = []
-        for (let i = 0; i < count; i++)
-        {
-            array.push(middle(middle, range, useFloat))
-        }
-        return array
-    }
-
-    /**
-     * @param {number} [chance=0.5]
-     * returns random sign (either +1 or -1)
-     * @return {number}
-     */
-    sign(chance)
-    {
-        chance = chance || 0.5
-        return this.generator() < chance ? 1 : -1
-    }
-
-    /**
-     * tells you whether a random chance was achieved
-     * @param {number} [percent=0.5]
-     * @return {boolean}
-     */
-    chance(percent)
-    {
-        return this.generator() < (percent || 0.5)
-    }
-
-    /**
-     * returns a random angle in radians [0 - 2 * Math.PI)
-     */
-    angle()
-    {
-        return this.get(Math.PI * 2, true)
-    }
-
-    /**
-     * Shuffle array (either in place or copied)
-     * from http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-     * @param {Array} array
-     * @param {boolean} [copy=false] whether to shuffle in place (default) or return a new shuffled array
-     * @return {Array} a shuffled array
-     */
-    shuffle(array, copy)
-    {
-        if (copy)
-        {
-            array = array.slice()
-        }
-        if (array.length === 0)
-        {
-            return array
-        }
-
-        let currentIndex = array.length, temporaryValue, randomIndex
-
-        // While there remain elements to shuffle...
-        while (0 !== currentIndex)
-        {
-            // Pick a remaining element...
-            randomIndex = this.get(currentIndex)
-            currentIndex -= 1
-
-            // And swap it with the current element.
-            temporaryValue = array[currentIndex]
-            array[currentIndex] = array[randomIndex]
-            array[randomIndex] = temporaryValue
-        }
-        return array
-    }
-
-    /**
-     * picks a random element from an array
-     * @param {Array} array
-     * @return {*}
-     */
-    pick(array, remove)
-    {
-        if (!remove)
-        {
-            return array[this.get(array.length)]
-        }
-        else
-        {
-            const pick = this.get(array.length)
-            const temp = array[pick]
-            array.splice(pick, 1)
-            return temp
-        }
-    }
-
-    /**
-     * returns a random property from an object
-     * from http://stackoverflow.com/questions/2532218/pick-random-property-from-a-javascript-object
-     * @param {object} obj
-     * @return {*}
-     */
-    property(obj)
-    {
-        var result
-        var count = 0
-        for (var prop in obj)
-        {
-            if (this.chance(1 / ++count))
-            {
-                result = prop
+    }, {
+        key: 'save',
+        value: function save() {
+            if (this.generator !== Math.random) {
+                return this.generator.state();
             }
         }
-        return result
-    }
 
-    /**
-     * creates a random set where each entry is a value between [min, max]
-     * @param {number} min
-     * @param {number} max
-     * @param {number} amount of numbers in set
-     * @param {number[]}
-     */
-    set(min, max, amount)
-    {
-        var set = [], all = [], i
-        for (i = min; i < max; i++)
-        {
-            all.push(i)
+        /**
+         * restores the state of the random generator
+         * @param {number} state
+         */
+
+    }, {
+        key: 'restore',
+        value: function restore(state) {
+            this.generator = seedrandom[this.options.PRNG || 'alea']('', { state: state });
         }
 
-        for (i = 0; i < amount; i++)
-        {
-            var found = this.get(all.length)
-            set.push(all[found])
-            all.splice(found, 1)
-        }
-        return set
-    }
+        /**
+         * changes the generator to use the old Math.sin-based random function
+         * based on : http://stackoverflow.com/questions/521295/javascript-random-seeds
+         * (deprecated) Use only for compatibility purposes
+         * @param {number} seed
+         */
 
-
-    /**
-     * returns a set of numbers with a randomly even distribution (i.e., no overlapping and filling the space)
-     * @param {number} start position
-     * @param {number} end position
-     * @param {number} count of non-start/end points
-     * @param {boolean} [includeStart=false] includes start point (count++)
-     * @param {boolean} [includeEnd=false] includes end point (count++)
-     * @param {boolean} [useFloat=false]
-     * @param {number[]}
-     */
-    distribution(start, end, count, includeStart, includeEnd, useFloat)
-    {
-        var interval = Math.floor((end - start) / count)
-        var halfInterval = interval / 2
-        var quarterInterval = interval / 4
-        var set = []
-        if (includeStart)
-        {
-            set.push(start)
-        }
-        for (var i = 0; i < count; i++)
-        {
-            set.push(start + i * interval + halfInterval + this.range(-quarterInterval, quarterInterval, useFloat))
-        }
-        if (includeEnd)
-        {
-            set.push(end)
-        }
-        return set
-    }
-
-    /**
-     * returns a random number based on weighted probability between [min, max]
-     * from http://stackoverflow.com/questions/22656126/javascript-random-number-with-weighted-probability
-     * @param {number} min value
-     * @param {number} max value
-     * @param {number} target for average value
-     * @param {number} stddev - standard deviation
-     */
-    weightedProbabilityInt(min, max, target, stddev)
-    {
-        function normRand()
-        {
-            let x1, x2, rad
-            do
-            {
-                x1 = 2 * this.get(1, true) - 1
-                x2 = 2 * this.get(1, true) - 1
-                rad = x1 * x1 + x2 * x2
-            } while (rad >= 1 || rad === 0)
-            const c = Math.sqrt(-2 * Math.log(rad) / rad)
-            return x1 * c
+    }, {
+        key: 'seedOld',
+        value: function seedOld(seed) {
+            this.generator = function () {
+                var x = Math.sin(seed++) * 10000;
+                return x - Math.floor(x);
+            };
         }
 
-        stddev = stddev || 1
-        if (Math.random() < 0.81546)
-        {
-            while (true)
-            {
-                const sample = ((normRand() * stddev) + target)
-                if (sample >= min && sample <= max)
-                {
-                    return sample
+        /**
+         * create a separate random generator using the seed
+         * @param {number} seed
+         * @return {object}
+         */
+
+    }, {
+        key: 'separateSeed',
+        value: function separateSeed(seed) {
+            var random = new Random();
+            random.seed(seed);
+            return random;
+        }
+
+        /**
+         * resets the random number this.generator to Math.random()
+         */
+
+    }, {
+        key: 'reset',
+        value: function reset() {
+            this.generator = Math.random;
+        }
+
+        /**
+         * returns a random number using the this.generator between [0, ceiling - 1]
+         * @param {number} ceiling
+         * @param {boolean} [useFloat=false]
+         * @return {number}
+         */
+
+    }, {
+        key: 'get',
+        value: function get(ceiling, useFloat) {
+            var negative = ceiling < 0 ? -1 : 1;
+            ceiling *= negative;
+            var result = void 0;
+            if (useFloat) {
+                result = this.generator() * ceiling;
+            } else {
+                result = Math.floor(this.generator() * ceiling);
+            }
+            return result * negative;
+        }
+
+        /**
+         * returns a random integer between 0 - Number.MAX_SAFE_INTEGER
+         * @return {number}
+         */
+
+    }, {
+        key: 'getHuge',
+        value: function getHuge() {
+            return this.get(Number.MAX_SAFE_INTEGER);
+        }
+
+        /**
+         * random number [middle - range, middle + range]
+         * @param {number} middle
+         * @param {number} delta
+         * @param {boolean} [useFloat=false]
+         * @return {number}
+         */
+
+    }, {
+        key: 'middle',
+        value: function middle(_middle, delta, useFloat) {
+            var half = delta / 2;
+            return this.range(_middle - half, _middle + half, useFloat);
+        }
+
+        /**
+         * random number [start, end]
+         * @param {number} start
+         * @param {number} end
+         * @param {boolean} [useFloat=false] if true, then range is (start, end)--i.e., not inclusive to start and end
+         * @return {number}
+         */
+
+    }, {
+        key: 'range',
+        value: function range(start, end, useFloat) {
+            // case where there is no range
+            if (end === start) {
+                return end;
+            }
+
+            if (useFloat) {
+                return this.get(end - start, true) + start;
+            } else {
+                var range = void 0;
+                if (start < 0 && end > 0) {
+                    range = -start + end + 1;
+                } else if (start === 0 && end > 0) {
+                    range = end + 1;
+                } else if (start < 0 && end === 0) {
+                    range = start - 1;
+                    start = 1;
+                } else if (start < 0 && end < 0) {
+                    range = end - start - 1;
+                } else {
+                    range = end - start + 1;
+                }
+                return Math.floor(this.generator() * range) + start;
+            }
+        }
+
+        /**
+         * an array of random numbers between [start, end]
+         * @param {number} start
+         * @param {number} end
+         * @param {number} count
+         * @param {boolean} [useFloat=false]
+         * @return {number[]}
+         */
+
+    }, {
+        key: 'rangeMultiple',
+        value: function rangeMultiple(start, end, count, useFloat) {
+            var array = [];
+            for (var i = 0; i < count; i++) {
+                array.push(this.range(start, end, useFloat));
+            }
+            return array;
+        }
+
+        /**
+         * an array of random numbers between [middle - range, middle + range]
+         * @param {number} middle
+         * @param {number} range
+         * @param {number} count
+         * @param {boolean} [useFloat=false]
+         * @return {number[]}
+         */
+
+    }, {
+        key: 'middleMultiple',
+        value: function middleMultiple(middle, range, count, useFloat) {
+            var array = [];
+            for (var i = 0; i < count; i++) {
+                array.push(middle(middle, range, useFloat));
+            }
+            return array;
+        }
+
+        /**
+         * @param {number} [chance=0.5]
+         * returns random sign (either +1 or -1)
+         * @return {number}
+         */
+
+    }, {
+        key: 'sign',
+        value: function sign(chance) {
+            chance = chance || 0.5;
+            return this.generator() < chance ? 1 : -1;
+        }
+
+        /**
+         * tells you whether a random chance was achieved
+         * @param {number} [percent=0.5]
+         * @return {boolean}
+         */
+
+    }, {
+        key: 'chance',
+        value: function chance(percent) {
+            return this.generator() < (percent || 0.5);
+        }
+
+        /**
+         * returns a random angle in radians [0 - 2 * Math.PI)
+         */
+
+    }, {
+        key: 'angle',
+        value: function angle() {
+            return this.get(Math.PI * 2, true);
+        }
+
+        /**
+         * Shuffle array (either in place or copied)
+         * from http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+         * @param {Array} array
+         * @param {boolean} [copy=false] whether to shuffle in place (default) or return a new shuffled array
+         * @return {Array} a shuffled array
+         */
+
+    }, {
+        key: 'shuffle',
+        value: function shuffle(array, copy) {
+            if (copy) {
+                array = array.slice();
+            }
+            if (array.length === 0) {
+                return array;
+            }
+
+            var currentIndex = array.length,
+                temporaryValue = void 0,
+                randomIndex = void 0;
+
+            // While there remain elements to shuffle...
+            while (0 !== currentIndex) {
+                // Pick a remaining element...
+                randomIndex = this.get(currentIndex);
+                currentIndex -= 1;
+
+                // And swap it with the current element.
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+            return array;
+        }
+
+        /**
+         * picks a random element from an array
+         * @param {Array} array
+         * @return {*}
+         */
+
+    }, {
+        key: 'pick',
+        value: function pick(array, remove) {
+            if (!remove) {
+                return array[this.get(array.length)];
+            } else {
+                var pick = this.get(array.length);
+                var temp = array[pick];
+                array.splice(pick, 1);
+                return temp;
+            }
+        }
+
+        /**
+         * returns a random property from an object
+         * from http://stackoverflow.com/questions/2532218/pick-random-property-from-a-javascript-object
+         * @param {object} obj
+         * @return {*}
+         */
+
+    }, {
+        key: 'property',
+        value: function property(obj) {
+            var result;
+            var count = 0;
+            for (var prop in obj) {
+                if (this.chance(1 / ++count)) {
+                    result = prop;
                 }
             }
+            return result;
         }
-        else
-        {
-            return this.range(min, max)
+
+        /**
+         * creates a random set where each entry is a value between [min, max]
+         * @param {number} min
+         * @param {number} max
+         * @param {number} amount of numbers in set
+         * @param {number[]}
+         */
+
+    }, {
+        key: 'set',
+        value: function set(min, max, amount) {
+            var set = [],
+                all = [],
+                i;
+            for (i = min; i < max; i++) {
+                all.push(i);
+            }
+
+            for (i = 0; i < amount; i++) {
+                var found = this.get(all.length);
+                set.push(all[found]);
+                all.splice(found, 1);
+            }
+            return set;
         }
-    }
 
-    /*
-     * returns a random hex color (0 - 0xffffff)
-     * @return {number}
-     */
-    color()
-    {
-        return this.get(0xffffff)
-    }
-}
+        /**
+         * returns a set of numbers with a randomly even distribution (i.e., no overlapping and filling the space)
+         * @param {number} start position
+         * @param {number} end position
+         * @param {number} count of non-start/end points
+         * @param {boolean} [includeStart=false] includes start point (count++)
+         * @param {boolean} [includeEnd=false] includes end point (count++)
+         * @param {boolean} [useFloat=false]
+         * @param {number[]}
+         */
 
-module.exports = new Random()
+    }, {
+        key: 'distribution',
+        value: function distribution(start, end, count, includeStart, includeEnd, useFloat) {
+            var interval = Math.floor((end - start) / count);
+            var halfInterval = interval / 2;
+            var quarterInterval = interval / 4;
+            var set = [];
+            if (includeStart) {
+                set.push(start);
+            }
+            for (var i = 0; i < count; i++) {
+                set.push(start + i * interval + halfInterval + this.range(-quarterInterval, quarterInterval, useFloat));
+            }
+            if (includeEnd) {
+                set.push(end);
+            }
+            return set;
+        }
+
+        /**
+         * returns a random number based on weighted probability between [min, max]
+         * from http://stackoverflow.com/questions/22656126/javascript-random-number-with-weighted-probability
+         * @param {number} min value
+         * @param {number} max value
+         * @param {number} target for average value
+         * @param {number} stddev - standard deviation
+         */
+
+    }, {
+        key: 'weightedProbabilityInt',
+        value: function weightedProbabilityInt(min, max, target, stddev) {
+            function normRand() {
+                var x1 = void 0,
+                    x2 = void 0,
+                    rad = void 0;
+                do {
+                    x1 = 2 * this.get(1, true) - 1;
+                    x2 = 2 * this.get(1, true) - 1;
+                    rad = x1 * x1 + x2 * x2;
+                } while (rad >= 1 || rad === 0);
+                var c = Math.sqrt(-2 * Math.log(rad) / rad);
+                return x1 * c;
+            }
+
+            stddev = stddev || 1;
+            if (Math.random() < 0.81546) {
+                while (true) {
+                    var sample = normRand() * stddev + target;
+                    if (sample >= min && sample <= max) {
+                        return sample;
+                    }
+                }
+            } else {
+                return this.range(min, max);
+            }
+        }
+
+        /*
+         * returns a random hex color (0 - 0xffffff)
+         * @return {number}
+         */
+
+    }, {
+        key: 'color',
+        value: function color() {
+            return this.get(0xffffff);
+        }
+    }]);
+
+    return Random;
+}();
+
+module.exports = new Random();
+
 },{"seedrandom":390}],404:[function(require,module,exports){
 module.exports={
     "boxWidth": 100,
@@ -65411,7 +65450,6 @@ module.exports = function (options, defaults)
     return options
 }
 },{}],406:[function(require,module,exports){
-const PIXI = require('pixi.js')
 const Viewport = require('pixi-viewport')
 
 const defaults = require('./defaults')
@@ -65830,8 +65868,10 @@ class Scrollbox extends PIXI.Container
     }
 }
 
+PIXI.extras.Scrollbox = Scrollbox
+
 module.exports = Scrollbox
-},{"./defaults":405,"./defaults.json":404,"pixi-viewport":230,"pixi.js":347}],407:[function(require,module,exports){
+},{"./defaults":405,"./defaults.json":404,"pixi-viewport":230}],407:[function(require,module,exports){
 
 },{}],408:[function(require,module,exports){
 (function (process){

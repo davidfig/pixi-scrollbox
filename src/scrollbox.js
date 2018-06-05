@@ -1,4 +1,3 @@
-const PIXI = require('pixi.js')
 const Viewport = require('pixi-viewport')
 
 const defaults = require('./defaults')
@@ -416,5 +415,7 @@ class Scrollbox extends PIXI.Container
         this.pointerDown = null
     }
 }
+
+PIXI.extras.Scrollbox = Scrollbox
 
 module.exports = Scrollbox
