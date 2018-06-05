@@ -35,6 +35,15 @@ app.stage.addChild(scrollbox);
 
 [![npm i pixi-scrollbox](https://nodei.co/npm/pixi-scrollbox.png?mini=true)](https://npmjs.org/package/pixi-scrollbox/)
 
+or [download the latest build from github](https://github.com/davidfig/pixi-scrollbox/releases)
+```html
+<script src="/external-directory/pixi.js"></script>
+<script src="/external-directory/scrollbox.min.js"></script>
+<script>
+    var Scrollbox = new PIXI.extras.Scrollbox(options);
+</script>
+```
+
 ## API Documentation
 [https://davidfig.github.io/pixi-scrollbox/jsdoc/](https://davidfig.github.io/pixi-scrollbox/jsdoc/)
 
