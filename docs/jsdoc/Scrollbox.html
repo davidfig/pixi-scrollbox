@@ -79,6 +79,8 @@
             
                 <li class="parent " data-name="Scrollbox#contentWidth"><a href="Scrollbox.html#contentWidth">contentWidth</a></li>
             
+                <li class="parent " data-name="Scrollbox#disable"><a href="Scrollbox.html#disable">disable</a></li>
+            
                 <li class="parent " data-name="Scrollbox#dragScroll"><a href="Scrollbox.html#dragScroll">dragScroll</a></li>
             
                 <li class="parent " data-name="Scrollbox#isScrollbarHorizontal"><a href="Scrollbox.html#isScrollbarHorizontal">isScrollbarHorizontal</a></li>
@@ -93,6 +95,10 @@
             
                 <li class="parent " data-name="Scrollbox#scrollbar"><a href="Scrollbox.html#scrollbar">scrollbar</a></li>
             
+                <li class="parent " data-name="Scrollbox#scrollbarOffsetHorizontal"><a href="Scrollbox.html#scrollbarOffsetHorizontal">scrollbarOffsetHorizontal</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbarOffsetVertical"><a href="Scrollbox.html#scrollbarOffsetVertical">scrollbarOffsetVertical</a></li>
+            
                 <li class="parent " data-name="Scrollbox#scrollbarSize"><a href="Scrollbox.html#scrollbarSize">scrollbarSize</a></li>
             
                 <li class="parent " data-name="Scrollbox#scrollHeight"><a href="Scrollbox.html#scrollHeight">scrollHeight</a></li>
@@ -102,6 +108,8 @@
                 <li class="parent " data-name="Scrollbox#scrollTop"><a href="Scrollbox.html#scrollTop">scrollTop</a></li>
             
                 <li class="parent " data-name="Scrollbox#scrollWidth"><a href="Scrollbox.html#scrollWidth">scrollWidth</a></li>
+            
+                <li class="parent " data-name="Scrollbox#stopPropagation"><a href="Scrollbox.html#stopPropagation">stopPropagation</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -113,6 +121,8 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li class="parent  " data-name="Scrollbox#resize"><a href="Scrollbox.html#resize">resize</a></li>
             
                 <li class="parent  " data-name="Scrollbox#update"><a href="Scrollbox.html#update">update</a></li>
             
@@ -499,6 +509,114 @@
 	
         <tr>
             
+                <td class="name"><code>scrollbarOffsetHorizontal</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>offset of horizontal scrollbar (in pixels)</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>scrollbarOffsetVertical</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>offset of vertical scrollbar (in pixels)</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>stopPropagation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>call stopPropagation on any events that impact scrollbox</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>scrollbarBackground</code></td>
             
             
@@ -856,6 +974,57 @@
     
     <div class="description">
         <p>width of scrollbox less the scrollbar (if visible)</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="disable">
+            <a class="share-icon" href="#disable"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">disable</span>
+            <span class="type-signature type">boolean</span>
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>disable the scrollbox (if set to true this will also remove the mask)</p>
     </div>
     
     
@@ -1256,6 +1425,108 @@ auto = if content is larger than box size, then show scrollbar</p>
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="scrollbarOffsetHorizontal">
+            <a class="share-icon" href="#scrollbarOffsetHorizontal"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">scrollbarOffsetHorizontal</span>
+            <span class="type-signature type">number</span>
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>offset of horizontal scrollbar (in pixels)</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="scrollbarOffsetVertical">
+            <a class="share-icon" href="#scrollbarOffsetVertical"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">scrollbarOffsetVertical</span>
+            <span class="type-signature type">number</span>
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>offset of vertical scrollbar (in pixels)</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="scrollbarSize">
             <a class="share-icon" href="#scrollbarSize"><span class="glyphicon glyphicon-link"></span></a>
             <span class="">scrollbarSize</span>
@@ -1507,6 +1778,57 @@ auto = if content is larger than box size, then show scrollbar</p>
     
 </dd>
 
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="stopPropagation">
+            <a class="share-icon" href="#stopPropagation"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">stopPropagation</span>
+            <span class="type-signature type">boolean</span>
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>call stopPropagation on any events that impact scrollbox</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
         </dl>
     
 
@@ -1514,6 +1836,209 @@ auto = if content is larger than box size, then show scrollbar</p>
         <h3 class="subsection-title">Methods</h3>
 
         <dl class="list-methods">
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="resize">
+            <a class="share-icon" href="#resize"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">
+                resize
+            </span>
+            <span class="signature">(options)</span>
+            
+            
+            
+            
+        </h4>
+
+        
+        <div class="tag-source">
+            <a href="src_scrollbox.js.html#line505">scrollbox.js:505</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>resize the mask for the container</p>
+    </div>
+    
+
+    
+
+    
+
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>boxWidth</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>width of scrollbox including scrollbar (in pixels)</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>boxHeight</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>height of scrollbox including scrollbar (in pixels)</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
             
 <dt>
     <div class="nameContainer">
@@ -1531,7 +2056,7 @@ auto = if content is larger than box size, then show scrollbar</p>
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line314">scrollbox.js:314</a>
+            <a href="src_scrollbox.js.html#line375">scrollbox.js:375</a>
         </div>
         
     </div>
@@ -1609,7 +2134,7 @@ auto = if content is larger than box size, then show scrollbar</p>
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Jun 05 2018 09:59:16 GMT+0800 (DST)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Oct 02 2018 09:35:09 GMT+0800 (DST)
             </div>
         </footer>
     </div>

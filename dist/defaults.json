@@ -4,5 +4,8 @@
     "scrollbarSize": 10,
     "scrollbarBackground": 14540253,
     "scrollbarForeground": 8947848,
-    "dragScroll": true
+    "dragScroll": true,
+    "stopPropagation": true,
+    "scrollbarOffsetHorizontal": 0,
+    "scrollbarOffsetVertical": 0
 }

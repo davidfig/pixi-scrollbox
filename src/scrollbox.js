@@ -18,6 +18,9 @@ class Scrollbox extends PIXI.Container
      * @param {number} [options.boxWidth=100] width of scrollbox including scrollbar (in pixels)
      * @param {number} [options.boxHeight=100] height of scrollbox including scrollbar (in pixels)
      * @param {number} [options.scrollbarSize=10] size of scrollbar (in pixels)
+     * @param {number} [options.scrollbarOffsetHorizontal=0] offset of horizontal scrollbar (in pixels)
+     * @param {number} [options.scrollbarOffsetVertical=0] offset of vertical scrollbar (in pixels)
+     * @param {boolean} [options.stopPropagation=true] call stopPropagation on any events that impact scrollbox
      * @param {number} [options.scrollbarBackground=0xdddddd] background color of scrollbar
      * @param {number} [options.scrollbarForeground=0x888888] foreground color of scrollbar
      */
@@ -30,14 +33,10 @@ class Scrollbox extends PIXI.Container
          * content in placed in here
          * @type {PIXI.Container}
          */
-        this.content = this.addChild(new Viewport({ screenWidth: this.boxWidth, screenHeight: this.boxHeight }))
+        this.content = this.addChild(new Viewport({ stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight }))
         this.content
             .decelerate()
             .on('moved', () => this._drawScrollbars())
-        if (this.options.dragScroll)
-        {
-            this.content.drag({ clampWheel: true })
-        }
 
         /**
          * graphics element for drawing the scrollbars
@@ -52,6 +51,63 @@ class Scrollbox extends PIXI.Container
         this.on('pointercancel', this.scrollbarUp, this)
         this.on('pointerupoutside', this.scrollbarUp, this)
         this._maskContent = this.addChild(new PIXI.Graphics())
+        this.update()
+    }
+
+    /**
+     * offset of horizontal scrollbar (in pixels)
+     * @type {number}
+     */
+    get scrollbarOffsetHorizontal()
+    {
+        return this.options.scrollbarOffsetHorizontal
+    }
+    set scrollbarOffsetHorizontal(value)
+    {
+        this.options.scrollbarOffsetHorizontal = value
+    }
+
+    /**
+     * offset of vertical scrollbar (in pixels)
+     * @type {number}
+     */
+    get scrollbarOffsetVertical()
+    {
+        return this.options.scrollbarOffsetVertical
+    }
+    set scrollbarOffsetVertical(value)
+    {
+        this.options.scrollbarOffsetVertical = value
+    }
+
+    /**
+     * disable the scrollbox (if set to true this will also remove the mask)
+     * @type {boolean}
+     */
+    get disable()
+    {
+        return this._disabled
+    }
+    set disable(value)
+    {
+        if (this._disabled !== value)
+        {
+            this._disabled = value
+            this.update()
+        }
+    }
+
+    /**
+     * call stopPropagation on any events that impact scrollbox
+     * @type {boolean}
+     */
+    get stopPropagation()
+    {
+        return this.options.stopPropagation
+    }
+    set stopPropagation(value)
+    {
+        this.options.stopPropagation = value
     }
 
     /**
@@ -261,38 +317,43 @@ class Scrollbox extends PIXI.Container
         const width = this.content.width + (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
         const height = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
         this.scrollbarTop = (this.content.top / height) * this.boxHeight
+        this.scrollbarTop = this.scrollbarTop < 0 ? 0 : this.scrollbarTop
         this.scrollbarHeight = (this.boxHeight / height) * this.boxHeight
+        this.scrollbarHeight = this.scrollbarTop + this.scrollbarHeight > this.boxHeight ? this.boxHeight - this.scrollbarTop : this.scrollbarHeight
         this.scrollbarLeft = (this.content.left / width) * this.boxWidth
+        this.scrollbarLeft = this.scrollbarLeft < 0 ? 0 : this.scrollbarLeft
         this.scrollbarWidth = (this.boxWidth / width) * this.boxWidth
+        this.scrollbarWidth = this.scrollbarWidth + this.scrollbarLeft > this.boxWidth ? this.boxWidth - this.scrollbarLeft : this.scrollbarWidth
         if (this.isScrollbarVertical)
         {
             this.scrollbar
                 .beginFill(this.options.scrollbarBackground)
-                .drawRect(this.boxWidth - this.scrollbarSize, 0, this.scrollbarSize, this.boxHeight)
+                .drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, 0, this.scrollbarSize, this.boxHeight)
                 .endFill()
         }
         if (this.isScrollbarHorizontal)
         {
             this.scrollbar
                 .beginFill(this.options.scrollbarBackground)
-                .drawRect(0, this.boxHeight - this.scrollbarSize, this.boxWidth, this.scrollbarSize)
+                .drawRect(0, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.boxWidth, this.scrollbarSize)
                 .endFill()
         }
         if (this.isScrollbarVertical)
         {
             this.scrollbar
                 .beginFill(this.options.scrollbarForeground)
-                .drawRect(this.boxWidth - this.scrollbarSize, this.scrollbarTop, this.scrollbarSize, this.scrollbarHeight)
+                .drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, this.scrollbarTop, this.scrollbarSize, this.scrollbarHeight)
                 .endFill()
         }
         if (this.isScrollbarHorizontal)
         {
             this.scrollbar
                 .beginFill(this.options.scrollbarForeground)
-                .drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize, this.scrollbarWidth, this.scrollbarSize)
+                .drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.scrollbarWidth, this.scrollbarSize)
                 .endFill()
         }
-        this.content.clamp(options)
+        this.content.clamp({ direction: 'all' })
+        this.content.forceHitArea = new PIXI.Rectangle(0, 0, options.right, options.bottom)
     }
 
     /**
@@ -305,7 +366,7 @@ class Scrollbox extends PIXI.Container
             .beginFill(0)
             .drawRect(0, 0, this.boxWidth, this.boxHeight)
             .endFill()
-        this.mask = this._maskContent
+        this.content.mask = this._maskContent
     }
 
     /**
@@ -313,10 +374,21 @@ class Scrollbox extends PIXI.Container
      */
     update()
     {
-        this.mask = null
+        this.content.mask = null
         this._maskContent.clear()
-        this._drawScrollbars()
-        this._drawMask()
+        if (!this._disabled)
+        {
+            this._drawScrollbars()
+            this._drawMask()
+            if (this.options.dragScroll)
+            {
+                const direction = this.options.overflowX !== 'hidden' && this.options.overflowY !== 'hidden' ? 'all' : this.options.overflowX !== 'hidden' ? 'x' : this.options.overflowY !== 'hidden' ? 'y' : null
+                if (direction !== null)
+                {
+                    this.content.drag({ clampWheel: true, direction })
+                }
+            }
+        }
     }
 
     /**
@@ -348,7 +420,10 @@ class Scrollbox extends PIXI.Container
                         this.update()
                     }
                 }
-                e.stopPropagation()
+                if (this.options.stopPropagation)
+                {
+                    e.stopPropagation()
+                }
                 return
             }
         }
@@ -373,7 +448,10 @@ class Scrollbox extends PIXI.Container
                         this.update()
                     }
                 }
-                e.stopPropagation()
+                if (this.options.stopPropagation)
+                {
+                    e.stopPropagation()
+                }
                 return
             }
         }
@@ -402,7 +480,10 @@ class Scrollbox extends PIXI.Container
                 this.pointerDown.last = local
                 this.update()
             }
-            e.stopPropagation()
+            if (this.options.stopPropagation)
+            {
+                e.stopPropagation()
+            }
         }
     }
 
@@ -413,6 +494,20 @@ class Scrollbox extends PIXI.Container
     scrollbarUp()
     {
         this.pointerDown = null
+    }
+
+    /**
+     * resize the mask for the container
+     * @param {object} options
+     * @param {number} [options.boxWidth] width of scrollbox including scrollbar (in pixels)
+     * @param {number} [options.boxHeight] height of scrollbox including scrollbar (in pixels)
+     */
+    resize(options)
+    {
+        this.options.boxWidth = typeof options.boxWidth !== 'undefined' ? options.boxWidth : this.options.boxWidth
+        this.options.boxHeight = typeof options.boxHeight !== 'undefined' ? options.boxHeight : this.options.boxHeight
+        this.content.resize(this.options.boxWidth, this.options.boxHeight)
+        this.update()
     }
 }
 

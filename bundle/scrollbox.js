@@ -5,7 +5,10 @@ module.exports={
     "scrollbarSize": 10,
     "scrollbarBackground": 14540253,
     "scrollbarForeground": 8947848,
-    "dragScroll": true
+    "dragScroll": true,
+    "stopPropagation": true,
+    "scrollbarOffsetHorizontal": 0,
+    "scrollbarOffsetVertical": 0
 }
 },{}],2:[function(require,module,exports){
 'use strict';
@@ -53,6 +56,9 @@ var Scrollbox = function (_PIXI$Container) {
      * @param {number} [options.boxWidth=100] width of scrollbox including scrollbar (in pixels)
      * @param {number} [options.boxHeight=100] height of scrollbox including scrollbar (in pixels)
      * @param {number} [options.scrollbarSize=10] size of scrollbar (in pixels)
+     * @param {number} [options.scrollbarOffsetHorizontal=0] offset of horizontal scrollbar (in pixels)
+     * @param {number} [options.scrollbarOffsetVertical=0] offset of vertical scrollbar (in pixels)
+     * @param {boolean} [options.stopPropagation=true] call stopPropagation on any events that impact scrollbox
      * @param {number} [options.scrollbarBackground=0xdddddd] background color of scrollbar
      * @param {number} [options.scrollbarForeground=0x888888] foreground color of scrollbar
      */
@@ -67,13 +73,10 @@ var Scrollbox = function (_PIXI$Container) {
          * content in placed in here
          * @type {PIXI.Container}
          */
-        _this.content = _this.addChild(new Viewport({ screenWidth: _this.boxWidth, screenHeight: _this.boxHeight }));
+        _this.content = _this.addChild(new Viewport({ stopPropagation: _this.options.stopPropagation, screenWidth: _this.options.boxWidth, screenHeight: _this.options.boxHeight }));
         _this.content.decelerate().on('moved', function () {
             return _this._drawScrollbars();
         });
-        if (_this.options.dragScroll) {
-            _this.content.drag({ clampWheel: true });
-        }
 
         /**
          * graphics element for drawing the scrollbars
@@ -88,12 +91,13 @@ var Scrollbox = function (_PIXI$Container) {
         _this.on('pointercancel', _this.scrollbarUp, _this);
         _this.on('pointerupoutside', _this.scrollbarUp, _this);
         _this._maskContent = _this.addChild(new PIXI.Graphics());
+        _this.update();
         return _this;
     }
 
     /**
-     * user may drag the content area to scroll content
-     * @type {boolean}
+     * offset of horizontal scrollbar (in pixels)
+     * @type {number}
      */
 
 
@@ -117,22 +121,27 @@ var Scrollbox = function (_PIXI$Container) {
             var width = this.content.width + (this.isScrollbarVertical ? this.options.scrollbarSize : 0);
             var height = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0);
             this.scrollbarTop = this.content.top / height * this.boxHeight;
+            this.scrollbarTop = this.scrollbarTop < 0 ? 0 : this.scrollbarTop;
             this.scrollbarHeight = this.boxHeight / height * this.boxHeight;
+            this.scrollbarHeight = this.scrollbarTop + this.scrollbarHeight > this.boxHeight ? this.boxHeight - this.scrollbarTop : this.scrollbarHeight;
             this.scrollbarLeft = this.content.left / width * this.boxWidth;
+            this.scrollbarLeft = this.scrollbarLeft < 0 ? 0 : this.scrollbarLeft;
             this.scrollbarWidth = this.boxWidth / width * this.boxWidth;
+            this.scrollbarWidth = this.scrollbarWidth + this.scrollbarLeft > this.boxWidth ? this.boxWidth - this.scrollbarLeft : this.scrollbarWidth;
             if (this.isScrollbarVertical) {
-                this.scrollbar.beginFill(this.options.scrollbarBackground).drawRect(this.boxWidth - this.scrollbarSize, 0, this.scrollbarSize, this.boxHeight).endFill();
+                this.scrollbar.beginFill(this.options.scrollbarBackground).drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, 0, this.scrollbarSize, this.boxHeight).endFill();
             }
             if (this.isScrollbarHorizontal) {
-                this.scrollbar.beginFill(this.options.scrollbarBackground).drawRect(0, this.boxHeight - this.scrollbarSize, this.boxWidth, this.scrollbarSize).endFill();
+                this.scrollbar.beginFill(this.options.scrollbarBackground).drawRect(0, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.boxWidth, this.scrollbarSize).endFill();
             }
             if (this.isScrollbarVertical) {
-                this.scrollbar.beginFill(this.options.scrollbarForeground).drawRect(this.boxWidth - this.scrollbarSize, this.scrollbarTop, this.scrollbarSize, this.scrollbarHeight).endFill();
+                this.scrollbar.beginFill(this.options.scrollbarForeground).drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, this.scrollbarTop, this.scrollbarSize, this.scrollbarHeight).endFill();
             }
             if (this.isScrollbarHorizontal) {
-                this.scrollbar.beginFill(this.options.scrollbarForeground).drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize, this.scrollbarWidth, this.scrollbarSize).endFill();
+                this.scrollbar.beginFill(this.options.scrollbarForeground).drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.scrollbarWidth, this.scrollbarSize).endFill();
             }
-            this.content.clamp(options);
+            this.content.clamp({ direction: 'all' });
+            this.content.forceHitArea = new PIXI.Rectangle(0, 0, options.right, options.bottom);
         }
 
         /**
@@ -144,7 +153,7 @@ var Scrollbox = function (_PIXI$Container) {
         key: '_drawMask',
         value: function _drawMask() {
             this._maskContent.beginFill(0).drawRect(0, 0, this.boxWidth, this.boxHeight).endFill();
-            this.mask = this._maskContent;
+            this.content.mask = this._maskContent;
         }
 
         /**
@@ -154,10 +163,18 @@ var Scrollbox = function (_PIXI$Container) {
     }, {
         key: 'update',
         value: function update() {
-            this.mask = null;
+            this.content.mask = null;
             this._maskContent.clear();
-            this._drawScrollbars();
-            this._drawMask();
+            if (!this._disabled) {
+                this._drawScrollbars();
+                this._drawMask();
+                if (this.options.dragScroll) {
+                    var direction = this.options.overflowX !== 'hidden' && this.options.overflowY !== 'hidden' ? 'all' : this.options.overflowX !== 'hidden' ? 'x' : this.options.overflowY !== 'hidden' ? 'y' : null;
+                    if (direction !== null) {
+                        this.content.drag({ clampWheel: true, direction: direction });
+                    }
+                }
+            }
         }
 
         /**
@@ -183,7 +200,9 @@ var Scrollbox = function (_PIXI$Container) {
                             this.update();
                         }
                     }
-                    e.stopPropagation();
+                    if (this.options.stopPropagation) {
+                        e.stopPropagation();
+                    }
                     return;
                 }
             }
@@ -200,7 +219,9 @@ var Scrollbox = function (_PIXI$Container) {
                             this.update();
                         }
                     }
-                    e.stopPropagation();
+                    if (this.options.stopPropagation) {
+                        e.stopPropagation();
+                    }
                     return;
                 }
             }
@@ -227,7 +248,9 @@ var Scrollbox = function (_PIXI$Container) {
                     this.pointerDown.last = _local;
                     this.update();
                 }
-                e.stopPropagation();
+                if (this.options.stopPropagation) {
+                    e.stopPropagation();
+                }
             }
         }
 
@@ -241,6 +264,81 @@ var Scrollbox = function (_PIXI$Container) {
         value: function scrollbarUp() {
             this.pointerDown = null;
         }
+
+        /**
+         * resize the mask for the container
+         * @param {object} options
+         * @param {number} [options.boxWidth] width of scrollbox including scrollbar (in pixels)
+         * @param {number} [options.boxHeight] height of scrollbox including scrollbar (in pixels)
+         */
+
+    }, {
+        key: 'resize',
+        value: function resize(options) {
+            this.options.boxWidth = typeof options.boxWidth !== 'undefined' ? options.boxWidth : this.options.boxWidth;
+            this.options.boxHeight = typeof options.boxHeight !== 'undefined' ? options.boxHeight : this.options.boxHeight;
+            this.content.resize(this.options.boxWidth, this.options.boxHeight);
+            this.update();
+        }
+    }, {
+        key: 'scrollbarOffsetHorizontal',
+        get: function get() {
+            return this.options.scrollbarOffsetHorizontal;
+        },
+        set: function set(value) {
+            this.options.scrollbarOffsetHorizontal = value;
+        }
+
+        /**
+         * offset of vertical scrollbar (in pixels)
+         * @type {number}
+         */
+
+    }, {
+        key: 'scrollbarOffsetVertical',
+        get: function get() {
+            return this.options.scrollbarOffsetVertical;
+        },
+        set: function set(value) {
+            this.options.scrollbarOffsetVertical = value;
+        }
+
+        /**
+         * disable the scrollbox (if set to true this will also remove the mask)
+         * @type {boolean}
+         */
+
+    }, {
+        key: 'disable',
+        get: function get() {
+            return this._disabled;
+        },
+        set: function set(value) {
+            if (this._disabled !== value) {
+                this._disabled = value;
+                this.update();
+            }
+        }
+
+        /**
+         * call stopPropagation on any events that impact scrollbox
+         * @type {boolean}
+         */
+
+    }, {
+        key: 'stopPropagation',
+        get: function get() {
+            return this.options.stopPropagation;
+        },
+        set: function set(value) {
+            this.options.stopPropagation = value;
+        }
+
+        /**
+         * user may drag the content area to scroll content
+         * @type {boolean}
+         */
+
     }, {
         key: 'dragScroll',
         get: function get() {
