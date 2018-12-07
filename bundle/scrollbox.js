@@ -50,9 +50,9 @@ var Scrollbox = function (_PIXI$Container) {
      * create a scrollbox
      * @param {object} options
      * @param {boolean} [options.dragScroll=true] user may drag the content area to scroll content
-     * @param {string} [options.overflowX=auto] (scroll, hidden, auto) this changes whether the scrollbar is shown
-     * @param {string} [options.overflowY=auto] (scroll, hidden, auto) this changes whether the scrollbar is shown
-     * @param {string} [options.overflow] (scroll, hidden, auto) sets overflowX and overflowY to this value
+     * @param {string} [options.overflowX=auto] (none, scroll, hidden, auto) this changes whether the scrollbar is shown
+     * @param {string} [options.overflowY=auto] (none, scroll, hidden, auto) this changes whether the scrollbar is shown
+     * @param {string} [options.overflow] (none, scroll, hidden, auto) sets overflowX and overflowY to this value
      * @param {number} [options.boxWidth=100] width of scrollbox including scrollbar (in pixels)
      * @param {number} [options.boxHeight=100] height of scrollbox including scrollbar (in pixels)
      * @param {number} [options.scrollbarSize=10] size of scrollbar (in pixels)
@@ -110,8 +110,8 @@ var Scrollbox = function (_PIXI$Container) {
          * @private
          */
         value: function _drawScrollbars() {
-            this._isScrollbarHorizontal = this.overflowX === 'scroll' ? true : this.overflowX === 'hidden' ? false : this.content.width > this.options.boxWidth;
-            this._isScrollbarVertical = this.overflowY === 'scroll' ? true : this.overflowY === 'hidden' ? false : this.content.height > this.options.boxHeight;
+            this._isScrollbarHorizontal = this.overflowX === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowX) !== -1 ? false : this.content.width > this.options.boxWidth;
+            this._isScrollbarVertical = this.overflowY === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowY) !== -1 ? false : this.content.height > this.options.boxHeight;
             this.scrollbar.clear();
             var options = {};
             options.left = 0;
@@ -168,9 +168,9 @@ var Scrollbox = function (_PIXI$Container) {
                 this._drawScrollbars();
                 this._drawMask();
                 if (this.options.dragScroll) {
-                    var direction = this.options.overflowX !== 'hidden' && this.options.overflowY !== 'hidden' ? 'all' : this.options.overflowX !== 'hidden' ? 'x' : this.options.overflowY !== 'hidden' ? 'y' : null;
+                    var direction = this.isScrollbarHorizontal && this.isScrollbarVertical ? 'all' : this.isScrollbarHorizontal ? 'x' : 'y';
                     if (direction !== null) {
-                        this.content.drag({ clampWheel: true, direction: direction }).clamp({ direction: direction });
+                        this.content.drag({ clampWheel: true, direction: direction }).clamp({ direction: direction, underflow: 'top-left' });
                     }
                 }
             }
