@@ -33,7 +33,7 @@ class Scrollbox extends PIXI.Container
          * content in placed in here
          * @type {PIXI.Container}
          */
-        this.content = this.addChild(new Viewport({ stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight }))
+        this.content = this.addChild(new Viewport({ passiveWheel: this.options.stopPropagation, stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight }))
         this.content
             .decelerate()
             .on('moved', () => this._drawScrollbars())
@@ -506,7 +506,7 @@ class Scrollbox extends PIXI.Container
     {
         this.options.boxWidth = typeof options.boxWidth !== 'undefined' ? options.boxWidth : this.options.boxWidth
         this.options.boxHeight = typeof options.boxHeight !== 'undefined' ? options.boxHeight : this.options.boxHeight
-        this.content.resize(this.options.boxWidth, this.options.boxHeight)
+        this.content.resize(this.options.boxWidth, this.options.boxHeight, this.content.width, this.content.height)
         this.update()
     }
 }
