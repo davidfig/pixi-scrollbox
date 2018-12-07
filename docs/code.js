@@ -21,7 +21,7 @@ function vertical()
             .drawCircle(Random.range(radius, 290 - radius), Random.range(radius, size - radius), radius)
             .endFill()
     }
-    const text = scrollbox.content.addChild(new PIXI.Text(' vertical scroll ', { fill: 0xffffff, fontSize: 14 }))
+    const text = scrollbox.content.addChild(new PIXI.Text(' vertical scroll (drag anywhere)', { fill: 0xffffff, fontSize: 14 }))
     box.beginFill(0).drawRect(0, 0, text.width, text.height).endFill()
     scrollbox.update()
 }
@@ -86,7 +86,7 @@ window.onload = function ()
     horizontalVertical()
     vertical()
     horizontal()
-    const nodrag = horizontalVertical('dragScroll=false')
+    const nodrag = horizontalVertical('dragScroll=false (drag scrollbars to move)')
     nodrag.position.set(400, 425)
     nodrag.dragScroll = false
     window.addEventListener('resize', resize)

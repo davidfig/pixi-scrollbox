@@ -140,7 +140,6 @@ var Scrollbox = function (_PIXI$Container) {
             if (this.isScrollbarHorizontal) {
                 this.scrollbar.beginFill(this.options.scrollbarForeground).drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.scrollbarWidth, this.scrollbarSize).endFill();
             }
-            this.content.clamp({ direction: 'all' });
             this.content.forceHitArea = new PIXI.Rectangle(0, 0, options.right, options.bottom);
         }
 
@@ -171,7 +170,7 @@ var Scrollbox = function (_PIXI$Container) {
                 if (this.options.dragScroll) {
                     var direction = this.options.overflowX !== 'hidden' && this.options.overflowY !== 'hidden' ? 'all' : this.options.overflowX !== 'hidden' ? 'x' : this.options.overflowY !== 'hidden' ? 'y' : null;
                     if (direction !== null) {
-                        this.content.drag({ clampWheel: true, direction: direction });
+                        this.content.drag({ clampWheel: true, direction: direction }).clamp({ direction: direction });
                     }
                 }
             }
@@ -279,6 +278,12 @@ var Scrollbox = function (_PIXI$Container) {
             this.options.boxHeight = typeof options.boxHeight !== 'undefined' ? options.boxHeight : this.options.boxHeight;
             this.content.resize(this.options.boxWidth, this.options.boxHeight, this.content.width, this.content.height);
             this.update();
+        }
+    }, {
+        key: 'ensureVisible',
+        value: function ensureVisible(x, y, width, height) {
+            this.content.ensureVisible(x, y, width, height);
+            this._drawScrollbars();
         }
     }, {
         key: 'scrollbarOffsetHorizontal',
@@ -913,6 +918,7 @@ module.exports = function (_Plugin) {
             if (this.toX) {
                 var toX = this.toX;
                 toX.time += elapsed;
+                this.parent.emit('moved', { viewport: this.parent, type: 'bounce-x' });
                 if (toX.time >= this.time) {
                     this.parent.x = toX.end;
                     this.toX = null;
@@ -920,11 +926,11 @@ module.exports = function (_Plugin) {
                 } else {
                     this.parent.x = this.ease(toX.time, toX.start, toX.delta, this.time);
                 }
-                this.parent.dirty = true;
             }
             if (this.toY) {
                 var toY = this.toY;
                 toY.time += elapsed;
+                this.parent.emit('moved', { viewport: this.parent, type: 'bounce-y' });
                 if (toY.time >= this.time) {
                     this.parent.y = toY.end;
                     this.toY = null;
@@ -932,7 +938,6 @@ module.exports = function (_Plugin) {
                 } else {
                     this.parent.y = this.ease(toY.time, toY.start, toY.delta, this.time);
                 }
-                this.parent.dirty = true;
             }
         }
     }, {
@@ -1062,6 +1067,7 @@ module.exports = function (_Plugin) {
         _this.minHeight = options.minHeight;
         _this.maxWidth = options.maxWidth;
         _this.maxHeight = options.maxHeight;
+        _this.clamp();
         return _this;
     }
 
@@ -1080,22 +1086,34 @@ module.exports = function (_Plugin) {
             var width = this.parent.worldScreenWidth;
             var height = this.parent.worldScreenHeight;
             if (this.minWidth && width < this.minWidth) {
-                this.parent.fitWidth(this.minWidth);
+                var original = this.parent.scale.x;
+                this.parent.fitWidth(this.minWidth, false, false, true);
+                this.parent.scale.y *= this.parent.scale.x / original;
                 width = this.parent.worldScreenWidth;
                 height = this.parent.worldScreenHeight;
+                this.parent.emit('zoomed', { viewport: this.parent, type: 'clamp-zoom' });
             }
             if (this.maxWidth && width > this.maxWidth) {
-                this.parent.fitWidth(this.maxWidth);
+                var _original = this.parent.scale.x;
+                this.parent.fitWidth(this.maxWidth, false, false, true);
+                this.parent.scale.y *= this.parent.scale.x / _original;
                 width = this.parent.worldScreenWidth;
                 height = this.parent.worldScreenHeight;
+                this.parent.emit('zoomed', { viewport: this.parent, type: 'clamp-zoom' });
             }
             if (this.minHeight && height < this.minHeight) {
-                this.parent.fitHeight(this.minHeight);
+                var _original2 = this.parent.scale.y;
+                this.parent.fitHeight(this.minHeight, false, false, true);
+                this.parent.scale.x *= this.parent.scale.y / _original2;
                 width = this.parent.worldScreenWidth;
                 height = this.parent.worldScreenHeight;
+                this.parent.emit('zoomed', { viewport: this.parent, type: 'clamp-zoom' });
             }
             if (this.maxHeight && height > this.maxHeight) {
-                this.parent.fitHeight(this.maxHeight);
+                var _original3 = this.parent.scale.y;
+                this.parent.fitHeight(this.maxHeight, false, false, true);
+                this.parent.scale.x *= this.parent.scale.y / _original3;
+                this.parent.emit('zoomed', { viewport: this.parent, type: 'clamp-zoom' });
             }
         }
     }]);
@@ -1179,57 +1197,87 @@ module.exports = function (_Plugin) {
 
             var decelerate = this.parent.plugins['decelerate'] || {};
             if (this.left !== null || this.right !== null) {
+                var moved = void 0;
                 if (this.parent.screenWorldWidth < this.parent.screenWidth) {
                     switch (this.underflowX) {
                         case -1:
-                            this.parent.x = 0;
+                            if (this.parent.x !== 0) {
+                                this.parent.x = 0;
+                                moved = true;
+                            }
                             break;
                         case 1:
-                            this.parent.x = this.parent.screenWidth - this.parent.screenWorldWidth;
+                            if (this.parent.x !== this.parent.screenWidth - this.parent.screenWorldWidth) {
+                                this.parent.x = this.parent.screenWidth - this.parent.screenWorldWidth;
+                                moved = true;
+                            }
                             break;
                         default:
-                            this.parent.x = (this.parent.screenWidth - this.parent.screenWorldWidth) / 2;
+                            if (this.parent.x !== (this.parent.screenWidth - this.parent.screenWorldWidth) / 2) {
+                                this.parent.x = (this.parent.screenWidth - this.parent.screenWorldWidth) / 2;
+                                moved = true;
+                            }
                     }
                 } else {
                     if (this.left !== null) {
                         if (this.parent.left < (this.left === true ? 0 : this.left)) {
                             this.parent.x = -(this.left === true ? 0 : this.left) * this.parent.scale.x;
                             decelerate.x = 0;
+                            moved = true;
                         }
                     }
                     if (this.right !== null) {
                         if (this.parent.right > (this.right === true ? this.parent.worldWidth : this.right)) {
                             this.parent.x = -(this.right === true ? this.parent.worldWidth : this.right) * this.parent.scale.x + this.parent.screenWidth;
                             decelerate.x = 0;
+                            moved = true;
                         }
                     }
                 }
+                if (moved) {
+                    this.parent.emit('moved', { viewport: this.parent, type: 'clamp-x' });
+                }
             }
             if (this.top !== null || this.bottom !== null) {
+                var _moved = void 0;
                 if (this.parent.screenWorldHeight < this.parent.screenHeight) {
                     switch (this.underflowY) {
                         case -1:
-                            this.parent.y = 0;
+                            if (this.parent.y !== 0) {
+                                this.parent.y = 0;
+                                _moved = true;
+                            }
                             break;
                         case 1:
-                            this.parent.y = this.parent.screenHeight - this.parent.screenWorldHeight;
+                            if (this.parent.y !== this.parent.screenHeight - this.parent.screenWorldHeight) {
+                                this.parent.y = this.parent.screenHeight - this.parent.screenWorldHeight;
+                                _moved = true;
+                            }
                             break;
                         default:
-                            this.parent.y = (this.parent.screenHeight - this.parent.screenWorldHeight) / 2;
+                            if (this.parent.y !== (this.parent.screenHeight - this.parent.screenWorldHeight) / 2) {
+                                this.parent.y = (this.parent.screenHeight - this.parent.screenWorldHeight) / 2;
+                                _moved = true;
+                            }
                     }
                 } else {
                     if (this.top !== null) {
                         if (this.parent.top < (this.top === true ? 0 : this.top)) {
                             this.parent.y = -(this.top === true ? 0 : this.top) * this.parent.scale.y;
                             decelerate.y = 0;
+                            _moved = true;
                         }
                     }
                     if (this.bottom !== null) {
                         if (this.parent.bottom > (this.bottom === true ? this.parent.worldHeight : this.bottom)) {
                             this.parent.y = -(this.bottom === true ? this.parent.worldHeight : this.bottom) * this.parent.scale.y + this.parent.screenHeight;
                             decelerate.y = 0;
+                            _moved = true;
                         }
                     }
+                }
+                if (_moved) {
+                    this.parent.emit('moved', { viewport: this.parent, type: 'clamp-y' });
                 }
             }
         }
@@ -1249,7 +1297,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var utils = require('./utils');
 var Plugin = require('./plugin');
 
 module.exports = function (_Plugin) {
@@ -1380,8 +1427,7 @@ module.exports = function (_Plugin) {
                 moved = true;
             }
             if (moved) {
-                this.parent.dirty = true;
-                this.parent.emit('moved', this.parent);
+                this.parent.emit('moved', { viewport: this.parent, type: 'decelerate' });
             }
         }
     }, {
@@ -1394,7 +1440,7 @@ module.exports = function (_Plugin) {
     return Decelerate;
 }(Plugin);
 
-},{"./plugin":13,"./utils":16}],9:[function(require,module,exports){
+},{"./plugin":13}],9:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1463,6 +1509,8 @@ module.exports = function (_Plugin) {
             if ((count === 1 || count > 1 && !this.parent.plugins['pinch']) && this.parent.parent) {
                 var parent = this.parent.parent.toLocal(e.data.global);
                 this.last = { x: e.data.global.x, y: e.data.global.y, parent: parent };
+                this.current = e.data.pointerId;
+                return true;
             } else {
                 this.last = null;
             }
@@ -1473,7 +1521,7 @@ module.exports = function (_Plugin) {
             if (this.paused) {
                 return;
             }
-            if (this.last) {
+            if (this.last && this.current === e.data.pointerId) {
                 var x = e.data.global.x;
                 var y = e.data.global.y;
                 var count = this.parent.countDownPointers();
@@ -1493,8 +1541,8 @@ module.exports = function (_Plugin) {
                             this.parent.emit('drag-start', { screen: this.last, world: this.parent.toWorld(this.last), viewport: this.parent });
                         }
                         this.moved = true;
-                        this.parent.dirty = true;
-                        this.parent.emit('moved', this.parent);
+                        this.parent.emit('moved', { viewport: this.parent, type: 'drag' });
+                        return true;
                     }
                 } else {
                     this.moved = false;
@@ -1510,12 +1558,15 @@ module.exports = function (_Plugin) {
                 if (pointer.last) {
                     var parent = this.parent.parent.toLocal(pointer.last);
                     this.last = { x: pointer.last.x, y: pointer.last.y, parent: parent };
+                    this.current = pointer.last.data.pointerId;
                 }
                 this.moved = false;
+                return true;
             } else if (this.last) {
                 if (this.moved) {
                     this.parent.emit('drag-end', { screen: this.last, world: this.parent.toWorld(this.last), viewport: this.parent });
                     this.last = this.moved = false;
+                    return true;
                 }
             }
         }
@@ -1529,15 +1580,20 @@ module.exports = function (_Plugin) {
             if (this.wheelActive) {
                 var wheel = this.parent.plugins['wheel'];
                 if (!wheel) {
-                    this.parent.x += e.deltaX * this.wheelScroll * this.reverse;
-                    this.parent.y += e.deltaY * this.wheelScroll * this.reverse;
+                    if (this.xDirection) {
+                        this.parent.x += e.deltaX * this.wheelScroll * this.reverse;
+                    }
+                    if (this.yDirection) {
+                        this.parent.y += e.deltaY * this.wheelScroll * this.reverse;
+                    }
                     if (this.clampWheel) {
                         this.clamp();
                     }
                     this.parent.emit('wheel-scroll', this.parent);
                     this.parent.emit('moved', this.parent);
-                    this.parent.dirty = true;
-                    e.preventDefault();
+                    if (!this.parent.passiveWheel) {
+                        e.preventDefault();
+                    }
                     return true;
                 }
             }
@@ -1551,8 +1607,6 @@ module.exports = function (_Plugin) {
     }, {
         key: 'clamp',
         value: function clamp() {
-            var oob = this.parent.OOB();
-            var point = oob.cornerPoint;
             var decelerate = this.parent.plugins['decelerate'] || {};
             if (this.clampWheel !== 'y') {
                 if (this.parent.screenWorldWidth < this.parent.screenWidth) {
@@ -1666,21 +1720,21 @@ module.exports = function (_Plugin) {
                     return;
                 }
             }
-            if (this.speed) {
-                var deltaX = toX - center.x;
-                var deltaY = toY - center.y;
-                if (deltaX || deltaY) {
+            var deltaX = toX - center.x;
+            var deltaY = toY - center.y;
+            if (deltaX || deltaY) {
+                if (this.speed) {
                     var _angle = Math.atan2(toY - center.y, toX - center.x);
                     var changeX = Math.cos(_angle) * this.speed;
                     var changeY = Math.sin(_angle) * this.speed;
                     var x = Math.abs(changeX) > Math.abs(deltaX) ? toX : center.x + changeX;
                     var y = Math.abs(changeY) > Math.abs(deltaY) ? toY : center.y + changeY;
                     this.parent.moveCenter(x, y);
-                    this.parent.emit('moved', this.parent);
+                    this.parent.emit('moved', { viewport: this.parent, type: 'follow' });
+                } else {
+                    this.parent.moveCenter(toX, toY);
+                    this.parent.emit('moved', { viewport: this.parent, type: 'follow' });
                 }
-            } else {
-                this.parent.moveCenter(toX, toY);
-                this.parent.emit('moved', this.parent);
             }
         }
     }]);
@@ -1854,6 +1908,7 @@ module.exports = function (_Plugin) {
                     center.y += this.vertical * this.speed;
                 }
                 this.parent.moveCenter(center);
+                this.parent.emit('moved', { viewport: this.parent, type: 'mouse-edges' });
             }
         }
     }]);
@@ -1902,6 +1957,7 @@ module.exports = function (_Plugin) {
         value: function down() {
             if (this.parent.countDownPointers() >= 2) {
                 this.active = true;
+                return true;
             }
         }
     }, {
@@ -1920,9 +1976,9 @@ module.exports = function (_Plugin) {
                 var second = pointers[1];
                 var last = first.last && second.last ? Math.sqrt(Math.pow(second.last.x - first.last.x, 2) + Math.pow(second.last.y - first.last.y, 2)) : null;
                 if (first.pointerId === e.data.pointerId) {
-                    first.last = { x: x, y: y };
+                    first.last = { x: x, y: y, data: e.data };
                 } else if (second.pointerId === e.data.pointerId) {
-                    second.last = { x: x, y: y };
+                    second.last = { x: x, y: y, data: e.data };
                 }
                 if (last) {
                     var oldPoint = void 0;
@@ -1934,6 +1990,7 @@ module.exports = function (_Plugin) {
                     var change = (dist - last) / this.parent.screenWidth * this.parent.scale.x * this.percent;
                     this.parent.scale.x += change;
                     this.parent.scale.y += change;
+                    this.parent.emit('zoomed', { viewport: this.parent, type: 'pinch' });
                     var clamp = this.parent.plugins['clamp-zoom'];
                     if (clamp) {
                         clamp.clamp();
@@ -1944,12 +2001,12 @@ module.exports = function (_Plugin) {
                         var newPoint = this.parent.toGlobal(oldPoint);
                         this.parent.x += point.x - newPoint.x;
                         this.parent.y += point.y - newPoint.y;
-                        this.parent.emit('moved', this.parent);
+                        this.parent.emit('moved', { viewport: this.parent, type: 'pinch' });
                     }
                     if (!this.noDrag && this.lastCenter) {
                         this.parent.x += point.x - this.lastCenter.x;
                         this.parent.y += point.y - this.lastCenter.y;
-                        this.parent.emit('moved', this.parent);
+                        this.parent.emit('moved', { viewport: this.parent, type: 'pinch' });
                     }
                     this.lastCenter = point;
                     this.moved = true;
@@ -1959,7 +2016,7 @@ module.exports = function (_Plugin) {
                         this.pinching = true;
                     }
                 }
-                this.parent.dirty = true;
+                return true;
             }
         }
     }, {
@@ -1972,6 +2029,7 @@ module.exports = function (_Plugin) {
                     this.pinching = false;
                     this.moved = false;
                     this.parent.emit('pinch-end', this.parent);
+                    return true;
                 }
             }
         }
@@ -1995,32 +2053,81 @@ module.exports = function () {
         this.paused = false;
     }
 
+    /**
+     * handler for pointerdown PIXI event
+     * @param {PIXI.interaction.InteractionEvent} event
+     */
+
+
     _createClass(Plugin, [{
         key: "down",
-        value: function down() {}
+        value: function down(event) {}
+
+        /**
+         * handler for pointermove PIXI event
+         * @param {PIXI.interaction.InteractionEvent} event
+         */
+
     }, {
         key: "move",
-        value: function move() {}
+        value: function move(event) {}
+
+        /**
+         * handler for pointerup PIXI event
+         * @param {PIXI.interaction.InteractionEvent} event
+         */
+
     }, {
         key: "up",
-        value: function up() {}
+        value: function up(event) {}
+
+        /**
+         * handler for wheel event on div
+         * @param {WheelEvent} event
+         */
+
     }, {
         key: "wheel",
-        value: function wheel() {}
+        value: function wheel(event) {}
+
+        /**
+         * called on each tick
+         */
+
     }, {
         key: "update",
         value: function update() {}
+
+        /**
+         * called when the viewport is resized
+         */
+
     }, {
         key: "resize",
         value: function resize() {}
+
+        /**
+         * called when the viewport is manually moved
+         */
+
     }, {
         key: "reset",
         value: function reset() {}
+
+        /**
+         * called when viewport is paused
+         */
+
     }, {
         key: "pause",
         value: function pause() {
             this.paused = true;
         }
+
+        /**
+         * called when viewport is resumed
+         */
+
     }, {
         key: "resume",
         value: function resume() {
@@ -2063,6 +2170,7 @@ module.exports = function (_Plugin) {
      * @param {boolean} [options.removeOnComplete] removes this plugin after snapping is complete
      * @param {boolean} [options.removeOnInterrupt] removes this plugin if interrupted by any user input
      * @param {boolean} [options.forceStart] starts the snap immediately regardless of whether the viewport is at the desired zoom
+     * @param {boolean} [options.noMove] zoom but do not move
      *
      * @event snap-zoom-start(Viewport) emitted each time a fit animation starts
      * @event snap-zoom-end(Viewport) emitted each time fit reaches its target
@@ -2090,6 +2198,7 @@ module.exports = function (_Plugin) {
         _this.time = utils.defaults(options.time, 1000);
         _this.ease = utils.ease(options.ease, 'easeInOutSine');
         _this.center = options.center;
+        _this.noMove = options.noMove;
         _this.stopOnResize = options.stopOnResize;
         _this.removeOnInterrupt = options.removeOnInterrupt;
         _this.removeOnComplete = utils.defaults(options.removeOnComplete, true);
@@ -2159,7 +2268,7 @@ module.exports = function (_Plugin) {
             }
 
             var oldCenter = void 0;
-            if (!this.center) {
+            if (!this.center && !this.noMove) {
                 oldCenter = this.parent.center;
             }
             if (!this.snapping) {
@@ -2185,10 +2294,12 @@ module.exports = function (_Plugin) {
                 if (clamp) {
                     clamp.clamp();
                 }
-                if (!this.center) {
-                    this.parent.moveCenter(oldCenter);
-                } else {
-                    this.parent.moveCenter(this.center);
+                if (!this.noMove) {
+                    if (!this.center) {
+                        this.parent.moveCenter(oldCenter);
+                    } else {
+                        this.parent.moveCenter(this.center);
+                    }
                 }
             }
         }
@@ -2333,7 +2444,7 @@ module.exports = function (_Plugin) {
                 } else {
                     this.parent.moveCenter(x, y);
                 }
-                this.parent.emit('moved', this.parent);
+                this.parent.emit('moved', { viewport: this.parent, type: 'snap' });
                 if (finished) {
                     if (this.removeOnComplete) {
                         this.parent.removePlugin('snap');
@@ -2388,6 +2499,8 @@ module.exports = {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -2420,10 +2533,13 @@ var Viewport = function (_PIXI$Container) {
      * @param {number} [options.screenHeight=window.innerHeight]
      * @param {number} [options.worldWidth=this.width]
      * @param {number} [options.worldHeight=this.height]
-     * @param {number} [options.threshold = 5] number of pixels to move to trigger an input event (e.g., drag, pinch)
+     * @param {number} [options.threshold=5] number of pixels to move to trigger an input event (e.g., drag, pinch) or disable a clicked event
+     * @param {boolean} [options.passiveWheel=true] whether the 'wheel' event is set to passive
+     * @param {boolean} [options.stopPropagation=false] whether to stopPropagation of events that impact the viewport
      * @param {(PIXI.Rectangle|PIXI.Circle|PIXI.Ellipse|PIXI.Polygon|PIXI.RoundedRectangle)} [options.forceHitArea] change the default hitArea from world size to a new value
+     * @param {boolean} [options.noTicker] set this if you want to manually call update() function on each frame
      * @param {PIXI.ticker.Ticker} [options.ticker=PIXI.ticker.shared] use this PIXI.ticker for updates
-     * @param {PIXI.InteractionManager} [options.interaction=null] InteractionManager, used to calculate pointer postion relative to
+     * @param {PIXI.InteractionManager} [options.interaction=null] InteractionManager, available from instantiated WebGLRenderer/CanvasRenderer.plugins.interaction - used to calculate pointer postion relative to canvas location on screen
      * @param {HTMLElement} [options.divWheel=document.body] div to attach the wheel event
      * @fires clicked
      * @fires drag-start
@@ -2451,6 +2567,9 @@ var Viewport = function (_PIXI$Container) {
      * @fires mouse-edge-end
      * @fires mouse-edge-remove
      * @fires moved
+     * @fires moved-end
+     * @fires zoomed
+     * @fires zoomed-end
      */
     function Viewport(options) {
         _classCallCheck(this, Viewport);
@@ -2467,9 +2586,12 @@ var Viewport = function (_PIXI$Container) {
         _this._worldHeight = options.worldHeight;
         _this.hitAreaFullScreen = utils.defaults(options.hitAreaFullScreen, true);
         _this.forceHitArea = options.forceHitArea;
+        _this.passiveWheel = utils.defaults(options.passiveWheel, true);
+        _this.stopEvent = options.stopPropagation;
         _this.threshold = utils.defaults(options.threshold, 5);
         _this.interaction = options.interaction || null;
-        _this.listeners(options.divWheel || document.body);
+        _this.div = options.divWheel || document.body;
+        _this.listeners(_this.div);
 
         /**
          * active touch point ids on the viewport
@@ -2478,22 +2600,48 @@ var Viewport = function (_PIXI$Container) {
          */
         _this.touches = [];
 
-        _this.ticker = options.ticker || PIXI.ticker.shared;
-        _this.ticker.add(function () {
-            return _this.update();
-        });
+        if (!options.noTicker) {
+            _this.ticker = options.ticker || PIXI.ticker.shared;
+            _this.tickerFunction = function () {
+                return _this.update(_this.ticker.elapsedMS);
+            };
+            _this.ticker.add(_this.tickerFunction);
+        }
         return _this;
     }
 
     /**
-     * update animations
-     * @private
+     * removes all event listeners from viewport
+     * (useful for cleanup of wheel and ticker events when removing viewport)
      */
 
 
     _createClass(Viewport, [{
+        key: 'removeListeners',
+        value: function removeListeners() {
+            this.ticker.remove(this.tickerFunction);
+            this.div.removeEventListener('wheel', this.wheelFunction);
+        }
+
+        /**
+         * overrides PIXI.Container's destroy to also remove the 'wheel' and PIXI.Ticker listeners
+         */
+
+    }, {
+        key: 'destroy',
+        value: function destroy(options) {
+            _get(Viewport.prototype.__proto__ || Object.getPrototypeOf(Viewport.prototype), 'destroy', this).call(this, options);
+            this.removeListeners();
+        }
+
+        /**
+         * update viewport on each frame
+         * by default, you do not need to call this unless you set options.noTicker=true
+         */
+
+    }, {
         key: 'update',
-        value: function update() {
+        value: function update(elapsed) {
             if (!this.pause) {
                 var _iteratorNormalCompletion = true;
                 var _didIteratorError = false;
@@ -2503,7 +2651,7 @@ var Viewport = function (_PIXI$Container) {
                     for (var _iterator = this.pluginsList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
                         var plugin = _step.value;
 
-                        plugin.update(this.ticker.elapsedMS);
+                        plugin.update(elapsed);
                     }
                 } catch (err) {
                     _didIteratorError = true;
@@ -2519,19 +2667,48 @@ var Viewport = function (_PIXI$Container) {
                         }
                     }
                 }
-            }
-            if (!this.forceHitArea) {
-                this.hitArea.x = this.left;
-                this.hitArea.y = this.top;
-                this.hitArea.width = this.worldScreenWidth;
-                this.hitArea.height = this.worldScreenHeight;
+
+                if (this.lastViewport) {
+                    // check for moved-end event
+                    if (this.lastViewport.x !== this.x || this.lastViewport.y !== this.y) {
+                        this.moving = true;
+                    } else {
+                        if (this.moving) {
+                            this.emit('moved-end', this);
+                            this.moving = false;
+                        }
+                    }
+                    // check for zoomed-end event
+                    if (this.lastViewport.scaleX !== this.scale.x || this.lastViewport.scaleY !== this.scale.y) {
+                        this.zooming = true;
+                    } else {
+                        if (this.zooming) {
+                            this.emit('zoomed-end', this);
+                            this.zooming = false;
+                        }
+                    }
+                }
+
+                if (!this.forceHitArea) {
+                    this.hitArea.x = this.left;
+                    this.hitArea.y = this.top;
+                    this.hitArea.width = this.worldScreenWidth;
+                    this.hitArea.height = this.worldScreenHeight;
+                }
+                this._dirty = this._dirty || !this.lastViewport || this.lastViewport.x !== this.x || this.lastViewport.y !== this.y || this.lastViewport.scaleX !== this.scale.x || this.lastViewport.scaleY !== this.scale.y;
+                this.lastViewport = {
+                    x: this.x,
+                    y: this.y,
+                    scaleX: this.scale.x,
+                    scaleY: this.scale.y
+                };
             }
         }
 
         /**
          * use this to set screen and world sizes--needed for pinch/wheel/clamp/bounce
-         * @param {number} screenWidth
-         * @param {number} screenHeight
+         * @param {number} [screenWidth=window.innerWidth]
+         * @param {number} [screenHeight=window.innerHeight]
          * @param {number} [worldWidth]
          * @param {number} [worldHeight]
          */
@@ -2586,13 +2763,24 @@ var Viewport = function (_PIXI$Container) {
          */
 
     }, {
-        key: 'listeners',
+        key: 'getVisibleBounds',
 
+
+        /**
+         * get visible bounds of viewport
+         * @return {object} bounds { x, y, width, height }
+         */
+        value: function getVisibleBounds() {
+            return { x: this.left, y: this.top, width: this.worldScreenWidth, height: this.worldScreenHeight };
+        }
 
         /**
          * add input listeners
          * @private
          */
+
+    }, {
+        key: 'listeners',
         value: function listeners(div) {
             var _this2 = this;
 
@@ -2606,9 +2794,10 @@ var Viewport = function (_PIXI$Container) {
             this.on('pointerupoutside', this.up);
             this.on('pointercancel', this.up);
             this.on('pointerout', this.up);
-            div.addEventListener('wheel', function (e) {
+            this.wheelFunction = function (e) {
                 return _this2.handleWheel(e);
-            });
+            };
+            div.addEventListener('wheel', this.wheelFunction, { passive: this.passiveWheel });
             this.leftDown = false;
         }
 
@@ -2623,11 +2812,11 @@ var Viewport = function (_PIXI$Container) {
             if (this.pause) {
                 return;
             }
-            if (e.data.originalEvent instanceof MouseEvent && e.data.originalEvent.button == 0) {
-                this.leftDown = true;
-            }
-
-            if (e.data.pointerType !== 'mouse') {
+            if (e.data.pointerType === 'mouse') {
+                if (e.data.originalEvent.button == 0) {
+                    this.leftDown = true;
+                }
+            } else {
                 this.touches.push(e.data.pointerId);
             }
 
@@ -2637,13 +2826,16 @@ var Viewport = function (_PIXI$Container) {
                     // clicked event does not fire if viewport is decelerating or bouncing
                 };var decelerate = this.plugins['decelerate'];
                 var bounce = this.plugins['bounce'];
-                if ((!decelerate || !decelerate.x && !decelerate.y) && (!bounce || !bounce.toX && !bounce.toY)) {
+                if ((!decelerate || Math.abs(decelerate.x) < this.threshold && Math.abs(decelerate.y) < this.threshold) && (!bounce || !bounce.toX && !bounce.toY)) {
                     this.clickedAvailable = true;
+                } else {
+                    this.clickedAvailable = false;
                 }
             } else {
                 this.clickedAvailable = false;
             }
 
+            var stop = void 0;
             var _iteratorNormalCompletion3 = true;
             var _didIteratorError3 = false;
             var _iteratorError3 = undefined;
@@ -2652,7 +2844,9 @@ var Viewport = function (_PIXI$Container) {
                 for (var _iterator3 = this.pluginsList[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
                     var plugin = _step3.value;
 
-                    plugin.down(e);
+                    if (plugin.down(e)) {
+                        stop = true;
+                    }
                 }
             } catch (err) {
                 _didIteratorError3 = true;
@@ -2667,6 +2861,10 @@ var Viewport = function (_PIXI$Container) {
                         throw _iteratorError3;
                     }
                 }
+            }
+
+            if (stop && this.stopEvent) {
+                e.stopPropagation();
             }
         }
 
@@ -2697,6 +2895,7 @@ var Viewport = function (_PIXI$Container) {
                 return;
             }
 
+            var stop = void 0;
             var _iteratorNormalCompletion4 = true;
             var _didIteratorError4 = false;
             var _iteratorError4 = undefined;
@@ -2705,7 +2904,9 @@ var Viewport = function (_PIXI$Container) {
                 for (var _iterator4 = this.pluginsList[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
                     var plugin = _step4.value;
 
-                    plugin.move(e);
+                    if (plugin.move(e)) {
+                        stop = true;
+                    }
                 }
             } catch (err) {
                 _didIteratorError4 = true;
@@ -2728,6 +2929,10 @@ var Viewport = function (_PIXI$Container) {
                 if (this.checkThreshold(distX) || this.checkThreshold(distY)) {
                     this.clickedAvailable = false;
                 }
+            }
+
+            if (stop && this.stopEvent) {
+                e.stopPropagation();
             }
         }
 
@@ -2756,6 +2961,7 @@ var Viewport = function (_PIXI$Container) {
                 }
             }
 
+            var stop = void 0;
             var _iteratorNormalCompletion5 = true;
             var _didIteratorError5 = false;
             var _iteratorError5 = undefined;
@@ -2764,7 +2970,9 @@ var Viewport = function (_PIXI$Container) {
                 for (var _iterator5 = this.pluginsList[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
                     var plugin = _step5.value;
 
-                    plugin.up(e);
+                    if (plugin.up(e)) {
+                        stop = true;
+                    }
                 }
             } catch (err) {
                 _didIteratorError5 = true;
@@ -2785,6 +2993,29 @@ var Viewport = function (_PIXI$Container) {
                 this.emit('clicked', { screen: this.last, world: this.toWorld(this.last), viewport: this });
                 this.clickedAvailable = false;
             }
+
+            if (stop && this.stopEvent) {
+                e.stopPropagation();
+            }
+        }
+
+        /**
+         * gets pointer position if this.interaction is set
+         * @param {UIEvent} evt
+         * @private
+         */
+
+    }, {
+        key: 'getPointerPosition',
+        value: function getPointerPosition(evt) {
+            var point = new PIXI.Point();
+            if (this.interaction) {
+                this.interaction.mapPositionToPoint(point, evt.clientX, evt.clientY);
+            } else {
+                point.x = evt.clientX;
+                point.y = evt.clientY;
+            }
+            return point;
         }
 
         /**
@@ -2800,7 +3031,7 @@ var Viewport = function (_PIXI$Container) {
             }
 
             // only handle wheel events where the mouse is over the viewport
-            var point = this.toLocal({ x: e.clientX, y: e.clientY });
+            var point = this.toLocal(this.getPointerPosition(e));
             if (this.left <= point.x && point.x <= this.right && this.top <= point.y && point.y <= this.bottom) {
                 var result = void 0;
                 var _iteratorNormalCompletion6 = true;
@@ -2933,19 +3164,33 @@ var Viewport = function (_PIXI$Container) {
          * change zoom so the width fits in the viewport
          * @param {number} [width=this._worldWidth] in world coordinates
          * @param {boolean} [center] maintain the same center
+         * @param {boolean} [scaleY=true] whether to set scaleY=scaleX
+         * @param {boolean} [noClamp=false] whether to disable clamp-zoom
          * @return {Viewport} this
          */
 
     }, {
         key: 'fitWidth',
         value: function fitWidth(width, center) {
+            var scaleY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+            var noClamp = arguments[3];
+
             var save = void 0;
             if (center) {
                 save = this.center;
             }
             width = width || this.worldWidth;
             this.scale.x = this.screenWidth / width;
-            this.scale.y = this.scale.x;
+
+            if (scaleY) {
+                this.scale.y = this.scale.x;
+            }
+
+            var clampZoom = this.plugins['clamp-zoom'];
+            if (!noClamp && clampZoom) {
+                clampZoom.clamp();
+            }
+
             if (center) {
                 this.moveCenter(save);
             }
@@ -2956,19 +3201,33 @@ var Viewport = function (_PIXI$Container) {
          * change zoom so the height fits in the viewport
          * @param {number} [height=this._worldHeight] in world coordinates
          * @param {boolean} [center] maintain the same center of the screen after zoom
+         * @param {boolean} [scaleX=true] whether to set scaleX = scaleY
+         * @param {boolean} [noClamp=false] whether to disable clamp-zoom
          * @return {Viewport} this
          */
 
     }, {
         key: 'fitHeight',
         value: function fitHeight(height, center) {
+            var scaleX = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+            var noClamp = arguments[3];
+
             var save = void 0;
             if (center) {
                 save = this.center;
             }
             height = height || this.worldHeight;
             this.scale.y = this.screenHeight / height;
-            this.scale.x = this.scale.y;
+
+            if (scaleX) {
+                this.scale.x = this.scale.y;
+            }
+
+            var clampZoom = this.plugins['clamp-zoom'];
+            if (!noClamp && clampZoom) {
+                clampZoom.clamp();
+            }
+
             if (center) {
                 this.moveCenter(save);
             }
@@ -2995,6 +3254,12 @@ var Viewport = function (_PIXI$Container) {
             } else {
                 this.scale.x = this.scale.y;
             }
+
+            var clampZoom = this.plugins['clamp-zoom'];
+            if (clampZoom) {
+                clampZoom.clamp();
+            }
+
             if (center) {
                 this.moveCenter(save);
             }
@@ -3025,6 +3290,10 @@ var Viewport = function (_PIXI$Container) {
             } else {
                 this.scale.x = this.scale.y;
             }
+            var clampZoom = this.plugins['clamp-zoom'];
+            if (clampZoom) {
+                clampZoom.clamp();
+            }
             if (center) {
                 this.moveCenter(save);
             }
@@ -3047,6 +3316,10 @@ var Viewport = function (_PIXI$Container) {
             }
             var scale = this.scale.x + this.scale.x * percent;
             this.scale.set(scale);
+            var clampZoom = this.plugins['clamp-zoom'];
+            if (clampZoom) {
+                clampZoom.clamp();
+            }
             if (center) {
                 this.moveCenter(save);
             }
@@ -3078,6 +3351,7 @@ var Viewport = function (_PIXI$Container) {
          * @param {boolean} [options.removeOnComplete] removes this plugin after snapping is complete
          * @param {boolean} [options.removeOnInterrupt] removes this plugin if interrupted by any user input
          * @param {boolean} [options.forceStart] starts the snap immediately regardless of whether the viewport is at the desired zoom
+         * @param {boolean} [options.noMove] zoom but do not move
          */
 
     }, {
@@ -3158,6 +3432,23 @@ var Viewport = function (_PIXI$Container) {
         }
 
         /**
+         * array of pointers that are down on the viewport
+         * @private
+         * @return {PIXI.InteractionTrackingData[]}
+         */
+
+    }, {
+        key: 'getPointers',
+        value: function getPointers() {
+            var results = [];
+            var pointers = this.trackedPointers;
+            for (var key in pointers) {
+                results.push(pointers[key]);
+            }
+            return results;
+        }
+
+        /**
          * clamps and resets bounce and decelerate (as needed) after manually moving viewport
          * @private
          */
@@ -3181,10 +3472,30 @@ var Viewport = function (_PIXI$Container) {
             if (this.plugins['clamp-zoom']) {
                 this.plugins['clamp-zoom'].clamp();
             }
-            this.dirty = true;
         }
 
         // PLUGINS
+
+        /**
+         * Inserts a user plugin into the viewport
+         * @param {string} name of plugin
+         * @param {Plugin} plugin - instantiated Plugin class
+         * @param {number} [index=last element] plugin is called current order: 'drag', 'pinch', 'wheel', 'follow', 'mouse-edges', 'decelerate', 'bounce', 'snap-zoom', 'clamp-zoom', 'snap', 'clamp'
+         */
+
+    }, {
+        key: 'userPlugin',
+        value: function userPlugin(name, plugin) {
+            var index = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : PLUGIN_ORDER.length;
+
+            this.plugins[name] = plugin;
+            var current = PLUGIN_ORDER.indexOf(name);
+            if (current !== -1) {
+                PLUGIN_ORDER.splice(current, 1);
+            }
+            PLUGIN_ORDER.splice(index, 0, name);
+            this.pluginsSort();
+        }
 
         /**
          * removes installed plugin
@@ -3372,7 +3683,7 @@ var Viewport = function (_PIXI$Container) {
          * @param {boolean} [options.removeOnComplete] removes this plugin after snapping is complete
          * @param {boolean} [options.removeOnInterrupt] removes this plugin if interrupted by any user input
          * @param {boolean} [options.forceStart] starts the snap immediately regardless of whether the viewport is at the desired location
-        * @return {Viewport} this
+         * @return {Viewport} this
          */
 
     }, {
@@ -3385,6 +3696,7 @@ var Viewport = function (_PIXI$Container) {
 
         /**
          * follow a target
+         * NOTE: uses the (x, y) as the center to follow; for PIXI.Sprite to work properly, use sprite.anchor.set(0.5)
          * @param {PIXI.DisplayObject} target to follow (object must include {x: x-coordinate, y: y-coordinate})
          * @param {object} [options]
          * @param {number} [options.speed=0] to follow in pixels/frame (0=teleport to location)
@@ -3465,6 +3777,29 @@ var Viewport = function (_PIXI$Container) {
          * @type {boolean}
          */
 
+    }, {
+        key: 'ensureVisible',
+
+
+        /**
+         * move the viewport so the bounding box is visible
+         * @param {number} x
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         */
+        value: function ensureVisible(x, y, width, height) {
+            if (x < this.left) {
+                this.left = x;
+            } else if (x + width > this.right) {
+                this.right = x + width;
+            }
+            if (y < this.top) {
+                this.top = y;
+            } else if (y + height > this.bottom) {
+                this.bottom = y + height;
+            }
+        }
     }, {
         key: 'screenWidth',
         get: function get() {
@@ -3658,7 +3993,7 @@ var Viewport = function (_PIXI$Container) {
 
         /**
          * permanently changes the Viewport's hitArea
-         * <p>NOTE: normally the hitArea = PIXI.Rectangle(Viewport.left, Viewport.top, Viewport.worldScreenWidth, Viewport.worldScreenHeight)</p>
+         * NOTE: normally the hitArea = PIXI.Rectangle(Viewport.left, Viewport.top, Viewport.worldScreenWidth, Viewport.worldScreenHeight)
          * @type {(PIXI.Rectangle|PIXI.Circle|PIXI.Ellipse|PIXI.Polygon|PIXI.RoundedRectangle)}
          */
 
@@ -3683,6 +4018,9 @@ var Viewport = function (_PIXI$Container) {
         },
         set: function set(value) {
             this._pause = value;
+            this.lastViewport = null;
+            this.moving = false;
+            this.zooming = false;
             if (value) {
                 this.touches = [];
                 this.leftDown = false;
@@ -3812,10 +4150,34 @@ var Viewport = function (_PIXI$Container) {
 /**
  * fires when viewport moves through UI interaction, deceleration, or follow
  * @event Viewport#moved
+ * @type {object}
+ * @property {Viewport} viewport
+ * @property {string} type (drag, snap, pinch, follow, bounce-x, bounce-y, clamp-x, clamp-y, decelerate, mouse-edges, wheel)
+ */
+
+/**
+ * fires when viewport moves through UI interaction, deceleration, or follow
+ * @event Viewport#zoomed
+ * @type {object}
+ * @property {Viewport} viewport
+ * @property {string} type (drag-zoom, pinch, wheel, clamp-zoom)
+ */
+
+/**
+ * fires when viewport stops moving for any reason
+ * @event Viewport#moved-end
  * @type {Viewport}
  */
 
-PIXI.extras.Viewport = Viewport;
+/**
+ * fires when viewport stops zooming for any rason
+ * @event Viewport#zoomed-end
+ * @type {Viewport}
+ */
+
+if (typeof PIXI !== 'undefined') {
+    PIXI.extras.Viewport = Viewport;
+}
 
 module.exports = Viewport;
 
@@ -3840,6 +4202,8 @@ module.exports = function (_Plugin) {
      * @param {Viewport} parent
      * @param {object} [options]
      * @param {number} [options.percent=0.1] percent to scroll with each spin
+     * @param {number} [options.smooth] smooth the zooming by providing the number of frames to zoom between wheel spins
+     * @param {boolean} [options.interrupt=true] stop smoothing with any user input on the viewport
      * @param {boolean} [options.reverse] reverse the direction of the scroll
      * @param {PIXI.Point} [options.center] place this point at center during zoom instead of current mouse position
      *
@@ -3854,20 +4218,48 @@ module.exports = function (_Plugin) {
         _this.percent = options.percent || 0.1;
         _this.center = options.center;
         _this.reverse = options.reverse;
+        _this.smooth = options.smooth;
+        _this.interrupt = typeof options.interrupt === 'undefined' ? true : options.interrupt;
         return _this;
     }
 
     _createClass(Wheel, [{
-        key: 'getPointerPosition',
-        value: function getPointerPosition(evt) {
-            var point = new PIXI.Point();
-            if (this.parent.interaction) {
-                this.parent.interaction.mapPositionToPoint(point, evt.clientX, evt.clientY);
-            } else {
-                point.x = evt.clientX;
-                point.y = evt.clientY;
+        key: 'down',
+        value: function down() {
+            if (this.interrupt) {
+                this.smoothing = null;
             }
-            return point;
+        }
+    }, {
+        key: 'update',
+        value: function update() {
+            if (this.smoothing) {
+                var point = this.smoothingCenter;
+                var change = this.smoothing;
+                var oldPoint = void 0;
+                if (!this.center) {
+                    oldPoint = this.parent.toLocal(point);
+                }
+                this.parent.scale.x += change.x;
+                this.parent.scale.y += change.y;
+                this.parent.emit('zoomed', { viewport: this.parent, type: 'wheel' });
+                var clamp = this.parent.plugins['clamp-zoom'];
+                if (clamp) {
+                    clamp.clamp();
+                    this.smoothing = null;
+                }
+                if (this.center) {
+                    this.parent.moveCenter(this.center);
+                } else {
+                    var newPoint = this.parent.toGlobal(oldPoint);
+                    this.parent.x += point.x - newPoint.x;
+                    this.parent.y += point.y - newPoint.y;
+                }
+                this.smoothingCount++;
+                if (this.smoothingCount >= this.smooth) {
+                    this.smoothing = null;
+                }
+            }
         }
     }, {
         key: 'wheel',
@@ -3876,34 +4268,51 @@ module.exports = function (_Plugin) {
                 return;
             }
 
-            var change = void 0;
+            var point = this.parent.getPointerPosition(e);
+            var sign = void 0;
             if (this.reverse) {
-                change = e.deltaY > 0 ? 1 + this.percent : 1 - this.percent;
+                sign = e.deltaY > 0 ? 1 : -1;
             } else {
-                change = e.deltaY > 0 ? 1 - this.percent : 1 + this.percent;
+                sign = e.deltaY < 0 ? 1 : -1;
             }
-            var point = this.getPointerPosition(e);
-
-            var oldPoint = void 0;
-            if (!this.center) {
-                oldPoint = this.parent.toLocal(point);
-            }
-            this.parent.scale.x *= change;
-            this.parent.scale.y *= change;
-            var clamp = this.parent.plugins['clamp-zoom'];
-            if (clamp) {
-                clamp.clamp();
-            }
-
-            if (this.center) {
-                this.parent.moveCenter(this.center);
+            var change = 1 + this.percent * sign;
+            if (this.smooth) {
+                var original = {
+                    x: this.smoothing ? this.smoothing.x * (this.smooth - this.smoothingCount) : 0,
+                    y: this.smoothing ? this.smoothing.y * (this.smooth - this.smoothingCount) : 0
+                };
+                this.smoothing = {
+                    x: ((this.parent.scale.x + original.x) * change - this.parent.scale.x) / this.smooth,
+                    y: ((this.parent.scale.y + original.y) * change - this.parent.scale.y) / this.smooth
+                };
+                this.smoothingCount = 0;
+                this.smoothingCenter = point;
             } else {
-                var newPoint = this.parent.toGlobal(oldPoint);
-                this.parent.x += point.x - newPoint.x;
-                this.parent.y += point.y - newPoint.y;
+                var oldPoint = void 0;
+                if (!this.center) {
+                    oldPoint = this.parent.toLocal(point);
+                }
+                this.parent.scale.x *= change;
+                this.parent.scale.y *= change;
+                this.parent.emit('zoomed', { viewport: this.parent, type: 'wheel' });
+                var clamp = this.parent.plugins['clamp-zoom'];
+                if (clamp) {
+                    clamp.clamp();
+                    this.smoothing = null;
+                }
+                if (this.center) {
+                    this.parent.moveCenter(this.center);
+                } else {
+                    var newPoint = this.parent.toGlobal(oldPoint);
+                    this.parent.x += point.x - newPoint.x;
+                    this.parent.y += point.y - newPoint.y;
+                }
             }
-            e.preventDefault();
+            this.parent.emit('moved', { viewport: this.parent, type: 'wheel' });
             this.parent.emit('wheel', { wheel: { dx: e.deltaX, dy: e.deltaY, dz: e.deltaZ }, event: e, viewport: this.parent });
+            if (!this.parent.passiveWheel) {
+                e.preventDefault();
+            }
         }
     }]);
 

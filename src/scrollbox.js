@@ -352,7 +352,6 @@ class Scrollbox extends PIXI.Container
                 .drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.scrollbarWidth, this.scrollbarSize)
                 .endFill()
         }
-        this.content.clamp({ direction: 'all' })
         this.content.forceHitArea = new PIXI.Rectangle(0, 0, options.right, options.bottom)
     }
 
@@ -385,7 +384,9 @@ class Scrollbox extends PIXI.Container
                 const direction = this.options.overflowX !== 'hidden' && this.options.overflowY !== 'hidden' ? 'all' : this.options.overflowX !== 'hidden' ? 'x' : this.options.overflowY !== 'hidden' ? 'y' : null
                 if (direction !== null)
                 {
-                    this.content.drag({ clampWheel: true, direction })
+                    this.content
+                        .drag({ clampWheel: true, direction })
+                        .clamp({ direction })
                 }
             }
         }
@@ -508,6 +509,12 @@ class Scrollbox extends PIXI.Container
         this.options.boxHeight = typeof options.boxHeight !== 'undefined' ? options.boxHeight : this.options.boxHeight
         this.content.resize(this.options.boxWidth, this.options.boxHeight, this.content.width, this.content.height)
         this.update()
+    }
+
+    ensureVisible(x, y, width, height)
+    {
+        this.content.ensureVisible(x, y, width, height)
+        this._drawScrollbars()
     }
 }
 
