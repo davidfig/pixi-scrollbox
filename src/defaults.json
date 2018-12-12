@@ -7,5 +7,6 @@
     "dragScroll": true,
     "stopPropagation": true,
     "scrollbarOffsetHorizontal": 0,
-    "scrollbarOffsetVertical": 0
+    "scrollbarOffsetVertical": 0,
+    "underflow": "top-left"
 }

@@ -71409,7 +71409,8 @@ module.exports={
     "dragScroll": true,
     "stopPropagation": true,
     "scrollbarOffsetHorizontal": 0,
-    "scrollbarOffsetVertical": 0
+    "scrollbarOffsetVertical": 0,
+    "underflow": "top-left"
 }
 },{}],409:[function(require,module,exports){
 module.exports = function (options, defaults)
@@ -71450,6 +71451,7 @@ class Scrollbox extends PIXI.Container
      * @param {boolean} [options.stopPropagation=true] call stopPropagation on any events that impact scrollbox
      * @param {number} [options.scrollbarBackground=0xdddddd] background color of scrollbar
      * @param {number} [options.scrollbarForeground=0x888888] foreground color of scrollbar
+     * @param {string} [options.underflow=top-left] what to do when content underflows the scrollbox size: none: do nothing; (left/right/center AND top/bottom/center); OR center (e.g., 'top-left', 'center', 'none', 'bottomright')
      */
     constructor(options)
     {
@@ -71814,7 +71816,7 @@ class Scrollbox extends PIXI.Container
                 {
                     this.content
                         .drag({ clampWheel: true, direction })
-                        .clamp({ direction, underflow: 'none' })
+                        .clamp({ direction, underflow: this.options.underflow })
                 }
             }
         }
