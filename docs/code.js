@@ -50,7 +50,7 @@ function horizontalVertical(title)
 function horizontal()
 {
     const size = 500
-    const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300 }))
+    const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300, overflowY: 'hidden' }))
     scrollbox.position.set(50, 425)
     const box = scrollbox.content.addChild(new PIXI.Graphics())
     box.beginFill(0xff0000, 0.25).drawRect(0, 0, size, 290).endFill()

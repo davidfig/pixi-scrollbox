@@ -31,7 +31,8 @@ class Scrollbox extends PIXI.Container
 
         /**
          * content in placed in here
-         * @type {PIXI.Container}
+         * you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)
+         * @type {PIXI.extras.Viewport}
          */
         this.content = this.addChild(new Viewport({ passiveWheel: this.options.stopPropagation, stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight }))
         this.content
@@ -386,7 +387,7 @@ class Scrollbox extends PIXI.Container
                 {
                     this.content
                         .drag({ clampWheel: true, direction })
-                        .clamp({ direction, underflow: 'top-left' })
+                        .clamp({ direction, underflow: 'none' })
                 }
             }
         }
@@ -511,6 +512,13 @@ class Scrollbox extends PIXI.Container
         this.update()
     }
 
+    /**
+     * ensure that the bounding box is visible
+     * @param {number} x - relative to content's coordinate system
+     * @param {number} y
+     * @param {number} width
+     * @param {number} height
+     */
     ensureVisible(x, y, width, height)
     {
         this.content.ensureVisible(x, y, width, height)

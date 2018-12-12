@@ -631,9 +631,9 @@ pixi-gl-core@^1.1.4:
   integrity sha1-i0tcQzsx5Bm8N53FZc4bg1qRs3I=
 
 pixi-viewport@^3.12.0:
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/pixi-viewport/-/pixi-viewport-3.12.0.tgz#7a09620835113498bf9ab969cc5200567c9f4117"
-  integrity sha512-ODHKBOsMzcXErYZg7Svx+6dOfCsDof3tEgwfA9liMUKvElzS++bLke3lVUFbKXutfFgmuN/gxaW2fum3ZUE9bA==
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/pixi-viewport/-/pixi-viewport-3.13.0.tgz#28e99283737bbde75d1502472d25702ffe81f816"
+  integrity sha512-/kTAohridT5zlBk049nhxgK0q8St581kYTEO5w7Ey6J2si0PZISCGyQKUsGCScmWIwPOV1RR6k/WhPVvDOzQpg==
   dependencies:
     eventemitter3 "^3.1.0"
     penner "^0.1.3"
