@@ -71,7 +71,8 @@ var Scrollbox = function (_PIXI$Container) {
 
         /**
          * content in placed in here
-         * @type {PIXI.Container}
+         * you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)
+         * @type {PIXI.extras.Viewport}
          */
         _this.content = _this.addChild(new Viewport({ passiveWheel: _this.options.stopPropagation, stopPropagation: _this.options.stopPropagation, screenWidth: _this.options.boxWidth, screenHeight: _this.options.boxHeight }));
         _this.content.decelerate().on('moved', function () {
@@ -170,7 +171,7 @@ var Scrollbox = function (_PIXI$Container) {
                 if (this.options.dragScroll) {
                     var direction = this.isScrollbarHorizontal && this.isScrollbarVertical ? 'all' : this.isScrollbarHorizontal ? 'x' : 'y';
                     if (direction !== null) {
-                        this.content.drag({ clampWheel: true, direction: direction }).clamp({ direction: direction, underflow: 'top-left' });
+                        this.content.drag({ clampWheel: true, direction: direction }).clamp({ direction: direction, underflow: 'none' });
                     }
                 }
             }
@@ -279,6 +280,15 @@ var Scrollbox = function (_PIXI$Container) {
             this.content.resize(this.options.boxWidth, this.options.boxHeight, this.content.width, this.content.height);
             this.update();
         }
+
+        /**
+         * ensure that the bounding box is visible
+         * @param {number} x - relative to content's coordinate system
+         * @param {number} y
+         * @param {number} width
+         * @param {number} height
+         */
+
     }, {
         key: 'ensureVisible',
         value: function ensureVisible(x, y, width, height) {
@@ -1146,7 +1156,7 @@ module.exports = function (_Plugin) {
      * @param {(number|boolean)} [options.top] clamp top; true=0
      * @param {(number|boolean)} [options.bottom] clamp bottom; true=viewport.worldHeight
      * @param {string} [options.direction] (all, x, or y) using clamps of [0, viewport.worldWidth/viewport.worldHeight]; replaces left/right/top/bottom if set
-     * @param {string} [options.underflow=center] (top/bottom/center and left/right/center, or center) where to place world if too small for screen
+     * @param {string} [options.underflow=center] (none OR (top/bottom/center and left/right/center) OR center) where to place world if too small for screen (e.g., top-right, center, none, bottomleft)
      */
     function clamp(parent, options) {
         _classCallCheck(this, clamp);
@@ -1161,10 +1171,10 @@ module.exports = function (_Plugin) {
             _this.top = utils.defaults(options.top, null);
             _this.bottom = utils.defaults(options.bottom, null);
         } else {
-            _this.left = options.direction === 'x' || options.direction === 'all';
-            _this.right = options.direction === 'x' || options.direction === 'all';
-            _this.top = options.direction === 'y' || options.direction === 'all';
-            _this.bottom = options.direction === 'y' || options.direction === 'all';
+            _this.left = options.direction === 'x' || options.direction === 'all' ? true : null;
+            _this.right = options.direction === 'x' || options.direction === 'all' ? true : null;
+            _this.top = options.direction === 'y' || options.direction === 'all' ? true : null;
+            _this.bottom = options.direction === 'y' || options.direction === 'all' ? true : null;
         }
         _this.parseUnderflow(options.underflow || 'center');
         _this.move();
@@ -1175,12 +1185,15 @@ module.exports = function (_Plugin) {
         key: 'parseUnderflow',
         value: function parseUnderflow(clamp) {
             clamp = clamp.toLowerCase();
-            if (clamp === 'center') {
-                this.underflowX = 0;
-                this.underflowY = 0;
+            if (clamp === 'none') {
+                this.noUnderflow = true;
+            } else if (clamp === 'center') {
+                this.underflowX = this.underflowY = 0;
+                this.noUnderflow = false;
             } else {
                 this.underflowX = clamp.indexOf('left') !== -1 ? -1 : clamp.indexOf('right') !== -1 ? 1 : 0;
                 this.underflowY = clamp.indexOf('top') !== -1 ? -1 : clamp.indexOf('bottom') !== -1 ? 1 : 0;
+                this.noUnderflow = false;
             }
         }
     }, {
@@ -1199,24 +1212,26 @@ module.exports = function (_Plugin) {
             if (this.left !== null || this.right !== null) {
                 var moved = void 0;
                 if (this.parent.screenWorldWidth < this.parent.screenWidth) {
-                    switch (this.underflowX) {
-                        case -1:
-                            if (this.parent.x !== 0) {
-                                this.parent.x = 0;
-                                moved = true;
-                            }
-                            break;
-                        case 1:
-                            if (this.parent.x !== this.parent.screenWidth - this.parent.screenWorldWidth) {
-                                this.parent.x = this.parent.screenWidth - this.parent.screenWorldWidth;
-                                moved = true;
-                            }
-                            break;
-                        default:
-                            if (this.parent.x !== (this.parent.screenWidth - this.parent.screenWorldWidth) / 2) {
-                                this.parent.x = (this.parent.screenWidth - this.parent.screenWorldWidth) / 2;
-                                moved = true;
-                            }
+                    if (!!this.noUnderflow) {
+                        switch (this.underflowX) {
+                            case -1:
+                                if (this.parent.x !== 0) {
+                                    this.parent.x = 0;
+                                    moved = true;
+                                }
+                                break;
+                            case 1:
+                                if (this.parent.x !== this.parent.screenWidth - this.parent.screenWorldWidth) {
+                                    this.parent.x = this.parent.screenWidth - this.parent.screenWorldWidth;
+                                    moved = true;
+                                }
+                                break;
+                            default:
+                                if (this.parent.x !== (this.parent.screenWidth - this.parent.screenWorldWidth) / 2) {
+                                    this.parent.x = (this.parent.screenWidth - this.parent.screenWorldWidth) / 2;
+                                    moved = true;
+                                }
+                        }
                     }
                 } else {
                     if (this.left !== null) {
@@ -1241,24 +1256,26 @@ module.exports = function (_Plugin) {
             if (this.top !== null || this.bottom !== null) {
                 var _moved = void 0;
                 if (this.parent.screenWorldHeight < this.parent.screenHeight) {
-                    switch (this.underflowY) {
-                        case -1:
-                            if (this.parent.y !== 0) {
-                                this.parent.y = 0;
-                                _moved = true;
-                            }
-                            break;
-                        case 1:
-                            if (this.parent.y !== this.parent.screenHeight - this.parent.screenWorldHeight) {
-                                this.parent.y = this.parent.screenHeight - this.parent.screenWorldHeight;
-                                _moved = true;
-                            }
-                            break;
-                        default:
-                            if (this.parent.y !== (this.parent.screenHeight - this.parent.screenWorldHeight) / 2) {
-                                this.parent.y = (this.parent.screenHeight - this.parent.screenWorldHeight) / 2;
-                                _moved = true;
-                            }
+                    if (!this.noUnderflow) {
+                        switch (this.underflowY) {
+                            case -1:
+                                if (this.parent.y !== 0) {
+                                    this.parent.y = 0;
+                                    _moved = true;
+                                }
+                                break;
+                            case 1:
+                                if (this.parent.y !== this.parent.screenHeight - this.parent.screenWorldHeight) {
+                                    this.parent.y = this.parent.screenHeight - this.parent.screenWorldHeight;
+                                    _moved = true;
+                                }
+                                break;
+                            default:
+                                if (this.parent.y !== (this.parent.screenHeight - this.parent.screenWorldHeight) / 2) {
+                                    this.parent.y = (this.parent.screenHeight - this.parent.screenWorldHeight) / 2;
+                                    _moved = true;
+                                }
+                        }
                     }
                 } else {
                     if (this.top !== null) {
@@ -3604,7 +3621,7 @@ var Viewport = function (_PIXI$Container) {
          * @param {(number|boolean)} [options.top] clamp top; true=0
          * @param {(number|boolean)} [options.bottom] clamp bottom; true=viewport.worldHeight
          * @param {string} [options.direction] (all, x, or y) using clamps of [0, viewport.worldWidth/viewport.worldHeight]; replaces left/right/top/bottom if set
-         * @param {string} [options.underflow=center] (top/bottom/center and left/right/center, or center) where to place world if too small for screen
+         * @param {string} [options.underflow=center] (none OR (top/bottom/center and left/right/center) OR center) where to place world if too small for screen (e.g., top-right, center, none, bottomleft)
          * @return {Viewport} this
          */
 
@@ -3863,7 +3880,7 @@ var Viewport = function (_PIXI$Container) {
     }, {
         key: 'worldScreenWidth',
         get: function get() {
-            return this._screenWidth / this.scale.x;
+            return this.screenWidth / this.scale.x;
         }
 
         /**
@@ -3875,7 +3892,7 @@ var Viewport = function (_PIXI$Container) {
     }, {
         key: 'worldScreenHeight',
         get: function get() {
-            return this._screenHeight / this.scale.y;
+            return this.screenHeight / this.scale.y;
         }
 
         /**
@@ -3887,7 +3904,7 @@ var Viewport = function (_PIXI$Container) {
     }, {
         key: 'screenWorldWidth',
         get: function get() {
-            return this._worldWidth * this.scale.x;
+            return this.worldWidth * this.scale.x;
         }
 
         /**
@@ -3899,7 +3916,7 @@ var Viewport = function (_PIXI$Container) {
     }, {
         key: 'screenWorldHeight',
         get: function get() {
-            return this._worldHeight * this.scale.y;
+            return this.worldHeight * this.scale.y;
         }
 
         /**

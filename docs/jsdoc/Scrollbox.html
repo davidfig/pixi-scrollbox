@@ -126,6 +126,8 @@
             
             <span class="subtitle">Methods</span>
             
+                <li class="parent  " data-name="Scrollbox#ensureVisible"><a href="Scrollbox.html#ensureVisible">ensureVisible</a></li>
+            
                 <li class="parent  " data-name="Scrollbox#resize"><a href="Scrollbox.html#resize">resize</a></li>
             
                 <li class="parent  " data-name="Scrollbox#update"><a href="Scrollbox.html#update">update</a></li>
@@ -862,7 +864,7 @@
         <h4 class="name" id="content">
             <a class="share-icon" href="#content"><span class="glyphicon glyphicon-link"></span></a>
             <span class="">content</span>
-            <span class="type-signature type">PIXI.Container</span>
+            <span class="type-signature type">PIXI.extras.Viewport</span>
             
             
             
@@ -875,7 +877,8 @@
 <dd>
     
     <div class="description">
-        <p>content in placed in here</p>
+        <p>content in placed in here
+you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)</p>
     </div>
     
     
@@ -1843,6 +1846,196 @@ auto = if content is larger than box size, then show scrollbar</p>
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="ensureVisible">
+            <a class="share-icon" href="#ensureVisible"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">
+                ensureVisible
+            </span>
+            <span class="signature">(x, y, width, height)</span>
+            
+            
+            
+            
+        </h4>
+
+        
+        <div class="tag-source">
+            <a href="src_scrollbox.js.html#line522">scrollbox.js:522</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>ensure that the bounding box is visible</p>
+    </div>
+    
+
+    
+
+    
+
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>relative to content's coordinate system</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="resize">
             <a class="share-icon" href="#resize"><span class="glyphicon glyphicon-link"></span></a>
             <span class="">
@@ -1857,7 +2050,7 @@ auto = if content is larger than box size, then show scrollbar</p>
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line506">scrollbox.js:506</a>
+            <a href="src_scrollbox.js.html#line507">scrollbox.js:507</a>
         </div>
         
     </div>
@@ -2060,7 +2253,7 @@ auto = if content is larger than box size, then show scrollbar</p>
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line374">scrollbox.js:374</a>
+            <a href="src_scrollbox.js.html#line375">scrollbox.js:375</a>
         </div>
         
     </div>
@@ -2138,7 +2331,7 @@ auto = if content is larger than box size, then show scrollbar</p>
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Dec 08 2018 09:14:22 GMT+0800 (GMT+08:00)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Dec 12 2018 12:12:26 GMT+0800 (GMT+08:00)
             </div>
         </footer>
     </div>
