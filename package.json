@@ -1,6 +1,6 @@
 {
   "name": "pixi-scrollbox",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "pixi.js scrollbox: a masked box that can scroll vertically or horizontally with scrollbars",
   "browser": "dist/scrollbox.js",
   "directories": {
