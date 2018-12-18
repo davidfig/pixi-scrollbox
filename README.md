@@ -34,11 +34,20 @@ app.stage.addChild(scrollbox);
 
 ## Usage
 
-npm i pixi-scrollbox
+```
+npm i pixi-scrollbox pixi-viewport
+```
+or
+```
+yarn add pixi-scrollbox pixi-viewport
+```
+
+Note: pixi-viewport and pixi.js are listed as peerDependency, which means you will need to manually install them if they're not already installed (this is to ensure you don't have two versions of these libraries). My instructions above assume you have pixi.js installed (otherwise why would you be looking at this library).
 
 or [download the latest build from github](https://github.com/davidfig/pixi-scrollbox/releases)
 ```html
 <script src="/external-directory/pixi.js"></script>
+<script src="/external-directory/pixi-viewport.min.js"></script>
 <script src="/external-directory/scrollbox.min.js"></script>
 <script>
     var Scrollbox = new PIXI.extras.Scrollbox(options);
