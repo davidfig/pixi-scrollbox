@@ -34,7 +34,9 @@
     "pixi-viewport": ">=3.12.0",
     "pixi.js": ">=4.6.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "pixi-ease": "^1.1.2"
+  },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
     "clicked": "^2.0.0",

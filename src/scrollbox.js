@@ -1,7 +1,10 @@
 const Viewport = require('pixi-viewport')
+const Ease = require('pixi-ease')
 
 const defaults = require('./defaults')
 const DEFAULTS = require('./defaults.json')
+
+const FADE_SCROLLBAR_TIME = 1000
 
 /**
  * pixi.js scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
@@ -24,11 +27,15 @@ class Scrollbox extends PIXI.Container
      * @param {number} [options.scrollbarBackground=0xdddddd] background color of scrollbar
      * @param {number} [options.scrollbarForeground=0x888888] foreground color of scrollbar
      * @param {string} [options.underflow=top-left] what to do when content underflows the scrollbox size: none: do nothing; (left/right/center AND top/bottom/center); OR center (e.g., 'top-left', 'center', 'none', 'bottomright')
+     * @param {(boolean|number)} [options.fade] fade the scrollbar when not in use (true = 1000ms)
+     * @param {number} [options.fadeWait=3000] time to wait before fading the scrollbar if options.fade is set
+     * @param {(string|function)} [options.fadeEase=easeInOutSine] easing function to use for fading
      */
     constructor(options)
     {
         super()
         this.options = defaults(options, DEFAULTS)
+        this.ease = new Ease.list()
 
         /**
          * content in placed in here
@@ -288,18 +295,28 @@ class Scrollbox extends PIXI.Container
 
     /**
      * width of content area
+     * if not set then it uses content.width to calculate width
      */
     get scrollWidth()
     {
-        return this.content.width
+        return this._scrollWidth || this.content.width
+    }
+    set scrollWidth(value)
+    {
+        this._scrollWidth = value
     }
 
     /**
      * height of content area
+     * if not set then it uses content.height to calculate height
      */
     get scrollHeight()
     {
-        return this.content.height
+        return this._scrollHeight || this.content.height
+    }
+    set scrollHeight(value)
+    {
+        this._scrollHeight = value
     }
 
     /**
@@ -308,16 +325,16 @@ class Scrollbox extends PIXI.Container
      */
     _drawScrollbars()
     {
-        this._isScrollbarHorizontal = this.overflowX === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowX) !== -1 ? false : this.content.width > this.options.boxWidth
-        this._isScrollbarVertical = this.overflowY === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowY) !== -1 ? false : this.content.height > this.options.boxHeight
+        this._isScrollbarHorizontal = this.overflowX === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowX) !== -1 ? false : this.scrollWidth > this.options.boxWidth
+        this._isScrollbarVertical = this.overflowY === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowY) !== -1 ? false : this.scrollHeight > this.options.boxHeight
         this.scrollbar.clear()
         let options = {}
         options.left = 0
-        options.right = this.content.width + (this._isScrollbarVertical ? this.options.scrollbarSize : 0)
+        options.right = this.scrollWidth + (this._isScrollbarVertical ? this.options.scrollbarSize : 0)
         options.top = 0
-        options.bottom = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
-        const width = this.content.width + (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
-        const height = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
+        options.bottom = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
+        const width = this.scrollWidth + (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
+        const height = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
         this.scrollbarTop = (this.content.top / height) * this.boxHeight
         this.scrollbarTop = this.scrollbarTop < 0 ? 0 : this.scrollbarTop
         this.scrollbarHeight = (this.boxHeight / height) * this.boxHeight
@@ -355,6 +372,7 @@ class Scrollbox extends PIXI.Container
                 .endFill()
         }
         this.content.forceHitArea = new PIXI.Rectangle(0, 0, options.right, options.bottom)
+        this.activateFade()
     }
 
     /**
@@ -391,6 +409,24 @@ class Scrollbox extends PIXI.Container
                         .clamp({ direction, underflow: this.options.underflow })
                 }
             }
+        }
+    }
+
+    /**
+     * show the scrollbar and restart the timer for fade if options.fade is set
+     */
+    activateFade()
+    {
+        if (this.options.fade)
+        {
+            if (this.fade)
+            {
+                this.ease.remove(this.fade)
+            }
+            this.scrollbar.alpha = 1
+            const time = this.options.fade === true ? FADE_SCROLLBAR_TIME : this.options.fade
+            this.fade = this.ease.to(this.scrollbar, { alpha: 0 }, time, { wait: this.options.fadeWait, ease: this.options.fadeEase })
+            this.fade.on('each', () => this.content.dirty = true)
         }
     }
 
@@ -504,12 +540,22 @@ class Scrollbox extends PIXI.Container
      * @param {object} options
      * @param {number} [options.boxWidth] width of scrollbox including scrollbar (in pixels)
      * @param {number} [options.boxHeight] height of scrollbox including scrollbar (in pixels)
+     * @param {number} [options.scrollWidth] set the width of the inside of the scrollbox (leave null to use content.width)
+     * @param {number} [options.scrollHeight] set the height of the inside of the scrollbox (leave null to use content.height)
      */
     resize(options)
     {
         this.options.boxWidth = typeof options.boxWidth !== 'undefined' ? options.boxWidth : this.options.boxWidth
         this.options.boxHeight = typeof options.boxHeight !== 'undefined' ? options.boxHeight : this.options.boxHeight
-        this.content.resize(this.options.boxWidth, this.options.boxHeight, this.content.width, this.content.height)
+        if (options.scrollWidth)
+        {
+            this.scrollWidth = options.scrollWidth
+        }
+        if (options.scrollHeight)
+        {
+            this.scrollHeight = options.scrollHeight
+        }
+        this.content.resize(this.options.boxWidth, this.options.boxHeight, this.scrollWidth, this.scrollHeight)
         this.update()
     }
 

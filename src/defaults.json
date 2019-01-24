@@ -8,5 +8,8 @@
     "stopPropagation": true,
     "scrollbarOffsetHorizontal": 0,
     "scrollbarOffsetVertical": 0,
-    "underflow": "top-left"
+    "underflow": "top-left",
+    "fadeScrollbar": false,
+    "fadeWait": 3000,
+    "fadeEase": "easeInOutSine"
 }
