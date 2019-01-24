@@ -60,10 +60,6 @@
         
     
         
-    
-        
-    
-        
         <li class="item" data-name="Scrollbox">
             <span class="title  ">
                 
@@ -126,6 +122,8 @@
             
             <span class="subtitle">Methods</span>
             
+                <li class="parent  " data-name="Scrollbox#activateFade"><a href="Scrollbox.html#activateFade">activateFade</a></li>
+            
                 <li class="parent  " data-name="Scrollbox#ensureVisible"><a href="Scrollbox.html#ensureVisible">ensureVisible</a></li>
             
                 <li class="parent  " data-name="Scrollbox#resize"><a href="Scrollbox.html#resize">resize</a></li>
@@ -182,7 +180,7 @@
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line9">scrollbox.js:9</a>
+            <a href="src_scrollbox.js.html#line12">scrollbox.js:12</a>
         </div>
         
     </div>
@@ -659,6 +657,42 @@
 	
         <tr>
             
+                <td class="name"><code>scrollbarBackgroundAlpha</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>alpha of background of scrollbar</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>scrollbarForeground</code></td>
             
             
@@ -695,6 +729,42 @@
 	
         <tr>
             
+                <td class="name"><code>scrollbarForegroundAlpha</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>alpha of foreground of scrollbar</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>underflow</code></td>
             
             
@@ -725,6 +795,118 @@
                     
                 
                 <p>what to do when content underflows the scrollbox size: none: do nothing; (left/right/center AND top/bottom/center); OR center (e.g., 'top-left', 'center', 'none', 'bottomright')</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fade</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>fade the scrollbar when not in use (true = 1000ms)</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fadeWait</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    3000
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>time to wait before fading the scrollbar if options.fade is set</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fadeEase</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    easeInOutSine
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>easing function to use for fading</p></td>
         </tr>
 	
 	
@@ -1637,7 +1819,8 @@ auto = if content is larger than box size, then show scrollbar</p>
 <dd>
     
     <div class="description">
-        <p>height of content area</p>
+        <p>height of content area
+if not set then it uses content.height to calculate height</p>
     </div>
     
     
@@ -1790,7 +1973,8 @@ auto = if content is larger than box size, then show scrollbar</p>
 <dd>
     
     <div class="description">
-        <p>width of content area</p>
+        <p>width of content area
+if not set then it uses content.width to calculate width</p>
     </div>
     
     
@@ -1882,6 +2066,82 @@ auto = if content is larger than box size, then show scrollbar</p>
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="activateFade">
+            <a class="share-icon" href="#activateFade"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">
+                activateFade
+            </span>
+            <span class="signature">()</span>
+            
+            
+            
+            
+        </h4>
+
+        
+        <div class="tag-source">
+            <a href="src_scrollbox.js.html#line420">scrollbox.js:420</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>show the scrollbar and restart the timer for fade if options.fade is set</p>
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="ensureVisible">
             <a class="share-icon" href="#ensureVisible"><span class="glyphicon glyphicon-link"></span></a>
             <span class="">
@@ -1896,7 +2156,7 @@ auto = if content is larger than box size, then show scrollbar</p>
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line523">scrollbox.js:523</a>
+            <a href="src_scrollbox.js.html#line571">scrollbox.js:571</a>
         </div>
         
     </div>
@@ -2086,7 +2346,7 @@ auto = if content is larger than box size, then show scrollbar</p>
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line508">scrollbox.js:508</a>
+            <a href="src_scrollbox.js.html#line548">scrollbox.js:548</a>
         </div>
         
     </div>
@@ -2224,6 +2484,66 @@ auto = if content is larger than box size, then show scrollbar</p>
         </tr>
 	
 	
+	
+        <tr>
+            
+                <td class="name"><code>scrollWidth</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>set the width of the inside of the scrollbox (leave null to use content.width)</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>scrollHeight</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>set the height of the inside of the scrollbox (leave null to use content.height)</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
             </td>
@@ -2289,7 +2609,7 @@ auto = if content is larger than box size, then show scrollbar</p>
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line376">scrollbox.js:376</a>
+            <a href="src_scrollbox.js.html#line396">scrollbox.js:396</a>
         </div>
         
     </div>
@@ -2367,7 +2687,7 @@ auto = if content is larger than box size, then show scrollbar</p>
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 18 2018 09:27:10 GMT+0800 (GMT+08:00)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Jan 24 2019 11:19:04 GMT+0800 (GMT+08:00)
             </div>
         </footer>
     </div>

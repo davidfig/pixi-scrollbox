@@ -2012,8 +2012,8 @@ function horizontalVertical(title)
 
 function horizontal()
 {
-    const size = 500
-    const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300, overflowY: 'hidden' }))
+    const size = 600
+    const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300, overflowY: 'hidden', fade: true, scrollbarBackgroundAlpha: 0, scrollbarOffsetHorizontal: -10 }))
     scrollbox.position.set(50, 425)
     const box = scrollbox.content.addChild(new PIXI.Graphics())
     box.beginFill(0xff0000, 0.25).drawRect(0, 0, size, 290).endFill()
@@ -2025,7 +2025,7 @@ function horizontal()
             .drawCircle(Random.range(radius, size - radius), Random.range(radius, 290 - radius), radius)
             .endFill()
     }
-    const text = scrollbox.content.addChild(new PIXI.Text(' horizontal scroll ', { fill: 0xffffff, fontSize: 14 }))
+    const text = scrollbox.content.addChild(new PIXI.Text(' horizontal scroll (fade=true, scrollbarOffsetHorizontal=-10, scrollbarBackgroundAlpha=0)', { fill: 0xffffff, fontSize: 14 }))
     box.beginFill(0).drawRect(0, 0, text.width, text.height).endFill()
     scrollbox.update()
 }
@@ -2060,7 +2060,7 @@ window.onload = function ()
     })
     require('./highlight')()
 }
-},{"../src/scrollbox":410,"./highlight":11,"pixi.js":354,"yy-fps":406,"yy-random":407}],11:[function(require,module,exports){
+},{"../src/scrollbox":424,"./highlight":11,"pixi.js":365,"yy-fps":420,"yy-random":421}],11:[function(require,module,exports){
 const forkMe = require('fork-me-github')
 
 module.exports = function highlight()
@@ -2949,7 +2949,7 @@ var has = Object.prototype.hasOwnProperty
  * An `Events` instance is a plain object whose properties are event names.
  *
  * @constructor
- * @api private
+ * @private
  */
 function Events() {}
 
@@ -2974,10 +2974,10 @@ if (Object.create) {
  * Representation of a single event listener.
  *
  * @param {Function} fn The listener function.
- * @param {Mixed} context The context to invoke the listener with.
+ * @param {*} context The context to invoke the listener with.
  * @param {Boolean} [once=false] Specify if the listener is a one-time listener.
  * @constructor
- * @api private
+ * @private
  */
 function EE(fn, context, once) {
   this.fn = fn;
@@ -2986,11 +2986,49 @@ function EE(fn, context, once) {
 }
 
 /**
+ * Add a listener for a given event.
+ *
+ * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
+ * @param {(String|Symbol)} event The event name.
+ * @param {Function} fn The listener function.
+ * @param {*} context The context to invoke the listener with.
+ * @param {Boolean} once Specify if the listener is a one-time listener.
+ * @returns {EventEmitter}
+ * @private
+ */
+function addListener(emitter, event, fn, context, once) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('The listener must be a function');
+  }
+
+  var listener = new EE(fn, context || emitter, once)
+    , evt = prefix ? prefix + event : event;
+
+  if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;
+  else if (!emitter._events[evt].fn) emitter._events[evt].push(listener);
+  else emitter._events[evt] = [emitter._events[evt], listener];
+
+  return emitter;
+}
+
+/**
+ * Clear event by name.
+ *
+ * @param {EventEmitter} emitter Reference to the `EventEmitter` instance.
+ * @param {(String|Symbol)} evt The Event name.
+ * @private
+ */
+function clearEvent(emitter, evt) {
+  if (--emitter._eventsCount === 0) emitter._events = new Events();
+  else delete emitter._events[evt];
+}
+
+/**
  * Minimal `EventEmitter` interface that is molded against the Node.js
  * `EventEmitter` interface.
  *
  * @constructor
- * @api public
+ * @public
  */
 function EventEmitter() {
   this._events = new Events();
@@ -3002,7 +3040,7 @@ function EventEmitter() {
  * listeners.
  *
  * @returns {Array}
- * @api public
+ * @public
  */
 EventEmitter.prototype.eventNames = function eventNames() {
   var names = []
@@ -3025,32 +3063,46 @@ EventEmitter.prototype.eventNames = function eventNames() {
 /**
  * Return the listeners registered for a given event.
  *
- * @param {String|Symbol} event The event name.
- * @param {Boolean} exists Only check if there are listeners.
- * @returns {Array|Boolean}
- * @api public
+ * @param {(String|Symbol)} event The event name.
+ * @returns {Array} The registered listeners.
+ * @public
  */
-EventEmitter.prototype.listeners = function listeners(event, exists) {
+EventEmitter.prototype.listeners = function listeners(event) {
   var evt = prefix ? prefix + event : event
-    , available = this._events[evt];
+    , handlers = this._events[evt];
 
-  if (exists) return !!available;
-  if (!available) return [];
-  if (available.fn) return [available.fn];
+  if (!handlers) return [];
+  if (handlers.fn) return [handlers.fn];
 
-  for (var i = 0, l = available.length, ee = new Array(l); i < l; i++) {
-    ee[i] = available[i].fn;
+  for (var i = 0, l = handlers.length, ee = new Array(l); i < l; i++) {
+    ee[i] = handlers[i].fn;
   }
 
   return ee;
 };
 
 /**
+ * Return the number of listeners listening to a given event.
+ *
+ * @param {(String|Symbol)} event The event name.
+ * @returns {Number} The number of listeners.
+ * @public
+ */
+EventEmitter.prototype.listenerCount = function listenerCount(event) {
+  var evt = prefix ? prefix + event : event
+    , listeners = this._events[evt];
+
+  if (!listeners) return 0;
+  if (listeners.fn) return 1;
+  return listeners.length;
+};
+
+/**
  * Calls each of the listeners registered for a given event.
  *
- * @param {String|Symbol} event The event name.
+ * @param {(String|Symbol)} event The event name.
  * @returns {Boolean} `true` if the event had listeners, else `false`.
- * @api public
+ * @public
  */
 EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
   var evt = prefix ? prefix + event : event;
@@ -3107,60 +3159,45 @@ EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
 /**
  * Add a listener for a given event.
  *
- * @param {String|Symbol} event The event name.
+ * @param {(String|Symbol)} event The event name.
  * @param {Function} fn The listener function.
- * @param {Mixed} [context=this] The context to invoke the listener with.
+ * @param {*} [context=this] The context to invoke the listener with.
  * @returns {EventEmitter} `this`.
- * @api public
+ * @public
  */
 EventEmitter.prototype.on = function on(event, fn, context) {
-  var listener = new EE(fn, context || this)
-    , evt = prefix ? prefix + event : event;
-
-  if (!this._events[evt]) this._events[evt] = listener, this._eventsCount++;
-  else if (!this._events[evt].fn) this._events[evt].push(listener);
-  else this._events[evt] = [this._events[evt], listener];
-
-  return this;
+  return addListener(this, event, fn, context, false);
 };
 
 /**
  * Add a one-time listener for a given event.
  *
- * @param {String|Symbol} event The event name.
+ * @param {(String|Symbol)} event The event name.
  * @param {Function} fn The listener function.
- * @param {Mixed} [context=this] The context to invoke the listener with.
+ * @param {*} [context=this] The context to invoke the listener with.
  * @returns {EventEmitter} `this`.
- * @api public
+ * @public
  */
 EventEmitter.prototype.once = function once(event, fn, context) {
-  var listener = new EE(fn, context || this, true)
-    , evt = prefix ? prefix + event : event;
-
-  if (!this._events[evt]) this._events[evt] = listener, this._eventsCount++;
-  else if (!this._events[evt].fn) this._events[evt].push(listener);
-  else this._events[evt] = [this._events[evt], listener];
-
-  return this;
+  return addListener(this, event, fn, context, true);
 };
 
 /**
  * Remove the listeners of a given event.
  *
- * @param {String|Symbol} event The event name.
+ * @param {(String|Symbol)} event The event name.
  * @param {Function} fn Only remove the listeners that match this function.
- * @param {Mixed} context Only remove the listeners that have this context.
+ * @param {*} context Only remove the listeners that have this context.
  * @param {Boolean} once Only remove one-time listeners.
  * @returns {EventEmitter} `this`.
- * @api public
+ * @public
  */
 EventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {
   var evt = prefix ? prefix + event : event;
 
   if (!this._events[evt]) return this;
   if (!fn) {
-    if (--this._eventsCount === 0) this._events = new Events();
-    else delete this._events[evt];
+    clearEvent(this, evt);
     return this;
   }
 
@@ -3168,19 +3205,18 @@ EventEmitter.prototype.removeListener = function removeListener(event, fn, conte
 
   if (listeners.fn) {
     if (
-         listeners.fn === fn
-      && (!once || listeners.once)
-      && (!context || listeners.context === context)
+      listeners.fn === fn &&
+      (!once || listeners.once) &&
+      (!context || listeners.context === context)
     ) {
-      if (--this._eventsCount === 0) this._events = new Events();
-      else delete this._events[evt];
+      clearEvent(this, evt);
     }
   } else {
     for (var i = 0, events = [], length = listeners.length; i < length; i++) {
       if (
-           listeners[i].fn !== fn
-        || (once && !listeners[i].once)
-        || (context && listeners[i].context !== context)
+        listeners[i].fn !== fn ||
+        (once && !listeners[i].once) ||
+        (context && listeners[i].context !== context)
       ) {
         events.push(listeners[i]);
       }
@@ -3190,8 +3226,7 @@ EventEmitter.prototype.removeListener = function removeListener(event, fn, conte
     // Reset the array, or remove it completely if we have no more listeners.
     //
     if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;
-    else if (--this._eventsCount === 0) this._events = new Events();
-    else delete this._events[evt];
+    else clearEvent(this, evt);
   }
 
   return this;
@@ -3200,19 +3235,16 @@ EventEmitter.prototype.removeListener = function removeListener(event, fn, conte
 /**
  * Remove all listeners, or those of the specified event.
  *
- * @param {String|Symbol} [event] The event name.
+ * @param {(String|Symbol)} [event] The event name.
  * @returns {EventEmitter} `this`.
- * @api public
+ * @public
  */
 EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
   var evt;
 
   if (event) {
     evt = prefix ? prefix + event : event;
-    if (this._events[evt]) {
-      if (--this._eventsCount === 0) this._events = new Events();
-      else delete this._events[evt];
-    }
+    if (this._events[evt]) clearEvent(this, evt);
   } else {
     this._events = new Events();
     this._eventsCount = 0;
@@ -3226,13 +3258,6 @@ EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
 //
 EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
 EventEmitter.prototype.addListener = EventEmitter.prototype.on;
-
-//
-// This function doesn't apply anymore.
-//
-EventEmitter.prototype.setMaxListeners = function setMaxListeners() {
-  return this;
-};
 
 //
 // Expose the prefix.
@@ -26415,6 +26440,1518 @@ module.exports = function parseURI (str, opts) {
 }).call(this);
 
 },{}],208:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var wait = require('./wait');
+
+var angle = function (_wait) {
+    _inherits(angle, _wait);
+
+    /**
+     * animate object's {x, y} using an angle
+     * @param {object} object to animate
+     * @param {number} angle in radians
+     * @param {number} speed in pixels/millisecond
+     * @param {number} [duration=0] in milliseconds; if 0, then continues forever
+     * @param {object} [options] @see {@link Wait}
+     * @private
+     */
+    function angle(object, _angle, speed, duration, options) {
+        _classCallCheck(this, angle);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (angle.__proto__ || Object.getPrototypeOf(angle)).call(this, object, options));
+
+        _this.type = 'Angle';
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            _this.angle = _angle;
+            _this.speed = speed;
+            _this.duration = duration || 0;
+        }
+        return _this;
+    }
+
+    _createClass(angle, [{
+        key: 'save',
+        value: function save() {
+            var save = _get(angle.prototype.__proto__ || Object.getPrototypeOf(angle.prototype), 'save', this).call(this);
+            save.angle = this.angle;
+            save.speed = this.speed;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(angle.prototype.__proto__ || Object.getPrototypeOf(angle.prototype), 'load', this).call(this, _load);
+            this.angle = _load.angle;
+            this.speed = _load.speed;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate(elapsed) {
+            this.object.x += this.cos * elapsed * this.speed;
+            this.object.y += this.sin * elapsed * this.speed;
+        }
+    }, {
+        key: 'reverse',
+        value: function reverse() {
+            this.angle += Math.PI;
+        }
+    }, {
+        key: 'angle',
+        get: function get() {
+            return this._angle;
+        },
+        set: function set(value) {
+            this._angle = value;
+            this.sin = Math.sin(this._angle);
+            this.cos = Math.cos(this._angle);
+        }
+    }]);
+
+    return angle;
+}(wait);
+
+module.exports = angle;
+
+},{"./wait":218}],209:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Angle = require('yy-angle');
+var wait = require('./wait');
+
+/** Rotates an object to face the target */
+
+var face = function (_wait) {
+    _inherits(face, _wait);
+
+    /**
+     * @param {object} object
+     * @param {Point} target
+     * @param {number} speed in radians/millisecond
+     * @param {object} [options] @see {@link Wait}
+     * @param {boolean} [options.keepAlive] don't stop animation when complete
+     */
+    function face(object, target, speed, options) {
+        _classCallCheck(this, face);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (face.__proto__ || Object.getPrototypeOf(face)).call(this, object, options));
+
+        _this.type = 'Face';
+        _this.target = target;
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            _this.speed = speed;
+        }
+        return _this;
+    }
+
+    _createClass(face, [{
+        key: 'save',
+        value: function save() {
+            if (this.options.cancel) {
+                return null;
+            }
+            var save = _get(face.prototype.__proto__ || Object.getPrototypeOf(face.prototype), 'save', this).call(this);
+            save.speed = this.speed;
+            save.keepAlive = this.options.keepAlive;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(face.prototype.__proto__ || Object.getPrototypeOf(face.prototype), 'load', this).call(this, _load);
+            this.speed = _load.speed;
+            this.options.keepAlive = _load.keepAlive;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate(elapsed) {
+            var angle = Angle.angleTwoPoints(this.object.position, this.target);
+            var difference = Angle.differenceAngles(angle, this.object.rotation);
+            if (difference === 0) {
+                this.emit('done', this.object);
+                if (!this.options.keepAlive) {
+                    return true;
+                }
+            } else {
+                var sign = Angle.differenceAnglesSign(angle, this.object.rotation);
+                var change = this.speed * elapsed;
+                var delta = change > difference ? difference : change;
+                this.object.rotation += delta * sign;
+            }
+        }
+    }]);
+
+    return face;
+}(wait);
+
+module.exports = face;
+
+},{"./wait":218,"yy-angle":417}],210:[function(require,module,exports){
+'use strict';
+
+var Ease = {
+    list: require('./list'),
+    wait: require('./wait'),
+    to: require('./to'),
+    shake: require('./shake'),
+    tint: require('./tint'),
+    face: require('./face'),
+    angle: require('./angle'),
+    target: require('./target'),
+    movie: require('./movie'),
+    load: require('./load')
+};
+
+PIXI.extras.Ease = Ease;
+
+module.exports = Ease;
+
+},{"./angle":208,"./face":209,"./list":211,"./load":212,"./movie":213,"./shake":214,"./target":215,"./tint":216,"./to":217,"./wait":218}],211:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Events = require('eventemitter3');
+
+var Angle = require('./angle');
+var Face = require('./face');
+var Load = require('./load');
+var Movie = require('./movie');
+var Shake = require('./shake');
+var Target = require('./target');
+var Tint = require('./tint');
+var To = require('./to');
+var Wait = require('./wait');
+
+var Ease = function (_Events) {
+    _inherits(Ease, _Events);
+
+    /**
+     * Main class for creating eases
+     * @param {object} [options]
+     * @param {boolean} [options.noTicker] don't add the update function to PIXI.ticker
+     * @param {PIXI.ticker} [options.ticker=PIXI.ticker.shared] use this PIXI.ticker for the list
+     * @extends eventemitter
+     * @fire done
+     * @fire each
+     */
+    function Ease(options) {
+        _classCallCheck(this, Ease);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (Ease.__proto__ || Object.getPrototypeOf(Ease)).call(this));
+
+        if (!options.noTicker) {
+            var ticker = options.ticker || PIXI.ticker.shared;
+            ticker.add(function () {
+                return _this.update(ticker.deltaTime * 16.66);
+            });
+        }
+        _this.list = [];
+        _this.empty = true;
+        _this.removeWaiting = [];
+        _this.removeAllWaiting = false;
+        return _this;
+    }
+
+    /**
+     * Add animation(s) to animation list
+     * @param {(object|object[])} any animation class
+     * @return {object} first animation
+     */
+
+
+    _createClass(Ease, [{
+        key: 'add',
+        value: function add() {
+            var first = void 0;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = arguments[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var arg = _step.value;
+
+                    if (Array.isArray(arg)) {
+                        var _iteratorNormalCompletion2 = true;
+                        var _didIteratorError2 = false;
+                        var _iteratorError2 = undefined;
+
+                        try {
+                            for (var _iterator2 = arg[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                var entry = _step2.value;
+
+                                if (!first) {
+                                    first = entry;
+                                }
+                                this.list.push(entry);
+                            }
+                        } catch (err) {
+                            _didIteratorError2 = true;
+                            _iteratorError2 = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                    _iterator2.return();
+                                }
+                            } finally {
+                                if (_didIteratorError2) {
+                                    throw _iteratorError2;
+                                }
+                            }
+                        }
+                    } else {
+                        first = arg;
+                        this.list.push(arg);
+                    }
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            this.empty = false;
+            return first;
+        }
+
+        /**
+         * remove animation(s)
+         * @param {object|array} animate - the animation (or array of animations) to remove; can be null
+         */
+
+    }, {
+        key: 'remove',
+        value: function remove(animate) {
+            if (this.inUpdate) {
+                this.removeWaiting.push(animate);
+            } else {
+                if (Array.isArray(animate)) {
+                    var _iteratorNormalCompletion3 = true;
+                    var _didIteratorError3 = false;
+                    var _iteratorError3 = undefined;
+
+                    try {
+                        for (var _iterator3 = animate[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                            var each = _step3.value;
+
+                            var index = this.list.indexOf(each);
+                            if (index !== -1) {
+                                this.list.splice(index, 1);
+                            }
+                        }
+                    } catch (err) {
+                        _didIteratorError3 = true;
+                        _iteratorError3 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                                _iterator3.return();
+                            }
+                        } finally {
+                            if (_didIteratorError3) {
+                                throw _iteratorError3;
+                            }
+                        }
+                    }
+                } else {
+                    var _index = this.list.indexOf(animate);
+                    if (_index !== -1) {
+                        this.list.splice(_index, 1);
+                    }
+                }
+            }
+        }
+
+        /**
+         * remove all animations from list
+         * @inherited from yy-loop
+         */
+
+    }, {
+        key: 'removeAll',
+        value: function removeAll() {
+            if (this.inUpdate) {
+                this.removeAllWaiting = true;
+            } else {
+                this.list = [];
+            }
+        }
+
+        /**
+         * update frame
+         * this is automatically added to PIXI.ticker unless options.noTicker is set
+         * if using options.noTicker, this should be called manually
+         * @param {number} elasped time in MS since last update
+         */
+
+    }, {
+        key: 'update',
+        value: function update(elapsed) {
+            this.inUpdate = true;
+            for (var i = 0, _i = this.list.length; i < _i; i++) {
+                if (this.list[i] && this.list[i].update(elapsed)) {
+                    this.list.splice(i, 1);
+                    i--;
+                    _i--;
+                }
+            }
+            this.emit('each', this);
+            if (this.list.length === 0 && !this.empty) {
+                this.emit('done', this);
+                this.empty = true;
+            }
+            this.inUpdate = false;
+            if (this.removeAllWaiting) {
+                this.removeAll();
+                this.removeAllWaiting = false;
+            }
+            while (this.removeWaiting.length) {
+                this.remove(this.removeWaiting.pop());
+            }
+        }
+
+        /**
+         * number of animations
+         * @type {number}
+         */
+
+    }, {
+        key: 'to',
+
+
+        /**
+         * default options for all eases
+         * @typedef {object} EaseOptions
+         * @param {object} [EaseOptions.options]
+         * @param {number} [EaseOptions.options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
+         * @param {boolean} [EaseOptions.options.pause] start the animation paused
+         * @param {boolean|number} [EaseOptions.options.repeat] true: repeat animation forever n: repeat animation n times
+         * @param {boolean|number} [EaseOptions.options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
+         * @param {Function} [EaseOptions.options.load] loads an animation using an .save() object note the * parameters below cannot be loaded and must be re-set
+         * @param {string|Function} [EaseOptions.options.ease] name or function from easing.js (see http://easings.net for examples)
+         */
+
+        /**
+         * ease parameters of object
+         * @param {PIXI.DisplayObject} object to animate
+         * @param {object} goto - parameters to animate, e.g.: {alpha: 5, scale: {3, 5}, scale: 5, rotation: Math.PI}
+         * @param {number} duration - time to run
+         * @fires done
+         * @fires wait
+         * @fires first
+         * @fires each
+         * @fires loop
+         * @fires reverse
+         */
+        value: function to() {
+            return this.add(new (Function.prototype.bind.apply(To, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /**
+         * animate object's {x, y} using an angle
+         * @param {object} object to animate
+         * @param {number} angle in radians
+         * @param {number} speed in pixels/millisecond
+         * @param {number} [duration=0] in milliseconds; if 0, then continues forever
+         * @param {object} [options] @see {@link Wait}
+         */
+
+    }, {
+        key: 'angle',
+        value: function angle() {
+            return this.add(new (Function.prototype.bind.apply(Angle, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.face class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'face',
+        value: function face() {
+            return this.add(new (Function.prototype.bind.apply(Face, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.load class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'load',
+        value: function load() {
+            return this.add(new (Function.prototype.bind.apply(Load, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.movie class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'movie',
+        value: function movie() {
+            return this.add(new (Function.prototype.bind.apply(Movie, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.shake class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'shake',
+        value: function shake() {
+            return this.add(new (Function.prototype.bind.apply(Shake, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.target class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'target',
+        value: function target() {
+            return this.add(new (Function.prototype.bind.apply(Target, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.angle tint; see Ease.to class below for parameters */
+
+    }, {
+        key: 'tint',
+        value: function tint() {
+            return this.add(new (Function.prototype.bind.apply(Tint, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.wait class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'wait',
+        value: function wait() {
+            return this.add(new (Function.prototype.bind.apply(Wait, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+    }, {
+        key: 'count',
+        get: function get() {
+            return this.list.length;
+        }
+
+        /**
+         * number of active animations
+         * @type {number}
+         */
+
+    }, {
+        key: 'countRunning',
+        get: function get() {
+            var count = 0;
+            var _iteratorNormalCompletion4 = true;
+            var _didIteratorError4 = false;
+            var _iteratorError4 = undefined;
+
+            try {
+                for (var _iterator4 = this.list[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                    var entry = _step4.value;
+
+                    if (!entry.pause) {
+                        count++;
+                    }
+                }
+            } catch (err) {
+                _didIteratorError4 = true;
+                _iteratorError4 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                        _iterator4.return();
+                    }
+                } finally {
+                    if (_didIteratorError4) {
+                        throw _iteratorError4;
+                    }
+                }
+            }
+
+            return count;
+        }
+    }]);
+
+    return Ease;
+}(Events);
+
+module.exports = Ease;
+
+},{"./angle":208,"./face":209,"./load":212,"./movie":213,"./shake":214,"./target":215,"./tint":216,"./to":217,"./wait":218,"eventemitter3":14}],212:[function(require,module,exports){
+'use strict';
+
+var wait = require('./wait');
+var to = require('./to');
+var tint = require('./tint');
+var shake = require('./shake');
+var angle = require('./angle');
+var face = require('./face');
+var target = require('./target');
+var movie = require('./movie');
+
+/**
+ * restart an animation = requires a saved state
+ * @param {object} object(s) to animate
+ */
+function load(object, load) {
+    if (!load) {
+        return null;
+    }
+    var options = { load: load };
+    switch (load.type) {
+        case 'Wait':
+            return new wait(object, options);
+        case 'To':
+            return new to(object, null, null, options);
+        case 'Tint':
+            return new tint(object, null, null, options);
+        case 'Shake':
+            return new shake(object, null, null, options);
+        case 'Angle':
+            return new angle(object, null, null, null, options);
+        case 'Face':
+            return new face(object[0], object[1], null, options);
+        case 'Target':
+            return new target(object[0], object[1], null, options);
+        case 'Movie':
+            return new movie(object, object[1], null, options);
+    }
+}
+
+module.exports = load;
+
+},{"./angle":208,"./face":209,"./movie":213,"./shake":214,"./target":215,"./tint":216,"./to":217,"./wait":218}],213:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var wait = require('./wait');
+
+/**
+ * animate a movie of textures
+ */
+
+var movie = function (_wait) {
+    _inherits(movie, _wait);
+
+    /**
+     * @param {object} object to animate
+     * @param {PIXI.Texture[]} textures
+     * @param {number} [duration=0] time to run (use 0 for infinite duration--should only be used with customized easing functions)
+     * @param {object} [options]
+     * @param {number} [options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
+     * @param {boolean} [options.pause] start the animation paused
+     * @param {(boolean|number)} [options.repeat] true: repeat animation forever n: repeat animation n times
+     * @param {(boolean|number)} [options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
+     * @param {(boolean|number)} [options.continue] true: continue animation with new starting values n: continue animation n times
+     * @param {Function} [options.load] loads an animation using a .save() object note the * parameters below cannot be loaded and must be re-set
+     * @param {Function} [options.ease] function from easing.js (see http://easings.net for examples)
+     * @emits {done} animation expires
+     * @emits {wait} each update during a wait
+     * @emits {first} first update when animation starts
+     * @emits {each} each update while animation is running
+     * @emits {loop} when animation is repeated
+     * @emits {reverse} when animation is reversed
+     */
+    function movie(object, textures, duration, options) {
+        _classCallCheck(this, movie);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (movie.__proto__ || Object.getPrototypeOf(movie)).call(this, object, options));
+
+        _this.type = 'Movie';
+        if (Array.isArray(object)) {
+            _this.list = object;
+            _this.object = _this.list[0];
+        }
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            _this.textures = textures;
+            _this.duration = duration;
+            _this.current = 0;
+            _this.length = textures.length;
+            _this.interval = duration / _this.length;
+            _this.isReverse = false;
+            _this.restart();
+        }
+        return _this;
+    }
+
+    _createClass(movie, [{
+        key: 'save',
+        value: function save() {
+            var save = _get(movie.prototype.__proto__ || Object.getPrototypeOf(movie.prototype), 'save', this).call(this);
+            save.goto = this.goto;
+            save.current = this.current;
+            save.length = this.length;
+            save.interval = this.interval;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(movie.prototype.__proto__ || Object.getPrototypeOf(movie.prototype), 'load', this).call(this, _load);
+            this.goto = _load.goto;
+            this.current = _load.current;
+            this.interval = _load.current;
+        }
+    }, {
+        key: 'restart',
+        value: function restart() {
+            this.current = 0;
+            this.time = 0;
+            this.isReverse = false;
+        }
+    }, {
+        key: 'reverse',
+        value: function reverse() {
+            this.isReverse = !this.isReverse;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate() {
+            var index = Math.round(this.options.ease(this.time, 0, this.length - 1, this.duration));
+            if (this.isReverse) {
+                index = this.length - 1 - index;
+            }
+            if (this.list) {
+                for (var i = 0; i < this.list.length; i++) {
+                    this.list[i].texture = this.textures[index];
+                }
+            } else {
+                this.object.texture = this.textures[index];
+            }
+        }
+    }]);
+
+    return movie;
+}(wait);
+
+module.exports = movie;
+
+},{"./wait":218}],214:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var wait = require('./wait');
+
+/**
+ * shakes an object or list of objects
+ */
+
+var shake = function (_wait) {
+    _inherits(shake, _wait);
+
+    /**
+     * @param {object|array} object or list of objects to shake
+     * @param {number} amount to shake
+     * @param {number} duration (in milliseconds) to shake
+     * @param {object} options (see Animate.wait)
+     */
+    function shake(object, amount, duration, options) {
+        _classCallCheck(this, shake);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (shake.__proto__ || Object.getPrototypeOf(shake)).call(this, object, options));
+
+        _this.type = 'Shake';
+        if (Array.isArray(object)) {
+            _this.array = true;
+            _this.list = object;
+        }
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            if (_this.list) {
+                _this.start = [];
+                for (var i = 0; i < object.length; i++) {
+                    var target = object[i];
+                    _this.start[i] = { x: target.x, y: target.y };
+                }
+            } else {
+                _this.start = { x: object.x, y: object.y };
+            }
+            _this.amount = amount;
+            _this.duration = duration;
+        }
+        return _this;
+    }
+
+    _createClass(shake, [{
+        key: 'save',
+        value: function save() {
+            var save = _get(shake.prototype.__proto__ || Object.getPrototypeOf(shake.prototype), 'save', this).call(this);
+            save.start = this.start;
+            save.amount = this.amount;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(shake.prototype.__proto__ || Object.getPrototypeOf(shake.prototype), 'load', this).call(this, _load);
+            this.start = _load.start;
+            this.amount = _load.amount;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate() /*elapsed*/{
+            var object = this.object;
+            var start = this.start;
+            var amount = this.amount;
+            if (this.array) {
+                var list = this.list;
+                for (var i = 0; i < list.length; i++) {
+                    var _object = list[i];
+                    var actual = start[i];
+                    _object.x = actual.x + Math.floor(Math.random() * amount * 2) - amount;
+                    _object.y = actual.y + Math.floor(Math.random() * amount * 2) - amount;
+                }
+            }
+            object.x = start.x + Math.floor(Math.random() * amount * 2) - amount;
+            object.y = start.y + Math.floor(Math.random() * amount * 2) - amount;
+        }
+    }, {
+        key: 'done',
+        value: function done() {
+            var object = this.object;
+            var start = this.start;
+            if (this.array) {
+                var list = this.list;
+                for (var i = 0; i < list.length; i++) {
+                    var _object2 = list[i];
+                    var actual = start[i];
+                    _object2.x = actual.x;
+                    _object2.y = actual.y;
+                }
+            } else {
+                object.x = start.x;
+                object.y = start.y;
+            }
+        }
+    }]);
+
+    return shake;
+}(wait);
+
+module.exports = shake;
+
+},{"./wait":218}],215:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var wait = require('./wait');
+
+/** move an object to a target's location */
+
+var target = function (_wait) {
+    _inherits(target, _wait);
+
+    /**
+     * move to a target
+     * @param {object} object - object to animate
+     * @param {object} target - object needs to contain {x: x, y: y}
+     * @param {number} speed - number of pixels to move per millisecond
+     * @param {object} [options] @see {@link Wait}
+     * @param {boolean} [options.keepAlive] don't cancel the animation when target is reached
+     */
+    function target(object, _target, speed, options) {
+        _classCallCheck(this, target);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (target.__proto__ || Object.getPrototypeOf(target)).call(this, object, options));
+
+        _this.type = 'Target';
+        _this.target = _target;
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            _this.speed = speed;
+        }
+        return _this;
+    }
+
+    _createClass(target, [{
+        key: 'save',
+        value: function save() {
+            var save = _get(target.prototype.__proto__ || Object.getPrototypeOf(target.prototype), 'save', this).call(this);
+            save.speed = this.speed;
+            save.keepAlive = this.options.keepAlive;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(target.prototype.__proto__ || Object.getPrototypeOf(target.prototype), 'load', this).call(this, _load);
+            this.speed = _load.speed;
+            this.options.keepAlive = _load.keepAlive;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate(elapsed) {
+            var deltaX = this.target.x - this.object.x;
+            var deltaY = this.target.y - this.object.y;
+            if (deltaX === 0 && deltaY === 0) {
+                this.emit('done', this.object);
+                if (!this.options.keepAlive) {
+                    return true;
+                }
+            } else {
+                var angle = Math.atan2(deltaY, deltaX);
+                this.object.x += Math.cos(angle) * elapsed * this.speed;
+                this.object.y += Math.sin(angle) * elapsed * this.speed;
+                if (deltaX >= 0 !== this.target.x - this.object.x >= 0) {
+                    this.object.x = this.target.x;
+                }
+                if (deltaY >= 0 !== this.target.y - this.object.y >= 0) {
+                    this.object.y = this.target.y;
+                }
+            }
+        }
+    }]);
+
+    return target;
+}(wait);
+
+module.exports = target;
+
+},{"./wait":218}],216:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Color = require('yy-color');
+var wait = require('./wait');
+
+var tint = function (_wait) {
+    _inherits(tint, _wait);
+
+    /**
+     * @param {PIXI.DisplayObject|PIXI.DisplayObject[]} object
+     * @param {number|number[]} tint
+     * @param {number} [duration] in milliseconds
+     * @param {object} [options] @see {@link Wait}
+     */
+    function tint(object, _tint, duration, options) {
+        _classCallCheck(this, tint);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (tint.__proto__ || Object.getPrototypeOf(tint)).call(this, object, options));
+
+        _this.type = 'Tint';
+        if (Array.isArray(object)) {
+            _this.list = object;
+            _this.object = _this.list[0];
+        }
+        _this.duration = duration;
+        if (options.load) {
+            _this.load(options.load);
+        } else if (Array.isArray(_tint)) {
+            _this.tints = [_this.object.tint].concat(_toConsumableArray(_tint));
+        } else {
+            _this.start = _this.object.tint;
+            _this.to = _tint;
+        }
+        return _this;
+    }
+
+    _createClass(tint, [{
+        key: 'save',
+        value: function save() {
+            var save = _get(tint.prototype.__proto__ || Object.getPrototypeOf(tint.prototype), 'save', this).call(this);
+            save.start = this.start;
+            save.to = this.to;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(tint.prototype.__proto__ || Object.getPrototypeOf(tint.prototype), 'load', this).call(this, _load);
+            this.start = _load.start;
+            this.to = _load.to;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate() {
+            var percent = this.options.ease(this.time, 0, 1, this.duration);
+            if (this.tints) {
+                var each = 1 / (this.tints.length - 1);
+                var per = each;
+                for (var i = 1; i < this.tints.length; i++) {
+                    if (percent <= per) {
+                        var color = Color.blend(1 - (per - percent) / each, this.tints[i - 1], this.tints[i]);
+                        if (this.list) {
+                            var _iteratorNormalCompletion = true;
+                            var _didIteratorError = false;
+                            var _iteratorError = undefined;
+
+                            try {
+                                for (var _iterator = this.list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                                    var object = _step.value;
+
+                                    object.tint = color;
+                                }
+                            } catch (err) {
+                                _didIteratorError = true;
+                                _iteratorError = err;
+                            } finally {
+                                try {
+                                    if (!_iteratorNormalCompletion && _iterator.return) {
+                                        _iterator.return();
+                                    }
+                                } finally {
+                                    if (_didIteratorError) {
+                                        throw _iteratorError;
+                                    }
+                                }
+                            }
+                        } else {
+                            this.object.tint = color;
+                        }
+                        break;
+                    }
+                    per += each;
+                }
+            } else {
+                var _color = Color.blend(percent, this.start, this.to);
+                if (this.list) {
+                    var _iteratorNormalCompletion2 = true;
+                    var _didIteratorError2 = false;
+                    var _iteratorError2 = undefined;
+
+                    try {
+                        for (var _iterator2 = this.list[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                            var _object = _step2.value;
+
+                            _object.tint = _color;
+                        }
+                    } catch (err) {
+                        _didIteratorError2 = true;
+                        _iteratorError2 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                _iterator2.return();
+                            }
+                        } finally {
+                            if (_didIteratorError2) {
+                                throw _iteratorError2;
+                            }
+                        }
+                    }
+                } else {
+                    this.object.tint = _color;
+                }
+            }
+        }
+    }, {
+        key: 'reverse',
+        value: function reverse() {
+            if (this.tints) {
+                var tints = [];
+                for (var i = this.tints.length - 1; i >= 0; i--) {
+                    tints.push(this.tints[i]);
+                }
+                this.tints = tints;
+            } else {
+                var swap = this.to;
+                this.to = this.start;
+                this.start = swap;
+            }
+        }
+    }]);
+
+    return tint;
+}(wait);
+
+module.exports = tint;
+
+},{"./wait":218,"yy-color":418}],217:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var wait = require('./wait');
+
+/** animate any numeric parameter of an object or array of objects */
+
+var to = function (_wait) {
+    _inherits(to, _wait);
+
+    /**
+     * @private
+     * @param {object} object to animate
+     * @param {object} goto - parameters to animate, e.g.: {alpha: 5, scale: {3, 5}, scale: 5, rotation: Math.PI}
+     * @param {number} duration - time to run
+     * @param {object} [options]
+     * @param {number} [options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
+     * @param {boolean} [options.pause] start the animation paused
+     * @param {boolean|number} [options.repeat] true: repeat animation forever n: repeat animation n times
+     * @param {boolean|number} [options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
+     * @param {Function} [options.load] loads an animation using an .save() object note the * parameters below cannot be loaded and must be re-set
+     * @param {string|Function} [options.ease] name or function from easing.js (see http://easings.net for examples)
+     * @emits to:done animation expires
+     * @emits to:wait each update during a wait
+     * @emits to:first first update when animation starts
+     * @emits to:each each update while animation is running
+     * @emits to:loop when animation is repeated
+     * @emits to:reverse when animation is reversed
+     */
+    function to(object, goto, duration, options) {
+        _classCallCheck(this, to);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (to.__proto__ || Object.getPrototypeOf(to)).call(this, object, options));
+
+        _this.type = 'To';
+        if (Array.isArray(object)) {
+            _this.list = object;
+            _this.object = _this.list[0];
+        }
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            _this.goto = goto;
+            _this.fixScale();
+            _this.duration = duration;
+            _this.restart();
+        }
+        return _this;
+    }
+
+    /**
+     * converts scale from { scale: n } to { scale: { x: n, y: n }}
+     * @private
+     */
+
+
+    _createClass(to, [{
+        key: 'fixScale',
+        value: function fixScale() {
+            if (typeof this.goto['scale'] !== 'undefined' && !Number.isNaN(this.goto['scale'])) {
+                this.goto['scale'] = { x: this.goto['scale'], y: this.goto['scale'] };
+            }
+        }
+    }, {
+        key: 'save',
+        value: function save() {
+            var save = _get(to.prototype.__proto__ || Object.getPrototypeOf(to.prototype), 'save', this).call(this);
+            save.goto = this.goto;
+            save.start = this.start;
+            save.delta = this.delta;
+            save.keys = this.keys;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(to.prototype.__proto__ || Object.getPrototypeOf(to.prototype), 'load', this).call(this, _load);
+            this.goto = _load.goto;
+            this.start = _load.start;
+            this.delta = _load.delta;
+            this.keys = _load.keys;
+        }
+    }, {
+        key: 'restart',
+        value: function restart() {
+            var i = 0;
+            var start = this.start = [];
+            var delta = this.delta = [];
+            var keys = this.keys = [];
+            var goto = this.goto;
+            var object = this.object;
+
+            // loops through all keys in goto object
+            for (var key in goto) {
+
+                // handles keys with one additional level e.g.: goto = {scale: {x: 5, y: 3}}
+                if (isNaN(goto[key])) {
+                    keys[i] = { key: key, children: [] };
+                    start[i] = [];
+                    delta[i] = [];
+                    var j = 0;
+                    for (var key2 in goto[key]) {
+                        keys[i].children[j] = key2;
+                        start[i][j] = parseFloat(object[key][key2]);
+                        start[i][j] = this._correctDOM(key2, start[i][j]);
+                        start[i][j] = isNaN(this.start[i][j]) ? 0 : start[i][j];
+                        delta[i][j] = goto[key][key2] - start[i][j];
+                        j++;
+                    }
+                } else {
+                    start[i] = parseFloat(object[key]);
+                    start[i] = this._correctDOM(key, start[i]);
+                    start[i] = isNaN(this.start[i]) ? 0 : start[i];
+                    delta[i] = goto[key] - start[i];
+                    keys[i] = key;
+                }
+                i++;
+            }
+            this.time = 0;
+        }
+    }, {
+        key: 'reverse',
+        value: function reverse() {
+            var object = this.object;
+            var keys = this.keys;
+            var goto = this.goto;
+            var delta = this.delta;
+            var start = this.start;
+
+            for (var i = 0, _i = keys.length; i < _i; i++) {
+                var key = keys[i];
+                if (isNaN(goto[key])) {
+                    for (var j = 0, _j = key.children.length; j < _j; j++) {
+                        delta[i][j] = -delta[i][j];
+                        start[i][j] = parseFloat(object[key.key][key.children[j]]);
+                        start[i][j] = isNaN(start[i][j]) ? 0 : start[i][j];
+                    }
+                } else {
+                    delta[i] = -delta[i];
+                    start[i] = parseFloat(object[key]);
+                    start[i] = isNaN(start[i]) ? 0 : start[i];
+                }
+            }
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate() /*elapsed*/{
+            var object = this.object;
+            var list = this.list;
+            var keys = this.keys;
+            var goto = this.goto;
+            var time = this.time;
+            var start = this.start;
+            var delta = this.delta;
+            var duration = this.duration;
+            var ease = this.options.ease;
+            for (var i = 0, _i = this.keys.length; i < _i; i++) {
+                var key = keys[i];
+                if (isNaN(goto[key])) {
+                    var key1 = key.key;
+                    for (var j = 0, _j = key.children.length; j < _j; j++) {
+                        var key2 = key.children[j];
+                        var others = object[key1][key2] = time >= duration ? start[i][j] + delta[i][j] : ease(time, start[i][j], delta[i][j], duration);
+                        if (list) {
+                            for (var k = 1, _k = list.length; k < _k; k++) {
+                                list[k][key1][key2] = others;
+                            }
+                        }
+                    }
+                } else {
+                    var _key = keys[i];
+                    var _others = object[_key] = time >= duration ? start[i] + delta[i] : ease(time, start[i], delta[i], duration);
+                    if (list) {
+                        for (var _j2 = 1, _j3 = this.list.length; _j2 < _j3; _j2++) {
+                            list[_j2][_key] = _others;
+                        }
+                    }
+                }
+            }
+        }
+    }]);
+
+    return to;
+}(wait);
+
+module.exports = to;
+
+},{"./wait":218}],218:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Easing = require('penner');
+var EventEmitter = require('eventemitter3');
+
+var wait = function (_EventEmitter) {
+    _inherits(wait, _EventEmitter);
+
+    /**
+     * @param {object|object[]} object or list of objects to animate
+     * @param {object} [options]
+     * @param {number} [options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
+     * @param {boolean} [options.pause] start the animation paused
+     * @param {(boolean|number)} [options.repeat] true: repeat animation forever n: repeat animation n times
+     * @param {(boolean|number)} [options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
+     *
+     * @param {number} [options.id] user-generated id (e.g., I use it to properly load animations when an object has multiple animations running)
+     * @param {Function} [options.load] loads an animation using an .save() object note the * parameters below cannot be loaded and must be re-set
+     * @param {Function|string} [options.ease] function (or penner function name) from easing.js (see http://easings.net for examples)*
+     *
+     * @emits {done} animation expires
+     * @emits {wait} each update during a wait
+     * @emits {first} first update when animation starts
+     * @emits {each} each update while animation is running
+     * @emits {loop} when animation is repeated
+     * @emits {reverse} when animation is reversed
+     */
+    function wait(object, options) {
+        _classCallCheck(this, wait);
+
+        var _this = _possibleConstructorReturn(this, (wait.__proto__ || Object.getPrototypeOf(wait)).call(this));
+
+        _this.object = object;
+        _this.options = options || {};
+        _this.type = 'Wait';
+        if (_this.options.load) {
+            _this.load(_this.options.load);
+        } else {
+            _this.time = 0;
+        }
+        if (_this.options.ease && typeof _this.options.ease !== 'function') {
+            _this.options.easeName = _this.options.ease;
+            _this.options.ease = Easing[_this.options.ease];
+        }
+        if (!_this.options.ease) {
+            _this.options.ease = Easing['linear'];
+        }
+        return _this;
+    }
+
+    _createClass(wait, [{
+        key: 'save',
+        value: function save() {
+            var save = { type: this.type, time: this.time, duration: this.duration, ease: this.options.easeName };
+            var options = this.options;
+            if (options.wait) {
+                save.wait = options.wait;
+            }
+            if (typeof options.id !== 'undefined') {
+                save.id = options.id;
+            }
+            if (options.pause) {
+                save.pause = options.pause;
+            }
+            if (options.repeat) {
+                save.repeat = options.repeat;
+            }
+            if (options.reverse) {
+                save.reverse = options.reverse;
+            }
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            this.options.wait = _load.wait;
+            this.options.pause = _load.pause;
+            this.options.repeat = _load.repeat;
+            this.options.reverse = _load.reverse;
+            this.options.id = _load.id;
+            this.options.ease = _load.ease;
+            if (this.options.ease && typeof this.options.ease !== 'function') {
+                this.options.easeName = this.options.ease;
+                this.options.ease = Easing[this.options.ease];
+            }
+            if (!this.options.ease) {
+                this.options.ease = Easing['linear'];
+            }
+            this.time = _load.time;
+            this.duration = _load.duration;
+        }
+
+        /**
+         * pause this entry
+         * @type {boolean}
+         */
+
+    }, {
+        key: 'end',
+        value: function end(leftOver) {
+            if (this.options.reverse) {
+                this.reverse();
+                this.time = leftOver;
+                if (!this.options.repeat) {
+                    if (this.options.reverse === true) {
+                        this.options.reverse = false;
+                    } else {
+                        this.options.reverse--;
+                    }
+                } else {
+                    if (this.options.repeat !== true) {
+                        this.options.repeat--;
+                    }
+                }
+                this.emit('loop', this.list || this.object);
+            } else if (this.options.repeat) {
+                this.time = leftOver;
+                if (this.options.repeat !== true) {
+                    this.options.repeat--;
+                }
+                this.emit('loop', this.list || this.object);
+            } else {
+                this.done();
+                this.emit('done', this.list || this.object, leftOver);
+                // this.list = this.object = null
+                return true;
+            }
+        }
+    }, {
+        key: 'update',
+        value: function update(elapsed) {
+            var options = this.options;
+            if (options.pause) {
+                return;
+            }
+            if (options.wait) {
+                options.wait -= elapsed;
+                if (options.wait <= 0) {
+                    elapsed = -options.wait;
+                    options.wait = false;
+                } else {
+                    this.emit('wait', elapsed, this.list || this.object);
+                    return;
+                }
+            }
+            if (!this.first) {
+                this.first = true;
+                this.emit('first', this.list || this.object);
+            }
+            this.time += elapsed;
+            var leftOver = 0;
+            var duration = this.duration;
+            var time = this.time;
+            if (duration !== 0 && time > duration) {
+                leftOver = time - duration;
+                this.time = time = duration;
+            }
+            var force = this.calculate(elapsed);
+            this.emit('each', elapsed, this.list || this.object, this);
+            if (this.type === 'Wait' || duration !== 0 && time === duration) {
+                return this.end(leftOver);
+            }
+            return force || time === duration;
+        }
+
+        // correct certain DOM values
+
+    }, {
+        key: '_correctDOM',
+        value: function _correctDOM(key, value) {
+            switch (key) {
+                case 'opacity':
+                    return isNaN(value) ? 1 : value;
+            }
+            return value;
+        }
+    }, {
+        key: 'reverse',
+        value: function reverse() {}
+    }, {
+        key: 'calculate',
+        value: function calculate() {}
+    }, {
+        key: 'done',
+        value: function done() {}
+    }, {
+        key: 'pause',
+        set: function set(value) {
+            this.options.pause = value;
+        },
+        get: function get() {
+            return this.options.pause;
+        }
+    }]);
+
+    return wait;
+}(EventEmitter);
+
+module.exports = wait;
+
+},{"eventemitter3":14,"penner":207}],219:[function(require,module,exports){
 var EMPTY_ARRAY_BUFFER = new ArrayBuffer(0);
 
 /**
@@ -26535,7 +28072,7 @@ Buffer.prototype.destroy = function(){
 
 module.exports = Buffer;
 
-},{}],209:[function(require,module,exports){
+},{}],220:[function(require,module,exports){
 
 var Texture = require('./GLTexture');
 
@@ -26763,7 +28300,7 @@ Framebuffer.createFloat32 = function(gl, width, height, data)
 
 module.exports = Framebuffer;
 
-},{"./GLTexture":211}],210:[function(require,module,exports){
+},{"./GLTexture":222}],221:[function(require,module,exports){
 
 var compileProgram = require('./shader/compileProgram'),
 	extractAttributes = require('./shader/extractAttributes'),
@@ -26859,7 +28396,7 @@ Shader.prototype.destroy = function()
 
 module.exports = Shader;
 
-},{"./shader/compileProgram":216,"./shader/extractAttributes":218,"./shader/extractUniforms":219,"./shader/generateUniformAccessObject":220,"./shader/setPrecision":224}],211:[function(require,module,exports){
+},{"./shader/compileProgram":227,"./shader/extractAttributes":229,"./shader/extractUniforms":230,"./shader/generateUniformAccessObject":231,"./shader/setPrecision":235}],222:[function(require,module,exports){
 
 /**
  * Helper class to create a WebGL Texture
@@ -27194,7 +28731,7 @@ Texture.fromData = function(gl, data, width, height)
 
 module.exports = Texture;
 
-},{}],212:[function(require,module,exports){
+},{}],223:[function(require,module,exports){
 
 // state object//
 var setVertexAttribArrays = require( './setVertexAttribArrays' );
@@ -27462,7 +28999,7 @@ VertexArrayObject.prototype.getSize = function()
     return attrib.buffer.data.length / (( attrib.stride/4 ) || attrib.attribute.size);
 };
 
-},{"./setVertexAttribArrays":215}],213:[function(require,module,exports){
+},{"./setVertexAttribArrays":226}],224:[function(require,module,exports){
 
 /**
  * Helper class to create a webGL Context
@@ -27490,7 +29027,7 @@ var createContext = function(canvas, options)
 
 module.exports = createContext;
 
-},{}],214:[function(require,module,exports){
+},{}],225:[function(require,module,exports){
 var gl = {
     createContext:          require('./createContext'),
     setVertexAttribArrays:  require('./setVertexAttribArrays'),
@@ -27517,7 +29054,7 @@ if (typeof window !== 'undefined')
     window.PIXI.glCore = gl;
 }
 
-},{"./GLBuffer":208,"./GLFramebuffer":209,"./GLShader":210,"./GLTexture":211,"./VertexArrayObject":212,"./createContext":213,"./setVertexAttribArrays":215,"./shader":221}],215:[function(require,module,exports){
+},{"./GLBuffer":219,"./GLFramebuffer":220,"./GLShader":221,"./GLTexture":222,"./VertexArrayObject":223,"./createContext":224,"./setVertexAttribArrays":226,"./shader":232}],226:[function(require,module,exports){
 // var GL_MAP = {};
 
 /**
@@ -27574,7 +29111,7 @@ var setVertexAttribArrays = function (gl, attribs, state)
 
 module.exports = setVertexAttribArrays;
 
-},{}],216:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 
 /**
  * @class
@@ -27656,7 +29193,7 @@ var compileShader = function (gl, type, src)
 
 module.exports = compileProgram;
 
-},{}],217:[function(require,module,exports){
+},{}],228:[function(require,module,exports){
 /**
  * @class
  * @memberof PIXI.glCore.shader
@@ -27736,7 +29273,7 @@ var booleanArray = function(size)
 
 module.exports = defaultValue;
 
-},{}],218:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 
 var mapType = require('./mapType');
 var mapSize = require('./mapSize');
@@ -27779,7 +29316,7 @@ var pointer = function(type, normalized, stride, start){
 
 module.exports = extractAttributes;
 
-},{"./mapSize":222,"./mapType":223}],219:[function(require,module,exports){
+},{"./mapSize":233,"./mapType":234}],230:[function(require,module,exports){
 var mapType = require('./mapType');
 var defaultValue = require('./defaultValue');
 
@@ -27816,7 +29353,7 @@ var extractUniforms = function(gl, program)
 
 module.exports = extractUniforms;
 
-},{"./defaultValue":217,"./mapType":223}],220:[function(require,module,exports){
+},{"./defaultValue":228,"./mapType":234}],231:[function(require,module,exports){
 /**
  * Extracts the attributes
  * @class
@@ -27939,7 +29476,7 @@ function getUniformGroup(nameTokens, uniform)
 
 module.exports = generateUniformAccessObject;
 
-},{}],221:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 module.exports = {
     compileProgram: require('./compileProgram'),
     defaultValue: require('./defaultValue'),
@@ -27950,7 +29487,7 @@ module.exports = {
     mapSize: require('./mapSize'),
     mapType: require('./mapType')
 };
-},{"./compileProgram":216,"./defaultValue":217,"./extractAttributes":218,"./extractUniforms":219,"./generateUniformAccessObject":220,"./mapSize":222,"./mapType":223,"./setPrecision":224}],222:[function(require,module,exports){
+},{"./compileProgram":227,"./defaultValue":228,"./extractAttributes":229,"./extractUniforms":230,"./generateUniformAccessObject":231,"./mapSize":233,"./mapType":234,"./setPrecision":235}],233:[function(require,module,exports){
 /**
  * @class
  * @memberof PIXI.glCore.shader
@@ -27988,7 +29525,7 @@ var GLSL_TO_SIZE = {
 
 module.exports = mapSize;
 
-},{}],223:[function(require,module,exports){
+},{}],234:[function(require,module,exports){
 
 
 var mapType = function(gl, type) 
@@ -28036,7 +29573,7 @@ var GL_TO_GLSL_TYPES = {
 
 module.exports = mapType;
 
-},{}],224:[function(require,module,exports){
+},{}],235:[function(require,module,exports){
 /**
  * Sets the float precision on the shader. If the precision is already present this function will do nothing
  * @param {string} src       the shader source
@@ -28056,7 +29593,7 @@ var setPrecision = function(src, precision)
 
 module.exports = setPrecision;
 
-},{}],225:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -28271,7 +29808,7 @@ module.exports = function (_Plugin) {
     return Bounce;
 }(Plugin);
 
-},{"./plugin":233,"./utils":236}],226:[function(require,module,exports){
+},{"./plugin":244,"./utils":247}],237:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -28358,7 +29895,7 @@ module.exports = function (_Plugin) {
     return ClampZoom;
 }(Plugin);
 
-},{"./plugin":233}],227:[function(require,module,exports){
+},{"./plugin":244}],238:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -28530,7 +30067,7 @@ module.exports = function (_Plugin) {
     return clamp;
 }(Plugin);
 
-},{"./plugin":233,"./utils":236}],228:[function(require,module,exports){
+},{"./plugin":244,"./utils":247}],239:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -28709,7 +30246,7 @@ module.exports = function (_Plugin) {
     return Decelerate;
 }(Plugin);
 
-},{"./plugin":233}],229:[function(require,module,exports){
+},{"./plugin":244}],240:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -28933,7 +30470,7 @@ module.exports = function (_Plugin) {
     return Drag;
 }(Plugin);
 
-},{"./plugin":233,"./utils":236}],230:[function(require,module,exports){
+},{"./plugin":244,"./utils":247}],241:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -29011,7 +30548,7 @@ module.exports = function (_Plugin) {
     return Follow;
 }(Plugin);
 
-},{"./plugin":233}],231:[function(require,module,exports){
+},{"./plugin":244}],242:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -29185,7 +30722,7 @@ module.exports = function (_Plugin) {
     return MouseEdges;
 }(Plugin);
 
-},{"./plugin":233,"./utils":236}],232:[function(require,module,exports){
+},{"./plugin":244,"./utils":247}],243:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -29307,7 +30844,7 @@ module.exports = function (_Plugin) {
     return Pinch;
 }(Plugin);
 
-},{"./plugin":233}],233:[function(require,module,exports){
+},{"./plugin":244}],244:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -29407,7 +30944,7 @@ module.exports = function () {
     return Plugin;
 }();
 
-},{}],234:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -29583,7 +31120,7 @@ module.exports = function (_Plugin) {
     return SnapZoom;
 }(Plugin);
 
-},{"./plugin":233,"./utils":236}],235:[function(require,module,exports){
+},{"./plugin":244,"./utils":247}],246:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -29728,7 +31265,7 @@ module.exports = function (_Plugin) {
     return Snap;
 }(Plugin);
 
-},{"./plugin":233,"./utils":236}],236:[function(require,module,exports){
+},{"./plugin":244,"./utils":247}],247:[function(require,module,exports){
 'use strict';
 
 var Penner = require('penner');
@@ -29763,7 +31300,7 @@ module.exports = {
     ease: ease
 };
 
-},{"penner":207}],237:[function(require,module,exports){
+},{"penner":207}],248:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -31450,7 +32987,7 @@ if (typeof PIXI !== 'undefined') {
 
 module.exports = Viewport;
 
-},{"./bounce":225,"./clamp":227,"./clamp-zoom":226,"./decelerate":228,"./drag":229,"./follow":230,"./mouse-edges":231,"./pinch":232,"./snap":235,"./snap-zoom":234,"./utils":236,"./wheel":238}],238:[function(require,module,exports){
+},{"./bounce":236,"./clamp":238,"./clamp-zoom":237,"./decelerate":239,"./drag":240,"./follow":241,"./mouse-edges":242,"./pinch":243,"./snap":246,"./snap-zoom":245,"./utils":247,"./wheel":249}],249:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -31588,7 +33125,7 @@ module.exports = function (_Plugin) {
     return Wheel;
 }(Plugin);
 
-},{"./plugin":233}],239:[function(require,module,exports){
+},{"./plugin":244}],250:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -32117,7 +33654,7 @@ exports.default = AccessibilityManager;
 core.WebGLRenderer.registerPlugin('accessibility', AccessibilityManager);
 core.CanvasRenderer.registerPlugin('accessibility', AccessibilityManager);
 
-},{"../core":264,"./accessibleTarget":240,"ismobilejs":203}],240:[function(require,module,exports){
+},{"../core":275,"./accessibleTarget":251,"ismobilejs":203}],251:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -32175,7 +33712,7 @@ exports.default = {
   _accessibleDiv: false
 };
 
-},{}],241:[function(require,module,exports){
+},{}],252:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -32200,7 +33737,7 @@ Object.defineProperty(exports, 'AccessibilityManager', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./AccessibilityManager":239,"./accessibleTarget":240}],242:[function(require,module,exports){
+},{"./AccessibilityManager":250,"./accessibleTarget":251}],253:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -32432,7 +33969,7 @@ var Application = function () {
 
 exports.default = Application;
 
-},{"./autoDetectRenderer":244,"./const":245,"./display/Container":247,"./settings":300,"./ticker":320}],243:[function(require,module,exports){
+},{"./autoDetectRenderer":255,"./const":256,"./display/Container":258,"./settings":311,"./ticker":331}],254:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -32499,7 +34036,7 @@ var Shader = function (_GLShader) {
 
 exports.default = Shader;
 
-},{"./settings":300,"pixi-gl-core":214}],244:[function(require,module,exports){
+},{"./settings":311,"pixi-gl-core":225}],255:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -32568,7 +34105,7 @@ function autoDetectRenderer(options, arg1, arg2, arg3) {
     return new _CanvasRenderer2.default(options, arg1, arg2);
 }
 
-},{"./renderers/canvas/CanvasRenderer":276,"./renderers/webgl/WebGLRenderer":283,"./utils":324}],245:[function(require,module,exports){
+},{"./renderers/canvas/CanvasRenderer":287,"./renderers/webgl/WebGLRenderer":294,"./utils":335}],256:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -32911,7 +34448,7 @@ var UPDATE_PRIORITY = exports.UPDATE_PRIORITY = {
   UTILITY: -50
 };
 
-},{}],246:[function(require,module,exports){
+},{}],257:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -33254,7 +34791,7 @@ var Bounds = function () {
 
 exports.default = Bounds;
 
-},{"../math":269}],247:[function(require,module,exports){
+},{"../math":280}],258:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -33872,7 +35409,7 @@ var Container = function (_DisplayObject) {
 exports.default = Container;
 Container.prototype.containerUpdateTransform = Container.prototype.updateTransform;
 
-},{"../utils":324,"./DisplayObject":248}],248:[function(require,module,exports){
+},{"../utils":335,"./DisplayObject":259}],259:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -34566,7 +36103,7 @@ var DisplayObject = function (_EventEmitter) {
 exports.default = DisplayObject;
 DisplayObject.prototype.displayObjectUpdateTransform = DisplayObject.prototype.updateTransform;
 
-},{"../const":245,"../math":269,"../settings":300,"./Bounds":246,"./Transform":249,"./TransformStatic":251,"eventemitter3":14}],249:[function(require,module,exports){
+},{"../const":256,"../math":280,"../settings":311,"./Bounds":257,"./Transform":260,"./TransformStatic":262,"eventemitter3":400}],260:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -34747,7 +36284,7 @@ var Transform = function (_TransformBase) {
 
 exports.default = Transform;
 
-},{"../math":269,"./TransformBase":250}],250:[function(require,module,exports){
+},{"../math":280,"./TransformBase":261}],261:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -34834,7 +36371,7 @@ TransformBase.prototype.updateWorldTransform = TransformBase.prototype.updateTra
 
 TransformBase.IDENTITY = new TransformBase();
 
-},{"../math":269}],251:[function(require,module,exports){
+},{"../math":280}],262:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -35046,7 +36583,7 @@ var TransformStatic = function (_TransformBase) {
 
 exports.default = TransformStatic;
 
-},{"../math":269,"./TransformBase":250}],252:[function(require,module,exports){
+},{"../math":280,"./TransformBase":261}],263:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -36426,7 +37963,7 @@ Graphics.CURVES = {
     maxSegments: 2048
 };
 
-},{"../const":245,"../display/Bounds":246,"../display/Container":247,"../math":269,"../renderers/canvas/CanvasRenderer":276,"../sprites/Sprite":301,"../textures/RenderTexture":312,"../textures/Texture":314,"../utils":324,"./GraphicsData":253,"./utils/bezierCurveTo":255}],253:[function(require,module,exports){
+},{"../const":256,"../display/Bounds":257,"../display/Container":258,"../math":280,"../renderers/canvas/CanvasRenderer":287,"../sprites/Sprite":312,"../textures/RenderTexture":323,"../textures/Texture":325,"../utils":335,"./GraphicsData":264,"./utils/bezierCurveTo":266}],264:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -36571,7 +38108,7 @@ var GraphicsData = function () {
 
 exports.default = GraphicsData;
 
-},{}],254:[function(require,module,exports){
+},{}],265:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -36878,7 +38415,7 @@ exports.default = CanvasGraphicsRenderer;
 
 _CanvasRenderer2.default.registerPlugin('graphics', CanvasGraphicsRenderer);
 
-},{"../../const":245,"../../renderers/canvas/CanvasRenderer":276}],255:[function(require,module,exports){
+},{"../../const":256,"../../renderers/canvas/CanvasRenderer":287}],266:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -36928,7 +38465,7 @@ function bezierCurveTo(fromX, fromY, cpX, cpY, cpX2, cpY2, toX, toY, n) {
     return path;
 }
 
-},{}],256:[function(require,module,exports){
+},{}],267:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -37193,7 +38730,7 @@ exports.default = GraphicsRenderer;
 
 _WebGLRenderer2.default.registerPlugin('graphics', GraphicsRenderer);
 
-},{"../../const":245,"../../renderers/webgl/WebGLRenderer":283,"../../renderers/webgl/utils/ObjectRenderer":293,"../../utils":324,"./WebGLGraphicsData":257,"./shaders/PrimitiveShader":258,"./utils/buildCircle":259,"./utils/buildPoly":261,"./utils/buildRectangle":262,"./utils/buildRoundedRectangle":263}],257:[function(require,module,exports){
+},{"../../const":256,"../../renderers/webgl/WebGLRenderer":294,"../../renderers/webgl/utils/ObjectRenderer":304,"../../utils":335,"./WebGLGraphicsData":268,"./shaders/PrimitiveShader":269,"./utils/buildCircle":270,"./utils/buildPoly":272,"./utils/buildRectangle":273,"./utils/buildRoundedRectangle":274}],268:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -37336,7 +38873,7 @@ var WebGLGraphicsData = function () {
 
 exports.default = WebGLGraphicsData;
 
-},{"pixi-gl-core":214}],258:[function(require,module,exports){
+},{"pixi-gl-core":225}],269:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -37381,7 +38918,7 @@ var PrimitiveShader = function (_Shader) {
 
 exports.default = PrimitiveShader;
 
-},{"../../../Shader":243}],259:[function(require,module,exports){
+},{"../../../Shader":254}],270:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -37476,7 +39013,7 @@ function buildCircle(graphicsData, webGLData, webGLDataNativeLines) {
     }
 }
 
-},{"../../../const":245,"../../../utils":324,"./buildLine":260}],260:[function(require,module,exports){
+},{"../../../const":256,"../../../utils":335,"./buildLine":271}],271:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -37750,7 +39287,7 @@ function buildNativeLine(graphicsData, webGLData) {
     }
 }
 
-},{"../../../math":269,"../../../utils":324}],261:[function(require,module,exports){
+},{"../../../math":280,"../../../utils":335}],272:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -37836,7 +39373,7 @@ function buildPoly(graphicsData, webGLData, webGLDataNativeLines) {
     }
 }
 
-},{"../../../utils":324,"./buildLine":260,"earcut":13}],262:[function(require,module,exports){
+},{"../../../utils":335,"./buildLine":271,"earcut":13}],273:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -37912,7 +39449,7 @@ function buildRectangle(graphicsData, webGLData, webGLDataNativeLines) {
     }
 }
 
-},{"../../../utils":324,"./buildLine":260}],263:[function(require,module,exports){
+},{"../../../utils":335,"./buildLine":271}],274:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -38068,7 +39605,7 @@ function quadraticBezierCurve(fromX, fromY, cpX, cpY, toX, toY) {
     return points;
 }
 
-},{"../../../utils":324,"./buildLine":260,"earcut":13}],264:[function(require,module,exports){
+},{"../../../utils":335,"./buildLine":271,"earcut":13}],275:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -38454,7 +39991,7 @@ exports.WebGLRenderer = _WebGLRenderer2.default; /**
                                                   * @namespace PIXI
                                                   */
 
-},{"./Application":242,"./Shader":243,"./autoDetectRenderer":244,"./const":245,"./display/Bounds":246,"./display/Container":247,"./display/DisplayObject":248,"./display/Transform":249,"./display/TransformBase":250,"./display/TransformStatic":251,"./graphics/Graphics":252,"./graphics/GraphicsData":253,"./graphics/canvas/CanvasGraphicsRenderer":254,"./graphics/webgl/GraphicsRenderer":256,"./math":269,"./renderers/canvas/CanvasRenderer":276,"./renderers/canvas/utils/CanvasRenderTarget":278,"./renderers/webgl/WebGLRenderer":283,"./renderers/webgl/filters/Filter":285,"./renderers/webgl/filters/spriteMask/SpriteMaskFilter":288,"./renderers/webgl/managers/WebGLManager":292,"./renderers/webgl/utils/ObjectRenderer":293,"./renderers/webgl/utils/Quad":294,"./renderers/webgl/utils/RenderTarget":295,"./settings":300,"./sprites/Sprite":301,"./sprites/canvas/CanvasSpriteRenderer":302,"./sprites/canvas/CanvasTinter":303,"./sprites/webgl/SpriteRenderer":305,"./text/Text":307,"./text/TextMetrics":308,"./text/TextStyle":309,"./textures/BaseRenderTexture":310,"./textures/BaseTexture":311,"./textures/RenderTexture":312,"./textures/Spritesheet":313,"./textures/Texture":314,"./textures/TextureMatrix":315,"./textures/TextureUvs":316,"./textures/VideoBaseTexture":317,"./ticker":320,"./utils":324,"pixi-gl-core":214}],265:[function(require,module,exports){
+},{"./Application":253,"./Shader":254,"./autoDetectRenderer":255,"./const":256,"./display/Bounds":257,"./display/Container":258,"./display/DisplayObject":259,"./display/Transform":260,"./display/TransformBase":261,"./display/TransformStatic":262,"./graphics/Graphics":263,"./graphics/GraphicsData":264,"./graphics/canvas/CanvasGraphicsRenderer":265,"./graphics/webgl/GraphicsRenderer":267,"./math":280,"./renderers/canvas/CanvasRenderer":287,"./renderers/canvas/utils/CanvasRenderTarget":289,"./renderers/webgl/WebGLRenderer":294,"./renderers/webgl/filters/Filter":296,"./renderers/webgl/filters/spriteMask/SpriteMaskFilter":299,"./renderers/webgl/managers/WebGLManager":303,"./renderers/webgl/utils/ObjectRenderer":304,"./renderers/webgl/utils/Quad":305,"./renderers/webgl/utils/RenderTarget":306,"./settings":311,"./sprites/Sprite":312,"./sprites/canvas/CanvasSpriteRenderer":313,"./sprites/canvas/CanvasTinter":314,"./sprites/webgl/SpriteRenderer":316,"./text/Text":318,"./text/TextMetrics":319,"./text/TextStyle":320,"./textures/BaseRenderTexture":321,"./textures/BaseTexture":322,"./textures/RenderTexture":323,"./textures/Spritesheet":324,"./textures/Texture":325,"./textures/TextureMatrix":326,"./textures/TextureUvs":327,"./textures/VideoBaseTexture":328,"./ticker":331,"./utils":335,"pixi-gl-core":225}],276:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -38647,7 +40184,7 @@ var GroupD8 = {
 
 exports.default = GroupD8;
 
-},{"./Matrix":266}],266:[function(require,module,exports){
+},{"./Matrix":277}],277:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -39169,7 +40706,7 @@ var Matrix = function () {
 
 exports.default = Matrix;
 
-},{"../const":245,"./Point":268}],267:[function(require,module,exports){
+},{"../const":256,"./Point":279}],278:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -39320,7 +40857,7 @@ var ObservablePoint = function () {
 
 exports.default = ObservablePoint;
 
-},{}],268:[function(require,module,exports){
+},{}],279:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -39411,7 +40948,7 @@ var Point = function () {
 
 exports.default = Point;
 
-},{}],269:[function(require,module,exports){
+},{}],280:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -39499,7 +41036,7 @@ Object.defineProperty(exports, 'RoundedRectangle', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./GroupD8":265,"./Matrix":266,"./ObservablePoint":267,"./Point":268,"./shapes/Circle":270,"./shapes/Ellipse":271,"./shapes/Polygon":272,"./shapes/Rectangle":273,"./shapes/RoundedRectangle":274}],270:[function(require,module,exports){
+},{"./GroupD8":276,"./Matrix":277,"./ObservablePoint":278,"./Point":279,"./shapes/Circle":281,"./shapes/Ellipse":282,"./shapes/Polygon":283,"./shapes/Rectangle":284,"./shapes/RoundedRectangle":285}],281:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -39613,7 +41150,7 @@ var Circle = function () {
 
 exports.default = Circle;
 
-},{"../../const":245,"./Rectangle":273}],271:[function(require,module,exports){
+},{"../../const":256,"./Rectangle":284}],282:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -39735,7 +41272,7 @@ var Ellipse = function () {
 
 exports.default = Ellipse;
 
-},{"../../const":245,"./Rectangle":273}],272:[function(require,module,exports){
+},{"../../const":256,"./Rectangle":284}],283:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -39866,7 +41403,7 @@ var Polygon = function () {
 
 exports.default = Polygon;
 
-},{"../../const":245,"../Point":268}],273:[function(require,module,exports){
+},{"../../const":256,"../Point":279}],284:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -40129,7 +41666,7 @@ var Rectangle = function () {
 
 exports.default = Rectangle;
 
-},{"../../const":245}],274:[function(require,module,exports){
+},{"../../const":256}],285:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -40262,7 +41799,7 @@ var RoundedRectangle = function () {
 
 exports.default = RoundedRectangle;
 
-},{"../../const":245}],275:[function(require,module,exports){
+},{"../../const":256}],286:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -40627,7 +42164,7 @@ var SystemRenderer = function (_EventEmitter) {
 
 exports.default = SystemRenderer;
 
-},{"../const":245,"../display/Container":247,"../math":269,"../settings":300,"../textures/RenderTexture":312,"../utils":324,"eventemitter3":14}],276:[function(require,module,exports){
+},{"../const":256,"../display/Container":258,"../math":280,"../settings":311,"../textures/RenderTexture":323,"../utils":335,"eventemitter3":400}],287:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -40992,7 +42529,7 @@ var CanvasRenderer = function (_SystemRenderer) {
 exports.default = CanvasRenderer;
 _utils.pluginTarget.mixin(CanvasRenderer);
 
-},{"../../const":245,"../../settings":300,"../../utils":324,"../SystemRenderer":275,"./utils/CanvasMaskManager":277,"./utils/CanvasRenderTarget":278,"./utils/mapCanvasBlendModesToPixi":280}],277:[function(require,module,exports){
+},{"../../const":256,"../../settings":311,"../../utils":335,"../SystemRenderer":286,"./utils/CanvasMaskManager":288,"./utils/CanvasRenderTarget":289,"./utils/mapCanvasBlendModesToPixi":291}],288:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -41192,7 +42729,7 @@ var CanvasMaskManager = function () {
 
 exports.default = CanvasMaskManager;
 
-},{"../../../const":245}],278:[function(require,module,exports){
+},{"../../../const":256}],289:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -41316,7 +42853,7 @@ var CanvasRenderTarget = function () {
 
 exports.default = CanvasRenderTarget;
 
-},{"../../../settings":300}],279:[function(require,module,exports){
+},{"../../../settings":311}],290:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -41377,7 +42914,7 @@ function canUseNewCanvasBlendModes() {
     return data[0] === 255 && data[1] === 0 && data[2] === 0;
 }
 
-},{}],280:[function(require,module,exports){
+},{}],291:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -41449,7 +42986,7 @@ function mapCanvasBlendModesToPixi() {
     return array;
 }
 
-},{"../../../const":245,"./canUseNewCanvasBlendModes":279}],281:[function(require,module,exports){
+},{"../../../const":256,"./canUseNewCanvasBlendModes":290}],292:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -41569,7 +43106,7 @@ var TextureGarbageCollector = function () {
 
 exports.default = TextureGarbageCollector;
 
-},{"../../const":245,"../../settings":300}],282:[function(require,module,exports){
+},{"../../const":256,"../../settings":311}],293:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -41835,7 +43372,7 @@ var TextureManager = function () {
 
 exports.default = TextureManager;
 
-},{"../../const":245,"../../utils":324,"./utils/RenderTarget":295,"pixi-gl-core":214}],283:[function(require,module,exports){
+},{"../../const":256,"../../utils":335,"./utils/RenderTarget":306,"pixi-gl-core":225}],294:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -42652,7 +44189,7 @@ var WebGLRenderer = function (_SystemRenderer) {
 exports.default = WebGLRenderer;
 _utils.pluginTarget.mixin(WebGLRenderer);
 
-},{"../../const":245,"../../textures/BaseTexture":311,"../../utils":324,"../SystemRenderer":275,"./TextureGarbageCollector":281,"./TextureManager":282,"./WebGLState":284,"./managers/FilterManager":289,"./managers/MaskManager":290,"./managers/StencilManager":291,"./utils/ObjectRenderer":293,"./utils/RenderTarget":295,"./utils/mapWebGLDrawModesToPixi":298,"./utils/validateContext":299,"pixi-gl-core":214}],284:[function(require,module,exports){
+},{"../../const":256,"../../textures/BaseTexture":322,"../../utils":335,"../SystemRenderer":286,"./TextureGarbageCollector":292,"./TextureManager":293,"./WebGLState":295,"./managers/FilterManager":300,"./managers/MaskManager":301,"./managers/StencilManager":302,"./utils/ObjectRenderer":304,"./utils/RenderTarget":306,"./utils/mapWebGLDrawModesToPixi":309,"./utils/validateContext":310,"pixi-gl-core":225}],295:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -42932,7 +44469,7 @@ var WebGLState = function () {
 
 exports.default = WebGLState;
 
-},{"./utils/mapWebGLBlendModesToPixi":297}],285:[function(require,module,exports){
+},{"./utils/mapWebGLBlendModesToPixi":308}],296:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -43128,7 +44665,7 @@ var Filter = function () {
 
 exports.default = Filter;
 
-},{"../../../const":245,"../../../settings":300,"../../../utils":324,"./extractUniformsFromSrc":286}],286:[function(require,module,exports){
+},{"../../../const":256,"../../../settings":311,"../../../utils":335,"./extractUniformsFromSrc":297}],297:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -43190,7 +44727,7 @@ function extractUniformsFromString(string) {
     return uniforms;
 }
 
-},{"pixi-gl-core":214}],287:[function(require,module,exports){
+},{"pixi-gl-core":225}],298:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -43250,7 +44787,7 @@ function calculateSpriteMatrix(outputMatrix, filterArea, textureSize, sprite) {
     return mappedMatrix;
 }
 
-},{"../../../math":269}],288:[function(require,module,exports){
+},{"../../../math":280}],299:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -43338,7 +44875,7 @@ var SpriteMaskFilter = function (_Filter) {
 
 exports.default = SpriteMaskFilter;
 
-},{"../../../../math":269,"../../../../textures/TextureMatrix":315,"../Filter":285,"path":2}],289:[function(require,module,exports){
+},{"../../../../math":280,"../../../../textures/TextureMatrix":326,"../Filter":296,"path":2}],300:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -43992,7 +45529,7 @@ var FilterManager = function (_WebGLManager) {
 
 exports.default = FilterManager;
 
-},{"../../../Shader":243,"../../../math":269,"../filters/filterTransforms":287,"../utils/Quad":294,"../utils/RenderTarget":295,"./WebGLManager":292,"bit-twiddle":12}],290:[function(require,module,exports){
+},{"../../../Shader":254,"../../../math":280,"../filters/filterTransforms":298,"../utils/Quad":305,"../utils/RenderTarget":306,"./WebGLManager":303,"bit-twiddle":12}],301:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -44202,7 +45739,7 @@ var MaskManager = function (_WebGLManager) {
 
 exports.default = MaskManager;
 
-},{"../filters/spriteMask/SpriteMaskFilter":288,"./WebGLManager":292}],291:[function(require,module,exports){
+},{"../filters/spriteMask/SpriteMaskFilter":299,"./WebGLManager":303}],302:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -44355,7 +45892,7 @@ var StencilManager = function (_WebGLManager) {
 
 exports.default = StencilManager;
 
-},{"./WebGLManager":292}],292:[function(require,module,exports){
+},{"./WebGLManager":303}],303:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -44410,7 +45947,7 @@ var WebGLManager = function () {
 
 exports.default = WebGLManager;
 
-},{}],293:[function(require,module,exports){
+},{}],304:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -44488,7 +46025,7 @@ var ObjectRenderer = function (_WebGLManager) {
 
 exports.default = ObjectRenderer;
 
-},{"../managers/WebGLManager":292}],294:[function(require,module,exports){
+},{"../managers/WebGLManager":303}],305:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -44669,7 +46206,7 @@ var Quad = function () {
 
 exports.default = Quad;
 
-},{"../../../utils/createIndicesForQuads":322,"pixi-gl-core":214}],295:[function(require,module,exports){
+},{"../../../utils/createIndicesForQuads":333,"pixi-gl-core":225}],306:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -45004,7 +46541,7 @@ var RenderTarget = function () {
 
 exports.default = RenderTarget;
 
-},{"../../../const":245,"../../../math":269,"../../../settings":300,"pixi-gl-core":214}],296:[function(require,module,exports){
+},{"../../../const":256,"../../../math":280,"../../../settings":311,"pixi-gl-core":225}],307:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -45079,7 +46616,7 @@ function generateIfTestSrc(maxIfs) {
     return src;
 }
 
-},{"pixi-gl-core":214}],297:[function(require,module,exports){
+},{"pixi-gl-core":225}],308:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -45128,7 +46665,7 @@ function mapWebGLBlendModesToPixi(gl) {
     return array;
 }
 
-},{"../../../const":245}],298:[function(require,module,exports){
+},{"../../../const":256}],309:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -45160,7 +46697,7 @@ function mapWebGLDrawModesToPixi(gl) {
   return object;
 }
 
-},{"../../../const":245}],299:[function(require,module,exports){
+},{"../../../const":256}],310:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -45176,7 +46713,7 @@ function validateContext(gl) {
     }
 }
 
-},{}],300:[function(require,module,exports){
+},{}],311:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -45421,7 +46958,7 @@ exports.default = {
   MESH_CANVAS_PADDING: 0
 };
 
-},{"./utils/canUploadSameBuffer":321,"./utils/maxRecommendedTextures":326}],301:[function(require,module,exports){
+},{"./utils/canUploadSameBuffer":332,"./utils/maxRecommendedTextures":337}],312:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -46062,7 +47599,7 @@ var Sprite = function (_Container) {
 
 exports.default = Sprite;
 
-},{"../const":245,"../display/Container":247,"../math":269,"../textures/Texture":314,"../utils":324}],302:[function(require,module,exports){
+},{"../const":256,"../display/Container":258,"../math":280,"../textures/Texture":325,"../utils":335}],313:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -46215,7 +47752,7 @@ exports.default = CanvasSpriteRenderer;
 
 _CanvasRenderer2.default.registerPlugin('sprite', CanvasSpriteRenderer);
 
-},{"../../const":245,"../../math":269,"../../renderers/canvas/CanvasRenderer":276,"./CanvasTinter":303}],303:[function(require,module,exports){
+},{"../../const":256,"../../math":280,"../../renderers/canvas/CanvasRenderer":287,"./CanvasTinter":314}],314:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -46466,7 +48003,7 @@ CanvasTinter.tintMethod = CanvasTinter.canUseMultiply ? CanvasTinter.tintWithMul
 
 exports.default = CanvasTinter;
 
-},{"../../renderers/canvas/utils/canUseNewCanvasBlendModes":279,"../../utils":324}],304:[function(require,module,exports){
+},{"../../renderers/canvas/utils/canUseNewCanvasBlendModes":290,"../../utils":335}],315:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -46519,7 +48056,7 @@ var Buffer = function () {
 
 exports.default = Buffer;
 
-},{}],305:[function(require,module,exports){
+},{}],316:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -47072,7 +48609,7 @@ exports.default = SpriteRenderer;
 
 _WebGLRenderer2.default.registerPlugin('sprite', SpriteRenderer);
 
-},{"../../renderers/webgl/WebGLRenderer":283,"../../renderers/webgl/utils/ObjectRenderer":293,"../../renderers/webgl/utils/checkMaxIfStatmentsInShader":296,"../../settings":300,"../../utils":324,"../../utils/createIndicesForQuads":322,"./BatchBuffer":304,"./generateMultiTextureShader":306,"bit-twiddle":12,"pixi-gl-core":214}],306:[function(require,module,exports){
+},{"../../renderers/webgl/WebGLRenderer":294,"../../renderers/webgl/utils/ObjectRenderer":304,"../../renderers/webgl/utils/checkMaxIfStatmentsInShader":307,"../../settings":311,"../../utils":335,"../../utils/createIndicesForQuads":333,"./BatchBuffer":315,"./generateMultiTextureShader":317,"bit-twiddle":12,"pixi-gl-core":225}],317:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -47135,7 +48672,7 @@ function generateSampleSrc(maxTextures) {
     return src;
 }
 
-},{"../../Shader":243,"path":2}],307:[function(require,module,exports){
+},{"../../Shader":254,"path":2}],318:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -47793,7 +49330,7 @@ var Text = function (_Sprite) {
 
 exports.default = Text;
 
-},{"../const":245,"../math":269,"../settings":300,"../sprites/Sprite":301,"../textures/Texture":314,"../utils":324,"../utils/trimCanvas":329,"./TextMetrics":308,"./TextStyle":309}],308:[function(require,module,exports){
+},{"../const":256,"../math":280,"../settings":311,"../sprites/Sprite":312,"../textures/Texture":325,"../utils":335,"../utils/trimCanvas":340,"./TextMetrics":319,"./TextStyle":320}],319:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -48493,7 +50030,7 @@ TextMetrics._breakingSpaces = [0x0009, // character tabulation
 0x205F, // medium mathematical space
 0x3000];
 
-},{}],309:[function(require,module,exports){
+},{}],320:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -49327,7 +50864,7 @@ function deepCopyProperties(target, source, propertyObj) {
     }
 }
 
-},{"../const":245,"../utils":324}],310:[function(require,module,exports){
+},{"../const":256,"../utils":335}],321:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -49490,7 +51027,7 @@ var BaseRenderTexture = function (_BaseTexture) {
 
 exports.default = BaseRenderTexture;
 
-},{"../settings":300,"./BaseTexture":311}],311:[function(require,module,exports){
+},{"../settings":311,"./BaseTexture":322}],322:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -50336,7 +51873,7 @@ var BaseTexture = function (_EventEmitter) {
 
 exports.default = BaseTexture;
 
-},{"../settings":300,"../utils":324,"../utils/determineCrossOrigin":323,"bit-twiddle":12,"eventemitter3":14}],312:[function(require,module,exports){
+},{"../settings":311,"../utils":335,"../utils/determineCrossOrigin":334,"bit-twiddle":12,"eventemitter3":400}],323:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -50490,7 +52027,7 @@ var RenderTexture = function (_Texture) {
 
 exports.default = RenderTexture;
 
-},{"./BaseRenderTexture":310,"./Texture":314}],313:[function(require,module,exports){
+},{"./BaseRenderTexture":321,"./Texture":325}],324:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -50819,7 +52356,7 @@ var Spritesheet = function () {
 
 exports.default = Spritesheet;
 
-},{"../":264,"../utils":324}],314:[function(require,module,exports){
+},{"../":275,"../utils":335}],325:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -51524,7 +53061,7 @@ Texture.WHITE = createWhiteTexture();
 removeAllHandlers(Texture.WHITE);
 removeAllHandlers(Texture.WHITE.baseTexture);
 
-},{"../math":269,"../settings":300,"../utils":324,"./BaseTexture":311,"./TextureUvs":316,"./VideoBaseTexture":317,"eventemitter3":14}],315:[function(require,module,exports){
+},{"../math":280,"../settings":311,"../utils":335,"./BaseTexture":322,"./TextureUvs":327,"./VideoBaseTexture":328,"eventemitter3":400}],326:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -51688,7 +53225,7 @@ var TextureMatrix = function () {
 
 exports.default = TextureMatrix;
 
-},{"../math/Matrix":266}],316:[function(require,module,exports){
+},{"../math/Matrix":277}],327:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -51793,7 +53330,7 @@ var TextureUvs = function () {
 
 exports.default = TextureUvs;
 
-},{"../math/GroupD8":265}],317:[function(require,module,exports){
+},{"../math/GroupD8":276}],328:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -52142,7 +53679,7 @@ function createSource(path, type) {
     return source;
 }
 
-},{"../const":245,"../ticker":320,"../utils":324,"../utils/determineCrossOrigin":323,"./BaseTexture":311}],318:[function(require,module,exports){
+},{"../const":256,"../ticker":331,"../utils":335,"../utils/determineCrossOrigin":334,"./BaseTexture":322}],329:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -52615,7 +54152,7 @@ var Ticker = function () {
 
 exports.default = Ticker;
 
-},{"../const":245,"../settings":300,"./TickerListener":319}],319:[function(require,module,exports){
+},{"../const":256,"../settings":311,"./TickerListener":330}],330:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -52789,7 +54326,7 @@ var TickerListener = function () {
 
 exports.default = TickerListener;
 
-},{}],320:[function(require,module,exports){
+},{}],331:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -52869,7 +54406,7 @@ shared.destroy = function () {
 exports.shared = shared;
 exports.Ticker = _Ticker2.default;
 
-},{"./Ticker":318}],321:[function(require,module,exports){
+},{"./Ticker":329}],332:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -52883,7 +54420,7 @@ function canUploadSameBuffer() {
 	return !ios;
 }
 
-},{}],322:[function(require,module,exports){
+},{}],333:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -52917,7 +54454,7 @@ function createIndicesForQuads(size) {
     return indices;
 }
 
-},{}],323:[function(require,module,exports){
+},{}],334:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -52973,7 +54510,7 @@ function determineCrossOrigin(url) {
     return '';
 }
 
-},{"url":8}],324:[function(require,module,exports){
+},{"url":8}],335:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -53456,7 +54993,7 @@ function premultiplyTintToRgba(tint, alpha, out, premultiply) {
     return out;
 }
 
-},{"../const":245,"../settings":300,"./mapPremultipliedBlendModes":325,"./mixin":327,"./pluginTarget":328,"earcut":13,"eventemitter3":14,"ismobilejs":203,"remove-array-items":389}],325:[function(require,module,exports){
+},{"../const":256,"../settings":311,"./mapPremultipliedBlendModes":336,"./mixin":338,"./pluginTarget":339,"earcut":13,"eventemitter3":400,"ismobilejs":203,"remove-array-items":401}],336:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -53499,7 +55036,7 @@ function mapPremultipliedBlendModes() {
     return array;
 }
 
-},{"../const":245}],326:[function(require,module,exports){
+},{"../const":256}],337:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -53521,7 +55058,7 @@ function maxRecommendedTextures(max) {
     return max;
 }
 
-},{"ismobilejs":203}],327:[function(require,module,exports){
+},{"ismobilejs":203}],338:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -53583,7 +55120,7 @@ function performMixins() {
     mixins.length = 0;
 }
 
-},{}],328:[function(require,module,exports){
+},{}],339:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -53649,7 +55186,7 @@ exports.default = {
     }
 };
 
-},{}],329:[function(require,module,exports){
+},{}],340:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -53727,7 +55264,7 @@ function trimCanvas(canvas) {
     };
 }
 
-},{}],330:[function(require,module,exports){
+},{}],341:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -54883,7 +56420,7 @@ function deprecation(core) {
     }
 }
 
-},{}],331:[function(require,module,exports){
+},{}],342:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -55063,7 +56600,7 @@ exports.default = CanvasExtract;
 
 core.CanvasRenderer.registerPlugin('extract', CanvasExtract);
 
-},{"../../core":264}],332:[function(require,module,exports){
+},{"../../core":275}],343:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -55088,7 +56625,7 @@ Object.defineProperty(exports, 'canvas', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./canvas/CanvasExtract":331,"./webgl/WebGLExtract":333}],333:[function(require,module,exports){
+},{"./canvas/CanvasExtract":342,"./webgl/WebGLExtract":344}],344:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -55323,7 +56860,7 @@ exports.default = WebGLExtract;
 
 core.WebGLRenderer.registerPlugin('extract', WebGLExtract);
 
-},{"../../core":264}],334:[function(require,module,exports){
+},{"../../core":275}],345:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -55745,7 +57282,7 @@ var AnimatedSprite = function (_core$Sprite) {
 
 exports.default = AnimatedSprite;
 
-},{"../core":264}],335:[function(require,module,exports){
+},{"../core":275}],346:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -56390,7 +57927,7 @@ exports.default = BitmapText;
 
 BitmapText.fonts = {};
 
-},{"../core":264,"../core/math/ObservablePoint":267,"../core/settings":300,"../core/utils":324}],336:[function(require,module,exports){
+},{"../core":275,"../core/math/ObservablePoint":278,"../core/settings":311,"../core/utils":335}],347:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -56854,7 +58391,7 @@ var TilingSprite = function (_core$Sprite) {
 
 exports.default = TilingSprite;
 
-},{"../core":264,"../core/sprites/canvas/CanvasTinter":303}],337:[function(require,module,exports){
+},{"../core":275,"../core/sprites/canvas/CanvasTinter":314}],348:[function(require,module,exports){
 'use strict';
 
 var _core = require('../core');
@@ -57258,7 +58795,7 @@ DisplayObject.prototype._cacheAsBitmapDestroy = function _cacheAsBitmapDestroy(o
     this.destroy(options);
 };
 
-},{"../core":264,"../core/textures/BaseTexture":311,"../core/textures/Texture":314,"../core/utils":324}],338:[function(require,module,exports){
+},{"../core":275,"../core/textures/BaseTexture":322,"../core/textures/Texture":325,"../core/utils":335}],349:[function(require,module,exports){
 'use strict';
 
 var _core = require('../core');
@@ -57293,7 +58830,7 @@ core.Container.prototype.getChildByName = function getChildByName(name) {
     return null;
 };
 
-},{"../core":264}],339:[function(require,module,exports){
+},{"../core":275}],350:[function(require,module,exports){
 'use strict';
 
 var _core = require('../core');
@@ -57327,7 +58864,7 @@ core.DisplayObject.prototype.getGlobalPosition = function getGlobalPosition() {
     return point;
 };
 
-},{"../core":264}],340:[function(require,module,exports){
+},{"../core":275}],351:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -57379,7 +58916,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // imported for side effect of extending the prototype only, contains no exports
 
-},{"./AnimatedSprite":334,"./BitmapText":335,"./TilingSprite":336,"./cacheAsBitmap":337,"./getChildByName":338,"./getGlobalPosition":339,"./webgl/TilingSpriteRenderer":341}],341:[function(require,module,exports){
+},{"./AnimatedSprite":345,"./BitmapText":346,"./TilingSprite":347,"./cacheAsBitmap":348,"./getChildByName":349,"./getGlobalPosition":350,"./webgl/TilingSpriteRenderer":352}],352:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -57541,7 +59078,7 @@ exports.default = TilingSpriteRenderer;
 
 core.WebGLRenderer.registerPlugin('tilingSprite', TilingSpriteRenderer);
 
-},{"../../core":264,"../../core/const":245,"path":2}],342:[function(require,module,exports){
+},{"../../core":275,"../../core/const":256,"path":2}],353:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -57625,7 +59162,7 @@ var AlphaFilter = function (_core$Filter) {
 
 exports.default = AlphaFilter;
 
-},{"../../core":264,"path":2}],343:[function(require,module,exports){
+},{"../../core":275,"path":2}],354:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -57799,7 +59336,7 @@ var BlurFilter = function (_core$Filter) {
 
 exports.default = BlurFilter;
 
-},{"../../core":264,"./BlurXFilter":344,"./BlurYFilter":345}],344:[function(require,module,exports){
+},{"../../core":275,"./BlurXFilter":355,"./BlurYFilter":356}],355:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -57965,7 +59502,7 @@ var BlurXFilter = function (_core$Filter) {
 
 exports.default = BlurXFilter;
 
-},{"../../core":264,"./generateBlurFragSource":346,"./generateBlurVertSource":347,"./getMaxBlurKernelSize":348}],345:[function(require,module,exports){
+},{"../../core":275,"./generateBlurFragSource":357,"./generateBlurVertSource":358,"./getMaxBlurKernelSize":359}],356:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -58130,7 +59667,7 @@ var BlurYFilter = function (_core$Filter) {
 
 exports.default = BlurYFilter;
 
-},{"../../core":264,"./generateBlurFragSource":346,"./generateBlurVertSource":347,"./getMaxBlurKernelSize":348}],346:[function(require,module,exports){
+},{"../../core":275,"./generateBlurFragSource":357,"./generateBlurVertSource":358,"./getMaxBlurKernelSize":359}],357:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -58177,7 +59714,7 @@ function generateFragBlurSource(kernelSize) {
     return fragSource;
 }
 
-},{}],347:[function(require,module,exports){
+},{}],358:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -58221,7 +59758,7 @@ function generateVertBlurSource(kernelSize, x) {
     return vertSource;
 }
 
-},{}],348:[function(require,module,exports){
+},{}],359:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -58237,7 +59774,7 @@ function getMaxKernelSize(gl) {
     return kernelSize;
 }
 
-},{}],349:[function(require,module,exports){
+},{}],360:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -58788,7 +60325,7 @@ var ColorMatrixFilter = function (_core$Filter) {
 exports.default = ColorMatrixFilter;
 ColorMatrixFilter.prototype.grayscale = ColorMatrixFilter.prototype.greyscale;
 
-},{"../../core":264,"path":2}],350:[function(require,module,exports){
+},{"../../core":275,"path":2}],361:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -58896,7 +60433,7 @@ var DisplacementFilter = function (_core$Filter) {
 
 exports.default = DisplacementFilter;
 
-},{"../../core":264,"path":2}],351:[function(require,module,exports){
+},{"../../core":275,"path":2}],362:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -58950,7 +60487,7 @@ var FXAAFilter = function (_core$Filter) {
 
 exports.default = FXAAFilter;
 
-},{"../../core":264,"path":2}],352:[function(require,module,exports){
+},{"../../core":275,"path":2}],363:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -59029,7 +60566,7 @@ Object.defineProperty(exports, 'AlphaFilter', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./alpha/AlphaFilter":342,"./blur/BlurFilter":343,"./blur/BlurXFilter":344,"./blur/BlurYFilter":345,"./colormatrix/ColorMatrixFilter":349,"./displacement/DisplacementFilter":350,"./fxaa/FXAAFilter":351,"./noise/NoiseFilter":353}],353:[function(require,module,exports){
+},{"./alpha/AlphaFilter":353,"./blur/BlurFilter":354,"./blur/BlurXFilter":355,"./blur/BlurYFilter":356,"./colormatrix/ColorMatrixFilter":360,"./displacement/DisplacementFilter":361,"./fxaa/FXAAFilter":362,"./noise/NoiseFilter":364}],364:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -59126,7 +60663,7 @@ var NoiseFilter = function (_core$Filter) {
 
 exports.default = NoiseFilter;
 
-},{"../../core":264,"path":2}],354:[function(require,module,exports){
+},{"../../core":275,"path":2}],365:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -59240,7 +60777,7 @@ if (typeof _deprecation2.default === 'function') {
 global.PIXI = exports; // eslint-disable-line
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./accessibility":241,"./core":264,"./deprecation":330,"./extract":332,"./extras":340,"./filters":352,"./interaction":359,"./loaders":362,"./mesh":371,"./particles":374,"./polyfill":381,"./prepare":385}],355:[function(require,module,exports){
+},{"./accessibility":252,"./core":275,"./deprecation":341,"./extract":343,"./extras":351,"./filters":363,"./interaction":370,"./loaders":373,"./mesh":382,"./particles":385,"./polyfill":392,"./prepare":396}],366:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -59463,7 +61000,7 @@ var InteractionData = function () {
 
 exports.default = InteractionData;
 
-},{"../core":264}],356:[function(require,module,exports){
+},{"../core":275}],367:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -59546,7 +61083,7 @@ var InteractionEvent = function () {
 
 exports.default = InteractionEvent;
 
-},{}],357:[function(require,module,exports){
+},{}],368:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -61328,7 +62865,7 @@ exports.default = InteractionManager;
 core.WebGLRenderer.registerPlugin('interaction', InteractionManager);
 core.CanvasRenderer.registerPlugin('interaction', InteractionManager);
 
-},{"../core":264,"./InteractionData":355,"./InteractionEvent":356,"./InteractionTrackingData":358,"./interactiveTarget":360,"eventemitter3":14}],358:[function(require,module,exports){
+},{"../core":275,"./InteractionData":366,"./InteractionEvent":367,"./InteractionTrackingData":369,"./interactiveTarget":371,"eventemitter3":400}],369:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -61504,7 +63041,7 @@ InteractionTrackingData.FLAGS = Object.freeze({
     RIGHT_DOWN: 1 << 2
 });
 
-},{}],359:[function(require,module,exports){
+},{}],370:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -61556,7 +63093,7 @@ Object.defineProperty(exports, 'InteractionEvent', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./InteractionData":355,"./InteractionEvent":356,"./InteractionManager":357,"./InteractionTrackingData":358,"./interactiveTarget":360}],360:[function(require,module,exports){
+},{"./InteractionData":366,"./InteractionEvent":367,"./InteractionManager":368,"./InteractionTrackingData":369,"./interactiveTarget":371}],371:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -61673,7 +63210,7 @@ exports.default = {
   _trackedPointers: undefined
 };
 
-},{}],361:[function(require,module,exports){
+},{}],372:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -61793,7 +63330,7 @@ function parse(resource, textures) {
     resource.bitmapFont = _extras.BitmapText.registerFont(resource.data, textures);
 }
 
-},{"../extras":340,"path":2,"resource-loader":394}],362:[function(require,module,exports){
+},{"../extras":351,"path":2,"resource-loader":406}],373:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -61921,7 +63458,7 @@ AppPrototype.destroy = function destroy(removeView, stageOptions) {
     this._parentDestroy(removeView, stageOptions);
 };
 
-},{"../core/Application":242,"./bitmapFontParser":361,"./loader":363,"./spritesheetParser":364,"./textureParser":365,"resource-loader":394}],363:[function(require,module,exports){
+},{"../core/Application":253,"./bitmapFontParser":372,"./loader":374,"./spritesheetParser":375,"./textureParser":376,"resource-loader":406}],374:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -62092,7 +63629,7 @@ var Resource = _resourceLoader2.default.Resource;
 
 Resource.setExtensionXhrType('fnt', Resource.XHR_RESPONSE_TYPE.DOCUMENT);
 
-},{"./bitmapFontParser":361,"./spritesheetParser":364,"./textureParser":365,"eventemitter3":14,"resource-loader":394,"resource-loader/lib/middlewares/parsing/blob":395}],364:[function(require,module,exports){
+},{"./bitmapFontParser":372,"./spritesheetParser":375,"./textureParser":376,"eventemitter3":400,"resource-loader":406,"resource-loader/lib/middlewares/parsing/blob":407}],375:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -62156,7 +63693,7 @@ function getResourcePath(resource, baseUrl) {
     return _url2.default.resolve(resource.url.replace(baseUrl, ''), resource.data.meta.image);
 }
 
-},{"../core":264,"resource-loader":394,"url":8}],365:[function(require,module,exports){
+},{"../core":275,"resource-loader":406,"url":8}],376:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -62179,7 +63716,7 @@ var _Texture2 = _interopRequireDefault(_Texture);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"../core/textures/Texture":314,"resource-loader":394}],366:[function(require,module,exports){
+},{"../core/textures/Texture":325,"resource-loader":406}],377:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -62610,7 +64147,7 @@ Mesh.DRAW_MODES = {
     TRIANGLES: 1
 };
 
-},{"../core":264,"../core/textures/Texture":314}],367:[function(require,module,exports){
+},{"../core":275,"../core/textures/Texture":325}],378:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -63003,7 +64540,7 @@ var NineSlicePlane = function (_Plane) {
 
 exports.default = NineSlicePlane;
 
-},{"./Plane":368}],368:[function(require,module,exports){
+},{"./Plane":379}],379:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -63144,7 +64681,7 @@ var Plane = function (_Mesh) {
 
 exports.default = Plane;
 
-},{"./Mesh":366}],369:[function(require,module,exports){
+},{"./Mesh":377}],380:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -63380,7 +64917,7 @@ var Rope = function (_Mesh) {
 
 exports.default = Rope;
 
-},{"./Mesh":366}],370:[function(require,module,exports){
+},{"./Mesh":377}],381:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -63666,7 +65203,7 @@ exports.default = MeshSpriteRenderer;
 
 core.CanvasRenderer.registerPlugin('mesh', MeshSpriteRenderer);
 
-},{"../../core":264,"../Mesh":366}],371:[function(require,module,exports){
+},{"../../core":275,"../Mesh":377}],382:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -63727,7 +65264,7 @@ Object.defineProperty(exports, 'Rope', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./Mesh":366,"./NineSlicePlane":367,"./Plane":368,"./Rope":369,"./canvas/CanvasMeshRenderer":370,"./webgl/MeshRenderer":372}],372:[function(require,module,exports){
+},{"./Mesh":377,"./NineSlicePlane":378,"./Plane":379,"./Rope":380,"./canvas/CanvasMeshRenderer":381,"./webgl/MeshRenderer":383}],383:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -63882,7 +65419,7 @@ exports.default = MeshRenderer;
 
 core.WebGLRenderer.registerPlugin('mesh', MeshRenderer);
 
-},{"../../core":264,"../Mesh":366,"path":2,"pixi-gl-core":214}],373:[function(require,module,exports){
+},{"../../core":275,"../Mesh":377,"path":2,"pixi-gl-core":225}],384:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -64272,7 +65809,7 @@ var ParticleContainer = function (_core$Container) {
 
 exports.default = ParticleContainer;
 
-},{"../core":264,"../core/utils":324}],374:[function(require,module,exports){
+},{"../core":275,"../core/utils":335}],385:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -64297,7 +65834,7 @@ Object.defineProperty(exports, 'ParticleRenderer', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./ParticleContainer":373,"./webgl/ParticleRenderer":376}],375:[function(require,module,exports){
+},{"./ParticleContainer":384,"./webgl/ParticleRenderer":387}],386:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -64546,7 +66083,7 @@ var ParticleBuffer = function () {
 
 exports.default = ParticleBuffer;
 
-},{"../../core/utils/createIndicesForQuads":322,"pixi-gl-core":214}],376:[function(require,module,exports){
+},{"../../core/utils/createIndicesForQuads":333,"pixi-gl-core":225}],387:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -65027,7 +66564,7 @@ exports.default = ParticleRenderer;
 
 core.WebGLRenderer.registerPlugin('particle', ParticleRenderer);
 
-},{"../../core":264,"../../core/utils":324,"./ParticleBuffer":375,"./ParticleShader":377}],377:[function(require,module,exports){
+},{"../../core":275,"../../core/utils":335,"./ParticleBuffer":386,"./ParticleShader":388}],388:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -65070,7 +66607,7 @@ var ParticleShader = function (_Shader) {
 
 exports.default = ParticleShader;
 
-},{"../../core/Shader":243}],378:[function(require,module,exports){
+},{"../../core/Shader":254}],389:[function(require,module,exports){
 "use strict";
 
 // References:
@@ -65088,7 +66625,7 @@ if (!Math.sign) {
     };
 }
 
-},{}],379:[function(require,module,exports){
+},{}],390:[function(require,module,exports){
 'use strict';
 
 // References:
@@ -65100,7 +66637,7 @@ if (!Number.isInteger) {
     };
 }
 
-},{}],380:[function(require,module,exports){
+},{}],391:[function(require,module,exports){
 'use strict';
 
 var _objectAssign = require('object-assign');
@@ -65115,7 +66652,7 @@ if (!Object.assign) {
 // https://github.com/sindresorhus/object-assign
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
 
-},{"object-assign":205}],381:[function(require,module,exports){
+},{"object-assign":205}],392:[function(require,module,exports){
 'use strict';
 
 require('./Object.assign');
@@ -65142,7 +66679,7 @@ if (!window.Uint16Array) {
     window.Uint16Array = Array;
 }
 
-},{"./Math.sign":378,"./Number.isInteger":379,"./Object.assign":380,"./requestAnimationFrame":382}],382:[function(require,module,exports){
+},{"./Math.sign":389,"./Number.isInteger":390,"./Object.assign":391,"./requestAnimationFrame":393}],393:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -65219,7 +66756,7 @@ if (!global.cancelAnimationFrame) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],383:[function(require,module,exports){
+},{}],394:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -65707,7 +67244,7 @@ function findTextStyle(item, queue) {
     return false;
 }
 
-},{"../core":264,"./limiters/CountLimiter":386}],384:[function(require,module,exports){
+},{"../core":275,"./limiters/CountLimiter":397}],395:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -65827,7 +67364,7 @@ function uploadBaseTextures(prepare, item) {
 
 core.CanvasRenderer.registerPlugin('prepare', CanvasPrepare);
 
-},{"../../core":264,"../BasePrepare":383}],385:[function(require,module,exports){
+},{"../../core":275,"../BasePrepare":394}],396:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -65879,7 +67416,7 @@ Object.defineProperty(exports, 'TimeLimiter', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./BasePrepare":383,"./canvas/CanvasPrepare":384,"./limiters/CountLimiter":386,"./limiters/TimeLimiter":387,"./webgl/WebGLPrepare":388}],386:[function(require,module,exports){
+},{"./BasePrepare":394,"./canvas/CanvasPrepare":395,"./limiters/CountLimiter":397,"./limiters/TimeLimiter":398,"./webgl/WebGLPrepare":399}],397:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -65937,7 +67474,7 @@ var CountLimiter = function () {
 
 exports.default = CountLimiter;
 
-},{}],387:[function(require,module,exports){
+},{}],398:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -65995,7 +67532,7 @@ var TimeLimiter = function () {
 
 exports.default = TimeLimiter;
 
-},{}],388:[function(require,module,exports){
+},{}],399:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -66117,7 +67654,320 @@ function findGraphics(item, queue) {
 
 core.WebGLRenderer.registerPlugin('prepare', WebGLPrepare);
 
-},{"../../core":264,"../BasePrepare":383}],389:[function(require,module,exports){
+},{"../../core":275,"../BasePrepare":394}],400:[function(require,module,exports){
+'use strict';
+
+var has = Object.prototype.hasOwnProperty
+  , prefix = '~';
+
+/**
+ * Constructor to create a storage for our `EE` objects.
+ * An `Events` instance is a plain object whose properties are event names.
+ *
+ * @constructor
+ * @api private
+ */
+function Events() {}
+
+//
+// We try to not inherit from `Object.prototype`. In some engines creating an
+// instance in this way is faster than calling `Object.create(null)` directly.
+// If `Object.create(null)` is not supported we prefix the event names with a
+// character to make sure that the built-in object properties are not
+// overridden or used as an attack vector.
+//
+if (Object.create) {
+  Events.prototype = Object.create(null);
+
+  //
+  // This hack is needed because the `__proto__` property is still inherited in
+  // some old browsers like Android 4, iPhone 5.1, Opera 11 and Safari 5.
+  //
+  if (!new Events().__proto__) prefix = false;
+}
+
+/**
+ * Representation of a single event listener.
+ *
+ * @param {Function} fn The listener function.
+ * @param {Mixed} context The context to invoke the listener with.
+ * @param {Boolean} [once=false] Specify if the listener is a one-time listener.
+ * @constructor
+ * @api private
+ */
+function EE(fn, context, once) {
+  this.fn = fn;
+  this.context = context;
+  this.once = once || false;
+}
+
+/**
+ * Minimal `EventEmitter` interface that is molded against the Node.js
+ * `EventEmitter` interface.
+ *
+ * @constructor
+ * @api public
+ */
+function EventEmitter() {
+  this._events = new Events();
+  this._eventsCount = 0;
+}
+
+/**
+ * Return an array listing the events for which the emitter has registered
+ * listeners.
+ *
+ * @returns {Array}
+ * @api public
+ */
+EventEmitter.prototype.eventNames = function eventNames() {
+  var names = []
+    , events
+    , name;
+
+  if (this._eventsCount === 0) return names;
+
+  for (name in (events = this._events)) {
+    if (has.call(events, name)) names.push(prefix ? name.slice(1) : name);
+  }
+
+  if (Object.getOwnPropertySymbols) {
+    return names.concat(Object.getOwnPropertySymbols(events));
+  }
+
+  return names;
+};
+
+/**
+ * Return the listeners registered for a given event.
+ *
+ * @param {String|Symbol} event The event name.
+ * @param {Boolean} exists Only check if there are listeners.
+ * @returns {Array|Boolean}
+ * @api public
+ */
+EventEmitter.prototype.listeners = function listeners(event, exists) {
+  var evt = prefix ? prefix + event : event
+    , available = this._events[evt];
+
+  if (exists) return !!available;
+  if (!available) return [];
+  if (available.fn) return [available.fn];
+
+  for (var i = 0, l = available.length, ee = new Array(l); i < l; i++) {
+    ee[i] = available[i].fn;
+  }
+
+  return ee;
+};
+
+/**
+ * Calls each of the listeners registered for a given event.
+ *
+ * @param {String|Symbol} event The event name.
+ * @returns {Boolean} `true` if the event had listeners, else `false`.
+ * @api public
+ */
+EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
+  var evt = prefix ? prefix + event : event;
+
+  if (!this._events[evt]) return false;
+
+  var listeners = this._events[evt]
+    , len = arguments.length
+    , args
+    , i;
+
+  if (listeners.fn) {
+    if (listeners.once) this.removeListener(event, listeners.fn, undefined, true);
+
+    switch (len) {
+      case 1: return listeners.fn.call(listeners.context), true;
+      case 2: return listeners.fn.call(listeners.context, a1), true;
+      case 3: return listeners.fn.call(listeners.context, a1, a2), true;
+      case 4: return listeners.fn.call(listeners.context, a1, a2, a3), true;
+      case 5: return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
+      case 6: return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
+    }
+
+    for (i = 1, args = new Array(len -1); i < len; i++) {
+      args[i - 1] = arguments[i];
+    }
+
+    listeners.fn.apply(listeners.context, args);
+  } else {
+    var length = listeners.length
+      , j;
+
+    for (i = 0; i < length; i++) {
+      if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);
+
+      switch (len) {
+        case 1: listeners[i].fn.call(listeners[i].context); break;
+        case 2: listeners[i].fn.call(listeners[i].context, a1); break;
+        case 3: listeners[i].fn.call(listeners[i].context, a1, a2); break;
+        case 4: listeners[i].fn.call(listeners[i].context, a1, a2, a3); break;
+        default:
+          if (!args) for (j = 1, args = new Array(len -1); j < len; j++) {
+            args[j - 1] = arguments[j];
+          }
+
+          listeners[i].fn.apply(listeners[i].context, args);
+      }
+    }
+  }
+
+  return true;
+};
+
+/**
+ * Add a listener for a given event.
+ *
+ * @param {String|Symbol} event The event name.
+ * @param {Function} fn The listener function.
+ * @param {Mixed} [context=this] The context to invoke the listener with.
+ * @returns {EventEmitter} `this`.
+ * @api public
+ */
+EventEmitter.prototype.on = function on(event, fn, context) {
+  var listener = new EE(fn, context || this)
+    , evt = prefix ? prefix + event : event;
+
+  if (!this._events[evt]) this._events[evt] = listener, this._eventsCount++;
+  else if (!this._events[evt].fn) this._events[evt].push(listener);
+  else this._events[evt] = [this._events[evt], listener];
+
+  return this;
+};
+
+/**
+ * Add a one-time listener for a given event.
+ *
+ * @param {String|Symbol} event The event name.
+ * @param {Function} fn The listener function.
+ * @param {Mixed} [context=this] The context to invoke the listener with.
+ * @returns {EventEmitter} `this`.
+ * @api public
+ */
+EventEmitter.prototype.once = function once(event, fn, context) {
+  var listener = new EE(fn, context || this, true)
+    , evt = prefix ? prefix + event : event;
+
+  if (!this._events[evt]) this._events[evt] = listener, this._eventsCount++;
+  else if (!this._events[evt].fn) this._events[evt].push(listener);
+  else this._events[evt] = [this._events[evt], listener];
+
+  return this;
+};
+
+/**
+ * Remove the listeners of a given event.
+ *
+ * @param {String|Symbol} event The event name.
+ * @param {Function} fn Only remove the listeners that match this function.
+ * @param {Mixed} context Only remove the listeners that have this context.
+ * @param {Boolean} once Only remove one-time listeners.
+ * @returns {EventEmitter} `this`.
+ * @api public
+ */
+EventEmitter.prototype.removeListener = function removeListener(event, fn, context, once) {
+  var evt = prefix ? prefix + event : event;
+
+  if (!this._events[evt]) return this;
+  if (!fn) {
+    if (--this._eventsCount === 0) this._events = new Events();
+    else delete this._events[evt];
+    return this;
+  }
+
+  var listeners = this._events[evt];
+
+  if (listeners.fn) {
+    if (
+         listeners.fn === fn
+      && (!once || listeners.once)
+      && (!context || listeners.context === context)
+    ) {
+      if (--this._eventsCount === 0) this._events = new Events();
+      else delete this._events[evt];
+    }
+  } else {
+    for (var i = 0, events = [], length = listeners.length; i < length; i++) {
+      if (
+           listeners[i].fn !== fn
+        || (once && !listeners[i].once)
+        || (context && listeners[i].context !== context)
+      ) {
+        events.push(listeners[i]);
+      }
+    }
+
+    //
+    // Reset the array, or remove it completely if we have no more listeners.
+    //
+    if (events.length) this._events[evt] = events.length === 1 ? events[0] : events;
+    else if (--this._eventsCount === 0) this._events = new Events();
+    else delete this._events[evt];
+  }
+
+  return this;
+};
+
+/**
+ * Remove all listeners, or those of the specified event.
+ *
+ * @param {String|Symbol} [event] The event name.
+ * @returns {EventEmitter} `this`.
+ * @api public
+ */
+EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
+  var evt;
+
+  if (event) {
+    evt = prefix ? prefix + event : event;
+    if (this._events[evt]) {
+      if (--this._eventsCount === 0) this._events = new Events();
+      else delete this._events[evt];
+    }
+  } else {
+    this._events = new Events();
+    this._eventsCount = 0;
+  }
+
+  return this;
+};
+
+//
+// Alias methods names because people roll like that.
+//
+EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
+EventEmitter.prototype.addListener = EventEmitter.prototype.on;
+
+//
+// This function doesn't apply anymore.
+//
+EventEmitter.prototype.setMaxListeners = function setMaxListeners() {
+  return this;
+};
+
+//
+// Expose the prefix.
+//
+EventEmitter.prefixed = prefix;
+
+//
+// Allow `EventEmitter` to be imported as module namespace.
+//
+EventEmitter.EventEmitter = EventEmitter;
+
+//
+// Expose the module.
+//
+if ('undefined' !== typeof module) {
+  module.exports = EventEmitter;
+}
+
+},{}],401:[function(require,module,exports){
 'use strict';
 
 /**
@@ -66149,7 +67999,7 @@ function removeItems(arr, startIdx, removeCount)
 
 module.exports = removeItems;
 
-},{}],390:[function(require,module,exports){
+},{}],402:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -66866,7 +68716,7 @@ Loader.use = function LoaderUseStatic(fn) {
     return Loader;
 };
 
-},{"./Resource":391,"./async":392,"mini-signals":204,"parse-uri":206}],391:[function(require,module,exports){
+},{"./Resource":403,"./async":404,"mini-signals":204,"parse-uri":206}],403:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -68109,7 +69959,7 @@ function reqType(xhr) {
     return xhr.toString().replace('object ', '');
 }
 
-},{"mini-signals":204,"parse-uri":206}],392:[function(require,module,exports){
+},{"mini-signals":204,"parse-uri":206}],404:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -68318,7 +70168,7 @@ function queue(worker, concurrency) {
     return q;
 }
 
-},{}],393:[function(require,module,exports){
+},{}],405:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -68386,7 +70236,7 @@ function encodeBinary(input) {
     return output;
 }
 
-},{}],394:[function(require,module,exports){
+},{}],406:[function(require,module,exports){
 'use strict';
 
 // import Loader from './Loader';
@@ -68410,7 +70260,7 @@ module.exports = Loader;
 // export default Loader;
 module.exports.default = Loader;
 
-},{"./Loader":390,"./Resource":391,"./async":392,"./b64":393}],395:[function(require,module,exports){
+},{"./Loader":402,"./Resource":403,"./async":404,"./b64":405}],407:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -68489,7 +70339,7 @@ function blobMiddlewareFactory() {
     };
 }
 
-},{"../../Resource":391,"../../b64":393}],396:[function(require,module,exports){
+},{"../../Resource":403,"../../b64":405}],408:[function(require,module,exports){
 // A library of seedable RNGs implemented in Javascript.
 //
 // Usage:
@@ -68551,7 +70401,7 @@ sr.tychei = tychei;
 
 module.exports = sr;
 
-},{"./lib/alea":397,"./lib/tychei":398,"./lib/xor128":399,"./lib/xor4096":400,"./lib/xorshift7":401,"./lib/xorwow":402,"./seedrandom":403}],397:[function(require,module,exports){
+},{"./lib/alea":409,"./lib/tychei":410,"./lib/xor128":411,"./lib/xor4096":412,"./lib/xorshift7":413,"./lib/xorwow":414,"./seedrandom":415}],409:[function(require,module,exports){
 // A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010
 // http://baagoe.com/en/RandomMusings/javascript/
 // https://github.com/nquinlan/better-random-numbers-for-javascript-mirror
@@ -68667,7 +70517,7 @@ if (module && module.exports) {
 
 
 
-},{}],398:[function(require,module,exports){
+},{}],410:[function(require,module,exports){
 // A Javascript implementaion of the "Tyche-i" prng algorithm by
 // Samuel Neves and Filipe Araujo.
 // See https://eden.dei.uc.pt/~sneves/pubs/2011-snfa2.pdf
@@ -68772,7 +70622,7 @@ if (module && module.exports) {
 
 
 
-},{}],399:[function(require,module,exports){
+},{}],411:[function(require,module,exports){
 // A Javascript implementaion of the "xor128" prng algorithm by
 // George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
 
@@ -68855,7 +70705,7 @@ if (module && module.exports) {
 
 
 
-},{}],400:[function(require,module,exports){
+},{}],412:[function(require,module,exports){
 // A Javascript implementaion of Richard Brent's Xorgens xor4096 algorithm.
 //
 // This fast non-cryptographic random number generator is designed for
@@ -69003,7 +70853,7 @@ if (module && module.exports) {
   (typeof define) == 'function' && define   // present with an AMD loader
 );
 
-},{}],401:[function(require,module,exports){
+},{}],413:[function(require,module,exports){
 // A Javascript implementaion of the "xorshift7" algorithm by
 // François Panneton and Pierre L'ecuyer:
 // "On the Xorgshift Random Number Generators"
@@ -69102,7 +70952,7 @@ if (module && module.exports) {
 );
 
 
-},{}],402:[function(require,module,exports){
+},{}],414:[function(require,module,exports){
 // A Javascript implementaion of the "xorwow" prng algorithm by
 // George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
 
@@ -69190,7 +71040,7 @@ if (module && module.exports) {
 
 
 
-},{}],403:[function(require,module,exports){
+},{}],415:[function(require,module,exports){
 /*
 Copyright 2014 David Bau.
 
@@ -69442,7 +71292,7 @@ if ((typeof module) == 'object' && module.exports) {
   Math    // math: package containing random, pow, and seedrandom
 );
 
-},{"crypto":1}],404:[function(require,module,exports){
+},{"crypto":1}],416:[function(require,module,exports){
 // TinyColor v1.4.1
 // https://github.com/bgrins/TinyColor
 // Brian Grinstead, MIT License
@@ -70639,7 +72489,610 @@ else {
 
 })(Math);
 
-},{}],405:[function(require,module,exports){
+},{}],417:[function(require,module,exports){
+// angle.js <https://github.com/davidfig/anglejs>
+// Released under MIT license <https://github.com/davidfig/angle/blob/master/LICENSE>
+// Author: David Figatner
+// Copyright (c) 2016-17 YOPEY YOPEY LLC
+
+var _toDegreeConversion = 180 / Math.PI
+var _toRadianConversion = Math.PI / 180
+
+/** @constant {number} */
+var UP = Math.PI / 2
+var DOWN = 3 * Math.PI / 2
+var LEFT = Math.PI
+var RIGHT = 0
+
+var NORTH = UP
+var SOUTH = DOWN
+var WEST = LEFT
+var EAST = RIGHT
+
+var PI_2 = Math.PI * 2
+var PI_QUARTER = Math.PI / 4
+var PI_HALF = Math.PI / 2
+
+/**
+ * converts from radians to degrees (all other functions expect radians)
+ * @param {number} radians
+ * @return {number} degrees
+ */
+function toDegrees(radians)
+{
+    return radians * _toDegreeConversion
+}
+
+/**
+ * converts from degrees to radians (all other functions expect radians)
+ * @param {number} degrees
+ * @return {number} radians
+ */
+function toRadians(degrees)
+{
+    return degrees * _toRadianConversion
+}
+
+/**
+ * returns whether the target angle is between angle1 and angle2 (in radians)
+ * (based on: http://stackoverflow.com/questions/11406189/determine-if-angle-lies-between-2-other-angles)
+ * @param {number} target angle
+ * @param {number} angle1
+ * @param {number} angle2
+ * @return {boolean}
+ */
+function isAngleBetween(target, angle1, angle2)
+{
+    var rAngle = ((angle2 - angle1) % PI_2 + PI_2) % PI_2
+    if (rAngle >= Math.PI)
+    {
+        var swap = angle1
+        angle1 = angle2
+        angle2 = swap
+    }
+
+    if (angle1 <= angle2)
+    {
+        return target >= angle1 && target <= angle2
+    }
+    else
+    {
+        return target >= angle1 || target <= angle2
+    }
+}
+
+/**
+ * returns +1 or -1 based on whether the difference between two angles is positive or negative (in radians)
+ * @param {number} target angle
+ * @param {number} source angle
+ * @return {number} 1 or -1
+ */
+function differenceAnglesSign(target, source)
+{
+    function mod(a, n)
+    {
+        return (a % n + n) % n
+    }
+
+    var a = target - source
+    return mod((a + Math.PI), PI_2) - Math.PI > 0 ? 1 : -1
+}
+
+/**
+ * returns the normalized difference between two angles (in radians)
+ * @param {number} a - first angle
+ * @param {number} b - second angle
+ * @return {number} normalized difference between a and b
+ */
+function differenceAngles(a, b)
+{
+    var c = Math.abs(a - b) % PI_2
+    return c > Math.PI ? (PI_2 - c) : c
+}
+
+/**
+ * returns a target angle that is the shortest way to rotate an object between start and to--may choose a negative angle
+ * @param {number} start
+ * @param {number} to
+ * @return {number} shortest target angle
+ */
+function shortestAngle(start, to)
+{
+    var difference = differenceAngles(to, start)
+    var sign = differenceAnglesSign(to, start)
+    var delta = difference * sign
+    return delta + start
+}
+
+/**
+ * returns the normalized angle (0 - PI x 2)
+ * @param {number} radians
+ * @return {number} normalized angle in radians
+ */
+function normalize(radians)
+{
+    return radians - PI_2 * Math.floor(radians / PI_2)
+}
+
+/**
+ * returns angle between two points (in radians)
+ * @param {Point} [point1] {x: x, y: y}
+ * @param {Point} [point2] {x: x, y: y}
+ * @param {number} [x1]
+ * @param {number} [y1]
+ * @param {number} [x2]
+ * @param {number} [y2]
+ * @return {number} angle
+ */
+function angleTwoPoints(/* (point1, point2) OR (x1, y1, x2, y2) */)
+{
+    if (arguments.length === 4)
+    {
+        return Math.atan2(arguments[3] - arguments[1], arguments[2] - arguments[0])
+    }
+    else
+    {
+        return Math.atan2(arguments[1].y - arguments[0].y, arguments[1].x - arguments[0].x)
+    }
+}
+
+/**
+ * returns distance between two points
+ * @param {Point} [point1] {x: x, y: y}
+ * @param {Point} [point2] {x: x, y: y}
+ * @param {number} [x1]
+ * @param {number} [y1]
+ * @param {number} [x2]
+ * @param {number} [y2]
+ * @return {number} distance
+ */
+function distanceTwoPoints(/* (point1, point2) OR (x1, y1, x2, y2) */)
+{
+    if (arguments.length === 2)
+    {
+        return Math.sqrt(Math.pow(arguments[1].x - arguments[0].x, 2) + Math.pow(arguments[1].y - arguments[0].y, 2))
+    }
+    else
+    {
+        return Math.sqrt(Math.pow(arguments[2] - arguments[0], 2) + Math.pow(arguments[3] - arguments[1], 2))
+    }
+}
+
+/**
+ * returns the squared distance between two points
+ * @param {Point} [point1] {x: x, y: y}
+ * @param {Point} [point2] {x: x, y: y}
+ * @param {number} [x1]
+ * @param {number} [y1]
+ * @param {number} [x2]
+ * @param {number} [y2]
+ * @return {number} squared distance
+ */
+function distanceTwoPointsSquared(/* (point1, point2) OR (x1, y1, x2, y2) */)
+{
+    if (arguments.length === 2)
+    {
+        return Math.pow(arguments[1].x - arguments[0].x, 2) + Math.pow(arguments[1].y - arguments[0].y, 2)
+    }
+    else
+    {
+        return Math.pow(arguments[2] - arguments[0], 2) + Math.pow(arguments[3] - arguments[1], 2)
+    }
+}
+
+/**
+ * returns the closest cardinal (N, S, E, W) to the given angle (in radians)
+ * @param {number} angle
+ * @return {number} closest cardinal in radians
+ */
+function closestAngle(angle)
+{
+    var left = differenceAngles(angle, LEFT)
+    var right = differenceAngles(angle, RIGHT)
+    var up = differenceAngles(angle, UP)
+    var down = differenceAngles(angle, DOWN)
+    if (left <= right && left <= up && left <= down)
+    {
+        return LEFT
+    }
+    else if (right <= up && right <= down)
+    {
+        return RIGHT
+    }
+    else if (up <= down)
+    {
+        return UP
+    }
+    else
+    {
+        return DOWN
+    }
+}
+
+/**
+ * checks whether angles a1 and a2 are equal (after normalizing)
+ * @param {number} a1
+ * @param {number} a2
+ * @param {number} [wiggle] return true if the difference between the angles is <= wiggle
+ * @return {boolean} a1 === a2
+ */
+function equals(a1, a2, wiggle)
+{
+    if (wiggle)
+    {
+        return differenceAngles(a1, a2) < wiggle
+    }
+    else
+    {
+        return normalize(a1) === normalize(a2)
+    }
+}
+
+/**
+ * return a text representation of the cardinal direction
+ * @param {number} angle
+ * @returns {string} UP, DOWN, LEFT, RIGHT, or NOT CARDINAL
+ */
+function explain(angle)
+{
+    switch (angle)
+    {
+        case UP: return 'UP'
+        case DOWN: return 'DOWN'
+        case LEFT: return 'LEFT'
+        case RIGHT: return 'RIGHT'
+        default: return 'NOT CARDINAL'
+    }
+}
+
+module.exports = {
+    UP: UP,
+    DOWN: DOWN,
+    LEFT: LEFT,
+    RIGHT: RIGHT,
+    NORTH: NORTH,
+    SOUTH: SOUTH,
+    WEST: WEST,
+    EAST: EAST,
+    PI_2: PI_2,
+    PI_QUARTER: PI_QUARTER,
+    PI_HALF: PI_HALF,
+
+    toDegrees: toDegrees,
+    toRadians: toRadians,
+    isAngleBetween: isAngleBetween,
+    differenceAnglesSign: differenceAnglesSign,
+    differenceAngles: differenceAngles,
+    shortestAngle: shortestAngle,
+    normalize: normalize,
+    angleTwoPoints: angleTwoPoints,
+    distanceTwoPoints: distanceTwoPoints,
+    distanceTwoPointsSquared: distanceTwoPointsSquared,
+    closestAngle: closestAngle,
+    equals: equals,
+    explain: explain
+}
+},{}],418:[function(require,module,exports){
+// yy-color
+// by David Figatner
+// MIT License
+// (c) YOPEY YOPEY LLC 2017
+// https://github.com/davidfig/color
+
+var Random = require('yy-random')
+
+/**
+ * converts a #FFFFFF to 0x123456
+ * @param  {string} color
+ * @return {string}
+ */
+function poundToHex(color)
+{
+    return '0x' + parseInt(color.substr(1)).toString(16)
+}
+
+/**
+ * converts a 0x123456 to #FFFFFF
+ * @param  {string} color
+ * @return {string}
+ */
+function hexToPound(color)
+{
+    return '#' + color.substr(2)
+}
+
+/**
+ * converts a number to #FFFFFF
+ * @param  {number} color
+ * @return {string}
+ */
+function valueToPound(color)
+{
+    return '#' + color.toString(16)
+}
+
+/**
+ * based on tinycolor
+ * https://github.com/bgrins/TinyColor
+ * BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+ * @param {string} color
+ * @returns {object}
+ */
+function hexToHsl (color)
+{
+    var rgb = this.hexToRgb(color),
+        r = rgb.r,
+        g = rgb.g,
+        b = rgb.b
+    var max = Math.max(r, g, b),
+        min = Math.min(r, g, b)
+    var h, s, l = (max + min) / 2
+
+    if (max === min)
+    {
+        h = s = 0 // achromatic
+    }
+    else
+    {
+        var d = max - min
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+        switch (max)
+        {
+            case r: h = (g - b) / d + (g < b ? 6 : 0); break
+            case g: h = (b - r) / d + 2; break
+            case b: h = (r - g) / d + 4; break
+        }
+
+        h /= 6
+    }
+
+    return { h: h, s: s, l: l }
+}
+
+/** based on tinycolor
+* https://github.com/bgrins/TinyColor
+* BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+* @param {object|number} color {h, s, b} or h
+* @param {number} [s]
+* @param {number} [l]
+* @returns number
+*/
+function hslToHex(color)
+{
+    var r, g, b, h, s, l
+    if (arguments.length === 1)
+    {
+        h = color.h,
+        s = color.s,
+        l = color.l
+    }
+    else
+    {
+        h = arguments[0]
+        s = arguments[1]
+        l = arguments[2]
+    }
+
+    function hue2rgb(p, q, t) {
+        if (t < 0) t += 1
+        if (t > 1) t -= 1
+        if (t < 1/6) return p + (q - p) * 6 * t
+        if (t < 1/2) return q
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6
+        return p
+    }
+
+    if (s === 0)
+    {
+        r = g = b = l // achromatic
+    }
+    else
+    {
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s
+        var p = 2 * l - q
+        r = hue2rgb(p, q, h + 1/3)
+        g = hue2rgb(p, q, h)
+        b = hue2rgb(p, q, h - 1/3)
+    }
+
+    return this.rgbToHex(r * 255, g * 255, b * 255)
+}
+
+/* darkens a color by the percentage
+* @param {object} color in hex (0xabcdef)
+* @param {number} amount
+* @return {number}
+*/
+function darken(color, amount)
+{
+    return this.blend(amount, color, 0)
+}
+
+/** based on tinycolor
+* https://github.com/bgrins/TinyColor
+* BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+* @param {object} color
+* @param {number} amount
+*/
+function saturate(color, amount)
+{
+    amount = (amount === 0) ? 0 : (amount || 10)
+    var hsl = this.hexToHsl(color)
+    hsl.s += amount / 100
+    hsl.s = Math.min(1, Math.max(0, hsl.s))
+    return this.hslToHex(hsl)
+}
+
+/** based on tinycolor
+* https://github.com/bgrins/TinyColor
+* BSD license: https://github.com/bgrins/TinyColor/blob/master/LICENSE
+* @param {object} color
+* @param {number} amount
+*/
+function desaturate(color, amount)
+{
+    amount = (amount === 0) ? 0 : (amount || 10)
+    var hsl = this.hexToHsl(color)
+    hsl.s -= amount / 100
+    hsl.s = Math.min(1, Math.max(0, hsl.s))
+    return this.hslToHex(hsl)
+}
+
+/**
+ * blends two colors together
+ * @param  {number} percent [0.0 - 1.0]
+ * @param  {string} color1 first color in 0x123456 format
+ * @param  {string} color2 second color in 0x123456 format
+ * @return {number}
+ */
+function blend(percent, color1, color2)
+{
+    if (percent === 0)
+    {
+        return color1
+    }
+    if (percent === 1)
+    {
+        return color2
+    }
+    var r1 = color1 >> 16
+    var g1 = color1 >> 8 & 0x0000ff
+    var b1 = color1 & 0x0000ff
+    var r2 = color2 >> 16
+    var g2 = color2 >> 8 & 0x0000ff
+    var b2 = color2 & 0x0000ff
+    var percent1 = 1 - percent
+    var r = percent1 * r1 + percent * r2
+    var g = percent1 * g1 + percent * g2
+    var b = percent1 * b1 + percent * b2
+    return r << 16 | g << 8 | b
+}
+
+/**
+ * returns a hex color into an rgb value
+ * @param  {number} hex
+ * @return {string}
+ */
+function hexToRgb(hex)
+{
+    if (hex === 0)
+    {
+        hex = '0x000000'
+    }
+    else if (typeof hex !== 'string')
+    {
+        var s = '000000' + hex.toString(16)
+        hex = '0x' + s.substr(s.length - 6)
+    }
+    var result = /^0x?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null
+}
+
+/**
+ * rgb color to hex in the form of 0x123456
+ * @param  {(number|string)} r first number or 'rgb(...)' string
+ * @param  {(number|null)} g
+ * @param  {(number|null)} b
+ * @return {string}
+ */
+function rgbToHex(r, g, b)
+{
+    if (arguments.length === 1) {
+        if (Array.isArray(arguments[0])) {
+            var number = arguments[0]
+            r = number[0]
+            g = number[1]
+            b = number[2]
+        } else {
+            var parse = r.replace(/( *rgb *\( *)|( )|(\) *;?)/,'')
+            var numbers = parse.split(',')
+            r = numbers[0]
+            g = numbers[1]
+            b = numbers[2]
+        }
+    }
+    return '0x' + ((1 << 24) + (parseInt(r) << 16) + (parseInt(g) << 8) + parseInt(b)).toString(16).slice(1)
+}
+
+/**
+ * returns a random color with balanced r, g, b values (i.e., r, g, b either have the same value or are 0)
+ * @param {number} min value for random number
+ * @param {number} max value for random number
+ * @return {number} color
+ */
+function random(min, max)
+{
+    function random()
+    {
+        return Random.range(min, max)
+    }
+
+    var colors = [{r:1, g:1, b:1}, {r:1, g:1, b:0}, {r:1,g:0,b:1}, {r:0,g:1,b:1}, {r:1,g:0,b:0}, {r:0,g:1,b:0}, {r:0,g:0,b:1}]
+    var color = Random.pick(colors)
+    min = min || 0
+    max = max || 255
+    return this.rgbToHex(color.r ? random() : 0, color.g ? random() : 0, color.b ? random() : 0)
+}
+
+// h: 0-360, s: 0-1, l: 0-1
+/**
+ * returns a random color based on hsl
+ * @param {number} hMin [0, 360]
+ * @param {number} hMax [hMin, 360]
+ * @param {number} sMin [0, 1]
+ * @param {number} sMax [sMin, 1]
+ * @param {number} lMin [0, 1]
+ * @param {number} lMax [lMin, 1]
+ */
+function randomHSL(hMin, hMax, sMin, sMax, lMin, lMax)
+{
+    var color = {
+        h: Random.range(hMin, hMax),
+        s: Random.range(sMin, sMax, true),
+        l: Random.range(lMin, lMax, true)
+    }
+    return this.hslToHex(color)
+}
+
+/**
+ * returns random colors based on HSL with different hues
+ * based on http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+ * @returns {number[]} colors in hex format (0x123456)
+ */
+function randomGoldenRatioHSL(count, saturation, luminosity)
+{
+    var goldenRatio = 0.618033988749895
+    var h = Random.get(1, true)
+    var colors = []
+    for (var i = 0; i < count; i++)
+    {
+        colors.push(this.hslToHex(h, saturation, luminosity))
+        h = (h + goldenRatio) % 1
+    }
+    return colors
+}
+
+module.exports = {
+    poundToHex: poundToHex,
+    hexToPound: hexToPound,
+    valueToPound: valueToPound,
+    hexToHsl: hexToHsl,
+    hslToHex: hslToHex,
+    hexToRgb: hexToRgb,
+    rgbToHex: rgbToHex,
+    darken: darken,
+    saturate: saturate,
+    desaturate: desaturate,
+    blend: blend,
+    random: random,
+    randomHSL: randomHSL,
+    randomGoldenRatioHSL: randomGoldenRatioHSL
+}
+},{"yy-random":421}],419:[function(require,module,exports){
 // yy-counter
 // In-browser counter to watch changeable values like counters or FPS
 // David Figatner
@@ -70757,7 +73210,7 @@ module.exports = class Counter
         this.div.innerHTML = s
     }
 }
-},{}],406:[function(require,module,exports){
+},{}],420:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -70984,7 +73437,7 @@ module.exports = function () {
     return FPS;
 }();
 
-},{"tinycolor2":404,"yy-counter":405}],407:[function(require,module,exports){
+},{"tinycolor2":416,"yy-counter":419}],421:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -71430,20 +73883,25 @@ var Random = function () {
 
 module.exports = new Random();
 
-},{"seedrandom":396}],408:[function(require,module,exports){
+},{"seedrandom":408}],422:[function(require,module,exports){
 module.exports={
     "boxWidth": 100,
     "boxHeight": 100,
     "scrollbarSize": 10,
     "scrollbarBackground": 14540253,
+    "scrollbarBackgroundAlpha": 1,
     "scrollbarForeground": 8947848,
+    "scrollbarForegroundAlpha": 1,
     "dragScroll": true,
     "stopPropagation": true,
     "scrollbarOffsetHorizontal": 0,
     "scrollbarOffsetVertical": 0,
-    "underflow": "top-left"
+    "underflow": "top-left",
+    "fadeScrollbar": false,
+    "fadeWait": 3000,
+    "fadeEase": "easeInOutSine"
 }
-},{}],409:[function(require,module,exports){
+},{}],423:[function(require,module,exports){
 module.exports = function (options, defaults)
 {
     options = options || {}
@@ -71456,11 +73914,14 @@ module.exports = function (options, defaults)
     }
     return options
 }
-},{}],410:[function(require,module,exports){
+},{}],424:[function(require,module,exports){
 const Viewport = require('pixi-viewport')
+const Ease = require('pixi-ease')
 
 const defaults = require('./defaults')
 const DEFAULTS = require('./defaults.json')
+
+const FADE_SCROLLBAR_TIME = 1000
 
 /**
  * pixi.js scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
@@ -71481,13 +73942,19 @@ class Scrollbox extends PIXI.Container
      * @param {number} [options.scrollbarOffsetVertical=0] offset of vertical scrollbar (in pixels)
      * @param {boolean} [options.stopPropagation=true] call stopPropagation on any events that impact scrollbox
      * @param {number} [options.scrollbarBackground=0xdddddd] background color of scrollbar
+     * @param {number} [options.scrollbarBackgroundAlpha=1] alpha of background of scrollbar
      * @param {number} [options.scrollbarForeground=0x888888] foreground color of scrollbar
+     * @param {number} [options.scrollbarForegroundAlpha=1] alpha of foreground of scrollbar
      * @param {string} [options.underflow=top-left] what to do when content underflows the scrollbox size: none: do nothing; (left/right/center AND top/bottom/center); OR center (e.g., 'top-left', 'center', 'none', 'bottomright')
+     * @param {(boolean|number)} [options.fade] fade the scrollbar when not in use (true = 1000ms)
+     * @param {number} [options.fadeWait=3000] time to wait before fading the scrollbar if options.fade is set
+     * @param {(string|function)} [options.fadeEase=easeInOutSine] easing function to use for fading
      */
     constructor(options)
     {
         super()
         this.options = defaults(options, DEFAULTS)
+        this.ease = new Ease.list()
 
         /**
          * content in placed in here
@@ -71747,18 +74214,28 @@ class Scrollbox extends PIXI.Container
 
     /**
      * width of content area
+     * if not set then it uses content.width to calculate width
      */
     get scrollWidth()
     {
-        return this.content.width
+        return this._scrollWidth || this.content.width
+    }
+    set scrollWidth(value)
+    {
+        this._scrollWidth = value
     }
 
     /**
      * height of content area
+     * if not set then it uses content.height to calculate height
      */
     get scrollHeight()
     {
-        return this.content.height
+        return this._scrollHeight || this.content.height
+    }
+    set scrollHeight(value)
+    {
+        this._scrollHeight = value
     }
 
     /**
@@ -71767,16 +74244,16 @@ class Scrollbox extends PIXI.Container
      */
     _drawScrollbars()
     {
-        this._isScrollbarHorizontal = this.overflowX === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowX) !== -1 ? false : this.content.width > this.options.boxWidth
-        this._isScrollbarVertical = this.overflowY === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowY) !== -1 ? false : this.content.height > this.options.boxHeight
+        this._isScrollbarHorizontal = this.overflowX === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowX) !== -1 ? false : this.scrollWidth > this.options.boxWidth
+        this._isScrollbarVertical = this.overflowY === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowY) !== -1 ? false : this.scrollHeight > this.options.boxHeight
         this.scrollbar.clear()
         let options = {}
         options.left = 0
-        options.right = this.content.width + (this._isScrollbarVertical ? this.options.scrollbarSize : 0)
+        options.right = this.scrollWidth + (this._isScrollbarVertical ? this.options.scrollbarSize : 0)
         options.top = 0
-        options.bottom = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
-        const width = this.content.width + (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
-        const height = this.content.height + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
+        options.bottom = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
+        const width = this.scrollWidth + (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
+        const height = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
         this.scrollbarTop = (this.content.top / height) * this.boxHeight
         this.scrollbarTop = this.scrollbarTop < 0 ? 0 : this.scrollbarTop
         this.scrollbarHeight = (this.boxHeight / height) * this.boxHeight
@@ -71788,32 +74265,33 @@ class Scrollbox extends PIXI.Container
         if (this.isScrollbarVertical)
         {
             this.scrollbar
-                .beginFill(this.options.scrollbarBackground)
+                .beginFill(this.options.scrollbarBackground, this.options.scrollbarBackgroundAlpha)
                 .drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, 0, this.scrollbarSize, this.boxHeight)
                 .endFill()
         }
         if (this.isScrollbarHorizontal)
         {
             this.scrollbar
-                .beginFill(this.options.scrollbarBackground)
+                .beginFill(this.options.scrollbarBackground, this.options.scrollbarBackgroundAlpha)
                 .drawRect(0, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.boxWidth, this.scrollbarSize)
                 .endFill()
         }
         if (this.isScrollbarVertical)
         {
             this.scrollbar
-                .beginFill(this.options.scrollbarForeground)
+                .beginFill(this.options.scrollbarForeground, this.options.scrollbarForegroundAlpha)
                 .drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, this.scrollbarTop, this.scrollbarSize, this.scrollbarHeight)
                 .endFill()
         }
         if (this.isScrollbarHorizontal)
         {
             this.scrollbar
-                .beginFill(this.options.scrollbarForeground)
+                .beginFill(this.options.scrollbarForeground, this.options.scrollbarForegroundAlpha)
                 .drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.scrollbarWidth, this.scrollbarSize)
                 .endFill()
         }
         this.content.forceHitArea = new PIXI.Rectangle(0, 0, options.right, options.bottom)
+        this.activateFade()
     }
 
     /**
@@ -71850,6 +74328,24 @@ class Scrollbox extends PIXI.Container
                         .clamp({ direction, underflow: this.options.underflow })
                 }
             }
+        }
+    }
+
+    /**
+     * show the scrollbar and restart the timer for fade if options.fade is set
+     */
+    activateFade()
+    {
+        if (this.options.fade)
+        {
+            if (this.fade)
+            {
+                this.ease.remove(this.fade)
+            }
+            this.scrollbar.alpha = 1
+            const time = this.options.fade === true ? FADE_SCROLLBAR_TIME : this.options.fade
+            this.fade = this.ease.to(this.scrollbar, { alpha: 0 }, time, { wait: this.options.fadeWait, ease: this.options.fadeEase })
+            this.fade.on('each', () => this.content.dirty = true)
         }
     }
 
@@ -71963,12 +74459,22 @@ class Scrollbox extends PIXI.Container
      * @param {object} options
      * @param {number} [options.boxWidth] width of scrollbox including scrollbar (in pixels)
      * @param {number} [options.boxHeight] height of scrollbox including scrollbar (in pixels)
+     * @param {number} [options.scrollWidth] set the width of the inside of the scrollbox (leave null to use content.width)
+     * @param {number} [options.scrollHeight] set the height of the inside of the scrollbox (leave null to use content.height)
      */
     resize(options)
     {
         this.options.boxWidth = typeof options.boxWidth !== 'undefined' ? options.boxWidth : this.options.boxWidth
         this.options.boxHeight = typeof options.boxHeight !== 'undefined' ? options.boxHeight : this.options.boxHeight
-        this.content.resize(this.options.boxWidth, this.options.boxHeight, this.content.width, this.content.height)
+        if (options.scrollWidth)
+        {
+            this.scrollWidth = options.scrollWidth
+        }
+        if (options.scrollHeight)
+        {
+            this.scrollHeight = options.scrollHeight
+        }
+        this.content.resize(this.options.boxWidth, this.options.boxHeight, this.scrollWidth, this.scrollHeight)
         this.update()
     }
 
@@ -71989,4 +74495,4 @@ class Scrollbox extends PIXI.Container
 PIXI.extras.Scrollbox = Scrollbox
 
 module.exports = Scrollbox
-},{"./defaults":409,"./defaults.json":408,"pixi-viewport":237}]},{},[10]);
+},{"./defaults":423,"./defaults.json":422,"pixi-ease":210,"pixi-viewport":248}]},{},[10]);

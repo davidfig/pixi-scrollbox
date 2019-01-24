@@ -3,10 +3,15 @@
     "boxHeight": 100,
     "scrollbarSize": 10,
     "scrollbarBackground": 14540253,
+    "scrollbarBackgroundAlpha": 1,
     "scrollbarForeground": 8947848,
+    "scrollbarForegroundAlpha": 1,
     "dragScroll": true,
     "stopPropagation": true,
     "scrollbarOffsetHorizontal": 0,
     "scrollbarOffsetVertical": 0,
-    "underflow": "top-left"
+    "underflow": "top-left",
+    "fadeScrollbar": false,
+    "fadeWait": 3000,
+    "fadeEase": "easeInOutSine"
 }
