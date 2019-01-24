@@ -49,8 +49,8 @@ function horizontalVertical(title)
 
 function horizontal()
 {
-    const size = 500
-    const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300, overflowY: 'hidden' }))
+    const size = 600
+    const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300, overflowY: 'hidden', fade: true, scrollbarBackgroundAlpha: 0, scrollbarOffsetHorizontal: -10 }))
     scrollbox.position.set(50, 425)
     const box = scrollbox.content.addChild(new PIXI.Graphics())
     box.beginFill(0xff0000, 0.25).drawRect(0, 0, size, 290).endFill()
@@ -62,7 +62,7 @@ function horizontal()
             .drawCircle(Random.range(radius, size - radius), Random.range(radius, 290 - radius), radius)
             .endFill()
     }
-    const text = scrollbox.content.addChild(new PIXI.Text(' horizontal scroll ', { fill: 0xffffff, fontSize: 14 }))
+    const text = scrollbox.content.addChild(new PIXI.Text(' horizontal scroll (fade=true, scrollbarOffsetHorizontal=-10, scrollbarBackgroundAlpha=0)', { fill: 0xffffff, fontSize: 14 }))
     box.beginFill(0).drawRect(0, 0, text.width, text.height).endFill()
     scrollbox.update()
 }

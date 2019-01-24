@@ -25,7 +25,9 @@ class Scrollbox extends PIXI.Container
      * @param {number} [options.scrollbarOffsetVertical=0] offset of vertical scrollbar (in pixels)
      * @param {boolean} [options.stopPropagation=true] call stopPropagation on any events that impact scrollbox
      * @param {number} [options.scrollbarBackground=0xdddddd] background color of scrollbar
+     * @param {number} [options.scrollbarBackgroundAlpha=1] alpha of background of scrollbar
      * @param {number} [options.scrollbarForeground=0x888888] foreground color of scrollbar
+     * @param {number} [options.scrollbarForegroundAlpha=1] alpha of foreground of scrollbar
      * @param {string} [options.underflow=top-left] what to do when content underflows the scrollbox size: none: do nothing; (left/right/center AND top/bottom/center); OR center (e.g., 'top-left', 'center', 'none', 'bottomright')
      * @param {(boolean|number)} [options.fade] fade the scrollbar when not in use (true = 1000ms)
      * @param {number} [options.fadeWait=3000] time to wait before fading the scrollbar if options.fade is set
@@ -346,28 +348,28 @@ class Scrollbox extends PIXI.Container
         if (this.isScrollbarVertical)
         {
             this.scrollbar
-                .beginFill(this.options.scrollbarBackground)
+                .beginFill(this.options.scrollbarBackground, this.options.scrollbarBackgroundAlpha)
                 .drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, 0, this.scrollbarSize, this.boxHeight)
                 .endFill()
         }
         if (this.isScrollbarHorizontal)
         {
             this.scrollbar
-                .beginFill(this.options.scrollbarBackground)
+                .beginFill(this.options.scrollbarBackground, this.options.scrollbarBackgroundAlpha)
                 .drawRect(0, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.boxWidth, this.scrollbarSize)
                 .endFill()
         }
         if (this.isScrollbarVertical)
         {
             this.scrollbar
-                .beginFill(this.options.scrollbarForeground)
+                .beginFill(this.options.scrollbarForeground, this.options.scrollbarForegroundAlpha)
                 .drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, this.scrollbarTop, this.scrollbarSize, this.scrollbarHeight)
                 .endFill()
         }
         if (this.isScrollbarHorizontal)
         {
             this.scrollbar
-                .beginFill(this.options.scrollbarForeground)
+                .beginFill(this.options.scrollbarForeground, this.options.scrollbarForegroundAlpha)
                 .drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.scrollbarWidth, this.scrollbarSize)
                 .endFill()
         }
