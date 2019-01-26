@@ -373,7 +373,7 @@ class Scrollbox extends PIXI.Container
                 .drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.scrollbarWidth, this.scrollbarSize)
                 .endFill()
         }
-        this.content.forceHitArea = new PIXI.Rectangle(0, 0, options.right, options.bottom)
+        this.content.forceHitArea = new PIXI.Rectangle(0, 0 , this.boxWidth, this.boxHeight)
         this.activateFade()
     }
 
@@ -575,6 +575,9 @@ class Scrollbox extends PIXI.Container
     }
 }
 
-PIXI.extras.Scrollbox = Scrollbox
+if (PIXI && PIXI.extras)
+{
+    PIXI.extras.Scrollbox = Scrollbox
+}
 
 module.exports = Scrollbox
