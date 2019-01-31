@@ -159,7 +159,7 @@ var Scrollbox = function (_PIXI$Container) {
             if (this.isScrollbarHorizontal) {
                 this.scrollbar.beginFill(this.options.scrollbarForeground, this.options.scrollbarForegroundAlpha).drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.scrollbarWidth, this.scrollbarSize).endFill();
             }
-            this.content.forceHitArea = new PIXI.Rectangle(0, 0, this.boxWidth, this.boxHeight);
+            // this.content.forceHitArea = new PIXI.Rectangle(0, 0 , this.boxWidth, this.boxHeight)
             this.activateFade();
         }
 
