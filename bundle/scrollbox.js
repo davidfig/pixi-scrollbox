@@ -626,7 +626,1793 @@ if (PIXI && PIXI.extras) {
 
 module.exports = Scrollbox;
 
-},{"./defaults":3,"./defaults.json":2,"pixi-ease":9,"pixi-viewport":30}],5:[function(require,module,exports){
+},{"./defaults":3,"./defaults.json":2,"pixi-ease":8,"pixi-viewport":30}],5:[function(require,module,exports){
+
+/*
+	Copyright © 2001 Robert Penner
+	All rights reserved.
+
+	Redistribution and use in source and binary forms, with or without modification, 
+	are permitted provided that the following conditions are met:
+
+	Redistributions of source code must retain the above copyright notice, this list of 
+	conditions and the following disclaimer.
+	Redistributions in binary form must reproduce the above copyright notice, this list 
+	of conditions and the following disclaimer in the documentation and/or other materials 
+	provided with the distribution.
+
+	Neither the name of the author nor the names of contributors may be used to endorse 
+	or promote products derived from this software without specific prior written permission.
+
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+	EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+	MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+	COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+	EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+	GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
+	AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+	NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+	OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+(function() {
+  var penner, umd;
+
+  umd = function(factory) {
+    if (typeof exports === 'object') {
+      return module.exports = factory;
+    } else if (typeof define === 'function' && define.amd) {
+      return define([], factory);
+    } else {
+      return this.penner = factory;
+    }
+  };
+
+  penner = {
+    linear: function(t, b, c, d) {
+      return c * t / d + b;
+    },
+    easeInQuad: function(t, b, c, d) {
+      return c * (t /= d) * t + b;
+    },
+    easeOutQuad: function(t, b, c, d) {
+      return -c * (t /= d) * (t - 2) + b;
+    },
+    easeInOutQuad: function(t, b, c, d) {
+      if ((t /= d / 2) < 1) {
+        return c / 2 * t * t + b;
+      } else {
+        return -c / 2 * ((--t) * (t - 2) - 1) + b;
+      }
+    },
+    easeInCubic: function(t, b, c, d) {
+      return c * (t /= d) * t * t + b;
+    },
+    easeOutCubic: function(t, b, c, d) {
+      return c * ((t = t / d - 1) * t * t + 1) + b;
+    },
+    easeInOutCubic: function(t, b, c, d) {
+      if ((t /= d / 2) < 1) {
+        return c / 2 * t * t * t + b;
+      } else {
+        return c / 2 * ((t -= 2) * t * t + 2) + b;
+      }
+    },
+    easeInQuart: function(t, b, c, d) {
+      return c * (t /= d) * t * t * t + b;
+    },
+    easeOutQuart: function(t, b, c, d) {
+      return -c * ((t = t / d - 1) * t * t * t - 1) + b;
+    },
+    easeInOutQuart: function(t, b, c, d) {
+      if ((t /= d / 2) < 1) {
+        return c / 2 * t * t * t * t + b;
+      } else {
+        return -c / 2 * ((t -= 2) * t * t * t - 2) + b;
+      }
+    },
+    easeInQuint: function(t, b, c, d) {
+      return c * (t /= d) * t * t * t * t + b;
+    },
+    easeOutQuint: function(t, b, c, d) {
+      return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
+    },
+    easeInOutQuint: function(t, b, c, d) {
+      if ((t /= d / 2) < 1) {
+        return c / 2 * t * t * t * t * t + b;
+      } else {
+        return c / 2 * ((t -= 2) * t * t * t * t + 2) + b;
+      }
+    },
+    easeInSine: function(t, b, c, d) {
+      return -c * Math.cos(t / d * (Math.PI / 2)) + c + b;
+    },
+    easeOutSine: function(t, b, c, d) {
+      return c * Math.sin(t / d * (Math.PI / 2)) + b;
+    },
+    easeInOutSine: function(t, b, c, d) {
+      return -c / 2 * (Math.cos(Math.PI * t / d) - 1) + b;
+    },
+    easeInExpo: function(t, b, c, d) {
+      if (t === 0) {
+        return b;
+      } else {
+        return c * Math.pow(2, 10 * (t / d - 1)) + b;
+      }
+    },
+    easeOutExpo: function(t, b, c, d) {
+      if (t === d) {
+        return b + c;
+      } else {
+        return c * (-Math.pow(2, -10 * t / d) + 1) + b;
+      }
+    },
+    easeInOutExpo: function(t, b, c, d) {
+      if (t === 0) {
+        b;
+      }
+      if (t === d) {
+        b + c;
+      }
+      if ((t /= d / 2) < 1) {
+        return c / 2 * Math.pow(2, 10 * (t - 1)) + b;
+      } else {
+        return c / 2 * (-Math.pow(2, -10 * --t) + 2) + b;
+      }
+    },
+    easeInCirc: function(t, b, c, d) {
+      return -c * (Math.sqrt(1 - (t /= d) * t) - 1) + b;
+    },
+    easeOutCirc: function(t, b, c, d) {
+      return c * Math.sqrt(1 - (t = t / d - 1) * t) + b;
+    },
+    easeInOutCirc: function(t, b, c, d) {
+      if ((t /= d / 2) < 1) {
+        return -c / 2 * (Math.sqrt(1 - t * t) - 1) + b;
+      } else {
+        return c / 2 * (Math.sqrt(1 - (t -= 2) * t) + 1) + b;
+      }
+    },
+    easeInElastic: function(t, b, c, d) {
+      var a, p, s;
+      s = 1.70158;
+      p = 0;
+      a = c;
+      if (t === 0) {
+        b;
+      } else if ((t /= d) === 1) {
+        b + c;
+      }
+      if (!p) {
+        p = d * .3;
+      }
+      if (a < Math.abs(c)) {
+        a = c;
+        s = p / 4;
+      } else {
+        s = p / (2 * Math.PI) * Math.asin(c / a);
+      }
+      return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
+    },
+    easeOutElastic: function(t, b, c, d) {
+      var a, p, s;
+      s = 1.70158;
+      p = 0;
+      a = c;
+      if (t === 0) {
+        b;
+      } else if ((t /= d) === 1) {
+        b + c;
+      }
+      if (!p) {
+        p = d * .3;
+      }
+      if (a < Math.abs(c)) {
+        a = c;
+        s = p / 4;
+      } else {
+        s = p / (2 * Math.PI) * Math.asin(c / a);
+      }
+      return a * Math.pow(2, -10 * t) * Math.sin((t * d - s) * (2 * Math.PI) / p) + c + b;
+    },
+    easeInOutElastic: function(t, b, c, d) {
+      var a, p, s;
+      s = 1.70158;
+      p = 0;
+      a = c;
+      if (t === 0) {
+        b;
+      } else if ((t /= d / 2) === 2) {
+        b + c;
+      }
+      if (!p) {
+        p = d * (.3 * 1.5);
+      }
+      if (a < Math.abs(c)) {
+        a = c;
+        s = p / 4;
+      } else {
+        s = p / (2 * Math.PI) * Math.asin(c / a);
+      }
+      if (t < 1) {
+        return -.5 * (a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
+      } else {
+        return a * Math.pow(2, -10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p) * .5 + c + b;
+      }
+    },
+    easeInBack: function(t, b, c, d, s) {
+      if (s === void 0) {
+        s = 1.70158;
+      }
+      return c * (t /= d) * t * ((s + 1) * t - s) + b;
+    },
+    easeOutBack: function(t, b, c, d, s) {
+      if (s === void 0) {
+        s = 1.70158;
+      }
+      return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
+    },
+    easeInOutBack: function(t, b, c, d, s) {
+      if (s === void 0) {
+        s = 1.70158;
+      }
+      if ((t /= d / 2) < 1) {
+        return c / 2 * (t * t * (((s *= 1.525) + 1) * t - s)) + b;
+      } else {
+        return c / 2 * ((t -= 2) * t * (((s *= 1.525) + 1) * t + s) + 2) + b;
+      }
+    },
+    easeInBounce: function(t, b, c, d) {
+      var v;
+      v = penner.easeOutBounce(d - t, 0, c, d);
+      return c - v + b;
+    },
+    easeOutBounce: function(t, b, c, d) {
+      if ((t /= d) < 1 / 2.75) {
+        return c * (7.5625 * t * t) + b;
+      } else if (t < 2 / 2.75) {
+        return c * (7.5625 * (t -= 1.5 / 2.75) * t + .75) + b;
+      } else if (t < 2.5 / 2.75) {
+        return c * (7.5625 * (t -= 2.25 / 2.75) * t + .9375) + b;
+      } else {
+        return c * (7.5625 * (t -= 2.625 / 2.75) * t + .984375) + b;
+      }
+    },
+    easeInOutBounce: function(t, b, c, d) {
+      var v;
+      if (t < d / 2) {
+        v = penner.easeInBounce(t * 2, 0, c, d);
+        return v * .5 + b;
+      } else {
+        v = penner.easeOutBounce(t * 2 - d, 0, c, d);
+        return v * .5 + c * .5 + b;
+      }
+    }
+  };
+
+  umd(penner);
+
+}).call(this);
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var wait = require('./wait');
+
+var angle = function (_wait) {
+    _inherits(angle, _wait);
+
+    /**
+     * animate object's {x, y} using an angle
+     * @param {object} object to animate
+     * @param {number} angle in radians
+     * @param {number} speed in pixels/millisecond
+     * @param {number} [duration=0] in milliseconds; if 0, then continues forever
+     * @param {object} [options] @see {@link Wait}
+     * @private
+     */
+    function angle(object, _angle, speed, duration, options) {
+        _classCallCheck(this, angle);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (angle.__proto__ || Object.getPrototypeOf(angle)).call(this, object, options));
+
+        _this.type = 'Angle';
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            _this.angle = _angle;
+            _this.speed = speed;
+            _this.duration = duration || 0;
+        }
+        return _this;
+    }
+
+    _createClass(angle, [{
+        key: 'save',
+        value: function save() {
+            var save = _get(angle.prototype.__proto__ || Object.getPrototypeOf(angle.prototype), 'save', this).call(this);
+            save.angle = this.angle;
+            save.speed = this.speed;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(angle.prototype.__proto__ || Object.getPrototypeOf(angle.prototype), 'load', this).call(this, _load);
+            this.angle = _load.angle;
+            this.speed = _load.speed;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate(elapsed) {
+            this.object.x += this.cos * elapsed * this.speed;
+            this.object.y += this.sin * elapsed * this.speed;
+        }
+    }, {
+        key: 'reverse',
+        value: function reverse() {
+            this.angle += Math.PI;
+        }
+    }, {
+        key: 'angle',
+        get: function get() {
+            return this._angle;
+        },
+        set: function set(value) {
+            this._angle = value;
+            this.sin = Math.sin(this._angle);
+            this.cos = Math.cos(this._angle);
+        }
+    }]);
+
+    return angle;
+}(wait);
+
+module.exports = angle;
+
+},{"./wait":16}],7:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Angle = require('yy-angle');
+var wait = require('./wait');
+
+/** Rotates an object to face the target */
+
+var face = function (_wait) {
+    _inherits(face, _wait);
+
+    /**
+     * @param {object} object
+     * @param {Point} target
+     * @param {number} speed in radians/millisecond
+     * @param {object} [options] @see {@link Wait}
+     * @param {boolean} [options.keepAlive] don't stop animation when complete
+     */
+    function face(object, target, speed, options) {
+        _classCallCheck(this, face);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (face.__proto__ || Object.getPrototypeOf(face)).call(this, object, options));
+
+        _this.type = 'Face';
+        _this.target = target;
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            _this.speed = speed;
+        }
+        return _this;
+    }
+
+    _createClass(face, [{
+        key: 'save',
+        value: function save() {
+            if (this.options.cancel) {
+                return null;
+            }
+            var save = _get(face.prototype.__proto__ || Object.getPrototypeOf(face.prototype), 'save', this).call(this);
+            save.speed = this.speed;
+            save.keepAlive = this.options.keepAlive;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(face.prototype.__proto__ || Object.getPrototypeOf(face.prototype), 'load', this).call(this, _load);
+            this.speed = _load.speed;
+            this.options.keepAlive = _load.keepAlive;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate(elapsed) {
+            var angle = Angle.angleTwoPoints(this.object.position, this.target);
+            var difference = Angle.differenceAngles(angle, this.object.rotation);
+            if (difference === 0) {
+                this.emit('done', this.object);
+                if (!this.options.keepAlive) {
+                    return true;
+                }
+            } else {
+                var sign = Angle.differenceAnglesSign(angle, this.object.rotation);
+                var change = this.speed * elapsed;
+                var delta = change > difference ? difference : change;
+                this.object.rotation += delta * sign;
+            }
+        }
+    }]);
+
+    return face;
+}(wait);
+
+module.exports = face;
+
+},{"./wait":16,"yy-angle":40}],8:[function(require,module,exports){
+'use strict';
+
+var Ease = {
+    list: require('./list'),
+    wait: require('./wait'),
+    to: require('./to'),
+    shake: require('./shake'),
+    tint: require('./tint'),
+    face: require('./face'),
+    angle: require('./angle'),
+    target: require('./target'),
+    movie: require('./movie'),
+    load: require('./load')
+};
+
+if (PIXI) {
+    if (PIXI.extras) {
+        PIXI.extras.Ease = Ease;
+    } else {
+        PIXI.extras = { Ease: Ease };
+    }
+}
+
+module.exports = Ease;
+
+},{"./angle":6,"./face":7,"./list":9,"./load":10,"./movie":11,"./shake":12,"./target":13,"./tint":14,"./to":15,"./wait":16}],9:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Events = require('eventemitter3');
+
+var Angle = require('./angle');
+var Face = require('./face');
+var Load = require('./load');
+var Movie = require('./movie');
+var Shake = require('./shake');
+var Target = require('./target');
+var Tint = require('./tint');
+var To = require('./to');
+var Wait = require('./wait');
+
+var Ease = function (_Events) {
+    _inherits(Ease, _Events);
+
+    /**
+     * Main class for creating eases
+     * @param {object} [options]
+     * @param {boolean} [options.noTicker] don't add the update function to PIXI.ticker
+     * @param {PIXI.ticker} [options.ticker=PIXI.ticker.shared|PIXI.Ticker.shared] use this PIXI.ticker for the list
+     * @extends eventemitter
+     * @fire done
+     * @fire each
+     */
+    function Ease(options) {
+        _classCallCheck(this, Ease);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (Ease.__proto__ || Object.getPrototypeOf(Ease)).call(this));
+
+        if (!options.noTicker) {
+            var ticker = options.ticker || (PIXI.Ticker ? PIXI.Ticker.shared : PIXI.ticker.shared);
+            ticker.add(function () {
+                return _this.update(ticker.deltaTime * 16.66);
+            });
+        }
+        _this.list = [];
+        _this.empty = true;
+        _this.removeWaiting = [];
+        _this.removeAllWaiting = false;
+        return _this;
+    }
+
+    /**
+     * Add animation(s) to animation list
+     * @param {(object|object[])} any animation class
+     * @return {object} first animation
+     */
+
+
+    _createClass(Ease, [{
+        key: 'add',
+        value: function add() {
+            var first = void 0;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = arguments[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var arg = _step.value;
+
+                    if (Array.isArray(arg)) {
+                        var _iteratorNormalCompletion2 = true;
+                        var _didIteratorError2 = false;
+                        var _iteratorError2 = undefined;
+
+                        try {
+                            for (var _iterator2 = arg[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                                var entry = _step2.value;
+
+                                if (!first) {
+                                    first = entry;
+                                }
+                                this.list.push(entry);
+                            }
+                        } catch (err) {
+                            _didIteratorError2 = true;
+                            _iteratorError2 = err;
+                        } finally {
+                            try {
+                                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                    _iterator2.return();
+                                }
+                            } finally {
+                                if (_didIteratorError2) {
+                                    throw _iteratorError2;
+                                }
+                            }
+                        }
+                    } else {
+                        first = arg;
+                        this.list.push(arg);
+                    }
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            this.empty = false;
+            return first;
+        }
+
+        /**
+         * remove animation(s)
+         * @param {object|array} animate - the animation (or array of animations) to remove; can be null
+         */
+
+    }, {
+        key: 'remove',
+        value: function remove(animate) {
+            if (this.inUpdate) {
+                this.removeWaiting.push(animate);
+            } else {
+                if (Array.isArray(animate)) {
+                    var _iteratorNormalCompletion3 = true;
+                    var _didIteratorError3 = false;
+                    var _iteratorError3 = undefined;
+
+                    try {
+                        for (var _iterator3 = animate[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                            var each = _step3.value;
+
+                            var index = this.list.indexOf(each);
+                            if (index !== -1) {
+                                this.list.splice(index, 1);
+                            }
+                        }
+                    } catch (err) {
+                        _didIteratorError3 = true;
+                        _iteratorError3 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                                _iterator3.return();
+                            }
+                        } finally {
+                            if (_didIteratorError3) {
+                                throw _iteratorError3;
+                            }
+                        }
+                    }
+                } else {
+                    var _index = this.list.indexOf(animate);
+                    if (_index !== -1) {
+                        this.list.splice(_index, 1);
+                    }
+                }
+            }
+        }
+
+        /**
+         * remove all animations from list
+         * @inherited from yy-loop
+         */
+
+    }, {
+        key: 'removeAll',
+        value: function removeAll() {
+            if (this.inUpdate) {
+                this.removeAllWaiting = true;
+            } else {
+                this.list = [];
+            }
+        }
+
+        /**
+         * update frame
+         * this is automatically added to PIXI.ticker unless options.noTicker is set
+         * if using options.noTicker, this should be called manually
+         * @param {number} elasped time in MS since last update
+         */
+
+    }, {
+        key: 'update',
+        value: function update(elapsed) {
+            this.inUpdate = true;
+            for (var i = 0, _i = this.list.length; i < _i; i++) {
+                if (this.list[i] && this.list[i].update(elapsed)) {
+                    this.list.splice(i, 1);
+                    i--;
+                    _i--;
+                }
+            }
+            this.emit('each', this);
+            if (this.list.length === 0 && !this.empty) {
+                this.emit('done', this);
+                this.empty = true;
+            }
+            this.inUpdate = false;
+            if (this.removeAllWaiting) {
+                this.removeAll();
+                this.removeAllWaiting = false;
+            }
+            while (this.removeWaiting.length) {
+                this.remove(this.removeWaiting.pop());
+            }
+        }
+
+        /**
+         * number of animations
+         * @type {number}
+         */
+
+    }, {
+        key: 'to',
+
+
+        /**
+         * default options for all eases
+         * @typedef {object} EaseOptions
+         * @param {object} [EaseOptions.options]
+         * @param {number} [EaseOptions.options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
+         * @param {boolean} [EaseOptions.options.pause] start the animation paused
+         * @param {boolean|number} [EaseOptions.options.repeat] true: repeat animation forever n: repeat animation n times
+         * @param {boolean|number} [EaseOptions.options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
+         * @param {Function} [EaseOptions.options.load] loads an animation using an .save() object note the * parameters below cannot be loaded and must be re-set
+         * @param {string|Function} [EaseOptions.options.ease] name or function from easing.js (see http://easings.net for examples)
+         */
+
+        /**
+         * ease parameters of object
+         * @param {PIXI.DisplayObject} object to animate
+         * @param {object} goto - parameters to animate, e.g.: {alpha: 5, scale: {3, 5}, scale: 5, rotation: Math.PI}
+         * @param {number} duration - time to run
+         * @fires done
+         * @fires wait
+         * @fires first
+         * @fires each
+         * @fires loop
+         * @fires reverse
+         */
+        value: function to() {
+            return this.add(new (Function.prototype.bind.apply(To, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /**
+         * animate object's {x, y} using an angle
+         * @param {object} object to animate
+         * @param {number} angle in radians
+         * @param {number} speed in pixels/millisecond
+         * @param {number} [duration=0] in milliseconds; if 0, then continues forever
+         * @param {object} [options] @see {@link Wait}
+         */
+
+    }, {
+        key: 'angle',
+        value: function angle() {
+            return this.add(new (Function.prototype.bind.apply(Angle, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.face class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'face',
+        value: function face() {
+            return this.add(new (Function.prototype.bind.apply(Face, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.load class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'load',
+        value: function load() {
+            return this.add(new (Function.prototype.bind.apply(Load, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.movie class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'movie',
+        value: function movie() {
+            return this.add(new (Function.prototype.bind.apply(Movie, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.shake class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'shake',
+        value: function shake() {
+            return this.add(new (Function.prototype.bind.apply(Shake, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.target class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'target',
+        value: function target() {
+            return this.add(new (Function.prototype.bind.apply(Target, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.angle tint; see Ease.to class below for parameters */
+
+    }, {
+        key: 'tint',
+        value: function tint() {
+            return this.add(new (Function.prototype.bind.apply(Tint, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+
+        /** helper to add to the list a new Ease.wait class; see Ease.to class below for parameters */
+
+    }, {
+        key: 'wait',
+        value: function wait() {
+            return this.add(new (Function.prototype.bind.apply(Wait, [null].concat(Array.prototype.slice.call(arguments))))());
+        }
+    }, {
+        key: 'count',
+        get: function get() {
+            return this.list.length;
+        }
+
+        /**
+         * number of active animations
+         * @type {number}
+         */
+
+    }, {
+        key: 'countRunning',
+        get: function get() {
+            var count = 0;
+            var _iteratorNormalCompletion4 = true;
+            var _didIteratorError4 = false;
+            var _iteratorError4 = undefined;
+
+            try {
+                for (var _iterator4 = this.list[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                    var entry = _step4.value;
+
+                    if (!entry.pause) {
+                        count++;
+                    }
+                }
+            } catch (err) {
+                _didIteratorError4 = true;
+                _iteratorError4 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                        _iterator4.return();
+                    }
+                } finally {
+                    if (_didIteratorError4) {
+                        throw _iteratorError4;
+                    }
+                }
+            }
+
+            return count;
+        }
+    }]);
+
+    return Ease;
+}(Events);
+
+module.exports = Ease;
+
+},{"./angle":6,"./face":7,"./load":10,"./movie":11,"./shake":12,"./target":13,"./tint":14,"./to":15,"./wait":16,"eventemitter3":17}],10:[function(require,module,exports){
+'use strict';
+
+var wait = require('./wait');
+var to = require('./to');
+var tint = require('./tint');
+var shake = require('./shake');
+var angle = require('./angle');
+var face = require('./face');
+var target = require('./target');
+var movie = require('./movie');
+
+/**
+ * restart an animation = requires a saved state
+ * @param {object} object(s) to animate
+ */
+function load(object, load) {
+    if (!load) {
+        return null;
+    }
+    var options = { load: load };
+    switch (load.type) {
+        case 'Wait':
+            return new wait(object, options);
+        case 'To':
+            return new to(object, null, null, options);
+        case 'Tint':
+            return new tint(object, null, null, options);
+        case 'Shake':
+            return new shake(object, null, null, options);
+        case 'Angle':
+            return new angle(object, null, null, null, options);
+        case 'Face':
+            return new face(object[0], object[1], null, options);
+        case 'Target':
+            return new target(object[0], object[1], null, options);
+        case 'Movie':
+            return new movie(object, object[1], null, options);
+    }
+}
+
+module.exports = load;
+
+},{"./angle":6,"./face":7,"./movie":11,"./shake":12,"./target":13,"./tint":14,"./to":15,"./wait":16}],11:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var wait = require('./wait');
+
+/**
+ * animate a movie of textures
+ */
+
+var movie = function (_wait) {
+    _inherits(movie, _wait);
+
+    /**
+     * @param {object} object to animate
+     * @param {PIXI.Texture[]} textures
+     * @param {number} [duration=0] time to run (use 0 for infinite duration--should only be used with customized easing functions)
+     * @param {object} [options]
+     * @param {number} [options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
+     * @param {boolean} [options.pause] start the animation paused
+     * @param {(boolean|number)} [options.repeat] true: repeat animation forever n: repeat animation n times
+     * @param {(boolean|number)} [options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
+     * @param {(boolean|number)} [options.continue] true: continue animation with new starting values n: continue animation n times
+     * @param {Function} [options.load] loads an animation using a .save() object note the * parameters below cannot be loaded and must be re-set
+     * @param {Function} [options.ease] function from easing.js (see http://easings.net for examples)
+     * @emits {done} animation expires
+     * @emits {wait} each update during a wait
+     * @emits {first} first update when animation starts
+     * @emits {each} each update while animation is running
+     * @emits {loop} when animation is repeated
+     * @emits {reverse} when animation is reversed
+     */
+    function movie(object, textures, duration, options) {
+        _classCallCheck(this, movie);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (movie.__proto__ || Object.getPrototypeOf(movie)).call(this, object, options));
+
+        _this.type = 'Movie';
+        if (Array.isArray(object)) {
+            _this.list = object;
+            _this.object = _this.list[0];
+        }
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            _this.textures = textures;
+            _this.duration = duration;
+            _this.current = 0;
+            _this.length = textures.length;
+            _this.interval = duration / _this.length;
+            _this.isReverse = false;
+            _this.restart();
+        }
+        return _this;
+    }
+
+    _createClass(movie, [{
+        key: 'save',
+        value: function save() {
+            var save = _get(movie.prototype.__proto__ || Object.getPrototypeOf(movie.prototype), 'save', this).call(this);
+            save.goto = this.goto;
+            save.current = this.current;
+            save.length = this.length;
+            save.interval = this.interval;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(movie.prototype.__proto__ || Object.getPrototypeOf(movie.prototype), 'load', this).call(this, _load);
+            this.goto = _load.goto;
+            this.current = _load.current;
+            this.interval = _load.current;
+        }
+    }, {
+        key: 'restart',
+        value: function restart() {
+            this.current = 0;
+            this.time = 0;
+            this.isReverse = false;
+        }
+    }, {
+        key: 'reverse',
+        value: function reverse() {
+            this.isReverse = !this.isReverse;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate() {
+            var index = Math.round(this.options.ease(this.time, 0, this.length - 1, this.duration));
+            if (this.isReverse) {
+                index = this.length - 1 - index;
+            }
+            if (this.list) {
+                for (var i = 0; i < this.list.length; i++) {
+                    this.list[i].texture = this.textures[index];
+                }
+            } else {
+                this.object.texture = this.textures[index];
+            }
+        }
+    }]);
+
+    return movie;
+}(wait);
+
+module.exports = movie;
+
+},{"./wait":16}],12:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var wait = require('./wait');
+
+/**
+ * shakes an object or list of objects
+ */
+
+var shake = function (_wait) {
+    _inherits(shake, _wait);
+
+    /**
+     * @param {object|array} object or list of objects to shake
+     * @param {number} amount to shake
+     * @param {number} duration (in milliseconds) to shake
+     * @param {object} options (see Animate.wait)
+     */
+    function shake(object, amount, duration, options) {
+        _classCallCheck(this, shake);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (shake.__proto__ || Object.getPrototypeOf(shake)).call(this, object, options));
+
+        _this.type = 'Shake';
+        if (Array.isArray(object)) {
+            _this.array = true;
+            _this.list = object;
+        }
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            if (_this.list) {
+                _this.start = [];
+                for (var i = 0; i < object.length; i++) {
+                    var target = object[i];
+                    _this.start[i] = { x: target.x, y: target.y };
+                }
+            } else {
+                _this.start = { x: object.x, y: object.y };
+            }
+            _this.amount = amount;
+            _this.duration = duration;
+        }
+        return _this;
+    }
+
+    _createClass(shake, [{
+        key: 'save',
+        value: function save() {
+            var save = _get(shake.prototype.__proto__ || Object.getPrototypeOf(shake.prototype), 'save', this).call(this);
+            save.start = this.start;
+            save.amount = this.amount;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(shake.prototype.__proto__ || Object.getPrototypeOf(shake.prototype), 'load', this).call(this, _load);
+            this.start = _load.start;
+            this.amount = _load.amount;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate() /*elapsed*/{
+            var object = this.object;
+            var start = this.start;
+            var amount = this.amount;
+            if (this.array) {
+                var list = this.list;
+                for (var i = 0; i < list.length; i++) {
+                    var _object = list[i];
+                    var actual = start[i];
+                    _object.x = actual.x + Math.floor(Math.random() * amount * 2) - amount;
+                    _object.y = actual.y + Math.floor(Math.random() * amount * 2) - amount;
+                }
+            }
+            object.x = start.x + Math.floor(Math.random() * amount * 2) - amount;
+            object.y = start.y + Math.floor(Math.random() * amount * 2) - amount;
+        }
+    }, {
+        key: 'done',
+        value: function done() {
+            var object = this.object;
+            var start = this.start;
+            if (this.array) {
+                var list = this.list;
+                for (var i = 0; i < list.length; i++) {
+                    var _object2 = list[i];
+                    var actual = start[i];
+                    _object2.x = actual.x;
+                    _object2.y = actual.y;
+                }
+            } else {
+                object.x = start.x;
+                object.y = start.y;
+            }
+        }
+    }]);
+
+    return shake;
+}(wait);
+
+module.exports = shake;
+
+},{"./wait":16}],13:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var wait = require('./wait');
+
+/** move an object to a target's location */
+
+var target = function (_wait) {
+    _inherits(target, _wait);
+
+    /**
+     * move to a target
+     * @param {object} object - object to animate
+     * @param {object} target - object needs to contain {x: x, y: y}
+     * @param {number} speed - number of pixels to move per millisecond
+     * @param {object} [options] @see {@link Wait}
+     * @param {boolean} [options.keepAlive] don't cancel the animation when target is reached
+     */
+    function target(object, _target, speed, options) {
+        _classCallCheck(this, target);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (target.__proto__ || Object.getPrototypeOf(target)).call(this, object, options));
+
+        _this.type = 'Target';
+        _this.target = _target;
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            _this.speed = speed;
+        }
+        return _this;
+    }
+
+    _createClass(target, [{
+        key: 'save',
+        value: function save() {
+            var save = _get(target.prototype.__proto__ || Object.getPrototypeOf(target.prototype), 'save', this).call(this);
+            save.speed = this.speed;
+            save.keepAlive = this.options.keepAlive;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(target.prototype.__proto__ || Object.getPrototypeOf(target.prototype), 'load', this).call(this, _load);
+            this.speed = _load.speed;
+            this.options.keepAlive = _load.keepAlive;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate(elapsed) {
+            var deltaX = this.target.x - this.object.x;
+            var deltaY = this.target.y - this.object.y;
+            if (deltaX === 0 && deltaY === 0) {
+                this.emit('done', this.object);
+                if (!this.options.keepAlive) {
+                    return true;
+                }
+            } else {
+                var angle = Math.atan2(deltaY, deltaX);
+                this.object.x += Math.cos(angle) * elapsed * this.speed;
+                this.object.y += Math.sin(angle) * elapsed * this.speed;
+                if (deltaX >= 0 !== this.target.x - this.object.x >= 0) {
+                    this.object.x = this.target.x;
+                }
+                if (deltaY >= 0 !== this.target.y - this.object.y >= 0) {
+                    this.object.y = this.target.y;
+                }
+            }
+        }
+    }]);
+
+    return target;
+}(wait);
+
+module.exports = target;
+
+},{"./wait":16}],14:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Color = require('yy-color');
+var wait = require('./wait');
+
+var tint = function (_wait) {
+    _inherits(tint, _wait);
+
+    /**
+     * @param {PIXI.DisplayObject|PIXI.DisplayObject[]} object
+     * @param {number|number[]} tint
+     * @param {number} [duration] in milliseconds
+     * @param {object} [options] @see {@link Wait}
+     */
+    function tint(object, _tint, duration, options) {
+        _classCallCheck(this, tint);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (tint.__proto__ || Object.getPrototypeOf(tint)).call(this, object, options));
+
+        _this.type = 'Tint';
+        if (Array.isArray(object)) {
+            _this.list = object;
+            _this.object = _this.list[0];
+        }
+        _this.duration = duration;
+        if (options.load) {
+            _this.load(options.load);
+        } else if (Array.isArray(_tint)) {
+            _this.tints = [_this.object.tint].concat(_toConsumableArray(_tint));
+        } else {
+            _this.start = _this.object.tint;
+            _this.to = _tint;
+        }
+        return _this;
+    }
+
+    _createClass(tint, [{
+        key: 'save',
+        value: function save() {
+            var save = _get(tint.prototype.__proto__ || Object.getPrototypeOf(tint.prototype), 'save', this).call(this);
+            save.start = this.start;
+            save.to = this.to;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(tint.prototype.__proto__ || Object.getPrototypeOf(tint.prototype), 'load', this).call(this, _load);
+            this.start = _load.start;
+            this.to = _load.to;
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate() {
+            var percent = this.options.ease(this.time, 0, 1, this.duration);
+            if (this.tints) {
+                var each = 1 / (this.tints.length - 1);
+                var per = each;
+                for (var i = 1; i < this.tints.length; i++) {
+                    if (percent <= per) {
+                        var color = Color.blend(1 - (per - percent) / each, this.tints[i - 1], this.tints[i]);
+                        if (this.list) {
+                            var _iteratorNormalCompletion = true;
+                            var _didIteratorError = false;
+                            var _iteratorError = undefined;
+
+                            try {
+                                for (var _iterator = this.list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                                    var object = _step.value;
+
+                                    object.tint = color;
+                                }
+                            } catch (err) {
+                                _didIteratorError = true;
+                                _iteratorError = err;
+                            } finally {
+                                try {
+                                    if (!_iteratorNormalCompletion && _iterator.return) {
+                                        _iterator.return();
+                                    }
+                                } finally {
+                                    if (_didIteratorError) {
+                                        throw _iteratorError;
+                                    }
+                                }
+                            }
+                        } else {
+                            this.object.tint = color;
+                        }
+                        break;
+                    }
+                    per += each;
+                }
+            } else {
+                var _color = Color.blend(percent, this.start, this.to);
+                if (this.list) {
+                    var _iteratorNormalCompletion2 = true;
+                    var _didIteratorError2 = false;
+                    var _iteratorError2 = undefined;
+
+                    try {
+                        for (var _iterator2 = this.list[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                            var _object = _step2.value;
+
+                            _object.tint = _color;
+                        }
+                    } catch (err) {
+                        _didIteratorError2 = true;
+                        _iteratorError2 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                _iterator2.return();
+                            }
+                        } finally {
+                            if (_didIteratorError2) {
+                                throw _iteratorError2;
+                            }
+                        }
+                    }
+                } else {
+                    this.object.tint = _color;
+                }
+            }
+        }
+    }, {
+        key: 'reverse',
+        value: function reverse() {
+            if (this.tints) {
+                var tints = [];
+                for (var i = this.tints.length - 1; i >= 0; i--) {
+                    tints.push(this.tints[i]);
+                }
+                this.tints = tints;
+            } else {
+                var swap = this.to;
+                this.to = this.start;
+                this.start = swap;
+            }
+        }
+    }]);
+
+    return tint;
+}(wait);
+
+module.exports = tint;
+
+},{"./wait":16,"yy-color":41}],15:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var wait = require('./wait');
+
+/** animate any numeric parameter of an object or array of objects */
+
+var to = function (_wait) {
+    _inherits(to, _wait);
+
+    /**
+     * @private
+     * @param {object} object to animate
+     * @param {object} goto - parameters to animate, e.g.: {alpha: 5, scale: {3, 5}, scale: 5, rotation: Math.PI}
+     * @param {number} duration - time to run
+     * @param {object} [options]
+     * @param {number} [options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
+     * @param {boolean} [options.pause] start the animation paused
+     * @param {boolean|number} [options.repeat] true: repeat animation forever n: repeat animation n times
+     * @param {boolean|number} [options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
+     * @param {Function} [options.load] loads an animation using an .save() object note the * parameters below cannot be loaded and must be re-set
+     * @param {string|Function} [options.ease] name or function from easing.js (see http://easings.net for examples)
+     * @emits to:done animation expires
+     * @emits to:wait each update during a wait
+     * @emits to:first first update when animation starts
+     * @emits to:each each update while animation is running
+     * @emits to:loop when animation is repeated
+     * @emits to:reverse when animation is reversed
+     */
+    function to(object, goto, duration, options) {
+        _classCallCheck(this, to);
+
+        options = options || {};
+
+        var _this = _possibleConstructorReturn(this, (to.__proto__ || Object.getPrototypeOf(to)).call(this, object, options));
+
+        _this.type = 'To';
+        if (Array.isArray(object)) {
+            _this.list = object;
+            _this.object = _this.list[0];
+        }
+        if (options.load) {
+            _this.load(options.load);
+        } else {
+            _this.goto = goto;
+            _this.fixScale();
+            _this.duration = duration;
+            _this.restart();
+        }
+        return _this;
+    }
+
+    /**
+     * converts scale from { scale: n } to { scale: { x: n, y: n }}
+     * @private
+     */
+
+
+    _createClass(to, [{
+        key: 'fixScale',
+        value: function fixScale() {
+            if (typeof this.goto['scale'] !== 'undefined' && !Number.isNaN(this.goto['scale'])) {
+                this.goto['scale'] = { x: this.goto['scale'], y: this.goto['scale'] };
+            }
+        }
+    }, {
+        key: 'save',
+        value: function save() {
+            var save = _get(to.prototype.__proto__ || Object.getPrototypeOf(to.prototype), 'save', this).call(this);
+            save.goto = this.goto;
+            save.start = this.start;
+            save.delta = this.delta;
+            save.keys = this.keys;
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            _get(to.prototype.__proto__ || Object.getPrototypeOf(to.prototype), 'load', this).call(this, _load);
+            this.goto = _load.goto;
+            this.start = _load.start;
+            this.delta = _load.delta;
+            this.keys = _load.keys;
+        }
+    }, {
+        key: 'restart',
+        value: function restart() {
+            var i = 0;
+            var start = this.start = [];
+            var delta = this.delta = [];
+            var keys = this.keys = [];
+            var goto = this.goto;
+            var object = this.object;
+
+            // loops through all keys in goto object
+            for (var key in goto) {
+
+                // handles keys with one additional level e.g.: goto = {scale: {x: 5, y: 3}}
+                if (isNaN(goto[key])) {
+                    keys[i] = { key: key, children: [] };
+                    start[i] = [];
+                    delta[i] = [];
+                    var j = 0;
+                    for (var key2 in goto[key]) {
+                        keys[i].children[j] = key2;
+                        start[i][j] = parseFloat(object[key][key2]);
+                        start[i][j] = this._correctDOM(key2, start[i][j]);
+                        start[i][j] = isNaN(this.start[i][j]) ? 0 : start[i][j];
+                        delta[i][j] = goto[key][key2] - start[i][j];
+                        j++;
+                    }
+                } else {
+                    start[i] = parseFloat(object[key]);
+                    start[i] = this._correctDOM(key, start[i]);
+                    start[i] = isNaN(this.start[i]) ? 0 : start[i];
+                    delta[i] = goto[key] - start[i];
+                    keys[i] = key;
+                }
+                i++;
+            }
+            this.time = 0;
+        }
+    }, {
+        key: 'reverse',
+        value: function reverse() {
+            var object = this.object;
+            var keys = this.keys;
+            var goto = this.goto;
+            var delta = this.delta;
+            var start = this.start;
+
+            for (var i = 0, _i = keys.length; i < _i; i++) {
+                var key = keys[i];
+                if (isNaN(goto[key])) {
+                    for (var j = 0, _j = key.children.length; j < _j; j++) {
+                        delta[i][j] = -delta[i][j];
+                        start[i][j] = parseFloat(object[key.key][key.children[j]]);
+                        start[i][j] = isNaN(start[i][j]) ? 0 : start[i][j];
+                    }
+                } else {
+                    delta[i] = -delta[i];
+                    start[i] = parseFloat(object[key]);
+                    start[i] = isNaN(start[i]) ? 0 : start[i];
+                }
+            }
+        }
+    }, {
+        key: 'calculate',
+        value: function calculate() /*elapsed*/{
+            var object = this.object;
+            var list = this.list;
+            var keys = this.keys;
+            var goto = this.goto;
+            var time = this.time;
+            var start = this.start;
+            var delta = this.delta;
+            var duration = this.duration;
+            var ease = this.options.ease;
+            for (var i = 0, _i = this.keys.length; i < _i; i++) {
+                var key = keys[i];
+                if (isNaN(goto[key])) {
+                    var key1 = key.key;
+                    for (var j = 0, _j = key.children.length; j < _j; j++) {
+                        var key2 = key.children[j];
+                        var others = object[key1][key2] = time >= duration ? start[i][j] + delta[i][j] : ease(time, start[i][j], delta[i][j], duration);
+                        if (list) {
+                            for (var k = 1, _k = list.length; k < _k; k++) {
+                                list[k][key1][key2] = others;
+                            }
+                        }
+                    }
+                } else {
+                    var _key = keys[i];
+                    var _others = object[_key] = time >= duration ? start[i] + delta[i] : ease(time, start[i], delta[i], duration);
+                    if (list) {
+                        for (var _j2 = 1, _j3 = this.list.length; _j2 < _j3; _j2++) {
+                            list[_j2][_key] = _others;
+                        }
+                    }
+                }
+            }
+        }
+    }]);
+
+    return to;
+}(wait);
+
+module.exports = to;
+
+},{"./wait":16}],16:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Easing = require('penner');
+var EventEmitter = require('eventemitter3');
+
+var wait = function (_EventEmitter) {
+    _inherits(wait, _EventEmitter);
+
+    /**
+     * @param {object|object[]} object or list of objects to animate
+     * @param {object} [options]
+     * @param {number} [options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
+     * @param {boolean} [options.pause] start the animation paused
+     * @param {(boolean|number)} [options.repeat] true: repeat animation forever n: repeat animation n times
+     * @param {(boolean|number)} [options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
+     *
+     * @param {number} [options.id] user-generated id (e.g., I use it to properly load animations when an object has multiple animations running)
+     * @param {Function} [options.load] loads an animation using an .save() object note the * parameters below cannot be loaded and must be re-set
+     * @param {Function|string} [options.ease] function (or penner function name) from easing.js (see http://easings.net for examples)*
+     *
+     * @emits {done} animation expires
+     * @emits {wait} each update during a wait
+     * @emits {first} first update when animation starts
+     * @emits {each} each update while animation is running
+     * @emits {loop} when animation is repeated
+     * @emits {reverse} when animation is reversed
+     */
+    function wait(object, options) {
+        _classCallCheck(this, wait);
+
+        var _this = _possibleConstructorReturn(this, (wait.__proto__ || Object.getPrototypeOf(wait)).call(this));
+
+        _this.object = object;
+        _this.options = options || {};
+        _this.type = 'Wait';
+        if (_this.options.load) {
+            _this.load(_this.options.load);
+        } else {
+            _this.time = 0;
+        }
+        if (_this.options.ease && typeof _this.options.ease !== 'function') {
+            _this.options.easeName = _this.options.ease;
+            _this.options.ease = Easing[_this.options.ease];
+        }
+        if (!_this.options.ease) {
+            _this.options.ease = Easing['linear'];
+        }
+        return _this;
+    }
+
+    _createClass(wait, [{
+        key: 'save',
+        value: function save() {
+            var save = { type: this.type, time: this.time, duration: this.duration, ease: this.options.easeName };
+            var options = this.options;
+            if (options.wait) {
+                save.wait = options.wait;
+            }
+            if (typeof options.id !== 'undefined') {
+                save.id = options.id;
+            }
+            if (options.pause) {
+                save.pause = options.pause;
+            }
+            if (options.repeat) {
+                save.repeat = options.repeat;
+            }
+            if (options.reverse) {
+                save.reverse = options.reverse;
+            }
+            return save;
+        }
+    }, {
+        key: 'load',
+        value: function load(_load) {
+            this.options.wait = _load.wait;
+            this.options.pause = _load.pause;
+            this.options.repeat = _load.repeat;
+            this.options.reverse = _load.reverse;
+            this.options.id = _load.id;
+            this.options.ease = _load.ease;
+            if (this.options.ease && typeof this.options.ease !== 'function') {
+                this.options.easeName = this.options.ease;
+                this.options.ease = Easing[this.options.ease];
+            }
+            if (!this.options.ease) {
+                this.options.ease = Easing['linear'];
+            }
+            this.time = _load.time;
+            this.duration = _load.duration;
+        }
+
+        /**
+         * pause this entry
+         * @type {boolean}
+         */
+
+    }, {
+        key: 'end',
+        value: function end(leftOver) {
+            if (this.options.reverse) {
+                this.reverse();
+                this.time = leftOver;
+                if (!this.options.repeat) {
+                    if (this.options.reverse === true) {
+                        this.options.reverse = false;
+                    } else {
+                        this.options.reverse--;
+                    }
+                } else {
+                    if (this.options.repeat !== true) {
+                        this.options.repeat--;
+                    }
+                }
+                this.emit('loop', this.list || this.object);
+            } else if (this.options.repeat) {
+                this.time = leftOver;
+                if (this.options.repeat !== true) {
+                    this.options.repeat--;
+                }
+                this.emit('loop', this.list || this.object);
+            } else {
+                this.done();
+                this.emit('done', this.list || this.object, leftOver);
+                // this.list = this.object = null
+                return true;
+            }
+        }
+    }, {
+        key: 'update',
+        value: function update(elapsed) {
+            var options = this.options;
+            if (options.pause) {
+                return;
+            }
+            if (options.wait) {
+                options.wait -= elapsed;
+                if (options.wait <= 0) {
+                    elapsed = -options.wait;
+                    options.wait = false;
+                } else {
+                    this.emit('wait', elapsed, this.list || this.object);
+                    return;
+                }
+            }
+            if (!this.first) {
+                this.first = true;
+                this.emit('first', this.list || this.object);
+            }
+            this.time += elapsed;
+            var leftOver = 0;
+            var duration = this.duration;
+            var time = this.time;
+            if (duration !== 0 && time > duration) {
+                leftOver = time - duration;
+                this.time = time = duration;
+            }
+            var force = this.calculate(elapsed);
+            this.emit('each', elapsed, this.list || this.object, this);
+            if (this.type === 'Wait' || duration !== 0 && time === duration) {
+                return this.end(leftOver);
+            }
+            return force || time === duration;
+        }
+
+        // correct certain DOM values
+
+    }, {
+        key: '_correctDOM',
+        value: function _correctDOM(key, value) {
+            switch (key) {
+                case 'opacity':
+                    return isNaN(value) ? 1 : value;
+            }
+            return value;
+        }
+    }, {
+        key: 'reverse',
+        value: function reverse() {}
+    }, {
+        key: 'calculate',
+        value: function calculate() {}
+    }, {
+        key: 'done',
+        value: function done() {}
+    }, {
+        key: 'pause',
+        set: function set(value) {
+            this.options.pause = value;
+        },
+        get: function get() {
+            return this.options.pause;
+        }
+    }]);
+
+    return wait;
+}(EventEmitter);
+
+module.exports = wait;
+
+},{"eventemitter3":17,"penner":5}],17:[function(require,module,exports){
 'use strict';
 
 var has = Object.prototype.hasOwnProperty
@@ -964,1787 +2750,7 @@ if ('undefined' !== typeof module) {
   module.exports = EventEmitter;
 }
 
-},{}],6:[function(require,module,exports){
-
-/*
-	Copyright © 2001 Robert Penner
-	All rights reserved.
-
-	Redistribution and use in source and binary forms, with or without modification, 
-	are permitted provided that the following conditions are met:
-
-	Redistributions of source code must retain the above copyright notice, this list of 
-	conditions and the following disclaimer.
-	Redistributions in binary form must reproduce the above copyright notice, this list 
-	of conditions and the following disclaimer in the documentation and/or other materials 
-	provided with the distribution.
-
-	Neither the name of the author nor the names of contributors may be used to endorse 
-	or promote products derived from this software without specific prior written permission.
-
-	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
-	EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-	MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-	COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-	EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
-	GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED 
-	AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-	NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
-	OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-(function() {
-  var penner, umd;
-
-  umd = function(factory) {
-    if (typeof exports === 'object') {
-      return module.exports = factory;
-    } else if (typeof define === 'function' && define.amd) {
-      return define([], factory);
-    } else {
-      return this.penner = factory;
-    }
-  };
-
-  penner = {
-    linear: function(t, b, c, d) {
-      return c * t / d + b;
-    },
-    easeInQuad: function(t, b, c, d) {
-      return c * (t /= d) * t + b;
-    },
-    easeOutQuad: function(t, b, c, d) {
-      return -c * (t /= d) * (t - 2) + b;
-    },
-    easeInOutQuad: function(t, b, c, d) {
-      if ((t /= d / 2) < 1) {
-        return c / 2 * t * t + b;
-      } else {
-        return -c / 2 * ((--t) * (t - 2) - 1) + b;
-      }
-    },
-    easeInCubic: function(t, b, c, d) {
-      return c * (t /= d) * t * t + b;
-    },
-    easeOutCubic: function(t, b, c, d) {
-      return c * ((t = t / d - 1) * t * t + 1) + b;
-    },
-    easeInOutCubic: function(t, b, c, d) {
-      if ((t /= d / 2) < 1) {
-        return c / 2 * t * t * t + b;
-      } else {
-        return c / 2 * ((t -= 2) * t * t + 2) + b;
-      }
-    },
-    easeInQuart: function(t, b, c, d) {
-      return c * (t /= d) * t * t * t + b;
-    },
-    easeOutQuart: function(t, b, c, d) {
-      return -c * ((t = t / d - 1) * t * t * t - 1) + b;
-    },
-    easeInOutQuart: function(t, b, c, d) {
-      if ((t /= d / 2) < 1) {
-        return c / 2 * t * t * t * t + b;
-      } else {
-        return -c / 2 * ((t -= 2) * t * t * t - 2) + b;
-      }
-    },
-    easeInQuint: function(t, b, c, d) {
-      return c * (t /= d) * t * t * t * t + b;
-    },
-    easeOutQuint: function(t, b, c, d) {
-      return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
-    },
-    easeInOutQuint: function(t, b, c, d) {
-      if ((t /= d / 2) < 1) {
-        return c / 2 * t * t * t * t * t + b;
-      } else {
-        return c / 2 * ((t -= 2) * t * t * t * t + 2) + b;
-      }
-    },
-    easeInSine: function(t, b, c, d) {
-      return -c * Math.cos(t / d * (Math.PI / 2)) + c + b;
-    },
-    easeOutSine: function(t, b, c, d) {
-      return c * Math.sin(t / d * (Math.PI / 2)) + b;
-    },
-    easeInOutSine: function(t, b, c, d) {
-      return -c / 2 * (Math.cos(Math.PI * t / d) - 1) + b;
-    },
-    easeInExpo: function(t, b, c, d) {
-      if (t === 0) {
-        return b;
-      } else {
-        return c * Math.pow(2, 10 * (t / d - 1)) + b;
-      }
-    },
-    easeOutExpo: function(t, b, c, d) {
-      if (t === d) {
-        return b + c;
-      } else {
-        return c * (-Math.pow(2, -10 * t / d) + 1) + b;
-      }
-    },
-    easeInOutExpo: function(t, b, c, d) {
-      if (t === 0) {
-        b;
-      }
-      if (t === d) {
-        b + c;
-      }
-      if ((t /= d / 2) < 1) {
-        return c / 2 * Math.pow(2, 10 * (t - 1)) + b;
-      } else {
-        return c / 2 * (-Math.pow(2, -10 * --t) + 2) + b;
-      }
-    },
-    easeInCirc: function(t, b, c, d) {
-      return -c * (Math.sqrt(1 - (t /= d) * t) - 1) + b;
-    },
-    easeOutCirc: function(t, b, c, d) {
-      return c * Math.sqrt(1 - (t = t / d - 1) * t) + b;
-    },
-    easeInOutCirc: function(t, b, c, d) {
-      if ((t /= d / 2) < 1) {
-        return -c / 2 * (Math.sqrt(1 - t * t) - 1) + b;
-      } else {
-        return c / 2 * (Math.sqrt(1 - (t -= 2) * t) + 1) + b;
-      }
-    },
-    easeInElastic: function(t, b, c, d) {
-      var a, p, s;
-      s = 1.70158;
-      p = 0;
-      a = c;
-      if (t === 0) {
-        b;
-      } else if ((t /= d) === 1) {
-        b + c;
-      }
-      if (!p) {
-        p = d * .3;
-      }
-      if (a < Math.abs(c)) {
-        a = c;
-        s = p / 4;
-      } else {
-        s = p / (2 * Math.PI) * Math.asin(c / a);
-      }
-      return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
-    },
-    easeOutElastic: function(t, b, c, d) {
-      var a, p, s;
-      s = 1.70158;
-      p = 0;
-      a = c;
-      if (t === 0) {
-        b;
-      } else if ((t /= d) === 1) {
-        b + c;
-      }
-      if (!p) {
-        p = d * .3;
-      }
-      if (a < Math.abs(c)) {
-        a = c;
-        s = p / 4;
-      } else {
-        s = p / (2 * Math.PI) * Math.asin(c / a);
-      }
-      return a * Math.pow(2, -10 * t) * Math.sin((t * d - s) * (2 * Math.PI) / p) + c + b;
-    },
-    easeInOutElastic: function(t, b, c, d) {
-      var a, p, s;
-      s = 1.70158;
-      p = 0;
-      a = c;
-      if (t === 0) {
-        b;
-      } else if ((t /= d / 2) === 2) {
-        b + c;
-      }
-      if (!p) {
-        p = d * (.3 * 1.5);
-      }
-      if (a < Math.abs(c)) {
-        a = c;
-        s = p / 4;
-      } else {
-        s = p / (2 * Math.PI) * Math.asin(c / a);
-      }
-      if (t < 1) {
-        return -.5 * (a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
-      } else {
-        return a * Math.pow(2, -10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p) * .5 + c + b;
-      }
-    },
-    easeInBack: function(t, b, c, d, s) {
-      if (s === void 0) {
-        s = 1.70158;
-      }
-      return c * (t /= d) * t * ((s + 1) * t - s) + b;
-    },
-    easeOutBack: function(t, b, c, d, s) {
-      if (s === void 0) {
-        s = 1.70158;
-      }
-      return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
-    },
-    easeInOutBack: function(t, b, c, d, s) {
-      if (s === void 0) {
-        s = 1.70158;
-      }
-      if ((t /= d / 2) < 1) {
-        return c / 2 * (t * t * (((s *= 1.525) + 1) * t - s)) + b;
-      } else {
-        return c / 2 * ((t -= 2) * t * (((s *= 1.525) + 1) * t + s) + 2) + b;
-      }
-    },
-    easeInBounce: function(t, b, c, d) {
-      var v;
-      v = penner.easeOutBounce(d - t, 0, c, d);
-      return c - v + b;
-    },
-    easeOutBounce: function(t, b, c, d) {
-      if ((t /= d) < 1 / 2.75) {
-        return c * (7.5625 * t * t) + b;
-      } else if (t < 2 / 2.75) {
-        return c * (7.5625 * (t -= 1.5 / 2.75) * t + .75) + b;
-      } else if (t < 2.5 / 2.75) {
-        return c * (7.5625 * (t -= 2.25 / 2.75) * t + .9375) + b;
-      } else {
-        return c * (7.5625 * (t -= 2.625 / 2.75) * t + .984375) + b;
-      }
-    },
-    easeInOutBounce: function(t, b, c, d) {
-      var v;
-      if (t < d / 2) {
-        v = penner.easeInBounce(t * 2, 0, c, d);
-        return v * .5 + b;
-      } else {
-        v = penner.easeOutBounce(t * 2 - d, 0, c, d);
-        return v * .5 + c * .5 + b;
-      }
-    }
-  };
-
-  umd(penner);
-
-}).call(this);
-
-},{}],7:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var wait = require('./wait');
-
-var angle = function (_wait) {
-    _inherits(angle, _wait);
-
-    /**
-     * animate object's {x, y} using an angle
-     * @param {object} object to animate
-     * @param {number} angle in radians
-     * @param {number} speed in pixels/millisecond
-     * @param {number} [duration=0] in milliseconds; if 0, then continues forever
-     * @param {object} [options] @see {@link Wait}
-     * @private
-     */
-    function angle(object, _angle, speed, duration, options) {
-        _classCallCheck(this, angle);
-
-        options = options || {};
-
-        var _this = _possibleConstructorReturn(this, (angle.__proto__ || Object.getPrototypeOf(angle)).call(this, object, options));
-
-        _this.type = 'Angle';
-        if (options.load) {
-            _this.load(options.load);
-        } else {
-            _this.angle = _angle;
-            _this.speed = speed;
-            _this.duration = duration || 0;
-        }
-        return _this;
-    }
-
-    _createClass(angle, [{
-        key: 'save',
-        value: function save() {
-            var save = _get(angle.prototype.__proto__ || Object.getPrototypeOf(angle.prototype), 'save', this).call(this);
-            save.angle = this.angle;
-            save.speed = this.speed;
-            return save;
-        }
-    }, {
-        key: 'load',
-        value: function load(_load) {
-            _get(angle.prototype.__proto__ || Object.getPrototypeOf(angle.prototype), 'load', this).call(this, _load);
-            this.angle = _load.angle;
-            this.speed = _load.speed;
-        }
-    }, {
-        key: 'calculate',
-        value: function calculate(elapsed) {
-            this.object.x += this.cos * elapsed * this.speed;
-            this.object.y += this.sin * elapsed * this.speed;
-        }
-    }, {
-        key: 'reverse',
-        value: function reverse() {
-            this.angle += Math.PI;
-        }
-    }, {
-        key: 'angle',
-        get: function get() {
-            return this._angle;
-        },
-        set: function set(value) {
-            this._angle = value;
-            this.sin = Math.sin(this._angle);
-            this.cos = Math.cos(this._angle);
-        }
-    }]);
-
-    return angle;
-}(wait);
-
-module.exports = angle;
-
-},{"./wait":17}],8:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Angle = require('yy-angle');
-var wait = require('./wait');
-
-/** Rotates an object to face the target */
-
-var face = function (_wait) {
-    _inherits(face, _wait);
-
-    /**
-     * @param {object} object
-     * @param {Point} target
-     * @param {number} speed in radians/millisecond
-     * @param {object} [options] @see {@link Wait}
-     * @param {boolean} [options.keepAlive] don't stop animation when complete
-     */
-    function face(object, target, speed, options) {
-        _classCallCheck(this, face);
-
-        options = options || {};
-
-        var _this = _possibleConstructorReturn(this, (face.__proto__ || Object.getPrototypeOf(face)).call(this, object, options));
-
-        _this.type = 'Face';
-        _this.target = target;
-        if (options.load) {
-            _this.load(options.load);
-        } else {
-            _this.speed = speed;
-        }
-        return _this;
-    }
-
-    _createClass(face, [{
-        key: 'save',
-        value: function save() {
-            if (this.options.cancel) {
-                return null;
-            }
-            var save = _get(face.prototype.__proto__ || Object.getPrototypeOf(face.prototype), 'save', this).call(this);
-            save.speed = this.speed;
-            save.keepAlive = this.options.keepAlive;
-            return save;
-        }
-    }, {
-        key: 'load',
-        value: function load(_load) {
-            _get(face.prototype.__proto__ || Object.getPrototypeOf(face.prototype), 'load', this).call(this, _load);
-            this.speed = _load.speed;
-            this.options.keepAlive = _load.keepAlive;
-        }
-    }, {
-        key: 'calculate',
-        value: function calculate(elapsed) {
-            var angle = Angle.angleTwoPoints(this.object.position, this.target);
-            var difference = Angle.differenceAngles(angle, this.object.rotation);
-            if (difference === 0) {
-                this.emit('done', this.object);
-                if (!this.options.keepAlive) {
-                    return true;
-                }
-            } else {
-                var sign = Angle.differenceAnglesSign(angle, this.object.rotation);
-                var change = this.speed * elapsed;
-                var delta = change > difference ? difference : change;
-                this.object.rotation += delta * sign;
-            }
-        }
-    }]);
-
-    return face;
-}(wait);
-
-module.exports = face;
-
-},{"./wait":17,"yy-angle":40}],9:[function(require,module,exports){
-'use strict';
-
-var Ease = {
-    list: require('./list'),
-    wait: require('./wait'),
-    to: require('./to'),
-    shake: require('./shake'),
-    tint: require('./tint'),
-    face: require('./face'),
-    angle: require('./angle'),
-    target: require('./target'),
-    movie: require('./movie'),
-    load: require('./load')
-};
-
-PIXI.extras.Ease = Ease;
-
-module.exports = Ease;
-
-},{"./angle":7,"./face":8,"./list":10,"./load":11,"./movie":12,"./shake":13,"./target":14,"./tint":15,"./to":16,"./wait":17}],10:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Events = require('eventemitter3');
-
-var Angle = require('./angle');
-var Face = require('./face');
-var Load = require('./load');
-var Movie = require('./movie');
-var Shake = require('./shake');
-var Target = require('./target');
-var Tint = require('./tint');
-var To = require('./to');
-var Wait = require('./wait');
-
-var Ease = function (_Events) {
-    _inherits(Ease, _Events);
-
-    /**
-     * Main class for creating eases
-     * @param {object} [options]
-     * @param {boolean} [options.noTicker] don't add the update function to PIXI.ticker
-     * @param {PIXI.ticker} [options.ticker=PIXI.ticker.shared] use this PIXI.ticker for the list
-     * @extends eventemitter
-     * @fire done
-     * @fire each
-     */
-    function Ease(options) {
-        _classCallCheck(this, Ease);
-
-        options = options || {};
-
-        var _this = _possibleConstructorReturn(this, (Ease.__proto__ || Object.getPrototypeOf(Ease)).call(this));
-
-        if (!options.noTicker) {
-            var ticker = options.ticker || PIXI.ticker.shared;
-            ticker.add(function () {
-                return _this.update(ticker.deltaTime * 16.66);
-            });
-        }
-        _this.list = [];
-        _this.empty = true;
-        _this.removeWaiting = [];
-        _this.removeAllWaiting = false;
-        return _this;
-    }
-
-    /**
-     * Add animation(s) to animation list
-     * @param {(object|object[])} any animation class
-     * @return {object} first animation
-     */
-
-
-    _createClass(Ease, [{
-        key: 'add',
-        value: function add() {
-            var first = void 0;
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
-
-            try {
-                for (var _iterator = arguments[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var arg = _step.value;
-
-                    if (Array.isArray(arg)) {
-                        var _iteratorNormalCompletion2 = true;
-                        var _didIteratorError2 = false;
-                        var _iteratorError2 = undefined;
-
-                        try {
-                            for (var _iterator2 = arg[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                                var entry = _step2.value;
-
-                                if (!first) {
-                                    first = entry;
-                                }
-                                this.list.push(entry);
-                            }
-                        } catch (err) {
-                            _didIteratorError2 = true;
-                            _iteratorError2 = err;
-                        } finally {
-                            try {
-                                if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                                    _iterator2.return();
-                                }
-                            } finally {
-                                if (_didIteratorError2) {
-                                    throw _iteratorError2;
-                                }
-                            }
-                        }
-                    } else {
-                        first = arg;
-                        this.list.push(arg);
-                    }
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
-                }
-            }
-
-            this.empty = false;
-            return first;
-        }
-
-        /**
-         * remove animation(s)
-         * @param {object|array} animate - the animation (or array of animations) to remove; can be null
-         */
-
-    }, {
-        key: 'remove',
-        value: function remove(animate) {
-            if (this.inUpdate) {
-                this.removeWaiting.push(animate);
-            } else {
-                if (Array.isArray(animate)) {
-                    var _iteratorNormalCompletion3 = true;
-                    var _didIteratorError3 = false;
-                    var _iteratorError3 = undefined;
-
-                    try {
-                        for (var _iterator3 = animate[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                            var each = _step3.value;
-
-                            var index = this.list.indexOf(each);
-                            if (index !== -1) {
-                                this.list.splice(index, 1);
-                            }
-                        }
-                    } catch (err) {
-                        _didIteratorError3 = true;
-                        _iteratorError3 = err;
-                    } finally {
-                        try {
-                            if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                                _iterator3.return();
-                            }
-                        } finally {
-                            if (_didIteratorError3) {
-                                throw _iteratorError3;
-                            }
-                        }
-                    }
-                } else {
-                    var _index = this.list.indexOf(animate);
-                    if (_index !== -1) {
-                        this.list.splice(_index, 1);
-                    }
-                }
-            }
-        }
-
-        /**
-         * remove all animations from list
-         * @inherited from yy-loop
-         */
-
-    }, {
-        key: 'removeAll',
-        value: function removeAll() {
-            if (this.inUpdate) {
-                this.removeAllWaiting = true;
-            } else {
-                this.list = [];
-            }
-        }
-
-        /**
-         * update frame
-         * this is automatically added to PIXI.ticker unless options.noTicker is set
-         * if using options.noTicker, this should be called manually
-         * @param {number} elasped time in MS since last update
-         */
-
-    }, {
-        key: 'update',
-        value: function update(elapsed) {
-            this.inUpdate = true;
-            for (var i = 0, _i = this.list.length; i < _i; i++) {
-                if (this.list[i] && this.list[i].update(elapsed)) {
-                    this.list.splice(i, 1);
-                    i--;
-                    _i--;
-                }
-            }
-            this.emit('each', this);
-            if (this.list.length === 0 && !this.empty) {
-                this.emit('done', this);
-                this.empty = true;
-            }
-            this.inUpdate = false;
-            if (this.removeAllWaiting) {
-                this.removeAll();
-                this.removeAllWaiting = false;
-            }
-            while (this.removeWaiting.length) {
-                this.remove(this.removeWaiting.pop());
-            }
-        }
-
-        /**
-         * number of animations
-         * @type {number}
-         */
-
-    }, {
-        key: 'to',
-
-
-        /**
-         * default options for all eases
-         * @typedef {object} EaseOptions
-         * @param {object} [EaseOptions.options]
-         * @param {number} [EaseOptions.options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
-         * @param {boolean} [EaseOptions.options.pause] start the animation paused
-         * @param {boolean|number} [EaseOptions.options.repeat] true: repeat animation forever n: repeat animation n times
-         * @param {boolean|number} [EaseOptions.options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
-         * @param {Function} [EaseOptions.options.load] loads an animation using an .save() object note the * parameters below cannot be loaded and must be re-set
-         * @param {string|Function} [EaseOptions.options.ease] name or function from easing.js (see http://easings.net for examples)
-         */
-
-        /**
-         * ease parameters of object
-         * @param {PIXI.DisplayObject} object to animate
-         * @param {object} goto - parameters to animate, e.g.: {alpha: 5, scale: {3, 5}, scale: 5, rotation: Math.PI}
-         * @param {number} duration - time to run
-         * @fires done
-         * @fires wait
-         * @fires first
-         * @fires each
-         * @fires loop
-         * @fires reverse
-         */
-        value: function to() {
-            return this.add(new (Function.prototype.bind.apply(To, [null].concat(Array.prototype.slice.call(arguments))))());
-        }
-
-        /**
-         * animate object's {x, y} using an angle
-         * @param {object} object to animate
-         * @param {number} angle in radians
-         * @param {number} speed in pixels/millisecond
-         * @param {number} [duration=0] in milliseconds; if 0, then continues forever
-         * @param {object} [options] @see {@link Wait}
-         */
-
-    }, {
-        key: 'angle',
-        value: function angle() {
-            return this.add(new (Function.prototype.bind.apply(Angle, [null].concat(Array.prototype.slice.call(arguments))))());
-        }
-
-        /** helper to add to the list a new Ease.face class; see Ease.to class below for parameters */
-
-    }, {
-        key: 'face',
-        value: function face() {
-            return this.add(new (Function.prototype.bind.apply(Face, [null].concat(Array.prototype.slice.call(arguments))))());
-        }
-
-        /** helper to add to the list a new Ease.load class; see Ease.to class below for parameters */
-
-    }, {
-        key: 'load',
-        value: function load() {
-            return this.add(new (Function.prototype.bind.apply(Load, [null].concat(Array.prototype.slice.call(arguments))))());
-        }
-
-        /** helper to add to the list a new Ease.movie class; see Ease.to class below for parameters */
-
-    }, {
-        key: 'movie',
-        value: function movie() {
-            return this.add(new (Function.prototype.bind.apply(Movie, [null].concat(Array.prototype.slice.call(arguments))))());
-        }
-
-        /** helper to add to the list a new Ease.shake class; see Ease.to class below for parameters */
-
-    }, {
-        key: 'shake',
-        value: function shake() {
-            return this.add(new (Function.prototype.bind.apply(Shake, [null].concat(Array.prototype.slice.call(arguments))))());
-        }
-
-        /** helper to add to the list a new Ease.target class; see Ease.to class below for parameters */
-
-    }, {
-        key: 'target',
-        value: function target() {
-            return this.add(new (Function.prototype.bind.apply(Target, [null].concat(Array.prototype.slice.call(arguments))))());
-        }
-
-        /** helper to add to the list a new Ease.angle tint; see Ease.to class below for parameters */
-
-    }, {
-        key: 'tint',
-        value: function tint() {
-            return this.add(new (Function.prototype.bind.apply(Tint, [null].concat(Array.prototype.slice.call(arguments))))());
-        }
-
-        /** helper to add to the list a new Ease.wait class; see Ease.to class below for parameters */
-
-    }, {
-        key: 'wait',
-        value: function wait() {
-            return this.add(new (Function.prototype.bind.apply(Wait, [null].concat(Array.prototype.slice.call(arguments))))());
-        }
-    }, {
-        key: 'count',
-        get: function get() {
-            return this.list.length;
-        }
-
-        /**
-         * number of active animations
-         * @type {number}
-         */
-
-    }, {
-        key: 'countRunning',
-        get: function get() {
-            var count = 0;
-            var _iteratorNormalCompletion4 = true;
-            var _didIteratorError4 = false;
-            var _iteratorError4 = undefined;
-
-            try {
-                for (var _iterator4 = this.list[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                    var entry = _step4.value;
-
-                    if (!entry.pause) {
-                        count++;
-                    }
-                }
-            } catch (err) {
-                _didIteratorError4 = true;
-                _iteratorError4 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                        _iterator4.return();
-                    }
-                } finally {
-                    if (_didIteratorError4) {
-                        throw _iteratorError4;
-                    }
-                }
-            }
-
-            return count;
-        }
-    }]);
-
-    return Ease;
-}(Events);
-
-module.exports = Ease;
-
-},{"./angle":7,"./face":8,"./load":11,"./movie":12,"./shake":13,"./target":14,"./tint":15,"./to":16,"./wait":17,"eventemitter3":5}],11:[function(require,module,exports){
-'use strict';
-
-var wait = require('./wait');
-var to = require('./to');
-var tint = require('./tint');
-var shake = require('./shake');
-var angle = require('./angle');
-var face = require('./face');
-var target = require('./target');
-var movie = require('./movie');
-
-/**
- * restart an animation = requires a saved state
- * @param {object} object(s) to animate
- */
-function load(object, load) {
-    if (!load) {
-        return null;
-    }
-    var options = { load: load };
-    switch (load.type) {
-        case 'Wait':
-            return new wait(object, options);
-        case 'To':
-            return new to(object, null, null, options);
-        case 'Tint':
-            return new tint(object, null, null, options);
-        case 'Shake':
-            return new shake(object, null, null, options);
-        case 'Angle':
-            return new angle(object, null, null, null, options);
-        case 'Face':
-            return new face(object[0], object[1], null, options);
-        case 'Target':
-            return new target(object[0], object[1], null, options);
-        case 'Movie':
-            return new movie(object, object[1], null, options);
-    }
-}
-
-module.exports = load;
-
-},{"./angle":7,"./face":8,"./movie":12,"./shake":13,"./target":14,"./tint":15,"./to":16,"./wait":17}],12:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var wait = require('./wait');
-
-/**
- * animate a movie of textures
- */
-
-var movie = function (_wait) {
-    _inherits(movie, _wait);
-
-    /**
-     * @param {object} object to animate
-     * @param {PIXI.Texture[]} textures
-     * @param {number} [duration=0] time to run (use 0 for infinite duration--should only be used with customized easing functions)
-     * @param {object} [options]
-     * @param {number} [options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
-     * @param {boolean} [options.pause] start the animation paused
-     * @param {(boolean|number)} [options.repeat] true: repeat animation forever n: repeat animation n times
-     * @param {(boolean|number)} [options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
-     * @param {(boolean|number)} [options.continue] true: continue animation with new starting values n: continue animation n times
-     * @param {Function} [options.load] loads an animation using a .save() object note the * parameters below cannot be loaded and must be re-set
-     * @param {Function} [options.ease] function from easing.js (see http://easings.net for examples)
-     * @emits {done} animation expires
-     * @emits {wait} each update during a wait
-     * @emits {first} first update when animation starts
-     * @emits {each} each update while animation is running
-     * @emits {loop} when animation is repeated
-     * @emits {reverse} when animation is reversed
-     */
-    function movie(object, textures, duration, options) {
-        _classCallCheck(this, movie);
-
-        options = options || {};
-
-        var _this = _possibleConstructorReturn(this, (movie.__proto__ || Object.getPrototypeOf(movie)).call(this, object, options));
-
-        _this.type = 'Movie';
-        if (Array.isArray(object)) {
-            _this.list = object;
-            _this.object = _this.list[0];
-        }
-        if (options.load) {
-            _this.load(options.load);
-        } else {
-            _this.textures = textures;
-            _this.duration = duration;
-            _this.current = 0;
-            _this.length = textures.length;
-            _this.interval = duration / _this.length;
-            _this.isReverse = false;
-            _this.restart();
-        }
-        return _this;
-    }
-
-    _createClass(movie, [{
-        key: 'save',
-        value: function save() {
-            var save = _get(movie.prototype.__proto__ || Object.getPrototypeOf(movie.prototype), 'save', this).call(this);
-            save.goto = this.goto;
-            save.current = this.current;
-            save.length = this.length;
-            save.interval = this.interval;
-            return save;
-        }
-    }, {
-        key: 'load',
-        value: function load(_load) {
-            _get(movie.prototype.__proto__ || Object.getPrototypeOf(movie.prototype), 'load', this).call(this, _load);
-            this.goto = _load.goto;
-            this.current = _load.current;
-            this.interval = _load.current;
-        }
-    }, {
-        key: 'restart',
-        value: function restart() {
-            this.current = 0;
-            this.time = 0;
-            this.isReverse = false;
-        }
-    }, {
-        key: 'reverse',
-        value: function reverse() {
-            this.isReverse = !this.isReverse;
-        }
-    }, {
-        key: 'calculate',
-        value: function calculate() {
-            var index = Math.round(this.options.ease(this.time, 0, this.length - 1, this.duration));
-            if (this.isReverse) {
-                index = this.length - 1 - index;
-            }
-            if (this.list) {
-                for (var i = 0; i < this.list.length; i++) {
-                    this.list[i].texture = this.textures[index];
-                }
-            } else {
-                this.object.texture = this.textures[index];
-            }
-        }
-    }]);
-
-    return movie;
-}(wait);
-
-module.exports = movie;
-
-},{"./wait":17}],13:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var wait = require('./wait');
-
-/**
- * shakes an object or list of objects
- */
-
-var shake = function (_wait) {
-    _inherits(shake, _wait);
-
-    /**
-     * @param {object|array} object or list of objects to shake
-     * @param {number} amount to shake
-     * @param {number} duration (in milliseconds) to shake
-     * @param {object} options (see Animate.wait)
-     */
-    function shake(object, amount, duration, options) {
-        _classCallCheck(this, shake);
-
-        options = options || {};
-
-        var _this = _possibleConstructorReturn(this, (shake.__proto__ || Object.getPrototypeOf(shake)).call(this, object, options));
-
-        _this.type = 'Shake';
-        if (Array.isArray(object)) {
-            _this.array = true;
-            _this.list = object;
-        }
-        if (options.load) {
-            _this.load(options.load);
-        } else {
-            if (_this.list) {
-                _this.start = [];
-                for (var i = 0; i < object.length; i++) {
-                    var target = object[i];
-                    _this.start[i] = { x: target.x, y: target.y };
-                }
-            } else {
-                _this.start = { x: object.x, y: object.y };
-            }
-            _this.amount = amount;
-            _this.duration = duration;
-        }
-        return _this;
-    }
-
-    _createClass(shake, [{
-        key: 'save',
-        value: function save() {
-            var save = _get(shake.prototype.__proto__ || Object.getPrototypeOf(shake.prototype), 'save', this).call(this);
-            save.start = this.start;
-            save.amount = this.amount;
-            return save;
-        }
-    }, {
-        key: 'load',
-        value: function load(_load) {
-            _get(shake.prototype.__proto__ || Object.getPrototypeOf(shake.prototype), 'load', this).call(this, _load);
-            this.start = _load.start;
-            this.amount = _load.amount;
-        }
-    }, {
-        key: 'calculate',
-        value: function calculate() /*elapsed*/{
-            var object = this.object;
-            var start = this.start;
-            var amount = this.amount;
-            if (this.array) {
-                var list = this.list;
-                for (var i = 0; i < list.length; i++) {
-                    var _object = list[i];
-                    var actual = start[i];
-                    _object.x = actual.x + Math.floor(Math.random() * amount * 2) - amount;
-                    _object.y = actual.y + Math.floor(Math.random() * amount * 2) - amount;
-                }
-            }
-            object.x = start.x + Math.floor(Math.random() * amount * 2) - amount;
-            object.y = start.y + Math.floor(Math.random() * amount * 2) - amount;
-        }
-    }, {
-        key: 'done',
-        value: function done() {
-            var object = this.object;
-            var start = this.start;
-            if (this.array) {
-                var list = this.list;
-                for (var i = 0; i < list.length; i++) {
-                    var _object2 = list[i];
-                    var actual = start[i];
-                    _object2.x = actual.x;
-                    _object2.y = actual.y;
-                }
-            } else {
-                object.x = start.x;
-                object.y = start.y;
-            }
-        }
-    }]);
-
-    return shake;
-}(wait);
-
-module.exports = shake;
-
-},{"./wait":17}],14:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var wait = require('./wait');
-
-/** move an object to a target's location */
-
-var target = function (_wait) {
-    _inherits(target, _wait);
-
-    /**
-     * move to a target
-     * @param {object} object - object to animate
-     * @param {object} target - object needs to contain {x: x, y: y}
-     * @param {number} speed - number of pixels to move per millisecond
-     * @param {object} [options] @see {@link Wait}
-     * @param {boolean} [options.keepAlive] don't cancel the animation when target is reached
-     */
-    function target(object, _target, speed, options) {
-        _classCallCheck(this, target);
-
-        options = options || {};
-
-        var _this = _possibleConstructorReturn(this, (target.__proto__ || Object.getPrototypeOf(target)).call(this, object, options));
-
-        _this.type = 'Target';
-        _this.target = _target;
-        if (options.load) {
-            _this.load(options.load);
-        } else {
-            _this.speed = speed;
-        }
-        return _this;
-    }
-
-    _createClass(target, [{
-        key: 'save',
-        value: function save() {
-            var save = _get(target.prototype.__proto__ || Object.getPrototypeOf(target.prototype), 'save', this).call(this);
-            save.speed = this.speed;
-            save.keepAlive = this.options.keepAlive;
-            return save;
-        }
-    }, {
-        key: 'load',
-        value: function load(_load) {
-            _get(target.prototype.__proto__ || Object.getPrototypeOf(target.prototype), 'load', this).call(this, _load);
-            this.speed = _load.speed;
-            this.options.keepAlive = _load.keepAlive;
-        }
-    }, {
-        key: 'calculate',
-        value: function calculate(elapsed) {
-            var deltaX = this.target.x - this.object.x;
-            var deltaY = this.target.y - this.object.y;
-            if (deltaX === 0 && deltaY === 0) {
-                this.emit('done', this.object);
-                if (!this.options.keepAlive) {
-                    return true;
-                }
-            } else {
-                var angle = Math.atan2(deltaY, deltaX);
-                this.object.x += Math.cos(angle) * elapsed * this.speed;
-                this.object.y += Math.sin(angle) * elapsed * this.speed;
-                if (deltaX >= 0 !== this.target.x - this.object.x >= 0) {
-                    this.object.x = this.target.x;
-                }
-                if (deltaY >= 0 !== this.target.y - this.object.y >= 0) {
-                    this.object.y = this.target.y;
-                }
-            }
-        }
-    }]);
-
-    return target;
-}(wait);
-
-module.exports = target;
-
-},{"./wait":17}],15:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Color = require('yy-color');
-var wait = require('./wait');
-
-var tint = function (_wait) {
-    _inherits(tint, _wait);
-
-    /**
-     * @param {PIXI.DisplayObject|PIXI.DisplayObject[]} object
-     * @param {number|number[]} tint
-     * @param {number} [duration] in milliseconds
-     * @param {object} [options] @see {@link Wait}
-     */
-    function tint(object, _tint, duration, options) {
-        _classCallCheck(this, tint);
-
-        options = options || {};
-
-        var _this = _possibleConstructorReturn(this, (tint.__proto__ || Object.getPrototypeOf(tint)).call(this, object, options));
-
-        _this.type = 'Tint';
-        if (Array.isArray(object)) {
-            _this.list = object;
-            _this.object = _this.list[0];
-        }
-        _this.duration = duration;
-        if (options.load) {
-            _this.load(options.load);
-        } else if (Array.isArray(_tint)) {
-            _this.tints = [_this.object.tint].concat(_toConsumableArray(_tint));
-        } else {
-            _this.start = _this.object.tint;
-            _this.to = _tint;
-        }
-        return _this;
-    }
-
-    _createClass(tint, [{
-        key: 'save',
-        value: function save() {
-            var save = _get(tint.prototype.__proto__ || Object.getPrototypeOf(tint.prototype), 'save', this).call(this);
-            save.start = this.start;
-            save.to = this.to;
-            return save;
-        }
-    }, {
-        key: 'load',
-        value: function load(_load) {
-            _get(tint.prototype.__proto__ || Object.getPrototypeOf(tint.prototype), 'load', this).call(this, _load);
-            this.start = _load.start;
-            this.to = _load.to;
-        }
-    }, {
-        key: 'calculate',
-        value: function calculate() {
-            var percent = this.options.ease(this.time, 0, 1, this.duration);
-            if (this.tints) {
-                var each = 1 / (this.tints.length - 1);
-                var per = each;
-                for (var i = 1; i < this.tints.length; i++) {
-                    if (percent <= per) {
-                        var color = Color.blend(1 - (per - percent) / each, this.tints[i - 1], this.tints[i]);
-                        if (this.list) {
-                            var _iteratorNormalCompletion = true;
-                            var _didIteratorError = false;
-                            var _iteratorError = undefined;
-
-                            try {
-                                for (var _iterator = this.list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                                    var object = _step.value;
-
-                                    object.tint = color;
-                                }
-                            } catch (err) {
-                                _didIteratorError = true;
-                                _iteratorError = err;
-                            } finally {
-                                try {
-                                    if (!_iteratorNormalCompletion && _iterator.return) {
-                                        _iterator.return();
-                                    }
-                                } finally {
-                                    if (_didIteratorError) {
-                                        throw _iteratorError;
-                                    }
-                                }
-                            }
-                        } else {
-                            this.object.tint = color;
-                        }
-                        break;
-                    }
-                    per += each;
-                }
-            } else {
-                var _color = Color.blend(percent, this.start, this.to);
-                if (this.list) {
-                    var _iteratorNormalCompletion2 = true;
-                    var _didIteratorError2 = false;
-                    var _iteratorError2 = undefined;
-
-                    try {
-                        for (var _iterator2 = this.list[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                            var _object = _step2.value;
-
-                            _object.tint = _color;
-                        }
-                    } catch (err) {
-                        _didIteratorError2 = true;
-                        _iteratorError2 = err;
-                    } finally {
-                        try {
-                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                                _iterator2.return();
-                            }
-                        } finally {
-                            if (_didIteratorError2) {
-                                throw _iteratorError2;
-                            }
-                        }
-                    }
-                } else {
-                    this.object.tint = _color;
-                }
-            }
-        }
-    }, {
-        key: 'reverse',
-        value: function reverse() {
-            if (this.tints) {
-                var tints = [];
-                for (var i = this.tints.length - 1; i >= 0; i--) {
-                    tints.push(this.tints[i]);
-                }
-                this.tints = tints;
-            } else {
-                var swap = this.to;
-                this.to = this.start;
-                this.start = swap;
-            }
-        }
-    }]);
-
-    return tint;
-}(wait);
-
-module.exports = tint;
-
-},{"./wait":17,"yy-color":41}],16:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var wait = require('./wait');
-
-/** animate any numeric parameter of an object or array of objects */
-
-var to = function (_wait) {
-    _inherits(to, _wait);
-
-    /**
-     * @private
-     * @param {object} object to animate
-     * @param {object} goto - parameters to animate, e.g.: {alpha: 5, scale: {3, 5}, scale: 5, rotation: Math.PI}
-     * @param {number} duration - time to run
-     * @param {object} [options]
-     * @param {number} [options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
-     * @param {boolean} [options.pause] start the animation paused
-     * @param {boolean|number} [options.repeat] true: repeat animation forever n: repeat animation n times
-     * @param {boolean|number} [options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
-     * @param {Function} [options.load] loads an animation using an .save() object note the * parameters below cannot be loaded and must be re-set
-     * @param {string|Function} [options.ease] name or function from easing.js (see http://easings.net for examples)
-     * @emits to:done animation expires
-     * @emits to:wait each update during a wait
-     * @emits to:first first update when animation starts
-     * @emits to:each each update while animation is running
-     * @emits to:loop when animation is repeated
-     * @emits to:reverse when animation is reversed
-     */
-    function to(object, goto, duration, options) {
-        _classCallCheck(this, to);
-
-        options = options || {};
-
-        var _this = _possibleConstructorReturn(this, (to.__proto__ || Object.getPrototypeOf(to)).call(this, object, options));
-
-        _this.type = 'To';
-        if (Array.isArray(object)) {
-            _this.list = object;
-            _this.object = _this.list[0];
-        }
-        if (options.load) {
-            _this.load(options.load);
-        } else {
-            _this.goto = goto;
-            _this.fixScale();
-            _this.duration = duration;
-            _this.restart();
-        }
-        return _this;
-    }
-
-    /**
-     * converts scale from { scale: n } to { scale: { x: n, y: n }}
-     * @private
-     */
-
-
-    _createClass(to, [{
-        key: 'fixScale',
-        value: function fixScale() {
-            if (typeof this.goto['scale'] !== 'undefined' && !Number.isNaN(this.goto['scale'])) {
-                this.goto['scale'] = { x: this.goto['scale'], y: this.goto['scale'] };
-            }
-        }
-    }, {
-        key: 'save',
-        value: function save() {
-            var save = _get(to.prototype.__proto__ || Object.getPrototypeOf(to.prototype), 'save', this).call(this);
-            save.goto = this.goto;
-            save.start = this.start;
-            save.delta = this.delta;
-            save.keys = this.keys;
-            return save;
-        }
-    }, {
-        key: 'load',
-        value: function load(_load) {
-            _get(to.prototype.__proto__ || Object.getPrototypeOf(to.prototype), 'load', this).call(this, _load);
-            this.goto = _load.goto;
-            this.start = _load.start;
-            this.delta = _load.delta;
-            this.keys = _load.keys;
-        }
-    }, {
-        key: 'restart',
-        value: function restart() {
-            var i = 0;
-            var start = this.start = [];
-            var delta = this.delta = [];
-            var keys = this.keys = [];
-            var goto = this.goto;
-            var object = this.object;
-
-            // loops through all keys in goto object
-            for (var key in goto) {
-
-                // handles keys with one additional level e.g.: goto = {scale: {x: 5, y: 3}}
-                if (isNaN(goto[key])) {
-                    keys[i] = { key: key, children: [] };
-                    start[i] = [];
-                    delta[i] = [];
-                    var j = 0;
-                    for (var key2 in goto[key]) {
-                        keys[i].children[j] = key2;
-                        start[i][j] = parseFloat(object[key][key2]);
-                        start[i][j] = this._correctDOM(key2, start[i][j]);
-                        start[i][j] = isNaN(this.start[i][j]) ? 0 : start[i][j];
-                        delta[i][j] = goto[key][key2] - start[i][j];
-                        j++;
-                    }
-                } else {
-                    start[i] = parseFloat(object[key]);
-                    start[i] = this._correctDOM(key, start[i]);
-                    start[i] = isNaN(this.start[i]) ? 0 : start[i];
-                    delta[i] = goto[key] - start[i];
-                    keys[i] = key;
-                }
-                i++;
-            }
-            this.time = 0;
-        }
-    }, {
-        key: 'reverse',
-        value: function reverse() {
-            var object = this.object;
-            var keys = this.keys;
-            var goto = this.goto;
-            var delta = this.delta;
-            var start = this.start;
-
-            for (var i = 0, _i = keys.length; i < _i; i++) {
-                var key = keys[i];
-                if (isNaN(goto[key])) {
-                    for (var j = 0, _j = key.children.length; j < _j; j++) {
-                        delta[i][j] = -delta[i][j];
-                        start[i][j] = parseFloat(object[key.key][key.children[j]]);
-                        start[i][j] = isNaN(start[i][j]) ? 0 : start[i][j];
-                    }
-                } else {
-                    delta[i] = -delta[i];
-                    start[i] = parseFloat(object[key]);
-                    start[i] = isNaN(start[i]) ? 0 : start[i];
-                }
-            }
-        }
-    }, {
-        key: 'calculate',
-        value: function calculate() /*elapsed*/{
-            var object = this.object;
-            var list = this.list;
-            var keys = this.keys;
-            var goto = this.goto;
-            var time = this.time;
-            var start = this.start;
-            var delta = this.delta;
-            var duration = this.duration;
-            var ease = this.options.ease;
-            for (var i = 0, _i = this.keys.length; i < _i; i++) {
-                var key = keys[i];
-                if (isNaN(goto[key])) {
-                    var key1 = key.key;
-                    for (var j = 0, _j = key.children.length; j < _j; j++) {
-                        var key2 = key.children[j];
-                        var others = object[key1][key2] = time >= duration ? start[i][j] + delta[i][j] : ease(time, start[i][j], delta[i][j], duration);
-                        if (list) {
-                            for (var k = 1, _k = list.length; k < _k; k++) {
-                                list[k][key1][key2] = others;
-                            }
-                        }
-                    }
-                } else {
-                    var _key = keys[i];
-                    var _others = object[_key] = time >= duration ? start[i] + delta[i] : ease(time, start[i], delta[i], duration);
-                    if (list) {
-                        for (var _j2 = 1, _j3 = this.list.length; _j2 < _j3; _j2++) {
-                            list[_j2][_key] = _others;
-                        }
-                    }
-                }
-            }
-        }
-    }]);
-
-    return to;
-}(wait);
-
-module.exports = to;
-
-},{"./wait":17}],17:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Easing = require('penner');
-var EventEmitter = require('eventemitter3');
-
-var wait = function (_EventEmitter) {
-    _inherits(wait, _EventEmitter);
-
-    /**
-     * @param {object|object[]} object or list of objects to animate
-     * @param {object} [options]
-     * @param {number} [options.wait=0] n milliseconds before starting animation (can also be used to pause animation for a length of time)
-     * @param {boolean} [options.pause] start the animation paused
-     * @param {(boolean|number)} [options.repeat] true: repeat animation forever n: repeat animation n times
-     * @param {(boolean|number)} [options.reverse] true: reverse animation (if combined with repeat, then pulse) n: reverse animation n times
-     *
-     * @param {number} [options.id] user-generated id (e.g., I use it to properly load animations when an object has multiple animations running)
-     * @param {Function} [options.load] loads an animation using an .save() object note the * parameters below cannot be loaded and must be re-set
-     * @param {Function|string} [options.ease] function (or penner function name) from easing.js (see http://easings.net for examples)*
-     *
-     * @emits {done} animation expires
-     * @emits {wait} each update during a wait
-     * @emits {first} first update when animation starts
-     * @emits {each} each update while animation is running
-     * @emits {loop} when animation is repeated
-     * @emits {reverse} when animation is reversed
-     */
-    function wait(object, options) {
-        _classCallCheck(this, wait);
-
-        var _this = _possibleConstructorReturn(this, (wait.__proto__ || Object.getPrototypeOf(wait)).call(this));
-
-        _this.object = object;
-        _this.options = options || {};
-        _this.type = 'Wait';
-        if (_this.options.load) {
-            _this.load(_this.options.load);
-        } else {
-            _this.time = 0;
-        }
-        if (_this.options.ease && typeof _this.options.ease !== 'function') {
-            _this.options.easeName = _this.options.ease;
-            _this.options.ease = Easing[_this.options.ease];
-        }
-        if (!_this.options.ease) {
-            _this.options.ease = Easing['linear'];
-        }
-        return _this;
-    }
-
-    _createClass(wait, [{
-        key: 'save',
-        value: function save() {
-            var save = { type: this.type, time: this.time, duration: this.duration, ease: this.options.easeName };
-            var options = this.options;
-            if (options.wait) {
-                save.wait = options.wait;
-            }
-            if (typeof options.id !== 'undefined') {
-                save.id = options.id;
-            }
-            if (options.pause) {
-                save.pause = options.pause;
-            }
-            if (options.repeat) {
-                save.repeat = options.repeat;
-            }
-            if (options.reverse) {
-                save.reverse = options.reverse;
-            }
-            return save;
-        }
-    }, {
-        key: 'load',
-        value: function load(_load) {
-            this.options.wait = _load.wait;
-            this.options.pause = _load.pause;
-            this.options.repeat = _load.repeat;
-            this.options.reverse = _load.reverse;
-            this.options.id = _load.id;
-            this.options.ease = _load.ease;
-            if (this.options.ease && typeof this.options.ease !== 'function') {
-                this.options.easeName = this.options.ease;
-                this.options.ease = Easing[this.options.ease];
-            }
-            if (!this.options.ease) {
-                this.options.ease = Easing['linear'];
-            }
-            this.time = _load.time;
-            this.duration = _load.duration;
-        }
-
-        /**
-         * pause this entry
-         * @type {boolean}
-         */
-
-    }, {
-        key: 'end',
-        value: function end(leftOver) {
-            if (this.options.reverse) {
-                this.reverse();
-                this.time = leftOver;
-                if (!this.options.repeat) {
-                    if (this.options.reverse === true) {
-                        this.options.reverse = false;
-                    } else {
-                        this.options.reverse--;
-                    }
-                } else {
-                    if (this.options.repeat !== true) {
-                        this.options.repeat--;
-                    }
-                }
-                this.emit('loop', this.list || this.object);
-            } else if (this.options.repeat) {
-                this.time = leftOver;
-                if (this.options.repeat !== true) {
-                    this.options.repeat--;
-                }
-                this.emit('loop', this.list || this.object);
-            } else {
-                this.done();
-                this.emit('done', this.list || this.object, leftOver);
-                // this.list = this.object = null
-                return true;
-            }
-        }
-    }, {
-        key: 'update',
-        value: function update(elapsed) {
-            var options = this.options;
-            if (options.pause) {
-                return;
-            }
-            if (options.wait) {
-                options.wait -= elapsed;
-                if (options.wait <= 0) {
-                    elapsed = -options.wait;
-                    options.wait = false;
-                } else {
-                    this.emit('wait', elapsed, this.list || this.object);
-                    return;
-                }
-            }
-            if (!this.first) {
-                this.first = true;
-                this.emit('first', this.list || this.object);
-            }
-            this.time += elapsed;
-            var leftOver = 0;
-            var duration = this.duration;
-            var time = this.time;
-            if (duration !== 0 && time > duration) {
-                leftOver = time - duration;
-                this.time = time = duration;
-            }
-            var force = this.calculate(elapsed);
-            this.emit('each', elapsed, this.list || this.object, this);
-            if (this.type === 'Wait' || duration !== 0 && time === duration) {
-                return this.end(leftOver);
-            }
-            return force || time === duration;
-        }
-
-        // correct certain DOM values
-
-    }, {
-        key: '_correctDOM',
-        value: function _correctDOM(key, value) {
-            switch (key) {
-                case 'opacity':
-                    return isNaN(value) ? 1 : value;
-            }
-            return value;
-        }
-    }, {
-        key: 'reverse',
-        value: function reverse() {}
-    }, {
-        key: 'calculate',
-        value: function calculate() {}
-    }, {
-        key: 'done',
-        value: function done() {}
-    }, {
-        key: 'pause',
-        set: function set(value) {
-            this.options.pause = value;
-        },
-        get: function get() {
-            return this.options.pause;
-        }
-    }]);
-
-    return wait;
-}(EventEmitter);
-
-module.exports = wait;
-
-},{"eventemitter3":5,"penner":6}],18:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -3127,7 +3133,7 @@ module.exports = function (_Plugin) {
             if (this.left !== null || this.right !== null) {
                 var moved = void 0;
                 if (this.parent.screenWorldWidth < this.parent.screenWidth) {
-                    if (!!this.noUnderflow) {
+                    if (!this.noUnderflow) {
                         switch (this.underflowX) {
                             case -1:
                                 if (this.parent.x !== 0) {
@@ -3425,6 +3431,7 @@ module.exports = function (_Plugin) {
      * @param {boolean} [options.reverse] reverse the direction of the wheel scroll
      * @param {boolean|string} [options.clampWheel] (true, x, or y) clamp wheel (to avoid weird bounce with mouse wheel)
      * @param {string} [options.underflow=center] (top/bottom/center and left/right/center, or center) where to place world if too small for screen
+     * @param {number} [options.factor=1] factor to multiply drag to increase the speed of movement
      */
     function Drag(parent, options) {
         _classCallCheck(this, Drag);
@@ -3438,6 +3445,7 @@ module.exports = function (_Plugin) {
         _this.wheelScroll = options.wheelScroll || 1;
         _this.reverse = options.reverse ? 1 : -1;
         _this.clampWheel = options.clampWheel;
+        _this.factor = options.factor || 1;
         _this.xDirection = !options.direction || options.direction === 'all' || options.direction === 'x';
         _this.yDirection = !options.direction || options.direction === 'all' || options.direction === 'y';
         _this.parseUnderflow(options.underflow || 'center');
@@ -3488,10 +3496,10 @@ module.exports = function (_Plugin) {
                     if (this.moved || this.xDirection && this.parent.checkThreshold(distX) || this.yDirection && this.parent.checkThreshold(distY)) {
                         var newParent = this.parent.parent.toLocal(e.data.global);
                         if (this.xDirection) {
-                            this.parent.x += newParent.x - this.last.parent.x;
+                            this.parent.x += (newParent.x - this.last.parent.x) * this.factor;
                         }
                         if (this.yDirection) {
-                            this.parent.y += newParent.y - this.last.parent.y;
+                            this.parent.y += (newParent.y - this.last.parent.y) * this.factor;
                         }
                         this.last = { x: x, y: y, parent: newParent };
                         if (!this.moved) {
@@ -3731,6 +3739,7 @@ module.exports = function (_Plugin) {
      * @param {boolean} [options.reverse] reverse direction of scroll
      * @param {boolean} [options.noDecelerate] don't use decelerate plugin even if it's installed
      * @param {boolean} [options.linear] if using radius, use linear movement (+/- 1, +/- 1) instead of angled movement (Math.cos(angle from center), Math.sin(angle from center))
+     * @param {boolean} [options.allowButtons] allows plugin to continue working even when there's a mousedown event
      *
      * @event mouse-edge-start(Viewport) emitted when mouse-edge starts
      * @event mouse-edge-end(Viewport) emitted when mouse-edge ends
@@ -3771,12 +3780,14 @@ module.exports = function (_Plugin) {
     }, {
         key: 'down',
         value: function down() {
-            this.horizontal = this.vertical = null;
+            if (!this.options.allowButtons) {
+                this.horizontal = this.vertical = null;
+            }
         }
     }, {
         key: 'move',
         value: function move(e) {
-            if (e.data.identifier !== 'MOUSE' || e.data.buttons !== 0) {
+            if (e.data.identifier !== 'MOUSE' && e.data.identifier !== 1 || !this.options.allowButtons && e.data.buttons !== 0) {
                 return;
             }
             var x = e.data.global.x;
@@ -4451,7 +4462,7 @@ module.exports = {
     ease: ease
 };
 
-},{"penner":6}],30:[function(require,module,exports){
+},{"penner":5}],30:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -4495,7 +4506,7 @@ var Viewport = function (_PIXI$Container) {
      * @param {boolean} [options.stopPropagation=false] whether to stopPropagation of events that impact the viewport
      * @param {(PIXI.Rectangle|PIXI.Circle|PIXI.Ellipse|PIXI.Polygon|PIXI.RoundedRectangle)} [options.forceHitArea] change the default hitArea from world size to a new value
      * @param {boolean} [options.noTicker] set this if you want to manually call update() function on each frame
-     * @param {PIXI.ticker.Ticker} [options.ticker=PIXI.ticker.shared] use this PIXI.ticker for updates
+     * @param {PIXI.ticker.Ticker} [options.ticker=PIXI.Ticker.shared||PIXI.ticker.shared] use this PIXI.ticker for updates
      * @param {PIXI.InteractionManager} [options.interaction=null] InteractionManager, available from instantiated WebGLRenderer/CanvasRenderer.plugins.interaction - used to calculate pointer postion relative to canvas location on screen
      * @param {HTMLElement} [options.divWheel=document.body] div to attach the wheel event
      * @fires clicked
@@ -4558,7 +4569,7 @@ var Viewport = function (_PIXI$Container) {
         _this.touches = [];
 
         if (!options.noTicker) {
-            _this.ticker = options.ticker || PIXI.ticker.shared;
+            _this.ticker = options.ticker || (PIXI.Ticker ? PIXI.Ticker.shared : PIXI.ticker.shared);
             _this.tickerFunction = function () {
                 return _this.update(_this.ticker.elapsedMS);
             };
@@ -4675,8 +4686,12 @@ var Viewport = function (_PIXI$Container) {
         value: function resize(screenWidth, screenHeight, worldWidth, worldHeight) {
             this._screenWidth = screenWidth || window.innerWidth;
             this._screenHeight = screenHeight || window.innerHeight;
-            this._worldWidth = worldWidth;
-            this._worldHeight = worldHeight;
+            if (worldWidth) {
+                this._worldWidth = worldWidth;
+            }
+            if (worldHeight) {
+                this._worldHeight = worldHeight;
+            }
             this.resizePlugins();
         }
 
@@ -4766,7 +4781,7 @@ var Viewport = function (_PIXI$Container) {
     }, {
         key: 'down',
         value: function down(e) {
-            if (this.pause) {
+            if (this.pause || !this.worldVisible) {
                 return;
             }
             if (e.data.pointerType === 'mouse') {
@@ -4848,7 +4863,7 @@ var Viewport = function (_PIXI$Container) {
     }, {
         key: 'move',
         value: function move(e) {
-            if (this.pause) {
+            if (this.pause || !this.worldVisible) {
                 return;
             }
 
@@ -4901,7 +4916,7 @@ var Viewport = function (_PIXI$Container) {
     }, {
         key: 'up',
         value: function up(e) {
-            if (this.pause) {
+            if (this.pause || !this.worldVisible) {
                 return;
             }
 
@@ -4983,7 +4998,7 @@ var Viewport = function (_PIXI$Container) {
     }, {
         key: 'handleWheel',
         value: function handleWheel(e) {
-            if (this.pause) {
+            if (this.pause || !this.worldVisible) {
                 return;
             }
 
@@ -5204,8 +5219,8 @@ var Viewport = function (_PIXI$Container) {
             if (center) {
                 save = this.center;
             }
-            this.scale.x = this._screenWidth / this._worldWidth;
-            this.scale.y = this._screenHeight / this._worldHeight;
+            this.scale.x = this.screenWidth / this.worldWidth;
+            this.scale.y = this.screenHeight / this.worldHeight;
             if (this.scale.x < this.scale.y) {
                 this.scale.y = this.scale.x;
             } else {
@@ -5537,9 +5552,11 @@ var Viewport = function (_PIXI$Container) {
          * @param {object} [options]
          * @param {string} [options.direction=all] direction to drag (all, x, or y)
          * @param {boolean} [options.wheel=true] use wheel to scroll in y direction (unless wheel plugin is active)
-         * @param {number} [options.wheelScroll=10] number of pixels to scroll with each wheel spin
+         * @param {number} [options.wheelScroll=1] number of pixels to scroll with each wheel spin
          * @param {boolean} [options.reverse] reverse the direction of the wheel scroll
+         * @param {boolean|string} [options.clampWheel] (true, x, or y) clamp wheel (to avoid weird bounce with mouse wheel)
          * @param {string} [options.underflow=center] (top/bottom/center and left/right/center, or center) where to place world if too small for screen
+         * @param {number} [options.factor=1] factor to multiply drag to increase the speed of movement
          */
 
     }, {
@@ -5711,13 +5728,14 @@ var Viewport = function (_PIXI$Container) {
          * @param {number} [options.radius] distance from center of screen in screen pixels
          * @param {number} [options.distance] distance from all sides in screen pixels
          * @param {number} [options.top] alternatively, set top distance (leave unset for no top scroll)
-         * @param {number} [options.bottom] alternatively, set bottom distance (leave unset for no top scroll)
-         * @param {number} [options.left] alternatively, set left distance (leave unset for no top scroll)
-         * @param {number} [options.right] alternatively, set right distance (leave unset for no top scroll)
+         * @param {number} [options.bottom] alternatively, set bottom distance (leave unset for no bottom scroll)
+         * @param {number} [options.left] alternatively, set left distance (leave unset for no left scroll)
+         * @param {number} [options.right] alternatively, set right distance (leave unset for no right scroll)
          * @param {number} [options.speed=8] speed in pixels/frame to scroll viewport
          * @param {boolean} [options.reverse] reverse direction of scroll
          * @param {boolean} [options.noDecelerate] don't use decelerate plugin even if it's installed
          * @param {boolean} [options.linear] if using radius, use linear movement (+/- 1, +/- 1) instead of angled movement (Math.cos(angle from center), Math.sin(angle from center))
+         * @param {boolean} [options.allowButtons] allows plugin to continue working even when there's a mousedown event
          */
 
     }, {
@@ -6133,7 +6151,11 @@ var Viewport = function (_PIXI$Container) {
  */
 
 if (typeof PIXI !== 'undefined') {
-    PIXI.extras.Viewport = Viewport;
+    if (PIXI.extras) {
+        PIXI.extras.Viewport = Viewport;
+    } else {
+        PIXI.extras = { Viewport: Viewport };
+    }
 }
 
 module.exports = Viewport;
@@ -6203,7 +6225,6 @@ module.exports = function (_Plugin) {
                 var clamp = this.parent.plugins['clamp-zoom'];
                 if (clamp) {
                     clamp.clamp();
-                    this.smoothing = null;
                 }
                 if (this.center) {
                     this.parent.moveCenter(this.center);
@@ -6255,7 +6276,6 @@ module.exports = function (_Plugin) {
                 var clamp = this.parent.plugins['clamp-zoom'];
                 if (clamp) {
                     clamp.clamp();
-                    this.smoothing = null;
                 }
                 if (this.center) {
                     this.parent.moveCenter(this.center);

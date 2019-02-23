@@ -1,4 +1,4 @@
-const PIXI = require('pixi.js')
+window.PIXI = require('pixi.js')
 const FPS = require('yy-fps')
 const Random = require('yy-random')
 
@@ -91,7 +91,8 @@ window.onload = function ()
     nodrag.dragScroll = false
     window.addEventListener('resize', resize)
 
-    PIXI.ticker.shared.add(() =>
+    const ticker = PIXI.ticker ? PIXI.ticker : PIXI.Ticker
+    ticker.shared.add(() =>
     {
         _fps.frame()
     })
