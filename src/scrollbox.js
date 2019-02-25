@@ -1,3 +1,4 @@
+const PIXI = require('pixi.js')
 const Viewport = require('pixi-viewport')
 const Ease = require('pixi-ease')
 

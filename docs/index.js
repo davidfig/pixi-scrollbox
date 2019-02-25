@@ -1469,7 +1469,7 @@ module.exports = {
 };
 
 },{}],8:[function(require,module,exports){
-window.PIXI = require('pixi.js')
+const PIXI = require('pixi.js')
 const FPS = require('yy-fps')
 const Random = require('yy-random')
 
@@ -38823,7 +38823,7 @@ function getLeftmost(start) {
     var p = start,
         leftmost = start;
     do {
-        if (p.x < leftmost.x) leftmost = p;
+        if (p.x < leftmost.x || (p.x === leftmost.x && p.y < leftmost.y)) leftmost = p;
         p = p.next;
     } while (p !== start);
 
@@ -62640,14 +62640,6 @@ var Ease = {
     load: require('./load')
 };
 
-if (PIXI) {
-    if (PIXI.extras) {
-        PIXI.extras.Ease = Ease;
-    } else {
-        PIXI.extras = { Ease: Ease };
-    }
-}
-
 module.exports = Ease;
 
 },{"./angle":238,"./face":239,"./list":241,"./load":242,"./movie":243,"./shake":244,"./target":245,"./tint":246,"./to":247,"./wait":248}],241:[function(require,module,exports){
@@ -62661,6 +62653,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var PIXI = require('pixi.js');
 var Events = require('eventemitter3');
 
 var Angle = require('./angle');
@@ -63030,7 +63023,7 @@ var Ease = function (_Events) {
 
 module.exports = Ease;
 
-},{"./angle":238,"./face":239,"./load":242,"./movie":243,"./shake":244,"./target":245,"./tint":246,"./to":247,"./wait":248,"eventemitter3":249}],242:[function(require,module,exports){
+},{"./angle":238,"./face":239,"./load":242,"./movie":243,"./shake":244,"./target":245,"./tint":246,"./to":247,"./wait":248,"eventemitter3":249,"pixi.js":264}],242:[function(require,module,exports){
 'use strict';
 
 var wait = require('./wait');
@@ -66030,6 +66023,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var PIXI = require('pixi.js');
+
 var utils = require('./utils');
 var Drag = require('./drag');
 var Pinch = require('./pinch');
@@ -67715,7 +67710,7 @@ if (typeof PIXI !== 'undefined') {
 
 module.exports = Viewport;
 
-},{"./bounce":250,"./clamp":252,"./clamp-zoom":251,"./decelerate":253,"./drag":254,"./follow":255,"./mouse-edges":256,"./pinch":257,"./snap":260,"./snap-zoom":259,"./utils":261,"./wheel":263}],263:[function(require,module,exports){
+},{"./bounce":250,"./clamp":252,"./clamp-zoom":251,"./decelerate":253,"./drag":254,"./follow":255,"./mouse-edges":256,"./pinch":257,"./snap":260,"./snap-zoom":259,"./utils":261,"./wheel":263,"pixi.js":264}],263:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -67802,13 +67797,9 @@ module.exports = function (_Plugin) {
             }
 
             var point = this.parent.getPointerPosition(e);
-            var sign = void 0;
-            if (this.reverse) {
-                sign = e.deltaY > 0 ? 1 : -1;
-            } else {
-                sign = e.deltaY < 0 ? 1 : -1;
-            }
-            var change = 1 + this.percent * sign;
+            var sign = this.reverse ? -1 : 1;
+            var step = sign * -e.deltaY * (e.deltaMode ? 120 : 1) / 500;
+            var change = Math.pow(2, (1 + this.percent) * step);
             if (this.smooth) {
                 var original = {
                     x: this.smoothing ? this.smoothing.x * (this.smooth - this.smoothingCount) : 0,
@@ -74864,6 +74855,7 @@ module.exports = function (options, defaults)
     return options
 }
 },{}],287:[function(require,module,exports){
+const PIXI = require('pixi.js')
 const Viewport = require('pixi-viewport')
 const Ease = require('pixi-ease')
 
@@ -75447,4 +75439,4 @@ if (PIXI && PIXI.extras)
 }
 
 module.exports = Scrollbox
-},{"./defaults":286,"./defaults.json":285,"pixi-ease":240,"pixi-viewport":262}]},{},[8]);
+},{"./defaults":286,"./defaults.json":285,"pixi-ease":240,"pixi-viewport":262,"pixi.js":264}]},{},[8]);

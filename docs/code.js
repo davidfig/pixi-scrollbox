@@ -1,4 +1,4 @@
-window.PIXI = require('pixi.js')
+const PIXI = require('pixi.js')
 const FPS = require('yy-fps')
 const Random = require('yy-random')
 
