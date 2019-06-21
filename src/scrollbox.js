@@ -1,6 +1,9 @@
 const PIXI = require('pixi.js')
-const Viewport = require('pixi-viewport')
+let Viewport = require('pixi-viewport')
 const Ease = require('pixi-ease')
+
+// handle v4 pixi-viewport
+Viewport = typeof Viewport.Viewport === 'undefined' ? Viewport : Viewport.Viewport
 
 const defaults = require('./defaults')
 const DEFAULTS = require('./defaults.json')
@@ -139,7 +142,14 @@ class Scrollbox extends PIXI.Container
         }
         else
         {
-            this.content.removePlugin('drag')
+            if (typeof this.content.removePlugin !== 'undefined')
+            {
+                this.content.removePlugin('drag')
+            }
+            else
+            {
+                this.content.plugins.remove('drag')
+            }
         }
         this.update()
     }
