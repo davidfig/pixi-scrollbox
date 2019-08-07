@@ -15,10 +15,10 @@ const scrollboxOptions = {
     'scrollbarOffsetHorizontal': 0,
     'scrollbarOffsetVertical': 0,
     'underflow': 'top-left',
-    'fadeScrollbarTime': 1000,
     'fadeScrollbar': false,
-    'fadeWait': 3000,
-    'fadeEase': 'easeInOutSine'
+    'fadeScrollbarTime': 1000,
+    'fadeScrollboxWait': 3000,
+    'fadeScrollboxEase': 'easeInOutSine'
 }
 
 /**
@@ -44,16 +44,18 @@ export class Scrollbox extends PIXI.Container
      * @param {number} [options.scrollbarForeground=0x888888] foreground color of scrollbar
      * @param {number} [options.scrollbarForegroundAlpha=1] alpha of foreground of scrollbar
      * @param {string} [options.underflow=top-left] what to do when content underflows the scrollbox size: none: do nothing; (left/right/center AND top/bottom/center); OR center (e.g., 'top-left', 'center', 'none', 'bottomright')
+     * @param {boolean} [options.noTicker] do not use PIXI.Ticker (for fade to work properly you will need to manually call updateLoop(elapsed) on each frame)
+     * @param {PIXI.Ticker} [options.ticker=PIXI.Ticker.shared] use this PIXI.Ticker for updates
      * @param {boolean} [options.fade] fade the scrollbar when not in use
      * @param {number} [options.fadeScrollbarTime=1000] time to fade scrollbar if options.fade is set
-     * @param {number} [options.fadeWait=3000] time to wait before fading the scrollbar if options.fade is set
-     * @param {(string|function)} [options.fadeEase=easeInOutSine] easing function to use for fading
+     * @param {number} [options.fadeScrollboxWait=3000] time to wait before fading the scrollbar if options.fade is set
+     * @param {(string|function)} [options.fadeScrollboxEase=easeInOutSine] easing function to use for fading
      */
-    constructor(options)
+    constructor(options={})
     {
         super()
         this.options = Object.assign({}, scrollboxOptions, options)
-        this.ease = typeof this.options.ease === 'function' ? this.options.ease : Penner[this.options.ease]
+        this.ease = typeof this.options.fadeScrollboxEase === 'function' ? this.options.fadeScrollboxEase : Penner[this.options.fadeScrollboxEase]
 
         /**
          * content in placed in here
@@ -64,6 +66,28 @@ export class Scrollbox extends PIXI.Container
         this.content
             .decelerate()
             .on('moved', () => this._drawScrollbars())
+
+        // needed to pull this out of viewportOptions because of pixi.js v4 support (which changed from PIXI.ticker.shared to PIXI.Ticker.shared...sigh)
+        if (options.ticker)
+        {
+            this.options.ticker = options.ticker
+        }
+        else
+        {
+            // to avoid Rollup transforming our import, save pixi namespace in a variable
+            // from here: https://github.com/pixijs/pixi.js/issues/5757
+            let ticker
+            const pixiNS = PIXI
+            if (parseInt(/^(\d+)\./.exec(PIXI.VERSION)[1]) < 5)
+            {
+                ticker = pixiNS.ticker.shared;
+            }
+            else
+            {
+                ticker = pixiNS.Ticker.shared;
+            }
+            this.options.ticker = options.ticker || ticker
+        }
 
         /**
          * graphics element for drawing the scrollbars
@@ -79,6 +103,12 @@ export class Scrollbox extends PIXI.Container
         this.on('pointerupoutside', this.scrollbarUp, this)
         this._maskContent = this.addChild(new PIXI.Graphics())
         this.update()
+
+        if (!this.options.noTicker)
+        {
+            this.tickerFunction = () => this.updateLoop(Math.min(this.options.ticker.elapsedMS, 16.6667))
+            this.options.ticker.add(this.tickerFunction)
+        }
     }
 
     /**
@@ -434,33 +464,54 @@ export class Scrollbox extends PIXI.Container
                         .clamp({ direction, underflow: this.options.underflow })
                 }
             }
-            if (this.fade)
+        }
+    }
+
+    /**
+     * called on each frame to update fade scrollbars (if enabled)
+     * @param {number} elapsed since last frame in milliseconds (usually capped at 16.6667)
+     */
+    updateLoop(elapsed)
+    {
+        if (this.fade)
+        {
+            if (this.fade.wait > 0)
             {
-                let elapsed = Math.min(this.options.ticker.elapsedMS, 16.67)
-                if (this.fade.wait > 0)
+                this.fade.wait -= elapsed
+                if (this.fade.wait <= 0)
                 {
-                    this.fade.wait -= elapsed
-                    if (this.fade.wait <= 0)
-                    {
-                        elapsed += this.fade.wait
-                    }
-                    else
-                    {
-                        return
-                    }
-                }
-                this.fade.duration += elapsed
-                if (this.fade.duration >= this.options.fadeTime)
-                {
-                    this.fade = null
-                    this.scrollbar.alpha = 0
+                    elapsed += this.fade.wait
                 }
                 else
                 {
-                    this.scrollbar.alpha = this.ease(this.fade.duration, 1, -1, this.options.fadeTime)
+                    return
                 }
             }
+            this.fade.duration += elapsed
+            if (this.fade.duration >= this.options.fadeScrollbarTime)
+            {
+                this.fade = null
+                this.scrollbar.alpha = 0
+            }
+            else
+            {
+                this.scrollbar.alpha = this.ease(this.fade.duration, 1, -1, this.options.fadeScrollbarTime)
+            }
+            this.content.dirty = true
         }
+    }
+
+    /**
+     * dirty value (used for optimizing draws) for underlying viewport (scrollbox.content)
+     * @type {boolean}
+     */
+    get dirty()
+    {
+        return this.content.dirty
+    }
+    set dirty(value)
+    {
+        this.content.dirty = value
     }
 
     /**
@@ -471,7 +522,7 @@ export class Scrollbox extends PIXI.Container
         if (this.options.fade)
         {
             this.scrollbar.alpha = 1
-            this.fade = { wait: this.options.fadeWait, duration: 0 }
+            this.fade = { wait: this.options.fadeScrollboxWait, duration: 0 }
         }
     }
 
