@@ -1,8 +1,9 @@
-const PIXI = require('pixi.js')
-const FPS = require('yy-fps')
-const Random = require('yy-random')
+import * as PIXI from 'pixi.js'
+import FPS from 'yy-fps'
+import Random from 'yy-random'
 
-const Scrollbox = require('../src/scrollbox')
+import { Scrollbox } from '../src/scrollbox'
+import highlight from './highlight.js'
 
 let _renderer, _fps, g
 
@@ -91,10 +92,9 @@ window.onload = function ()
     nodrag.dragScroll = false
     window.addEventListener('resize', resize)
 
-    const ticker = PIXI.ticker ? PIXI.ticker : PIXI.Ticker
-    ticker.shared.add(() =>
+    PIXI.Ticker.shared.add(() =>
     {
         _fps.frame()
     })
-    require('./highlight')()
+    highlight()
 }
