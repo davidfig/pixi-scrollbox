@@ -79,6 +79,8 @@
             
                 <li class="parent " data-name="Scrollbox#contentWidth"><a href="Scrollbox.html#contentWidth">contentWidth</a></li>
             
+                <li class="parent " data-name="Scrollbox#dirty"><a href="Scrollbox.html#dirty">dirty</a></li>
+            
                 <li class="parent " data-name="Scrollbox#disable"><a href="Scrollbox.html#disable">disable</a></li>
             
                 <li class="parent " data-name="Scrollbox#dragScroll"><a href="Scrollbox.html#dragScroll">dragScroll</a></li>
@@ -130,6 +132,8 @@
             
                 <li class="parent  " data-name="Scrollbox#update"><a href="Scrollbox.html#update">update</a></li>
             
+                <li class="parent  " data-name="Scrollbox#updateLoop"><a href="Scrollbox.html#updateLoop">updateLoop</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -180,7 +184,7 @@
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line16">scrollbox.js:16</a>
+            <a href="src_scrollbox.js.html#line54">scrollbox.js:54</a>
         </div>
         
     </div>
@@ -801,16 +805,13 @@
 	
         <tr>
             
-                <td class="name"><code>fade</code></td>
+                <td class="name"><code>noTicker</code></td>
             
             
             <td class="type">
             
                 
 <span class="param-type">boolean</span>
-|
-
-<span class="param-type">number</span>
 
 
             
@@ -831,14 +832,120 @@
                         
                     
                 
-                <p>fade the scrollbar when not in use (true = 1000ms)</p></td>
+                <p>do not use PIXI.Ticker (for fade to work properly you will need to manually call updateLoop(elapsed) on each frame)</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>fadeWait</code></td>
+                <td class="name"><code>ticker</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">PIXI.Ticker</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    PIXI.Ticker.shared
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>use this PIXI.Ticker for updates</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fade</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>fade the scrollbar when not in use</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fadeScrollbarTime</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    1000
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>time to fade scrollbar if options.fade is set</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fadeScrollboxWait</code></td>
             
             
             <td class="type">
@@ -874,7 +981,7 @@
 	
         <tr>
             
-                <td class="name"><code>fadeEase</code></td>
+                <td class="name"><code>fadeScrollboxEase</code></td>
             
             
             <td class="type">
@@ -966,6 +1073,13 @@
 
     
 
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl class="clearfix summary-list list-classes">
+            <dt class=""><a href="Scrollbox.html">Scrollbox</a></dt>
+            
+        </dl>
     
 
     
@@ -1082,7 +1196,7 @@
         <h4 class="name" id="content">
             <a class="share-icon" href="#content"><span class="glyphicon glyphicon-link"></span></a>
             <span class="">content</span>
-            <span class="type-signature type">PIXI.extras.Viewport</span>
+            <span class="type-signature type">Viewport</span>
             
             
             
@@ -1199,6 +1313,57 @@ you can use any function from pixi-viewport on content to manually move the cont
     
     <div class="description">
         <p>width of scrollbox less the scrollbar (if visible)</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="dirty">
+            <a class="share-icon" href="#dirty"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">dirty</span>
+            <span class="type-signature type">boolean</span>
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>dirty value (used for optimizing draws) for underlying viewport (scrollbox.content)</p>
     </div>
     
     
@@ -2080,7 +2245,7 @@ if not set then it uses content.width to calculate width</p>
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line431">scrollbox.js:431</a>
+            <a href="src_scrollbox.js.html#line520">scrollbox.js:520</a>
         </div>
         
     </div>
@@ -2156,7 +2321,7 @@ if not set then it uses content.width to calculate width</p>
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line582">scrollbox.js:582</a>
+            <a href="src_scrollbox.js.html#line665">scrollbox.js:665</a>
         </div>
         
     </div>
@@ -2346,7 +2511,7 @@ if not set then it uses content.width to calculate width</p>
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line559">scrollbox.js:559</a>
+            <a href="src_scrollbox.js.html#line642">scrollbox.js:642</a>
         </div>
         
     </div>
@@ -2609,7 +2774,7 @@ if not set then it uses content.width to calculate width</p>
 
         
         <div class="tag-source">
-            <a href="src_scrollbox.js.html#line407">scrollbox.js:407</a>
+            <a href="src_scrollbox.js.html#line449">scrollbox.js:449</a>
         </div>
         
     </div>
@@ -2628,6 +2793,127 @@ if not set then it uses content.width to calculate width</p>
 
     
 
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="updateLoop">
+            <a class="share-icon" href="#updateLoop"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">
+                updateLoop
+            </span>
+            <span class="signature">(elapsed)</span>
+            
+            
+            
+            
+        </h4>
+
+        
+        <div class="tag-source">
+            <a href="src_scrollbox.js.html#line474">scrollbox.js:474</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>called on each frame to update fade scrollbars (if enabled)</p>
+    </div>
+    
+
+    
+
+    
+
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>elapsed</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>since last frame in milliseconds (usually capped at 16.6667)</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
 
     
@@ -2687,7 +2973,7 @@ if not set then it uses content.width to calculate width</p>
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jun 21 2019 07:21:28 GMT+0000 (GMT)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Aug 07 2019 09:38:55 GMT+0800 (Taipei Standard Time)
             </div>
         </footer>
     </div>

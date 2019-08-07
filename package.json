@@ -1,6 +1,6 @@
 {
     "name": "pixi-scrollbox",
-    "version": "1.6.1",
+    "version": "2.0.0",
     "description": "pixi.js scrollbox: a masked box that can scroll vertically or horizontally with scrollbars",
     "browser": "dist/scrollbox.js",
     "main": "dist/scrollbox.js",
@@ -13,11 +13,10 @@
     "scripts": {
         "test": "rollup -c rollup.dev.js --watch",
         "upgrade": "yarn upgrade-interactive --latest",
-        "build-demo": "browserify -o docs/index.js docs/code.js",
+        "build-demo": "rollup -c docs/rollup.config.js",
         "docs": "jsdoc -c .jsdoc.json",
-        "bundle": "browserify dist/scrollbox.js -o bundle/scrollbox.js && uglifyjs -mc -o bundle/scrollbox.min.js dist/scrollbox.js",
-        "transpile": "babel src/ --out-dir dist --source-maps inline && cp src/defaults.json dist/defaults.json",
-        "prepublishOnly": "yarn run transpile && yarn run bundle && yarn run build-demo && yarn run docs"
+        "build": "rollup -c rollup.config.js",
+        "prepublishOnly": "yarn run build && yarn run build-demo && yarn run docs"
     },
     "repository": {
         "type": "git",
@@ -47,6 +46,7 @@
         "clicked": "^2.2.1",
         "fork-me-github": "^1.2.0",
         "highlight.js": "^9.15.9",
+        "jsdoc": "^3.6.3",
         "pixi-viewport": "4.1.4",
         "pixi.js": "^5.1.1",
         "rollup": "^1.17.0",

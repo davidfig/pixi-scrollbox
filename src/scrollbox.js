@@ -519,7 +519,7 @@ export class Scrollbox extends PIXI.Container
      */
     activateFade()
     {
-        if (this.options.fade)
+        if (!this.fade && this.options.fade)
         {
             this.scrollbar.alpha = 1
             this.fade = { wait: this.options.fadeScrollboxWait, duration: 0 }

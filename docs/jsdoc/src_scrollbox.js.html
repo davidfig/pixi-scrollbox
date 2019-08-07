@@ -79,6 +79,8 @@
             
                 <li class="parent " data-name="Scrollbox#contentWidth"><a href="Scrollbox.html#contentWidth">contentWidth</a></li>
             
+                <li class="parent " data-name="Scrollbox#dirty"><a href="Scrollbox.html#dirty">dirty</a></li>
+            
                 <li class="parent " data-name="Scrollbox#disable"><a href="Scrollbox.html#disable">disable</a></li>
             
                 <li class="parent " data-name="Scrollbox#dragScroll"><a href="Scrollbox.html#dragScroll">dragScroll</a></li>
@@ -130,6 +132,8 @@
             
                 <li class="parent  " data-name="Scrollbox#update"><a href="Scrollbox.html#update">update</a></li>
             
+                <li class="parent  " data-name="Scrollbox#updateLoop"><a href="Scrollbox.html#updateLoop">updateLoop</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -153,22 +157,33 @@
             </div>
         </header>
         <article>
-            <pre id="source-code" class="prettyprint source "><code>const PIXI = require('pixi.js')
-let Viewport = require('pixi-viewport')
-const Ease = require('pixi-ease')
+            <pre id="source-code" class="prettyprint source "><code>import * as PIXI from 'pixi.js'
+import { Viewport } from 'pixi-viewport'
+import Penner from 'penner'
 
-// handle v4 pixi-viewport
-Viewport = typeof Viewport.Viewport === 'undefined' ? Viewport : Viewport.Viewport
-
-const defaults = require('./defaults')
-const DEFAULTS = require('./defaults.json')
-
-const FADE_SCROLLBAR_TIME = 1000
+const scrollboxOptions = {
+    'boxWidth': 100,
+    'boxHeight': 100,
+    'scrollbarSize': 10,
+    'scrollbarBackground': 14540253,
+    'scrollbarBackgroundAlpha': 1,
+    'scrollbarForeground': 8947848,
+    'scrollbarForegroundAlpha': 1,
+    'dragScroll': true,
+    'stopPropagation': true,
+    'scrollbarOffsetHorizontal': 0,
+    'scrollbarOffsetVertical': 0,
+    'underflow': 'top-left',
+    'fadeScrollbar': false,
+    'fadeScrollbarTime': 1000,
+    'fadeScrollboxWait': 3000,
+    'fadeScrollboxEase': 'easeInOutSine'
+}
 
 /**
  * pixi.js scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
  */
-class Scrollbox extends PIXI.Container
+export class Scrollbox extends PIXI.Container
 {
     /**
      * create a scrollbox
@@ -188,25 +203,50 @@ class Scrollbox extends PIXI.Container
      * @param {number} [options.scrollbarForeground=0x888888] foreground color of scrollbar
      * @param {number} [options.scrollbarForegroundAlpha=1] alpha of foreground of scrollbar
      * @param {string} [options.underflow=top-left] what to do when content underflows the scrollbox size: none: do nothing; (left/right/center AND top/bottom/center); OR center (e.g., 'top-left', 'center', 'none', 'bottomright')
-     * @param {(boolean|number)} [options.fade] fade the scrollbar when not in use (true = 1000ms)
-     * @param {number} [options.fadeWait=3000] time to wait before fading the scrollbar if options.fade is set
-     * @param {(string|function)} [options.fadeEase=easeInOutSine] easing function to use for fading
+     * @param {boolean} [options.noTicker] do not use PIXI.Ticker (for fade to work properly you will need to manually call updateLoop(elapsed) on each frame)
+     * @param {PIXI.Ticker} [options.ticker=PIXI.Ticker.shared] use this PIXI.Ticker for updates
+     * @param {boolean} [options.fade] fade the scrollbar when not in use
+     * @param {number} [options.fadeScrollbarTime=1000] time to fade scrollbar if options.fade is set
+     * @param {number} [options.fadeScrollboxWait=3000] time to wait before fading the scrollbar if options.fade is set
+     * @param {(string|function)} [options.fadeScrollboxEase=easeInOutSine] easing function to use for fading
      */
-    constructor(options)
+    constructor(options={})
     {
         super()
-        this.options = defaults(options, DEFAULTS)
-        this.ease = new Ease.list()
+        this.options = Object.assign({}, scrollboxOptions, options)
+        this.ease = typeof this.options.fadeScrollboxEase === 'function' ? this.options.fadeScrollboxEase : Penner[this.options.fadeScrollboxEase]
 
         /**
          * content in placed in here
          * you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)
-         * @type {PIXI.extras.Viewport}
+         * @type {Viewport}
          */
         this.content = this.addChild(new Viewport({ passiveWheel: this.options.stopPropagation, stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight }))
         this.content
             .decelerate()
             .on('moved', () => this._drawScrollbars())
+
+        // needed to pull this out of viewportOptions because of pixi.js v4 support (which changed from PIXI.ticker.shared to PIXI.Ticker.shared...sigh)
+        if (options.ticker)
+        {
+            this.options.ticker = options.ticker
+        }
+        else
+        {
+            // to avoid Rollup transforming our import, save pixi namespace in a variable
+            // from here: https://github.com/pixijs/pixi.js/issues/5757
+            let ticker
+            const pixiNS = PIXI
+            if (parseInt(/^(\d+)\./.exec(PIXI.VERSION)[1]) &lt; 5)
+            {
+                ticker = pixiNS.ticker.shared;
+            }
+            else
+            {
+                ticker = pixiNS.Ticker.shared;
+            }
+            this.options.ticker = options.ticker || ticker
+        }
 
         /**
          * graphics element for drawing the scrollbars
@@ -222,6 +262,12 @@ class Scrollbox extends PIXI.Container
         this.on('pointerupoutside', this.scrollbarUp, this)
         this._maskContent = this.addChild(new PIXI.Graphics())
         this.update()
+
+        if (!this.options.noTicker)
+        {
+            this.tickerFunction = () => this.updateLoop(Math.min(this.options.ticker.elapsedMS, 16.6667))
+            this.options.ticker.add(this.tickerFunction)
+        }
     }
 
     /**
@@ -581,20 +627,61 @@ class Scrollbox extends PIXI.Container
     }
 
     /**
+     * called on each frame to update fade scrollbars (if enabled)
+     * @param {number} elapsed since last frame in milliseconds (usually capped at 16.6667)
+     */
+    updateLoop(elapsed)
+    {
+        if (this.fade)
+        {
+            if (this.fade.wait > 0)
+            {
+                this.fade.wait -= elapsed
+                if (this.fade.wait &lt;= 0)
+                {
+                    elapsed += this.fade.wait
+                }
+                else
+                {
+                    return
+                }
+            }
+            this.fade.duration += elapsed
+            if (this.fade.duration >= this.options.fadeScrollbarTime)
+            {
+                this.fade = null
+                this.scrollbar.alpha = 0
+            }
+            else
+            {
+                this.scrollbar.alpha = this.ease(this.fade.duration, 1, -1, this.options.fadeScrollbarTime)
+            }
+            this.content.dirty = true
+        }
+    }
+
+    /**
+     * dirty value (used for optimizing draws) for underlying viewport (scrollbox.content)
+     * @type {boolean}
+     */
+    get dirty()
+    {
+        return this.content.dirty
+    }
+    set dirty(value)
+    {
+        this.content.dirty = value
+    }
+
+    /**
      * show the scrollbar and restart the timer for fade if options.fade is set
      */
     activateFade()
     {
-        if (this.options.fade)
+        if (!this.fade &amp;&amp; this.options.fade)
         {
-            if (this.fade)
-            {
-                this.ease.remove(this.fade)
-            }
             this.scrollbar.alpha = 1
-            const time = this.options.fade === true ? FADE_SCROLLBAR_TIME : this.options.fade
-            this.fade = this.ease.to(this.scrollbar, { alpha: 0 }, time, { wait: this.options.fadeWait, ease: this.options.fadeEase })
-            this.fade.on('each', () => this.content.dirty = true)
+            this.fade = { wait: this.options.fadeScrollboxWait, duration: 0 }
         }
     }
 
@@ -739,14 +826,7 @@ class Scrollbox extends PIXI.Container
         this.content.ensureVisible(x, y, width, height)
         this._drawScrollbars()
     }
-}
-
-if (PIXI &amp;&amp; PIXI.extras)
-{
-    PIXI.extras.Scrollbox = Scrollbox
-}
-
-module.exports = Scrollbox</code></pre>
+}</code></pre>
         </article>
     </section>
 
@@ -759,7 +839,7 @@ module.exports = Scrollbox</code></pre>
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jun 21 2019 07:21:28 GMT+0000 (GMT)
+                Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Aug 07 2019 09:38:55 GMT+0800 (Taipei Standard Time)
             </div>
         </footer>
     </div>

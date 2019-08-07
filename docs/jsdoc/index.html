@@ -79,6 +79,8 @@
             
                 <li class="parent " data-name="Scrollbox#contentWidth"><a href="Scrollbox.html#contentWidth">contentWidth</a></li>
             
+                <li class="parent " data-name="Scrollbox#dirty"><a href="Scrollbox.html#dirty">dirty</a></li>
+            
                 <li class="parent " data-name="Scrollbox#disable"><a href="Scrollbox.html#disable">disable</a></li>
             
                 <li class="parent " data-name="Scrollbox#dragScroll"><a href="Scrollbox.html#dragScroll">dragScroll</a></li>
@@ -130,6 +132,8 @@
             
                 <li class="parent  " data-name="Scrollbox#update"><a href="Scrollbox.html#update">update</a></li>
             
+                <li class="parent  " data-name="Scrollbox#updateLoop"><a href="Scrollbox.html#updateLoop">updateLoop</a></li>
+            
             </ul>
             <ul class="events itemMembers">
             
@@ -163,7 +167,8 @@
 
 
     <section>
-        <article class="readme content-size"><h1>pixi-scrollbox</h1><p>A configurable scrollbox designed for pixi.js.</p>
+        <article class="readme content-size"><h1>pixi-scrollbox</h1>
+<p>A configurable scrollbox designed for pixi.js.</p>
 <p>Features:</p>
 <ul>
 <li>scrollbox uses a mask to clip to desired boxWidth/boxHeight size</li>
@@ -171,32 +176,57 @@
 <li>scrollbox's scrollbars may be hidden when not needed (options.overflow=auto or hidden)</li>
 <li>scrollbox may also be scrolled by dragging on the content window (options.dragScroll=true)</li>
 </ul>
-<h2>Live Example</h2><p><a target="_blank" href="https://davidfig.github.io/pixi-scrollbox/">davidfig.github.io/pixi-scrollbox/</a></p>
-<h2>Rationale</h2><p>I needed a scrollbox for the UI of my game and since I had this nifty pixi-viewport, I figured it wouldn't be much work to create it. Five hours later and I realized I was a bit off on my estimates. Hopefully others will find it useful.</p>
-<h2>Simple Example</h2><pre class="prettyprint source lang-js"><code>var PIXI = require('pixi.js');
-var Viewport = require('pixi-scrollbox');
+<h2>Live Example</h2>
+<p><a target="_blank" href="https://davidfig.github.io/pixi-scrollbox/">davidfig.github.io/pixi-scrollbox/</a></p>
+<h2>Rationale</h2>
+<p>I needed a scrollbox for the UI of my game and since I had this nifty pixi-viewport, I figured it wouldn't be much work to create it. Five hours later and I realized I was a bit off on my estimates. Hopefully others will find it useful.</p>
+<h2>Migration from v1 to v2</h2>
+<p>Scrollbox no longer exports a default object. Instead you need to use:</p>
+<pre class="prettyprint source lang-js"><code>const Scrollbox = require('pixi-scrollbox').Scrollbox
+</code></pre>
+<p>or</p>
+<pre class="prettyprint source lang-js"><code>import { Scrollbox } from 'pixi-scrollbox'
+</code></pre>
+<p>There were some minor name changes to the fade options. See documentation.</p>
+<h2>Simple Example</h2>
+<pre class="prettyprint source lang-js"><code>const PIXI = require('pixi.js')
+const Scrollbox = require('pixi-scrollbox').Scrollbox
 
 // create the scrollbox
-var scrollbox = new Scrollbox({ boxWidth: 200, boxHeight: 200});
+const scrollbox = new Scrollbox({ boxWidth: 200, boxHeight: 200})
 
 // add a sprite to the scrollbox's content
-var sprite = scrollbox.content.addChild(new PIXI.Sprite(PIXI.Texture.WHITE));
-sprite.width = sprite.height = 500;
-sprite.tint = 0xff0000;
+const sprite = scrollbox.content.addChild(new PIXI.Sprite(PIXI.Texture.WHITE))
+sprite.width = sprite.height = 500
+sprite.tint = 0xff0000
 
 // add the viewport to the stage
-var app = new PIXI.Application();
-document.body.appendChild(app.view);
-app.stage.addChild(scrollbox);</code></pre><h2>Usage</h2><pre class="prettyprint source"><code>npm i pixi-scrollbox pixi-viewport</code></pre><p>or</p>
-<pre class="prettyprint source"><code>yarn add pixi-scrollbox pixi-viewport</code></pre><p>Note: pixi-viewport and pixi.js are listed as peerDependency, which means you will need to manually install them if they're not already installed (this is to ensure you don't have two versions of these libraries). My instructions above assume you have pixi.js installed (otherwise why would you be looking at this library).</p>
+const app = new PIXI.Application()
+document.body.appendChild(app.view)
+app.stage.addChild(scrollbox)
+</code></pre>
+<h2>Installation</h2>
+<pre class="prettyprint source"><code>npm i pixi-scrollbox pixi-viewport pixi.js
+</code></pre>
+<p>or</p>
+<pre class="prettyprint source"><code>yarn add pixi-scrollbox pixi-viewport pixi.js
+</code></pre>
+<p>Note: pixi-viewport and pixi.js are listed as peerDependency, which means you will need to manually install them if they're not already installed (this is to ensure you don't have two versions of these libraries).</p>
 <p>or <a target="_blank" href="https://github.com/davidfig/pixi-scrollbox/releases">download the latest build from github</a></p>
 <pre class="prettyprint source lang-html"><code>&lt;script src=&quot;/external-directory/pixi.js&quot;>&lt;/script>
-&lt;script src=&quot;/external-directory/pixi-viewport.min.js&quot;>&lt;/script>
-&lt;script src=&quot;/external-directory/scrollbox.min.js&quot;>&lt;/script>
+&lt;script src=&quot;/external-directory/pixi-viewport.js&quot;>&lt;/script>
+&lt;script src=&quot;/external-directory/scrollbox.js&quot;>&lt;/script>
 &lt;script>
-    var Scrollbox = new PIXI.extras.Scrollbox(options);
-&lt;/script></code></pre><h2>API Documentation</h2><p><a target="_blank" href="https://davidfig.github.io/pixi-scrollbox/jsdoc/">https://davidfig.github.io/pixi-scrollbox/jsdoc/</a></p>
-<h2>license</h2><p>MIT License<br>(c) 2018 <a target="_blank" href="https://yopeyopey.com/">YOPEY YOPEY LLC</a> by <a target="_blank" href="https://twitter.com/yopey_yopey/">David Figatner</a></p></article>
+    const Scrollbox = new Scrollbox(options)
+&lt;/script>
+</code></pre>
+<h2>API Documentation</h2>
+<p><a target="_blank" href="https://davidfig.github.io/pixi-scrollbox/jsdoc/">https://davidfig.github.io/pixi-scrollbox/jsdoc/</a></p>
+<h2>Buy me Coffee</h2>
+<p>If you use my open source libraries, please consider supporting my efforts at https://patreon.com/davidfig. Even small amounts help!</p>
+<h2>license</h2>
+<p>MIT License<br>
+(c) 2019 <a target="_blank" href="https://yopeyopey.com/">YOPEY YOPEY LLC</a> by <a target="_blank" href="https://twitter.com/yopey_yopey/">David Figatner</a></p></article>
     </section>
 
 
@@ -208,7 +238,7 @@ app.stage.addChild(scrollbox);</code></pre><h2>Usage</h2><pre class="prettyprint
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jun 21 2019 07:21:28 GMT+0000 (GMT)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Wed Aug 07 2019 09:38:55 GMT+0800 (Taipei Standard Time)
             </div>
         </footer>
     </div>
