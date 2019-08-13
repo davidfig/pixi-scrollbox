@@ -68,9 +68,6 @@ or [download the latest build from github](https://github.com/davidfig/pixi-scro
 ## API Documentation
 [https://davidfig.github.io/pixi-scrollbox/jsdoc/](https://davidfig.github.io/pixi-scrollbox/jsdoc/)
 
-## Buy me Coffee
-If you use my open source libraries, please consider supporting my efforts at https://patreon.com/davidfig. Even small amounts help! 
-
 ## license  
 MIT License  
 (c) 2019 [YOPEY YOPEY LLC](https://yopeyopey.com/) by [David Figatner](https://twitter.com/yopey_yopey/)
