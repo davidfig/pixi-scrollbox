@@ -19,7 +19,7 @@ const scrollboxOptions = {
     'fadeScrollbarTime': 1000,
     'fadeScrollboxWait': 3000,
     'fadeScrollboxEase': 'easeInOutSine',
-    'passiveWheel': true,
+    'passiveWheel': false,
     'clampWheel': true
 }
 
@@ -52,7 +52,7 @@ export class Scrollbox extends PIXI.Container
      * @param {number} [options.fadeScrollbarTime=1000] time to fade scrollbar if options.fade is set
      * @param {number} [options.fadeScrollboxWait=3000] time to wait before fading the scrollbar if options.fade is set
      * @param {(string|function)} [options.fadeScrollboxEase=easeInOutSine] easing function to use for fading
-     * @param {boolean} [options.passiveWheel=true] wheel events are propogated beyond the scrollbox
+     * @param {boolean} [options.passiveWheel=false] whether wheel events are propogated beyond the scrollbox (NOTE: default is now false)
      * @param {boolean} [options.clampWheel=true] wheel events should be clamped (to avoid weird bounce with mouse wheel)
      */
     constructor(options={})
