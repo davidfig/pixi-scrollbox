@@ -18,7 +18,9 @@ const scrollboxOptions = {
     'fadeScrollbar': false,
     'fadeScrollbarTime': 1000,
     'fadeScrollboxWait': 3000,
-    'fadeScrollboxEase': 'easeInOutSine'
+    'fadeScrollboxEase': 'easeInOutSine',
+    'passiveWheel': true,
+    'clampWheel': true
 }
 
 /**
@@ -50,6 +52,8 @@ export class Scrollbox extends PIXI.Container
      * @param {number} [options.fadeScrollbarTime=1000] time to fade scrollbar if options.fade is set
      * @param {number} [options.fadeScrollboxWait=3000] time to wait before fading the scrollbar if options.fade is set
      * @param {(string|function)} [options.fadeScrollboxEase=easeInOutSine] easing function to use for fading
+     * @param {boolean} [options.passiveWheel=true] wheel events are propogated beyond the scrollbox
+     * @param {boolean} [options.clampWheel=true] wheel events should be clamped (to avoid weird bounce with mouse wheel)
      */
     constructor(options={})
     {
@@ -62,7 +66,7 @@ export class Scrollbox extends PIXI.Container
          * you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)
          * @type {Viewport}
          */
-        this.content = this.addChild(new Viewport({ passiveWheel: this.options.stopPropagation, stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight }))
+        this.content = this.addChild(new Viewport({ passiveWheel: this.options.passiveWheel, stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight }))
         this.content
             .decelerate()
             .on('moved', () => this._drawScrollbars())
@@ -460,7 +464,7 @@ export class Scrollbox extends PIXI.Container
                 if (direction !== null)
                 {
                     this.content
-                        .drag({ clampWheel: true, direction })
+                        .drag({ clampWheel: this.options.clampWheel, direction })
                         .clamp({ direction, underflow: this.options.underflow })
                 }
             }
