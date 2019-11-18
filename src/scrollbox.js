@@ -59,6 +59,9 @@ export class Scrollbox extends PIXI.Container
     {
         super()
         this.options = Object.assign({}, scrollboxOptions, options)
+        if (options.overflow) {
+            this.options.overflowX = this.options.overflowY = options.overflow
+        }
         this.ease = typeof this.options.fadeScrollboxEase === 'function' ? this.options.fadeScrollboxEase : Penner[this.options.fadeScrollboxEase]
 
         /**
