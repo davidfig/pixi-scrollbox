@@ -4,11 +4,13 @@
     "description": "a scrollbox built for pixi.js using a masked box that scrolls vertically and/or horizontally with optional scrollbars",
     "main": "dist/scrollbox.js",
     "module": "dist/scrollbox.es.js",
+    "types": "@types/index.d.ts",
     "directories": {
         "doc": "docs"
     },
     "files": [
-        "dist"
+        "dist",
+        "@types"
     ],
     "scripts": {
         "start": "rollup -c rollup.dev.js --watch",
