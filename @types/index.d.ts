@@ -40,7 +40,7 @@ interface ScrollBoxOptions {
 /**
  * pixi.js scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
  */
-export declare class ScrollBox extends PIXI.Container {
+export declare class Scrollbox extends PIXI.Container {
     boxHeight: number
     boxWidth: number
     content: Viewport
