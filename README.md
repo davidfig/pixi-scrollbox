@@ -38,6 +38,9 @@ const sprite = scrollbox.content.addChild(new PIXI.Sprite(PIXI.Texture.WHITE))
 sprite.width = sprite.height = 500
 sprite.tint = 0xff0000
 
+// force an update of the scrollbox's calculations after updating the children
+scrollbox.update()
+
 // add the viewport to the stage
 const app = new PIXI.Application()
 document.body.appendChild(app.view)
