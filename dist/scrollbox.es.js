@@ -1,5 +1,5 @@
-import * as PIXI from 'pixi.js';
-import { Container, VERSION, Graphics } from 'pixi.js';
+import * as PIXI from 'pixi.js-legacy';
+import { Container, VERSION, Graphics } from 'pixi.js-legacy';
 import { Viewport } from 'pixi-viewport';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -276,7 +276,7 @@ const scrollboxOptions = {
 };
 
 /**
- * pixi.js scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
+ * pixi.js-legacy scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
  */
 class Scrollbox extends Container
 {
@@ -326,7 +326,7 @@ class Scrollbox extends Container
             .decelerate()
             .on('moved', () => this._drawScrollbars());
 
-        // needed to pull this out of viewportOptions because of pixi.js v4 support (which changed from PIXI.ticker.shared to PIXI.Ticker.shared...sigh)
+        // needed to pull this out of viewportOptions because of pixi.js-legacy v4 support (which changed from PIXI.ticker.shared to PIXI.Ticker.shared...sigh)
         if (options.ticker)
         {
             this.options.ticker = options.ticker;
@@ -334,7 +334,7 @@ class Scrollbox extends Container
         else
         {
             // to avoid Rollup transforming our import, save pixi namespace in a variable
-            // from here: https://github.com/pixijs/pixi.js/issues/5757
+            // from here: https://github.com/pixijs/pixi.js-legacy/issues/5757
             let ticker;
             const pixiNS = PIXI;
             if (parseInt(/^(\d+)\./.exec(VERSION)[1]) < 5)
