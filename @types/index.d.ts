@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js-legacy';
+import * as PIXI from 'pixi.js';
 import { Viewport } from 'pixi-viewport'
 
 type OverflowScrollType = 'none' | 'scroll' | 'hidden' | 'auto'
