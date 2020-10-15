@@ -598,6 +598,10 @@ class Scrollbox extends Container
     {
         return this.content.top
     }
+    set scrollTop(top) {
+        this.content.top = top;
+        this._drawScrollbars();
+    }
 
     /**
      * left coordinate of scrollbar
@@ -605,6 +609,10 @@ class Scrollbox extends Container
     get scrollLeft()
     {
         return this.content.left
+    }
+    set scrollLeft(left) {
+        this.content.left = left;
+        this._drawScrollbars();
     }
 
     /**
