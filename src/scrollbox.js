@@ -346,6 +346,10 @@ export class Scrollbox extends PIXI.Container
     {
         return this.content.top
     }
+    set scrollTop(top) {
+        this.content.top = top
+        this._drawScrollbars()
+    }
 
     /**
      * left coordinate of scrollbar
@@ -353,6 +357,10 @@ export class Scrollbox extends PIXI.Container
     get scrollLeft()
     {
         return this.content.left
+    }
+    set scrollLeft(left) {
+        this.content.left = left
+        this._drawScrollbars()
     }
 
     /**
