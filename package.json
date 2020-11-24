@@ -47,7 +47,7 @@
         "@joseph184/rollup-plugin-node-builtins": "^2.1.4",
         "clicked": "^3.0.0",
         "fork-me-github": "^1.2.0",
-        "highlight.js": "^9.16.2",
+        "highlight.js": "^10.1.2",
         "jsdoc": "^3.6.3",
         "pixi-viewport": "^4.3.4",
         "pixi.js": "^5.2.0",
