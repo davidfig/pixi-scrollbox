@@ -10,7 +10,7 @@ let _renderer, _fps, g
 function vertical()
 {
     const size = 500
-    const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300, dragScroll: false }))
+    const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300 }))
     scrollbox.position.set(50, 75)
     const box = scrollbox.content.addChild(new PIXI.Graphics())
     box.beginFill(0xff0000, 0.25).drawRect(0, 0, 290, size).endFill()
