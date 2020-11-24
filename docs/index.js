@@ -598,6 +598,7 @@
             {
                 window.Int32Array = Array;
             }
+            //# sourceMappingURL=polyfill.es.js.map
 
             var isMobile_min = createCommonjsModule(function (module) {
             !function(e){var n=/iPhone/i,t=/iPod/i,r=/iPad/i,a=/\bAndroid(?:.+)Mobile\b/i,p=/Android/i,l=/\bAndroid(?:.+)SD4930UR\b/i,b=/\bAndroid(?:.+)(?:KF[A-Z]{2,4})\b/i,f=/Windows Phone/i,u=/\bWindows(?:.+)ARM\b/i,c=/BlackBerry/i,s=/BB10/i,v=/Opera Mini/i,h=/\b(CriOS|Chrome)(?:.+)Mobile/i,w=/\Mobile(?:.+)Firefox\b/i;function m(e,i){return e.test(i)}function i(e){var i=e||("undefined"!=typeof navigator?navigator.userAgent:""),o=i.split("[FBAN");void 0!==o[1]&&(i=o[0]),void 0!==(o=i.split("Twitter"))[1]&&(i=o[0]);var d={apple:{phone:m(n,i)&&!m(f,i),ipod:m(t,i),tablet:!m(n,i)&&m(r,i)&&!m(f,i),device:(m(n,i)||m(t,i)||m(r,i))&&!m(f,i)},amazon:{phone:m(l,i),tablet:!m(l,i)&&m(b,i),device:m(l,i)||m(b,i)},android:{phone:!m(f,i)&&m(l,i)||!m(f,i)&&m(a,i),tablet:!m(f,i)&&!m(l,i)&&!m(a,i)&&(m(b,i)||m(p,i)),device:!m(f,i)&&(m(l,i)||m(b,i)||m(a,i)||m(p,i))},windows:{phone:m(f,i),tablet:m(u,i),device:m(f,i)||m(u,i)},other:{blackberry:m(c,i),blackberry10:m(s,i),opera:m(v,i),firefox:m(w,i),chrome:m(h,i),device:m(c,i)||m(s,i)||m(v,i)||m(w,i)||m(h,i)}};return d.any=d.apple.device||d.android.device||d.windows.device||d.other.device,d.phone=d.apple.phone||d.android.phone||d.windows.phone,d.tablet=d.apple.tablet||d.android.tablet||d.windows.tablet,d}module.exports&&"undefined"==typeof window?module.exports=i:module.exports&&"undefined"!=typeof window?module.exports=i():e.isMobile=i();}(commonjsGlobal);
@@ -914,6 +915,7 @@
                  */
                 ROUND_PIXELS: false,
             };
+            //# sourceMappingURL=settings.es.js.map
 
             var eventemitter3 = createCommonjsModule(function (module) {
 
@@ -3478,6 +3480,7 @@
                 MASK_TYPES[MASK_TYPES["STENCIL"] = 2] = "STENCIL";
                 MASK_TYPES[MASK_TYPES["SPRITE"] = 3] = "SPRITE";
             })(MASK_TYPES || (MASK_TYPES = {}));
+            //# sourceMappingURL=constants.es.js.map
 
             /*!
              * @pixi/utils - v5.2.0
@@ -4432,6 +4435,7 @@
 
                 warnings[message] = true;
             }
+            //# sourceMappingURL=utils.es.js.map
 
             var utils_es = /*#__PURE__*/Object.freeze({
                         __proto__: null,
@@ -6372,6 +6376,7 @@
                 };
                 return RoundedRectangle;
             }());
+            //# sourceMappingURL=math.es.js.map
 
             /*!
              * @pixi/display - v5.2.0
@@ -8265,6 +8270,7 @@
 
             // performance increase to avoid using call.. (10x faster)
             Container.prototype.containerUpdateTransform = Container.prototype.updateTransform;
+            //# sourceMappingURL=display.es.js.map
 
             /*!
              * @pixi/accessibility - v5.2.0
@@ -8951,6 +8957,7 @@
                 this.children = null;
                 this.renderer = null;
             };
+            //# sourceMappingURL=accessibility.es.js.map
 
             var accessibility_es = /*#__PURE__*/Object.freeze({
                         __proto__: null,
@@ -9153,6 +9160,7 @@
                  */
                 run: { value: Runner.prototype.emit },
             });
+            //# sourceMappingURL=runner.es.js.map
 
             /*!
              * @pixi/ticker - v5.2.0
@@ -9975,6 +9983,7 @@
                 };
                 return TickerPlugin;
             }());
+            //# sourceMappingURL=ticker.es.js.map
 
             /*!
              * @pixi/core - v5.2.0
@@ -23011,6 +23020,7 @@
             // Setup the default BatchRenderer plugin, this is what
             // we'll actually export at the root level
             var BatchRenderer = BatchPluginFactory.create();
+            //# sourceMappingURL=core.es.js.map
 
             /*!
              * @pixi/extract - v5.2.0
@@ -23282,6 +23292,7 @@
                     }
                 }
             };
+            //# sourceMappingURL=extract.es.js.map
 
             var extract_es = /*#__PURE__*/Object.freeze({
                         __proto__: null,
@@ -25792,6 +25803,7 @@
 
                 return InteractionManager;
             }(eventemitter3));
+            //# sourceMappingURL=interaction.es.js.map
 
             var interaction_es = /*#__PURE__*/Object.freeze({
                         __proto__: null,
@@ -29607,6 +29619,7 @@
              * @member {PIXI.Point}
              */
             Graphics._TEMP_POINT = new Point();
+            //# sourceMappingURL=graphics.es.js.map
 
             /*!
              * @pixi/sprite - v5.2.0
@@ -30282,6 +30295,7 @@
 
                 return Sprite;
             }(Container));
+            //# sourceMappingURL=sprite.es.js.map
 
             /*!
              * @pixi/text - v5.2.0
@@ -32553,6 +32567,7 @@
 
                 return Text;
             }(Sprite));
+            //# sourceMappingURL=text.es.js.map
 
             /*!
              * @pixi/prepare - v5.2.0
@@ -33257,6 +33272,7 @@
             {
                 return Date.now() - this.frameStart < this.maxMilliseconds;
             };
+            //# sourceMappingURL=prepare.es.js.map
 
             var prepare_es = /*#__PURE__*/Object.freeze({
                         __proto__: null,
@@ -33490,6 +33506,7 @@
             };
 
             Application.registerPlugin(ResizePlugin);
+            //# sourceMappingURL=app.es.js.map
 
             var parseUri = function parseURI (str, opts) {
               opts = opts || {};
@@ -36015,6 +36032,7 @@
 
               return Loader;
             };
+            //# sourceMappingURL=resource-loader.esm.js.map
 
             /*!
              * @pixi/loaders - v5.2.0
@@ -36316,6 +36334,7 @@
              * @memberof PIXI
              */
             var LoaderResource = Resource$1;
+            //# sourceMappingURL=loaders.es.js.map
 
             /*!
              * @pixi/particles - v5.2.0
@@ -37284,6 +37303,7 @@
 
                 return ParticleRenderer;
             }(ObjectRenderer));
+            //# sourceMappingURL=particles.es.js.map
 
             /*!
              * @pixi/spritesheet - v5.2.0
@@ -37692,6 +37712,7 @@
 
                 return url.resolve(resource.url.replace(baseUrl, ''), resource.data.meta.image);
             };
+            //# sourceMappingURL=spritesheet.es.js.map
 
             /*!
              * @pixi/sprite-tiling - v5.2.0
@@ -38188,6 +38209,7 @@
 
                 return TilingSpriteRenderer;
             }(ObjectRenderer));
+            //# sourceMappingURL=sprite-tiling.es.js.map
 
             /*!
              * @pixi/text-bitmap - v5.2.0
@@ -39013,6 +39035,7 @@
                     }
                 }
             };
+            //# sourceMappingURL=text-bitmap.es.js.map
 
             /*!
              * @pixi/filter-alpha - v5.2.0
@@ -39077,6 +39100,7 @@
 
                 return AlphaFilter;
             }(Filter));
+            //# sourceMappingURL=filter-alpha.es.js.map
 
             /*!
              * @pixi/filter-blur - v5.2.0
@@ -39502,6 +39526,7 @@
 
                 return BlurFilter;
             }(Filter));
+            //# sourceMappingURL=filter-blur.es.js.map
 
             /*!
              * @pixi/filter-color-matrix - v5.2.0
@@ -40100,6 +40125,7 @@
 
             // Americanized alias
             ColorMatrixFilter.prototype.grayscale = ColorMatrixFilter.prototype.greyscale;
+            //# sourceMappingURL=filter-color-matrix.es.js.map
 
             /*!
              * @pixi/filter-displacement - v5.2.0
@@ -40217,6 +40243,7 @@
 
                 return DisplacementFilter;
             }(Filter));
+            //# sourceMappingURL=filter-displacement.es.js.map
 
             /*!
              * @pixi/filter-fxaa - v5.2.0
@@ -40254,6 +40281,7 @@
 
                 return FXAAFilter;
             }(Filter));
+            //# sourceMappingURL=filter-fxaa.es.js.map
 
             /*!
              * @pixi/filter-noise - v5.2.0
@@ -40333,6 +40361,7 @@
 
                 return NoiseFilter;
             }(Filter));
+            //# sourceMappingURL=filter-noise.es.js.map
 
             /*!
              * @pixi/mixin-cache-as-bitmap - v5.2.0
@@ -40758,6 +40787,7 @@
                 this.cacheAsBitmap = false;
                 this.destroy(options);
             };
+            //# sourceMappingURL=mixin-cache-as-bitmap.es.js.map
 
             /*!
              * @pixi/mixin-get-child-by-name - v5.2.0
@@ -40795,6 +40825,7 @@
 
                 return null;
             };
+            //# sourceMappingURL=mixin-get-child-by-name.es.js.map
 
             /*!
              * @pixi/mixin-get-global-position - v5.2.0
@@ -40832,6 +40863,7 @@
 
                 return point;
             };
+            //# sourceMappingURL=mixin-get-global-position.es.js.map
 
             /*!
              * @pixi/mesh - v5.2.0
@@ -41610,6 +41642,7 @@
 
                 return MeshGeometry;
             }(Geometry));
+            //# sourceMappingURL=mesh.es.js.map
 
             /*!
              * @pixi/mesh-extras - v5.2.0
@@ -42400,6 +42433,7 @@
 
                 return NineSlicePlane;
             }(SimplePlane));
+            //# sourceMappingURL=mesh-extras.es.js.map
 
             /*!
              * @pixi/sprite-animated - v5.2.0
@@ -42842,6 +42876,7 @@
 
                 return AnimatedSprite;
             }(Sprite));
+            //# sourceMappingURL=sprite-animated.es.js.map
 
             /*!
              * pixi.js - v5.2.0
@@ -44179,6 +44214,7 @@
                 FXAAFilter: FXAAFilter,
                 NoiseFilter: NoiseFilter,
             };
+            //# sourceMappingURL=pixi.es.js.map
 
             var PIXI = /*#__PURE__*/Object.freeze({
                         __proto__: null,
@@ -50980,6 +51016,7 @@
                     }
                 }
             }
+            //# sourceMappingURL=viewport.es.js.map
 
             var penner$1 = createCommonjsModule(function (module, exports) {
             /*
@@ -51694,15 +51731,13 @@
                     {
                         this._drawScrollbars();
                         this._drawMask();
-                        if (this.options.dragScroll)
-                        {
-                            const direction = this.isScrollbarHorizontal && this.isScrollbarVertical ? 'all' : this.isScrollbarHorizontal ? 'x' : 'y';
-                            if (direction !== null)
+                        const direction = this.isScrollbarHorizontal && this.isScrollbarVertical ? 'all' : this.isScrollbarHorizontal ? 'x' : 'y';
+                        if (direction !== null) {
+                            if (this.options.dragScroll)
                             {
-                                this.content
-                                    .drag({ clampWheel: this.options.clampWheel, direction })
-                                    .clamp({ direction, underflow: this.options.underflow });
+                                this.content.drag({ clampWheel: this.options.clampWheel, direction });
                             }
+                            this.content.clamp({ direction, underflow: this.options.underflow });
                         }
                     }
                 }
@@ -75125,7 +75160,7 @@
             function vertical()
             {
                 const size = 500;
-                const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300 }));
+                const scrollbox = _renderer.stage.addChild(new Scrollbox({ boxWidth: 300, boxHeight: 300, dragScroll: false }));
                 scrollbox.position.set(50, 75);
                 const box = scrollbox.content.addChild(new Graphics());
                 box.beginFill(0xff0000, 0.25).drawRect(0, 0, 290, size).endFill();

@@ -469,15 +469,13 @@ export class Scrollbox extends PIXI.Container
         {
             this._drawScrollbars()
             this._drawMask()
-            if (this.options.dragScroll)
-            {
-                const direction = this.isScrollbarHorizontal && this.isScrollbarVertical ? 'all' : this.isScrollbarHorizontal ? 'x' : 'y'
-                if (direction !== null)
+            const direction = this.isScrollbarHorizontal && this.isScrollbarVertical ? 'all' : this.isScrollbarHorizontal ? 'x' : 'y'
+            if (direction !== null) {
+                if (this.options.dragScroll)
                 {
-                    this.content
-                        .drag({ clampWheel: this.options.clampWheel, direction })
-                        .clamp({ direction, underflow: this.options.underflow })
+                    this.content.drag({ clampWheel: this.options.clampWheel, direction })
                 }
+                this.content.clamp({ direction, underflow: this.options.underflow })
             }
         }
     }
