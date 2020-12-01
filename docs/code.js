@@ -19,7 +19,7 @@ function vertical()
         const radius = Random.range(1, 50)
         box
             .beginFill(Random.color(), Random.get(1, true))
-            .drawCircle(Random.range(radius, 290 - radius), Random.range(radius, size - radius), radius)
+            .drawCircle(Random.range(radius, 300 - radius), Random.range(radius, size - radius), radius)
             .endFill()
     }
     const text = scrollbox.content.addChild(new PIXI.Text(' vertical scroll (drag anywhere)', { fill: 0xffffff, fontSize: 14 }))

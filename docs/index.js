@@ -50900,14 +50900,18 @@
 	            if (this.pointerDown.type === 'horizontal')
 	            {
 	                const local = this.toLocal(e.data.global);
-	                this.content.left += local.x - this.pointerDown.last.x;
+	                const width = this.scrollWidth + (this.isScrollbarVertical ? this.options.scrollbarSize : 0);
+	                this.scrollbarLeft += local.x - this.pointerDown.last.x;
+	                this.content.left = this.scrollbarLeft / this.boxWidth * width;
 	                this.pointerDown.last = local;
 	                this.update();
 	            }
 	            else if (this.pointerDown.type === 'vertical')
 	            {
 	                const local = this.toLocal(e.data.global);
-	                this.content.top += local.y - this.pointerDown.last.y;
+	                const height = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0);
+	                this.scrollbarTop += local.y - this.pointerDown.last.y;
+	                this.content.top = this.scrollbarTop / this.boxHeight * height;
 	                this.pointerDown.last = local;
 	                this.update();
 	            }
@@ -91031,7 +91035,7 @@
 	        const radius = yyRandom.range(1, 50);
 	        box
 	            .beginFill(yyRandom.color(), yyRandom.get(1, true))
-	            .drawCircle(yyRandom.range(radius, 290 - radius), yyRandom.range(radius, size - radius), radius)
+	            .drawCircle(yyRandom.range(radius, 300 - radius), yyRandom.range(radius, size - radius), radius)
 	            .endFill();
 	    }
 	    const text = scrollbox.content.addChild(new Text(' vertical scroll (drag anywhere)', { fill: 0xffffff, fontSize: 14 }));
