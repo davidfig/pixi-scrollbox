@@ -1,6 +1,6 @@
 {
     "name": "pixi-scrollbox",
-    "version": "2.2.2",
+    "version": "2.2.3",
     "description": "a scrollbox built for pixi.js using a masked box that scrolls vertically and/or horizontally with optional scrollbars",
     "main": "dist/scrollbox.js",
     "module": "dist/scrollbox.es.js",
