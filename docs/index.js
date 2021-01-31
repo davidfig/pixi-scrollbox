@@ -50337,6 +50337,7 @@
 	     * @param {(string|function)} [options.fadeScrollboxEase=easeInOutSine] easing function to use for fading
 	     * @param {boolean} [options.passiveWheel=false] whether wheel events are propogated beyond the scrollbox (NOTE: default is now false)
 	     * @param {boolean} [options.clampWheel=true] wheel events should be clamped (to avoid weird bounce with mouse wheel)
+	     * @param {PIXI.InteractionManager} [options.interaction] InteractionManager, available from instantiated PIXI.Renderer.plugins.interaction - used to calculate pointer postion relative to canvas location on screen
 	     */
 	    constructor(options={})
 	    {
@@ -50352,7 +50353,7 @@
 	         * you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)
 	         * @type {Viewport}
 	         */
-	        this.content = this.addChild(new Viewport({ passiveWheel: this.options.passiveWheel, stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight }));
+	        this.content = this.addChild(new Viewport({ passiveWheel: this.options.passiveWheel, stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight, interaction: this.options.interaction }));
 	        this.content
 	            .decelerate()
 	            .on('moved', () => this._drawScrollbars());

@@ -54,6 +54,7 @@ export class Scrollbox extends PIXI.Container
      * @param {(string|function)} [options.fadeScrollboxEase=easeInOutSine] easing function to use for fading
      * @param {boolean} [options.passiveWheel=false] whether wheel events are propogated beyond the scrollbox (NOTE: default is now false)
      * @param {boolean} [options.clampWheel=true] wheel events should be clamped (to avoid weird bounce with mouse wheel)
+     * @param {PIXI.InteractionManager} [options.interaction] InteractionManager, available from instantiated PIXI.Renderer.plugins.interaction - used to calculate pointer postion relative to canvas location on screen
      */
     constructor(options={})
     {
