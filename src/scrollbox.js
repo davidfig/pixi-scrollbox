@@ -69,7 +69,7 @@ export class Scrollbox extends PIXI.Container
          * you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)
          * @type {Viewport}
          */
-        this.content = this.addChild(new Viewport({ passiveWheel: this.options.passiveWheel, stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight }))
+        this.content = this.addChild(new Viewport({ passiveWheel: this.options.passiveWheel, stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight, interaction: this.options.interaction }))
         this.content
             .decelerate()
             .on('moved', () => this._drawScrollbars())
