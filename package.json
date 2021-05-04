@@ -1,6 +1,6 @@
 {
     "name": "pixi-scrollbox",
-    "version": "2.2.3",
+    "version": "2.3.0",
     "description": "a scrollbox built for pixi.js using a masked box that scrolls vertically and/or horizontally with optional scrollbars",
     "main": "dist/scrollbox.js",
     "module": "dist/scrollbox.es.js",
@@ -38,21 +38,25 @@
     "homepage": "https://github.com/davidfig/pixi-scrollbox#readme",
     "peerDependencies": {
         "pixi-viewport": ">=4.3.4",
-        "pixi.js": ">=4.6.0"
+        "pixi.js": ">=6.0.0"
     },
     "dependencies": {
         "penner": "^0.1.3"
     },
     "devDependencies": {
         "@joseph184/rollup-plugin-node-builtins": "^2.1.4",
+        "@pixi/display": "^6.0.2",
+        "@pixi/interaction": "^6.0.2",
+        "@pixi/math": "^6.0.2",
+        "@pixi/ticker": "^6.0.2",
         "@rollup/plugin-commonjs": "^17.0.0",
         "@rollup/plugin-node-resolve": "^11.0.0",
         "clicked": "^3.0.0",
         "fork-me-github": "^1.2.0",
         "highlight.js": "^10.4.0",
         "jsdoc": "^3.6.3",
-        "pixi-viewport": "^4.3.4",
-        "pixi.js": "^5.2.0",
+        "pixi-viewport": "^4.30.4",
+        "pixi.js": "^6.0.2",
         "rollup": "^2.34.0",
         "rollup-plugin-node-globals": "^1.4.0",
         "rollup-plugin-peer-deps-external": "^2.2.0",
