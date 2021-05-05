@@ -35,6 +35,7 @@ interface ScrollBoxOptions {
     overflow?: OverflowScrollType
     noTicker?: boolean
     ticker?: PIXI.Ticker
+    divWheel?: HTMLElement
 }
 
 /**
