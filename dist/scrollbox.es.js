@@ -4,8 +4,9 @@ import { Viewport } from 'pixi-viewport';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
+function createCommonjsModule(fn) {
+  var module = { exports: {} };
+	return fn(module, module.exports), module.exports;
 }
 
 var penner = createCommonjsModule(function (module, exports) {
@@ -278,8 +279,7 @@ const scrollboxOptions = {
 /**
  * pixi.js-legacy scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
  */
-class Scrollbox extends Container
-{
+class Scrollbox extends PIXI.Container {
     /**
      * create a scrollbox
      * @param {object} options
@@ -306,9 +306,10 @@ class Scrollbox extends Container
      * @param {(string|function)} [options.fadeScrollboxEase=easeInOutSine] easing function to use for fading
      * @param {boolean} [options.passiveWheel=false] whether wheel events are propogated beyond the scrollbox (NOTE: default is now false)
      * @param {boolean} [options.clampWheel=true] wheel events should be clamped (to avoid weird bounce with mouse wheel)
+     * @param {PIXI.InteractionManager} [options.interaction] InteractionManager, available from instantiated PIXI.Renderer.plugins.interaction - used to calculate pointer postion relative to canvas location on screen
+     * @param {HTMLElement} [options.divWheel] the HTMLElement to use for wheel interactions
      */
-    constructor(options={})
-    {
+    constructor(options = {}) {
         super();
         this.options = Object.assign({}, scrollboxOptions, options);
         if (options.overflow) {
@@ -321,28 +322,31 @@ class Scrollbox extends Container
          * you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)
          * @type {Viewport}
          */
-        this.content = this.addChild(new Viewport({ passiveWheel: this.options.passiveWheel, stopPropagation: this.options.stopPropagation, screenWidth: this.options.boxWidth, screenHeight: this.options.boxHeight }));
+        this.content = this.addChild(new Viewport({
+            passiveWheel: false,
+            stopPropagation: this.options.stopPropagation,
+            screenWidth: this.options.boxWidth,
+            screenHeight: this.options.boxHeight,
+            interaction: this.options.interaction,
+            divWheel: this.options.divWheel,
+        }));
         this.content
             .decelerate()
             .on('moved', () => this._drawScrollbars());
 
-        // needed to pull this out of viewportOptions because of pixi.js-legacy v4 support (which changed from PIXI.ticker.shared to PIXI.Ticker.shared...sigh)
-        if (options.ticker)
-        {
+        // needed to pull this out of viewportOptions because of pixi.js v4 support (which changed from PIXI.ticker.shared to PIXI.Ticker.shared...sigh)
+        if (options.ticker) {
             this.options.ticker = options.ticker;
         }
-        else
-        {
+        else {
             // to avoid Rollup transforming our import, save pixi namespace in a variable
             // from here: https://github.com/pixijs/pixi.js-legacy/issues/5757
             let ticker;
             const pixiNS = PIXI;
-            if (parseInt(/^(\d+)\./.exec(VERSION)[1]) < 5)
-            {
+            if (parseInt(/^(\d+)\./.exec(PIXI.VERSION)[1]) < 5) {
                 ticker = pixiNS.ticker.shared;
             }
-            else
-            {
+            else {
                 ticker = pixiNS.Ticker.shared;
             }
             this.options.ticker = options.ticker || ticker;
@@ -352,7 +356,7 @@ class Scrollbox extends Container
          * graphics element for drawing the scrollbars
          * @type {PIXI.Graphics}
          */
-        this.scrollbar = this.addChild(new Graphics());
+        this.scrollbar = this.addChild(new PIXI.Graphics());
         this.scrollbar.interactive = true;
         this.scrollbar.on('pointerdown', this.scrollbarDown, this);
         this.interactive = true;
@@ -360,11 +364,10 @@ class Scrollbox extends Container
         this.on('pointerup', this.scrollbarUp, this);
         this.on('pointercancel', this.scrollbarUp, this);
         this.on('pointerupoutside', this.scrollbarUp, this);
-        this._maskContent = this.addChild(new Graphics());
+        this._maskContent = this.addChild(new PIXI.Graphics());
         this.update();
 
-        if (!this.options.noTicker)
-        {
+        if (!this.options.noTicker) {
             this.tickerFunction = () => this.updateLoop(Math.min(this.options.ticker.elapsedMS, 16.6667));
             this.options.ticker.add(this.tickerFunction);
         }
@@ -374,12 +377,10 @@ class Scrollbox extends Container
      * offset of horizontal scrollbar (in pixels)
      * @type {number}
      */
-    get scrollbarOffsetHorizontal()
-    {
+    get scrollbarOffsetHorizontal() {
         return this.options.scrollbarOffsetHorizontal
     }
-    set scrollbarOffsetHorizontal(value)
-    {
+    set scrollbarOffsetHorizontal(value) {
         this.options.scrollbarOffsetHorizontal = value;
     }
 
@@ -387,12 +388,10 @@ class Scrollbox extends Container
      * offset of vertical scrollbar (in pixels)
      * @type {number}
      */
-    get scrollbarOffsetVertical()
-    {
+    get scrollbarOffsetVertical() {
         return this.options.scrollbarOffsetVertical
     }
-    set scrollbarOffsetVertical(value)
-    {
+    set scrollbarOffsetVertical(value) {
         this.options.scrollbarOffsetVertical = value;
     }
 
@@ -400,14 +399,11 @@ class Scrollbox extends Container
      * disable the scrollbox (if set to true this will also remove the mask)
      * @type {boolean}
      */
-    get disable()
-    {
+    get disable() {
         return this._disabled
     }
-    set disable(value)
-    {
-        if (this._disabled !== value)
-        {
+    set disable(value) {
+        if (this._disabled !== value) {
             this._disabled = value;
             this.update();
         }
@@ -417,12 +413,10 @@ class Scrollbox extends Container
      * call stopPropagation on any events that impact scrollbox
      * @type {boolean}
      */
-    get stopPropagation()
-    {
+    get stopPropagation() {
         return this.options.stopPropagation
     }
-    set stopPropagation(value)
-    {
+    set stopPropagation(value) {
         this.options.stopPropagation = value;
     }
 
@@ -430,25 +424,19 @@ class Scrollbox extends Container
      * user may drag the content area to scroll content
      * @type {boolean}
      */
-    get dragScroll()
-    {
+    get dragScroll() {
         return this.options.dragScroll
     }
-    set dragScroll(value)
-    {
+    set dragScroll(value) {
         this.options.dragScroll = value;
-        if (value)
-        {
+        if (value) {
             this.content.drag();
         }
-        else
-        {
-            if (typeof this.content.removePlugin !== 'undefined')
-            {
+        else {
+            if (typeof this.content.removePlugin !== 'undefined') {
                 this.content.removePlugin('drag');
             }
-            else
-            {
+            else {
                 this.content.plugins.remove('drag');
             }
         }
@@ -459,12 +447,10 @@ class Scrollbox extends Container
      * width of scrollbox including the scrollbar (if visible)- this changes the size and not the scale of the box
      * @type {number}
      */
-    get boxWidth()
-    {
+    get boxWidth() {
         return this.options.boxWidth
     }
-    set boxWidth(value)
-    {
+    set boxWidth(value) {
         this.options.boxWidth = value;
         this.content.screenWidth = value;
         this.update();
@@ -477,12 +463,10 @@ class Scrollbox extends Container
      * auto = if content is larger than box size, then show scrollbar
      * @type {string}
      */
-    get overflow()
-    {
+    get overflow() {
         return this.options.overflow
     }
-    set overflow(value)
-    {
+    set overflow(value) {
         this.options.overflow = value;
         this.options.overflowX = value;
         this.options.overflowY = value;
@@ -496,12 +480,10 @@ class Scrollbox extends Container
      * auto = if content is larger than box size, then show scrollbar
      * @type {string}
      */
-    get overflowX()
-    {
+    get overflowX() {
         return this.options.overflowX
     }
-    set overflowX(value)
-    {
+    set overflowX(value) {
         this.options.overflowX = value;
         this.update();
     }
@@ -513,12 +495,10 @@ class Scrollbox extends Container
      * auto = if content is larger than box size, then show scrollbar
      * @type {string}
      */
-    get overflowY()
-    {
+    get overflowY() {
         return this.options.overflowY
     }
-    set overflowY(value)
-    {
+    set overflowY(value) {
         this.options.overflowY = value;
         this.update();
     }
@@ -527,12 +507,10 @@ class Scrollbox extends Container
      * height of scrollbox including the scrollbar (if visible) - this changes the size and not the scale of the box
      * @type {number}
      */
-    get boxHeight()
-    {
+    get boxHeight() {
         return this.options.boxHeight
     }
-    set boxHeight(value)
-    {
+    set boxHeight(value) {
         this.options.boxHeight = value;
         this.content.screenHeight = value;
         this.update();
@@ -542,12 +520,10 @@ class Scrollbox extends Container
      * scrollbar size in pixels
      * @type {number}
      */
-    get scrollbarSize()
-    {
+    get scrollbarSize() {
         return this.options.scrollbarSize
     }
-    set scrollbarSize(value)
-    {
+    set scrollbarSize(value) {
         this.options.scrollbarSize = value;
     }
 
@@ -556,8 +532,7 @@ class Scrollbox extends Container
      * @type {number}
      * @readonly
      */
-    get contentWidth()
-    {
+    get contentWidth() {
         return this.options.boxWidth - (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
     }
 
@@ -566,8 +541,7 @@ class Scrollbox extends Container
      * @type {number}
      * @readonly
      */
-    get contentHeight()
-    {
+    get contentHeight() {
         return this.options.boxHeight - (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
     }
 
@@ -576,8 +550,7 @@ class Scrollbox extends Container
      * @type {boolean}
      * @readonly
      */
-    get isScrollbarVertical()
-    {
+    get isScrollbarVertical() {
         return this._isScrollbarVertical
     }
 
@@ -586,37 +559,40 @@ class Scrollbox extends Container
      * @type {boolean}
      * @readonly
      */
-    get isScrollbarHorizontal()
-    {
+    get isScrollbarHorizontal() {
         return this._isScrollbarHorizontal
     }
 
     /**
      * top coordinate of scrollbar
      */
-    get scrollTop()
-    {
+    get scrollTop() {
         return this.content.top
+    }
+    set scrollTop(top) {
+        this.content.top = top;
+        this._drawScrollbars();
     }
 
     /**
      * left coordinate of scrollbar
      */
-    get scrollLeft()
-    {
+    get scrollLeft() {
         return this.content.left
+    }
+    set scrollLeft(left) {
+        this.content.left = left;
+        this._drawScrollbars();
     }
 
     /**
      * width of content area
      * if not set then it uses content.width to calculate width
      */
-    get scrollWidth()
-    {
+    get scrollWidth() {
         return this._scrollWidth || this.content.width
     }
-    set scrollWidth(value)
-    {
+    set scrollWidth(value) {
         this._scrollWidth = value;
     }
 
@@ -624,12 +600,10 @@ class Scrollbox extends Container
      * height of content area
      * if not set then it uses content.height to calculate height
      */
-    get scrollHeight()
-    {
+    get scrollHeight() {
         return this._scrollHeight || this.content.height
     }
-    set scrollHeight(value)
-    {
+    set scrollHeight(value) {
         this._scrollHeight = value;
     }
 
@@ -637,16 +611,12 @@ class Scrollbox extends Container
      * draws scrollbars
      * @private
      */
-    _drawScrollbars()
-    {
+    _drawScrollbars() {
         this._isScrollbarHorizontal = this.overflowX === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowX) !== -1 ? false : this.scrollWidth > this.options.boxWidth;
         this._isScrollbarVertical = this.overflowY === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowY) !== -1 ? false : this.scrollHeight > this.options.boxHeight;
         this.scrollbar.clear();
-        let options = {};
-        options.left = 0;
-        options.right = this.scrollWidth + (this._isScrollbarVertical ? this.options.scrollbarSize : 0);
-        options.top = 0;
-        options.bottom = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0);
+        this.scrollWidth + (this._isScrollbarVertical ? this.options.scrollbarSize : 0);
+        this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0);
         const width = this.scrollWidth + (this.isScrollbarVertical ? this.options.scrollbarSize : 0);
         const height = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0);
         this.scrollbarTop = (this.content.top / height) * this.boxHeight;
@@ -657,29 +627,25 @@ class Scrollbox extends Container
         this.scrollbarLeft = this.scrollbarLeft < 0 ? 0 : this.scrollbarLeft;
         this.scrollbarWidth = (this.boxWidth / width) * this.boxWidth;
         this.scrollbarWidth = this.scrollbarWidth + this.scrollbarLeft > this.boxWidth ? this.boxWidth - this.scrollbarLeft : this.scrollbarWidth;
-        if (this.isScrollbarVertical)
-        {
+        if (this.isScrollbarVertical) {
             this.scrollbar
                 .beginFill(this.options.scrollbarBackground, this.options.scrollbarBackgroundAlpha)
                 .drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, 0, this.scrollbarSize, this.boxHeight)
                 .endFill();
         }
-        if (this.isScrollbarHorizontal)
-        {
+        if (this.isScrollbarHorizontal) {
             this.scrollbar
                 .beginFill(this.options.scrollbarBackground, this.options.scrollbarBackgroundAlpha)
                 .drawRect(0, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.boxWidth, this.scrollbarSize)
                 .endFill();
         }
-        if (this.isScrollbarVertical)
-        {
+        if (this.isScrollbarVertical) {
             this.scrollbar
                 .beginFill(this.options.scrollbarForeground, this.options.scrollbarForegroundAlpha)
                 .drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, this.scrollbarTop, this.scrollbarSize, this.scrollbarHeight)
                 .endFill();
         }
-        if (this.isScrollbarHorizontal)
-        {
+        if (this.isScrollbarHorizontal) {
             this.scrollbar
                 .beginFill(this.options.scrollbarForeground, this.options.scrollbarForegroundAlpha)
                 .drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.scrollbarWidth, this.scrollbarSize)
@@ -693,8 +659,7 @@ class Scrollbox extends Container
      * draws mask layer
      * @private
      */
-    _drawMask()
-    {
+    _drawMask() {
         this._maskContent
             .beginFill(0)
             .drawRect(0, 0, this.boxWidth, this.boxHeight)
@@ -705,23 +670,18 @@ class Scrollbox extends Container
     /**
      * call when scrollbox content changes
      */
-    update()
-    {
+    update() {
         this.content.mask = null;
         this._maskContent.clear();
-        if (!this._disabled)
-        {
+        if (!this._disabled) {
             this._drawScrollbars();
             this._drawMask();
-            if (this.options.dragScroll)
-            {
-                const direction = this.isScrollbarHorizontal && this.isScrollbarVertical ? 'all' : this.isScrollbarHorizontal ? 'x' : 'y';
-                if (direction !== null)
-                {
-                    this.content
-                        .drag({ clampWheel: this.options.clampWheel, direction })
-                        .clamp({ direction, underflow: this.options.underflow });
+            const direction = this.isScrollbarHorizontal && this.isScrollbarVertical ? 'all' : this.isScrollbarHorizontal ? 'x' : 'y';
+            if (direction !== null) {
+                if (this.options.dragScroll) {
+                    this.content.drag({ clampWheel: this.options.clampWheel, direction });
                 }
+                this.content.clamp({ direction, underflow: this.options.underflow });
             }
         }
     }
@@ -730,30 +690,23 @@ class Scrollbox extends Container
      * called on each frame to update fade scrollbars (if enabled)
      * @param {number} elapsed since last frame in milliseconds (usually capped at 16.6667)
      */
-    updateLoop(elapsed)
-    {
-        if (this.fade)
-        {
-            if (this.fade.wait > 0)
-            {
+    updateLoop(elapsed) {
+        if (this.fade) {
+            if (this.fade.wait > 0) {
                 this.fade.wait -= elapsed;
-                if (this.fade.wait <= 0)
-                {
+                if (this.fade.wait <= 0) {
                     elapsed += this.fade.wait;
                 }
-                else
-                {
+                else {
                     return
                 }
             }
             this.fade.duration += elapsed;
-            if (this.fade.duration >= this.options.fadeScrollbarTime)
-            {
+            if (this.fade.duration >= this.options.fadeScrollbarTime) {
                 this.fade = null;
                 this.scrollbar.alpha = 0;
             }
-            else
-            {
+            else {
                 this.scrollbar.alpha = this.ease(this.fade.duration, 1, -1, this.options.fadeScrollbarTime);
             }
             this.content.dirty = true;
@@ -764,22 +717,18 @@ class Scrollbox extends Container
      * dirty value (used for optimizing draws) for underlying viewport (scrollbox.content)
      * @type {boolean}
      */
-    get dirty()
-    {
+    get dirty() {
         return this.content.dirty
     }
-    set dirty(value)
-    {
+    set dirty(value) {
         this.content.dirty = value;
     }
 
     /**
      * show the scrollbar and restart the timer for fade if options.fade is set
      */
-    activateFade()
-    {
-        if (!this.fade && this.options.fade)
-        {
+    activateFade() {
+        if (!this.fade && this.options.fade) {
             this.scrollbar.alpha = 1;
             this.fade = { wait: this.options.fadeScrollboxWait, duration: 0 };
         }
@@ -790,60 +739,45 @@ class Scrollbox extends Container
      * @param {PIXI.interaction.InteractionEvent} e
      * @private
      */
-    scrollbarDown(e)
-    {
+    scrollbarDown(e) {
         const local = this.toLocal(e.data.global);
-        if (this.isScrollbarHorizontal)
-        {
-            if (local.y > this.boxHeight - this.scrollbarSize)
-            {
-                if (local.x >= this.scrollbarLeft && local.x <= this.scrollbarLeft + this.scrollbarWidth)
-                {
+        if (this.isScrollbarHorizontal) {
+            if (local.y > this.boxHeight - this.scrollbarSize) {
+                if (local.x >= this.scrollbarLeft && local.x <= this.scrollbarLeft + this.scrollbarWidth) {
                     this.pointerDown = { type: 'horizontal', last: local };
                 }
-                else
-                {
-                    if (local.x > this.scrollbarLeft)
-                    {
+                else {
+                    if (local.x > this.scrollbarLeft) {
                         this.content.left += this.content.worldScreenWidth;
                         this.update();
                     }
-                    else
-                    {
+                    else {
                         this.content.left -= this.content.worldScreenWidth;
                         this.update();
                     }
                 }
-                if (this.options.stopPropagation)
-                {
+                if (this.options.stopPropagation) {
                     e.stopPropagation();
                 }
                 return
             }
         }
-        if (this.isScrollbarVertical)
-        {
-            if (local.x > this.boxWidth - this.scrollbarSize)
-            {
-                if (local.y >= this.scrollbarTop && local.y <= this.scrollbarTop + this.scrollbarWidth)
-                {
+        if (this.isScrollbarVertical) {
+            if (local.x > this.boxWidth - this.scrollbarSize) {
+                if (local.y >= this.scrollbarTop && local.y <= this.scrollbarTop + this.scrollbarWidth) {
                     this.pointerDown = { type: 'vertical', last: local };
                 }
-                else
-                {
-                    if (local.y > this.scrollbarTop)
-                    {
+                else {
+                    if (local.y > this.scrollbarTop) {
                         this.content.top += this.content.worldScreenHeight;
                         this.update();
                     }
-                    else
-                    {
+                    else {
                         this.content.top -= this.content.worldScreenHeight;
                         this.update();
                     }
                 }
-                if (this.options.stopPropagation)
-                {
+                if (this.options.stopPropagation) {
                     e.stopPropagation();
                 }
                 return
@@ -856,26 +790,25 @@ class Scrollbox extends Container
      * @param {PIXI.interaction.InteractionEvent} e
      * @private
      */
-    scrollbarMove(e)
-    {
-        if (this.pointerDown)
-        {
-            if (this.pointerDown.type === 'horizontal')
-            {
+    scrollbarMove(e) {
+        if (this.pointerDown) {
+            if (this.pointerDown.type === 'horizontal') {
                 const local = this.toLocal(e.data.global);
-                this.content.left += local.x - this.pointerDown.last.x;
+                const width = this.scrollWidth + (this.isScrollbarVertical ? this.options.scrollbarSize : 0);
+                this.scrollbarLeft += local.x - this.pointerDown.last.x;
+                this.content.left = this.scrollbarLeft / this.boxWidth * width;
                 this.pointerDown.last = local;
                 this.update();
             }
-            else if (this.pointerDown.type === 'vertical')
-            {
+            else if (this.pointerDown.type === 'vertical') {
                 const local = this.toLocal(e.data.global);
-                this.content.top += local.y - this.pointerDown.last.y;
+                const height = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0);
+                this.scrollbarTop += local.y - this.pointerDown.last.y;
+                this.content.top = this.scrollbarTop / this.boxHeight * height;
                 this.pointerDown.last = local;
                 this.update();
             }
-            if (this.options.stopPropagation)
-            {
+            if (this.options.stopPropagation) {
                 e.stopPropagation();
             }
         }
@@ -885,8 +818,7 @@ class Scrollbox extends Container
      * handle pointer down on scrollbar
      * @private
      */
-    scrollbarUp()
-    {
+    scrollbarUp() {
         this.pointerDown = null;
     }
 
@@ -898,16 +830,13 @@ class Scrollbox extends Container
      * @param {number} [options.scrollWidth] set the width of the inside of the scrollbox (leave null to use content.width)
      * @param {number} [options.scrollHeight] set the height of the inside of the scrollbox (leave null to use content.height)
      */
-    resize(options)
-    {
+    resize(options) {
         this.options.boxWidth = typeof options.boxWidth !== 'undefined' ? options.boxWidth : this.options.boxWidth;
         this.options.boxHeight = typeof options.boxHeight !== 'undefined' ? options.boxHeight : this.options.boxHeight;
-        if (options.scrollWidth)
-        {
+        if (options.scrollWidth) {
             this.scrollWidth = options.scrollWidth;
         }
-        if (options.scrollHeight)
-        {
+        if (options.scrollHeight) {
             this.scrollHeight = options.scrollHeight;
         }
         this.content.resize(this.options.boxWidth, this.options.boxHeight, this.scrollWidth, this.scrollHeight);
@@ -921,8 +850,7 @@ class Scrollbox extends Container
      * @param {number} width
      * @param {number} height
      */
-    ensureVisible(x, y, width, height)
-    {
+    ensureVisible(x, y, width, height) {
         this.content.ensureVisible(x, y, width, height);
         this._drawScrollbars();
     }
