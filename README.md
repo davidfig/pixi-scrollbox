@@ -64,7 +64,7 @@ or [download the latest build from github](https://github.com/davidfig/pixi-scro
 <script src="/external-directory/pixi-viewport.js"></script>
 <script src="/external-directory/scrollbox.js"></script>
 <script>
-    const Scrollbox = new Scrollbox(options)
+    const Scrollbox = new Scrollbox.Scrollbox(options)
 </script>
 ```
 
