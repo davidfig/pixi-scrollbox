@@ -69,7 +69,7 @@ export class Scrollbox extends PIXI.Container {
          * you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)
          * @type {Viewport}
          */
-        this.content = this.addChild(new Viewport({
+        this.content = super.addChild(new Viewport({
             passiveWheel: false,
             stopPropagation: this.options.stopPropagation,
             screenWidth: this.options.boxWidth,
@@ -103,7 +103,7 @@ export class Scrollbox extends PIXI.Container {
          * graphics element for drawing the scrollbars
          * @type {PIXI.Graphics}
          */
-        this.scrollbar = this.addChild(new PIXI.Graphics())
+        this.scrollbar = super.addChild(new PIXI.Graphics())
         this.scrollbar.interactive = true
         this.scrollbar.on('pointerdown', this.scrollbarDown, this)
         this.interactive = true
@@ -111,7 +111,7 @@ export class Scrollbox extends PIXI.Container {
         this.on('pointerup', this.scrollbarUp, this)
         this.on('pointercancel', this.scrollbarUp, this)
         this.on('pointerupoutside', this.scrollbarUp, this)
-        this._maskContent = this.addChild(new PIXI.Graphics())
+        this._maskContent = super.addChild(new PIXI.Graphics())
         this.update()
 
         if (!this.options.noTicker) {
@@ -604,4 +604,95 @@ export class Scrollbox extends PIXI.Container {
         this.content.ensureVisible(x, y, width, height)
         this._drawScrollbars()
     }
+
+    /**
+     * Redirecting addChild method to the Viewport to make it easy to wrap scrollbox into a react component,
+     * because the Viewport is the real container for child elements
+     * @param children
+     * @returns {*}
+     */
+    addChild(...children) {
+        return this.content.addChild(...children);
+    }
+
+    /**
+     * Redirecting addChildAt methods to the Viewport to make it easy to wrap scrollbox into a react component,
+     * because the Viewport is the real container for child elements
+     * @param child
+     * @param index
+     * @returns {*}
+     */
+    addChildAt(child, index) {
+        return this.content.addChildAt(child, index);
+    }
+
+    /**
+     * Redirecting removeChild methods to the Viewport to make it easy to wrap scrollbox into a react component,
+     * because the Viewport is the real container for child elements
+     * @param child
+     * @returns {*}
+     */
+    removeChild(child) {
+        return this.content.removeChild(child);
+    }
+
+    /**
+     * Redirecting swapChildren methods to the Viewport to make it easy to wrap scrollbox into a react component,
+     * because the Viewport is the real container for child elements
+     * @param child
+     * @param child2
+     */
+    swapChildren(child, child2) {
+        this.content.swapChildren(child, child2);
+    }
+
+    /**
+     * Redirecting getChildIndex methods to the Viewport to make it easy to wrap scrollbox into a react component,
+     * because the Viewport is the real container for child elements
+     * @param child
+     * @returns {*}
+     */
+    getChildIndex(child) {
+        return this.content.getChildIndex(child);
+    }
+
+    /**
+     * Redirecting setChildIndex methods to the Viewport to make it easy to wrap scrollbox into a react component,
+     * because the Viewport is the real container for child elements
+     * @param child
+     * @param index
+     */
+    setChildIndex(child, index) {
+        this.content.setChildIndex(child, index);
+    }
+
+    /**
+     * Redirecting getChildAt methods to the Viewport to make it easy to wrap scrollbox into a react component,
+     * because the Viewport is the real container for child elements
+     * @param index
+     * @returns {*}
+     */
+    getChildAt(index) {
+        return this.content.getChildAt(index);
+    }
+
+    /**
+     * Redirecting removeChildren methods to the Viewport to make it easy to wrap scrollbox into a react component,
+     * because the Viewport is the real container for child elements
+     * @param beginIndex
+     * @param endIndex
+     * @returns {*}
+     */
+    removeChildren(beginIndex, endIndex) {
+        return this.content.removeChildren(beginIndex, endIndex);
+    }
+
+    /**
+     * Redirecting sortChildren methods to the Viewport to make it easy to wrap scrollbox into a react component,
+     * because the Viewport is the real container for child elements
+     */
+    sortChildren() {
+        this.content.sortChildren();
+    }
+
 }
