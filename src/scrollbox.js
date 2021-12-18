@@ -69,7 +69,7 @@ export class Scrollbox extends PIXI.Container {
          * you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)
          * @type {Viewport}
          */
-        this.content = this.addChild(new Viewport({
+        this.content = super.addChild(new Viewport({
             passiveWheel: false,
             stopPropagation: this.options.stopPropagation,
             screenWidth: this.options.boxWidth,
@@ -103,7 +103,7 @@ export class Scrollbox extends PIXI.Container {
          * graphics element for drawing the scrollbars
          * @type {PIXI.Graphics}
          */
-        this.scrollbar = this.addChild(new PIXI.Graphics())
+        this.scrollbar = super.addChild(new PIXI.Graphics())
         this.scrollbar.interactive = true
         this.scrollbar.on('pointerdown', this.scrollbarDown, this)
         this.interactive = true
@@ -111,7 +111,7 @@ export class Scrollbox extends PIXI.Container {
         this.on('pointerup', this.scrollbarUp, this)
         this.on('pointercancel', this.scrollbarUp, this)
         this.on('pointerupoutside', this.scrollbarUp, this)
-        this._maskContent = this.addChild(new PIXI.Graphics())
+        this._maskContent = super.addChild(new PIXI.Graphics())
         this.update()
 
         if (!this.options.noTicker) {
@@ -604,4 +604,26 @@ export class Scrollbox extends PIXI.Container {
         this.content.ensureVisible(x, y, width, height)
         this._drawScrollbars()
     }
+
+    /**
+     * Redirecting addChildren methods to the Viewport to make it easy to wrap scrollbox into a react component,
+     * because the Viewport is the real container for child elements
+     * @param children
+     * @returns {*}
+     */
+    addChild(...children) {
+        return this.content.addChild(...children);
+    }
+
+    /**
+     * Redirecting addChildren methods to the Viewport to make it easy to wrap scrollbox into a react component,
+     * because the Viewport is the real container for child elements
+     * @param child
+     * @param index
+     * @returns {*}
+     */
+    addChildAt(child, index) {
+        return this.content.addChildAt(child, index);
+    }
+
 }
