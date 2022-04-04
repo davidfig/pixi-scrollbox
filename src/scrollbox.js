@@ -514,7 +514,7 @@ export class Scrollbox extends PIXI.Container {
         }
         if (this.isScrollbarVertical) {
             if (local.x > this.boxWidth - this.scrollbarSize) {
-                if (local.y >= this.scrollbarTop && local.y <= this.scrollbarTop + this.scrollbarWidth) {
+                if (local.y >= this.scrollbarTop && local.y <= this.scrollbarTop + this.scrollbarHeight) {
                     this.pointerDown = { type: 'vertical', last: local }
                 }
                 else {
