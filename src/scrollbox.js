@@ -55,6 +55,7 @@ export class Scrollbox extends PIXI.Container {
      * @param {boolean} [options.clampWheel=true] wheel events should be clamped (to avoid weird bounce with mouse wheel)
      * @param {PIXI.InteractionManager} [options.interaction] InteractionManager, available from instantiated PIXI.Renderer.plugins.interaction - used to calculate pointer postion relative to canvas location on screen
      * @param {HTMLElement} [options.divWheel] the HTMLElement to use for wheel interactions
+     * @param {PIXI.APPLICATION} [options.app] - the pixi application.
      */
     constructor(options = {}) {
         super()
@@ -76,6 +77,7 @@ export class Scrollbox extends PIXI.Container {
             screenHeight: this.options.boxHeight,
             interaction: this.options.interaction,
             divWheel: this.options.divWheel,
+            events: options.app.renderer.events
         }))
         this.content
             .decelerate()
