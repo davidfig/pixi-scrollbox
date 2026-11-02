@@ -13,11 +13,10 @@
         "description": "",
         "keyword": ""
     },
-    "linenums": true,
+    "linenums": false,
     "source": {
         "include": [
-            "./src",
-            "./node_modules/eventemitter3"
+            "./src"
         ],
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/|\\\\)_"
@@ -38,7 +37,7 @@
     "readmeShowNav": "Scrollbox",
     "templates": {
         "default": {
-            "outputSourceFiles": true
+            "outputSourceFiles": false
         },
         "applicationName": "pixi-scrollbox",
         "footer"        : "by YOPEY YOPEY LLC (yopeyopey.com)",

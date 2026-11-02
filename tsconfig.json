@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "noEmit": true,
+        "skipLibCheck": false,
+        "types": []
+    },
+    "include": ["@types/index.d.ts", "test/types.ts"]
+}
