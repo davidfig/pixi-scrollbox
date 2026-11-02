@@ -25,7 +25,7 @@
 
     
     <script>
-    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{"outputSourceFiles":true},"applicationName":"pixi-scrollbox","footer":"by YOPEY YOPEY LLC (yopeyopey.com)","copyright":"Copyright © 2018 YOPEY YOPEY LLC.","meta":{"title":"pixi-scrollbox API Documentation","description":"Documentation for pixi-scrollbox library","keyword":"docs, documentation, html5, javascript, jsdoc, camera, scrollbox, bounce, snap, 2d"},"matomo":{"url":"https://analytics.yopeyopey.com/piwik/","id":13}};
+    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{"outputSourceFiles":false},"applicationName":"pixi-scrollbox","footer":"by YOPEY YOPEY LLC (yopeyopey.com)","copyright":"Copyright © 2018 YOPEY YOPEY LLC.","meta":{"title":"pixi-scrollbox API Documentation","description":"Documentation for pixi-scrollbox library","keyword":"docs, documentation, html5, javascript, jsdoc, camera, scrollbox, bounce, snap, 2d"},"matomo":{"url":"https://analytics.yopeyopey.com/piwik/","id":13}};
     </script>
     
 
@@ -56,8 +56,6 @@
         <input id="search" type="text" class="form-control input-md" placeholder="Search...">
     </div>
     <ul class="list">
-    
-        
     
         
         <li class="item" data-name="Scrollbox">
@@ -95,14 +93,6 @@
             
                 <li class="parent " data-name="Scrollbox#overflowY"><a href="Scrollbox.html#overflowY">overflowY</a></li>
             
-                <li class="parent " data-name="Scrollbox#scrollbar"><a href="Scrollbox.html#scrollbar">scrollbar</a></li>
-            
-                <li class="parent " data-name="Scrollbox#scrollbarOffsetHorizontal"><a href="Scrollbox.html#scrollbarOffsetHorizontal">scrollbarOffsetHorizontal</a></li>
-            
-                <li class="parent " data-name="Scrollbox#scrollbarOffsetVertical"><a href="Scrollbox.html#scrollbarOffsetVertical">scrollbarOffsetVertical</a></li>
-            
-                <li class="parent " data-name="Scrollbox#scrollbarSize"><a href="Scrollbox.html#scrollbarSize">scrollbarSize</a></li>
-            
                 <li class="parent " data-name="Scrollbox#scrollHeight"><a href="Scrollbox.html#scrollHeight">scrollHeight</a></li>
             
                 <li class="parent " data-name="Scrollbox#scrollLeft"><a href="Scrollbox.html#scrollLeft">scrollLeft</a></li>
@@ -110,6 +100,14 @@
                 <li class="parent " data-name="Scrollbox#scrollTop"><a href="Scrollbox.html#scrollTop">scrollTop</a></li>
             
                 <li class="parent " data-name="Scrollbox#scrollWidth"><a href="Scrollbox.html#scrollWidth">scrollWidth</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbar"><a href="Scrollbox.html#scrollbar">scrollbar</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbarOffsetHorizontal"><a href="Scrollbox.html#scrollbarOffsetHorizontal">scrollbarOffsetHorizontal</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbarOffsetVertical"><a href="Scrollbox.html#scrollbarOffsetVertical">scrollbarOffsetVertical</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbarSize"><a href="Scrollbox.html#scrollbarSize">scrollbarSize</a></li>
             
                 <li class="parent " data-name="Scrollbox#stopPropagation"><a href="Scrollbox.html#stopPropagation">stopPropagation</a></li>
             
@@ -125,6 +123,8 @@
             <span class="subtitle">Methods</span>
             
                 <li class="parent  " data-name="Scrollbox#activateFade"><a href="Scrollbox.html#activateFade">activateFade</a></li>
+            
+                <li class="parent  " data-name="Scrollbox#destroy"><a href="Scrollbox.html#destroy">destroy</a></li>
             
                 <li class="parent  " data-name="Scrollbox#ensureVisible"><a href="Scrollbox.html#ensureVisible">ensureVisible</a></li>
             
@@ -176,10 +176,77 @@
 <li>scrollbox's scrollbars may be hidden when not needed (options.overflow=auto or hidden)</li>
 <li>scrollbox may also be scrolled by dragging on the content window (options.dragScroll=true)</li>
 </ul>
+<h2>AI-assisted development</h2>
+<p>Starting in November 2026, <a target="_blank" href="https://www.anthropic.com/claude">Claude</a> (an AI model by Anthropic) assists with editing this code, including code review, bug fixes, and changes to documentation. A maintainer reviews every change before it is released. If you prefer not to use software developed with AI assistance, please take this into account when choosing whether to use pixi-scrollbox.</p>
 <h2>Live Example</h2>
 <p><a target="_blank" href="https://davidfig.github.io/pixi-scrollbox/">davidfig.github.io/pixi-scrollbox/</a></p>
 <h2>Rationale</h2>
 <p>I needed a scrollbox for the UI of my game and since I had this nifty pixi-viewport, I figured it wouldn't be much work to create it. Five hours later and I realized I was a bit off on my estimates. Hopefully others will find it useful.</p>
+<h2>v3.0.0</h2>
+<p>Tested with pixi.js v8.22 and pixi-viewport v7.0. Use pixi-scrollbox v2 for older versions of pixi.js.</p>
+<p>Breaking changes:</p>
+<ul>
+<li>Requires pixi.js v8 and pixi-viewport v7 (<code>peerDependencies</code> are now <code>pixi.js ^8</code> and <code>pixi-viewport ^7</code>).</li>
+<li><code>options.events</code> is required: pass your renderer's EventSystem (<code>app.renderer.events</code>). pixi-viewport v7 uses it for wheel events and pointer positions.</li>
+<li><code>options.interaction</code> and <code>options.divWheel</code> are removed. The wheel listener goes on <code>options.events.domElement</code> (normally the canvas).</li>
+<li>The ES module build is now <code>dist/scrollbox.mjs</code> (<code>dist/scrollbox.js</code> is still the UMD/CommonJS build).</li>
+<li><code>options.passiveWheel</code> is now passed to the viewport (it was ignored before), so the page doesn't scroll when the wheel scrolls the scrollbox unless you set it to <code>true</code>.</li>
+</ul>
+<p>Fixes and new options:</p>
+<ul>
+<li>Content inside the scrollbox gets pointer events (click, hover, pointerout) wherever it shows, including when scrolled to the end, and the mask never blocks them.</li>
+<li>The wheel scrolls the scrollbox at its current position after it moves or the canvas is resized or offset.</li>
+<li>Dragging the scrollbar keeps working when the pointer leaves the scrollbar, and clicking the vertical track below the thumb pages down instead of grabbing the thumb.</li>
+<li>The scrollbar stays clickable when its background is transparent or faded out.</li>
+<li><code>options.fade</code> restarts its timer whenever the scrollbox scrolls.</li>
+<li><code>options.wheelSwapAxes</code> lets a mouse wheel scroll a horizontal scrollbox.</li>
+<li><code>scrollbox.destroy()</code> removes the ticker and the viewport's wheel listener.</li>
+<li>With <code>options.noTicker</code>, <code>updateLoop(elapsed)</code> also updates the viewport.</li>
+</ul>
+<h2>Simple Example</h2>
+<pre class="prettyprint source lang-js"><code>import { Application, Sprite, Texture } from 'pixi.js'
+import { Scrollbox } from 'pixi-scrollbox'
+
+const app = new Application()
+await app.init()
+document.body.appendChild(app.canvas)
+
+// create the scrollbox
+const scrollbox = app.stage.addChild(new Scrollbox({ boxWidth: 200, boxHeight: 200, events: app.renderer.events }))
+
+// add a sprite to the scrollbox's content
+const sprite = scrollbox.content.addChild(new Sprite(Texture.WHITE))
+sprite.width = sprite.height = 500
+sprite.tint = 0xff0000
+
+// force an update of the scrollbox's calculations after updating the children
+scrollbox.update()
+</code></pre>
+<p><code>scrollbox.content</code> is a <a target="_blank" href="https://github.com/pixijs-userland/pixi-viewport">pixi-viewport</a>, so you can use any of its functions to move the content, e.g., <code>scrollbox.content.moveCorner(0, 0)</code>. To scroll a horizontal scrollbox with a mouse wheel, use <code>new Scrollbox({ overflowY: 'hidden', wheelSwapAxes: true, ... })</code>.</p>
+<h2>Installation</h2>
+<pre class="prettyprint source"><code>npm i pixi-scrollbox pixi-viewport pixi.js
+</code></pre>
+<p>or</p>
+<pre class="prettyprint source"><code>pnpm add pixi-scrollbox pixi-viewport pixi.js
+</code></pre>
+<p>Note: pixi-viewport and pixi.js are listed as peerDependency, which means you will need to manually install them if they're not already installed (this is to ensure you don't have two versions of these libraries).</p>
+<p>or <a target="_blank" href="https://github.com/davidfig/pixi-scrollbox/releases">download the latest build from github</a></p>
+<pre class="prettyprint source lang-html"><code>&lt;script src=&quot;/external-directory/pixi.js&quot;>&lt;/script>
+&lt;script src=&quot;/external-directory/pixi_viewport.umd.cjs&quot;>&lt;/script>
+&lt;script src=&quot;/external-directory/scrollbox.js&quot;>&lt;/script>
+&lt;script>
+    const scrollbox = new Scrollbox.Scrollbox({ events: app.renderer.events })
+&lt;/script>
+</code></pre>
+<p>The UMD build expects pixi.js and pixi-viewport to be loaded first as the globals <code>PIXI</code> and <code>pixi_viewport</code>.</p>
+<h2>Migration from v2 to v3</h2>
+<p>Pass the renderer's EventSystem and remove <code>interaction</code> and <code>divWheel</code>:</p>
+<pre class="prettyprint source lang-js"><code>// v2
+const scrollbox = new Scrollbox({ boxWidth: 200, boxHeight: 200, interaction: app.renderer.plugins.interaction, divWheel: app.view })
+
+// v3
+const scrollbox = new Scrollbox({ boxWidth: 200, boxHeight: 200, events: app.renderer.events })
+</code></pre>
 <h2>Migration from v1 to v2</h2>
 <p>Scrollbox no longer exports a default object. Instead you need to use:</p>
 <pre class="prettyprint source lang-js"><code>const Scrollbox = require('pixi-scrollbox').Scrollbox
@@ -188,43 +255,18 @@
 <pre class="prettyprint source lang-js"><code>import { Scrollbox } from 'pixi-scrollbox'
 </code></pre>
 <p>There were some minor name changes to the fade options. See documentation.</p>
-<h2>Simple Example</h2>
-<pre class="prettyprint source lang-js"><code>const PIXI = require('pixi.js')
-const Scrollbox = require('pixi-scrollbox').Scrollbox
-
-// create the scrollbox
-const scrollbox = new Scrollbox({ boxWidth: 200, boxHeight: 200})
-
-// add a sprite to the scrollbox's content
-const sprite = scrollbox.content.addChild(new PIXI.Sprite(PIXI.Texture.WHITE))
-sprite.width = sprite.height = 500
-sprite.tint = 0xff0000
-
-// force an update of the scrollbox's calculations after updating the children
-scrollbox.update()
-
-// add the viewport to the stage
-const app = new PIXI.Application()
-document.body.appendChild(app.view)
-app.stage.addChild(scrollbox)
-</code></pre>
-<h2>Installation</h2>
-<pre class="prettyprint source"><code>npm i pixi-scrollbox pixi-viewport pixi.js
-</code></pre>
-<p>or</p>
-<pre class="prettyprint source"><code>yarn add pixi-scrollbox pixi-viewport pixi.js
-</code></pre>
-<p>Note: pixi-viewport and pixi.js are listed as peerDependency, which means you will need to manually install them if they're not already installed (this is to ensure you don't have two versions of these libraries).</p>
-<p>or <a target="_blank" href="https://github.com/davidfig/pixi-scrollbox/releases">download the latest build from github</a></p>
-<pre class="prettyprint source lang-html"><code>&lt;script src=&quot;/external-directory/pixi.js&quot;>&lt;/script>
-&lt;script src=&quot;/external-directory/pixi-viewport.js&quot;>&lt;/script>
-&lt;script src=&quot;/external-directory/scrollbox.js&quot;>&lt;/script>
-&lt;script>
-    const Scrollbox = new Scrollbox(options)
-&lt;/script>
-</code></pre>
 <h2>API Documentation</h2>
 <p><a target="_blank" href="https://davidfig.github.io/pixi-scrollbox/jsdoc/">https://davidfig.github.io/pixi-scrollbox/jsdoc/</a></p>
+<h2>Development Recipe</h2>
+<p>This project uses <a target="_blank" href="https://pnpm.io/">pnpm</a> (the version is pinned in <code>package.json</code>'s <code>packageManager</code> field).</p>
+<ol>
+<li>clone repository</li>
+<li>pnpm install</li>
+<li>pnpm dev</li>
+<li>open browser to http://localhost:5173</li>
+<li>pnpm test (tests use <a target="_blank" href="https://vitest.dev/">Vitest</a> with jsdom)</li>
+<li>pnpm run build-demo and pnpm run docs (build the demo and API docs into docs/)</li>
+</ol>
 <h2>license</h2>
 <p>MIT License<br>
 (c) 2019 <a target="_blank" href="https://yopeyopey.com/">YOPEY YOPEY LLC</a> by <a target="_blank" href="https://twitter.com/yopey_yopey/">David Figatner</a></p></article>
@@ -239,7 +281,7 @@ app.stage.addChild(scrollbox)
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu May 06 2021 06:15:28 GMT+0800 (Taipei Standard Time)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Mon Nov 02 2026 07:03:14 GMT-0800 (Pacific Standard Time)
             </div>
         </footer>
     </div>

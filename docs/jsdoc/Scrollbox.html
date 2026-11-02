@@ -25,7 +25,7 @@
 
     
     <script>
-    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{"outputSourceFiles":true},"applicationName":"pixi-scrollbox","footer":"by YOPEY YOPEY LLC (yopeyopey.com)","copyright":"Copyright © 2018 YOPEY YOPEY LLC.","meta":{"title":"pixi-scrollbox API Documentation","description":"Documentation for pixi-scrollbox library","keyword":"docs, documentation, html5, javascript, jsdoc, camera, scrollbox, bounce, snap, 2d"},"matomo":{"url":"https://analytics.yopeyopey.com/piwik/","id":13}};
+    var config = {"monospaceLinks":false,"cleverLinks":false,"default":{"outputSourceFiles":false},"applicationName":"pixi-scrollbox","footer":"by YOPEY YOPEY LLC (yopeyopey.com)","copyright":"Copyright © 2018 YOPEY YOPEY LLC.","meta":{"title":"pixi-scrollbox API Documentation","description":"Documentation for pixi-scrollbox library","keyword":"docs, documentation, html5, javascript, jsdoc, camera, scrollbox, bounce, snap, 2d"},"matomo":{"url":"https://analytics.yopeyopey.com/piwik/","id":13}};
     </script>
     
 
@@ -56,8 +56,6 @@
         <input id="search" type="text" class="form-control input-md" placeholder="Search...">
     </div>
     <ul class="list">
-    
-        
     
         
         <li class="item" data-name="Scrollbox">
@@ -95,14 +93,6 @@
             
                 <li class="parent " data-name="Scrollbox#overflowY"><a href="Scrollbox.html#overflowY">overflowY</a></li>
             
-                <li class="parent " data-name="Scrollbox#scrollbar"><a href="Scrollbox.html#scrollbar">scrollbar</a></li>
-            
-                <li class="parent " data-name="Scrollbox#scrollbarOffsetHorizontal"><a href="Scrollbox.html#scrollbarOffsetHorizontal">scrollbarOffsetHorizontal</a></li>
-            
-                <li class="parent " data-name="Scrollbox#scrollbarOffsetVertical"><a href="Scrollbox.html#scrollbarOffsetVertical">scrollbarOffsetVertical</a></li>
-            
-                <li class="parent " data-name="Scrollbox#scrollbarSize"><a href="Scrollbox.html#scrollbarSize">scrollbarSize</a></li>
-            
                 <li class="parent " data-name="Scrollbox#scrollHeight"><a href="Scrollbox.html#scrollHeight">scrollHeight</a></li>
             
                 <li class="parent " data-name="Scrollbox#scrollLeft"><a href="Scrollbox.html#scrollLeft">scrollLeft</a></li>
@@ -110,6 +100,14 @@
                 <li class="parent " data-name="Scrollbox#scrollTop"><a href="Scrollbox.html#scrollTop">scrollTop</a></li>
             
                 <li class="parent " data-name="Scrollbox#scrollWidth"><a href="Scrollbox.html#scrollWidth">scrollWidth</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbar"><a href="Scrollbox.html#scrollbar">scrollbar</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbarOffsetHorizontal"><a href="Scrollbox.html#scrollbarOffsetHorizontal">scrollbarOffsetHorizontal</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbarOffsetVertical"><a href="Scrollbox.html#scrollbarOffsetVertical">scrollbarOffsetVertical</a></li>
+            
+                <li class="parent " data-name="Scrollbox#scrollbarSize"><a href="Scrollbox.html#scrollbarSize">scrollbarSize</a></li>
             
                 <li class="parent " data-name="Scrollbox#stopPropagation"><a href="Scrollbox.html#stopPropagation">stopPropagation</a></li>
             
@@ -125,6 +123,8 @@
             <span class="subtitle">Methods</span>
             
                 <li class="parent  " data-name="Scrollbox#activateFade"><a href="Scrollbox.html#activateFade">activateFade</a></li>
+            
+                <li class="parent  " data-name="Scrollbox#destroy"><a href="Scrollbox.html#destroy">destroy</a></li>
             
                 <li class="parent  " data-name="Scrollbox#ensureVisible"><a href="Scrollbox.html#ensureVisible">ensureVisible</a></li>
             
@@ -182,10 +182,6 @@
             
         </h4>
 
-        
-        <div class="tag-source">
-            <a href="src_scrollbox.js.html#line29">scrollbox.js:29</a>
-        </div>
         
     </div>
 
@@ -263,6 +259,38 @@
 	</thead>
 	
 	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>events</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">PIXI.EventSystem</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>the renderer's EventSystem (app.renderer.events); required by pixi-viewport for wheel and pointer positions</p></td>
+        </tr>
+	
 	
 	
         <tr>
@@ -832,7 +860,7 @@
                         
                     
                 
-                <p>do not use PIXI.Ticker (for fade to work properly you will need to manually call updateLoop(elapsed) on each frame)</p></td>
+                <p>do not use PIXI.Ticker (you will need to manually call updateLoop(elapsed) on each frame)</p></td>
         </tr>
 	
 	
@@ -1049,7 +1077,7 @@
                         
                     
                 
-                <p>whether wheel events are propogated beyond the scrollbox (NOTE: default is now false)</p></td>
+                <p>whether wheel events are propogated beyond the scrollbox (if false, e.preventDefault() is called when the wheel scrolls the scrollbox)</p></td>
         </tr>
 	
 	
@@ -1092,13 +1120,13 @@
 	
         <tr>
             
-                <td class="name"><code>interaction</code></td>
+                <td class="name"><code>wheelSwapAxes</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">PIXI.InteractionManager</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -1106,6 +1134,8 @@
             
             
                 <td class="default">
+                
+                    false
                 
                 </td>
             
@@ -1119,41 +1149,7 @@
                         
                     
                 
-                <p>InteractionManager, available from instantiated PIXI.Renderer.plugins.interaction - used to calculate pointer postion relative to canvas location on screen</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>divWheel</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">HTMLElement</span>
-
-
-            
-            </td>
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                <p>the HTMLElement to use for wheel interactions</p></td>
+                <p>swap the wheel's x and y axes (e.g., so a mouse wheel scrolls a horizontal scrollbox)</p></td>
         </tr>
 	
 	
@@ -1350,7 +1346,7 @@
     
     <div class="description">
         <p>content in placed in here
-you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)</p>
+you can use any function from pixi-viewport on content to manually move the content (see https://viewport.pixijs.io/jsdoc/)</p>
     </div>
     
     
@@ -1904,210 +1900,6 @@ auto = if content is larger than box size, then show scrollbar</p>
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="scrollbar">
-            <a class="share-icon" href="#scrollbar"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">scrollbar</span>
-            <span class="type-signature type">PIXI.Graphics</span>
-            
-            
-            
-            
-        </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>graphics element for drawing the scrollbars</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="scrollbarOffsetHorizontal">
-            <a class="share-icon" href="#scrollbarOffsetHorizontal"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">scrollbarOffsetHorizontal</span>
-            <span class="type-signature type">number</span>
-            
-            
-            
-            
-        </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>offset of horizontal scrollbar (in pixels)</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="scrollbarOffsetVertical">
-            <a class="share-icon" href="#scrollbarOffsetVertical"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">scrollbarOffsetVertical</span>
-            <span class="type-signature type">number</span>
-            
-            
-            
-            
-        </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>offset of vertical scrollbar (in pixels)</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="scrollbarSize">
-            <a class="share-icon" href="#scrollbarSize"><span class="glyphicon glyphicon-link"></span></a>
-            <span class="">scrollbarSize</span>
-            <span class="type-signature type">number</span>
-            
-            
-            
-            
-        </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>scrollbar size in pixels</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id="scrollHeight">
             <a class="share-icon" href="#scrollHeight"><span class="glyphicon glyphicon-link"></span></a>
             <span class="">scrollHeight</span>
@@ -2314,6 +2106,210 @@ if not set then it uses content.width to calculate width</p>
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="scrollbar">
+            <a class="share-icon" href="#scrollbar"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">scrollbar</span>
+            <span class="type-signature type">PIXI.Graphics</span>
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>graphics element for drawing the scrollbars</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="scrollbarOffsetHorizontal">
+            <a class="share-icon" href="#scrollbarOffsetHorizontal"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">scrollbarOffsetHorizontal</span>
+            <span class="type-signature type">number</span>
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>offset of horizontal scrollbar (in pixels)</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="scrollbarOffsetVertical">
+            <a class="share-icon" href="#scrollbarOffsetVertical"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">scrollbarOffsetVertical</span>
+            <span class="type-signature type">number</span>
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>offset of vertical scrollbar (in pixels)</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="scrollbarSize">
+            <a class="share-icon" href="#scrollbarSize"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">scrollbarSize</span>
+            <span class="type-signature type">number</span>
+            
+            
+            
+            
+        </h4>
+    </div>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>scrollbar size in pixels</p>
+    </div>
+    
+    
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="stopPropagation">
             <a class="share-icon" href="#stopPropagation"><span class="glyphicon glyphicon-link"></span></a>
             <span class="">stopPropagation</span>
@@ -2384,10 +2380,6 @@ if not set then it uses content.width to calculate width</p>
         </h4>
 
         
-        <div class="tag-source">
-            <a href="src_scrollbox.js.html#line480">scrollbox.js:480</a>
-        </div>
-        
     </div>
 
     
@@ -2447,6 +2439,130 @@ if not set then it uses content.width to calculate width</p>
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="destroy">
+            <a class="share-icon" href="#destroy"><span class="glyphicon glyphicon-link"></span></a>
+            <span class="">
+                destroy
+            </span>
+            <span class="signature">(<span class="optional">options</span>)</span>
+            
+            
+            
+            
+        </h4>
+
+        
+    </div>
+
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>removes the ticker and the viewport's wheel listener, then destroys the scrollbox</p>
+    </div>
+    
+
+    
+
+    
+
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">PIXI.DestroyOptions</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="ensureVisible">
             <a class="share-icon" href="#ensureVisible"><span class="glyphicon glyphicon-link"></span></a>
             <span class="">
@@ -2459,10 +2575,6 @@ if not set then it uses content.width to calculate width</p>
             
         </h4>
 
-        
-        <div class="tag-source">
-            <a href="src_scrollbox.js.html#line603">scrollbox.js:603</a>
-        </div>
         
     </div>
 
@@ -2649,10 +2761,6 @@ if not set then it uses content.width to calculate width</p>
             
         </h4>
 
-        
-        <div class="tag-source">
-            <a href="src_scrollbox.js.html#line583">scrollbox.js:583</a>
-        </div>
         
     </div>
 
@@ -2913,10 +3021,6 @@ if not set then it uses content.width to calculate width</p>
         </h4>
 
         
-        <div class="tag-source">
-            <a href="src_scrollbox.js.html#line423">scrollbox.js:423</a>
-        </div>
-        
     </div>
 
     
@@ -2989,10 +3093,6 @@ if not set then it uses content.width to calculate width</p>
         </h4>
 
         
-        <div class="tag-source">
-            <a href="src_scrollbox.js.html#line443">scrollbox.js:443</a>
-        </div>
-        
     </div>
 
     
@@ -3001,7 +3101,8 @@ if not set then it uses content.width to calculate width</p>
 
     
     <div class="description">
-        <p>called on each frame to update fade scrollbars (if enabled)</p>
+        <p>called on each frame to update fade scrollbars (if enabled)
+if options.noTicker is set then call this on each frame (it also updates the underlying viewport)</p>
     </div>
     
 
@@ -3113,7 +3214,7 @@ if not set then it uses content.width to calculate width</p>
 
         <footer class="content-size">
             <div class="footer">
-                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu May 06 2021 06:15:28 GMT+0800 (Taipei Standard Time)
+                Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Mon Nov 02 2026 07:03:14 GMT-0800 (Pacific Standard Time)
             </div>
         </footer>
     </div>
