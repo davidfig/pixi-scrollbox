@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js'
+import { Container, Graphics, Ticker } from 'pixi.js'
 import { Viewport } from 'pixi-viewport'
 import Penner from 'penner'
 
@@ -15,21 +15,23 @@ const scrollboxOptions = {
     'scrollbarOffsetHorizontal': 0,
     'scrollbarOffsetVertical': 0,
     'underflow': 'top-left',
-    'fadeScrollbar': false,
+    'fade': false,
     'fadeScrollbarTime': 1000,
     'fadeScrollboxWait': 3000,
     'fadeScrollboxEase': 'easeInOutSine',
     'passiveWheel': false,
-    'clampWheel': true
+    'clampWheel': true,
+    'wheelSwapAxes': false
 }
 
 /**
  * pixi.js scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
  */
-export class Scrollbox extends PIXI.Container {
+export class Scrollbox extends Container {
     /**
      * create a scrollbox
      * @param {object} options
+     * @param {PIXI.EventSystem} options.events the renderer's EventSystem (app.renderer.events); required by pixi-viewport for wheel and pointer positions
      * @param {boolean} [options.dragScroll=true] user may drag the content area to scroll content
      * @param {string} [options.overflowX=auto] (none, scroll, hidden, auto) this changes whether the scrollbar is shown
      * @param {string} [options.overflowY=auto] (none, scroll, hidden, auto) this changes whether the scrollbar is shown
@@ -45,73 +47,64 @@ export class Scrollbox extends PIXI.Container {
      * @param {number} [options.scrollbarForeground=0x888888] foreground color of scrollbar
      * @param {number} [options.scrollbarForegroundAlpha=1] alpha of foreground of scrollbar
      * @param {string} [options.underflow=top-left] what to do when content underflows the scrollbox size: none: do nothing; (left/right/center AND top/bottom/center); OR center (e.g., 'top-left', 'center', 'none', 'bottomright')
-     * @param {boolean} [options.noTicker] do not use PIXI.Ticker (for fade to work properly you will need to manually call updateLoop(elapsed) on each frame)
+     * @param {boolean} [options.noTicker] do not use PIXI.Ticker (you will need to manually call updateLoop(elapsed) on each frame)
      * @param {PIXI.Ticker} [options.ticker=PIXI.Ticker.shared] use this PIXI.Ticker for updates
      * @param {boolean} [options.fade] fade the scrollbar when not in use
      * @param {number} [options.fadeScrollbarTime=1000] time to fade scrollbar if options.fade is set
      * @param {number} [options.fadeScrollboxWait=3000] time to wait before fading the scrollbar if options.fade is set
      * @param {(string|function)} [options.fadeScrollboxEase=easeInOutSine] easing function to use for fading
-     * @param {boolean} [options.passiveWheel=false] whether wheel events are propogated beyond the scrollbox (NOTE: default is now false)
+     * @param {boolean} [options.passiveWheel=false] whether wheel events are propogated beyond the scrollbox (if false, e.preventDefault() is called when the wheel scrolls the scrollbox)
      * @param {boolean} [options.clampWheel=true] wheel events should be clamped (to avoid weird bounce with mouse wheel)
-     * @param {PIXI.InteractionManager} [options.interaction] InteractionManager, available from instantiated PIXI.Renderer.plugins.interaction - used to calculate pointer postion relative to canvas location on screen
-     * @param {HTMLElement} [options.divWheel] the HTMLElement to use for wheel interactions
+     * @param {boolean} [options.wheelSwapAxes=false] swap the wheel's x and y axes (e.g., so a mouse wheel scrolls a horizontal scrollbox)
      */
     constructor(options = {}) {
         super()
         this.options = Object.assign({}, scrollboxOptions, options)
+        if (!this.options.events) {
+            throw new Error('pixi-scrollbox: options.events is required (e.g., new Scrollbox({ events: app.renderer.events }))')
+        }
         if (options.overflow) {
             this.options.overflowX = this.options.overflowY = options.overflow
         }
+        if (options.fadeScrollbar) {
+            this.options.fade = true
+        }
+        this.options.ticker = options.ticker || Ticker.shared
         this.ease = typeof this.options.fadeScrollboxEase === 'function' ? this.options.fadeScrollboxEase : Penner[this.options.fadeScrollboxEase]
 
         /**
          * content in placed in here
-         * you can use any function from pixi-viewport on content to manually move the content (see https://davidfig.github.io/pixi-viewport/jsdoc/)
+         * you can use any function from pixi-viewport on content to manually move the content (see https://viewport.pixijs.io/jsdoc/)
          * @type {Viewport}
          */
         this.content = this.addChild(new Viewport({
-            passiveWheel: false,
+            passiveWheel: this.options.passiveWheel,
             stopPropagation: this.options.stopPropagation,
             screenWidth: this.options.boxWidth,
             screenHeight: this.options.boxHeight,
-            interaction: this.options.interaction,
-            divWheel: this.options.divWheel,
+            events: this.options.events,
+            noTicker: this.options.noTicker,
+            ticker: this.options.ticker,
         }))
         this.content
             .decelerate()
             .on('moved', () => this._drawScrollbars())
 
-        // needed to pull this out of viewportOptions because of pixi.js v4 support (which changed from PIXI.ticker.shared to PIXI.Ticker.shared...sigh)
-        if (options.ticker) {
-            this.options.ticker = options.ticker
-        }
-        else {
-            // to avoid Rollup transforming our import, save pixi namespace in a variable
-            // from here: https://github.com/pixijs/pixi.js/issues/5757
-            let ticker
-            const pixiNS = PIXI
-            if (parseInt(/^(\d+)\./.exec(PIXI.VERSION)[1]) < 5) {
-                ticker = pixiNS.ticker.shared
-            }
-            else {
-                ticker = pixiNS.Ticker.shared
-            }
-            this.options.ticker = options.ticker || ticker
-        }
-
         /**
          * graphics element for drawing the scrollbars
          * @type {PIXI.Graphics}
          */
-        this.scrollbar = this.addChild(new PIXI.Graphics())
-        this.scrollbar.interactive = true
+        this.scrollbar = this.addChild(new Graphics())
+        this.scrollbar.eventMode = 'static'
+        this.scrollbar.hitArea = { contains: (x, y) => this._scrollbarContains(x, y) }
         this.scrollbar.on('pointerdown', this.scrollbarDown, this)
-        this.interactive = true
-        this.on('pointermove', this.scrollbarMove, this)
-        this.on('pointerup', this.scrollbarUp, this)
-        this.on('pointercancel', this.scrollbarUp, this)
-        this.on('pointerupoutside', this.scrollbarUp, this)
-        this._maskContent = this.addChild(new PIXI.Graphics())
+        this.scrollbar.on('pointerup', this.scrollbarUp, this)
+        this.scrollbar.on('pointerupoutside', this.scrollbarUp, this)
+        this.scrollbar.on('pointercancel', this.scrollbarUp, this)
+
+        // the mask is only used for clipping, so it must never be the target of pointer events
+        this._maskContent = this.addChild(new Graphics())
+        this._maskContent.eventMode = 'none'
         this.update()
 
         if (!this.options.noTicker) {
@@ -165,6 +158,7 @@ export class Scrollbox extends PIXI.Container {
     }
     set stopPropagation(value) {
         this.options.stopPropagation = value
+        this.content.options.stopPropagation = value
     }
 
     /**
@@ -176,16 +170,8 @@ export class Scrollbox extends PIXI.Container {
     }
     set dragScroll(value) {
         this.options.dragScroll = value
-        if (value) {
-            this.content.drag()
-        }
-        else {
-            if (typeof this.content.removePlugin !== 'undefined') {
-                this.content.removePlugin('drag')
-            }
-            else {
-                this.content.plugins.remove('drag')
-            }
+        if (!value) {
+            this.content.plugins.remove('drag')
         }
         this.update()
     }
@@ -318,7 +304,7 @@ export class Scrollbox extends PIXI.Container {
     }
     set scrollTop(top) {
         this.content.top = top
-        this._drawScrollbars()
+        this._clampAndDraw()
     }
 
     /**
@@ -329,7 +315,7 @@ export class Scrollbox extends PIXI.Container {
     }
     set scrollLeft(left) {
         this.content.left = left
-        this._drawScrollbars()
+        this._clampAndDraw()
     }
 
     /**
@@ -362,11 +348,6 @@ export class Scrollbox extends PIXI.Container {
         this._isScrollbarHorizontal = this.overflowX === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowX) !== -1 ? false : this.scrollWidth > this.options.boxWidth
         this._isScrollbarVertical = this.overflowY === 'scroll' ? true : ['hidden', 'none'].indexOf(this.overflowY) !== -1 ? false : this.scrollHeight > this.options.boxHeight
         this.scrollbar.clear()
-        let options = {}
-        options.left = 0
-        options.right = this.scrollWidth + (this._isScrollbarVertical ? this.options.scrollbarSize : 0)
-        options.top = 0
-        options.bottom = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
         const width = this.scrollWidth + (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
         const height = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
         this.scrollbarTop = (this.content.top / height) * this.boxHeight
@@ -377,32 +358,82 @@ export class Scrollbox extends PIXI.Container {
         this.scrollbarLeft = this.scrollbarLeft < 0 ? 0 : this.scrollbarLeft
         this.scrollbarWidth = (this.boxWidth / width) * this.boxWidth
         this.scrollbarWidth = this.scrollbarWidth + this.scrollbarLeft > this.boxWidth ? this.boxWidth - this.scrollbarLeft : this.scrollbarWidth
+        const background = { color: this.options.scrollbarBackground, alpha: this.options.scrollbarBackgroundAlpha }
+        const foreground = { color: this.options.scrollbarForeground, alpha: this.options.scrollbarForegroundAlpha }
         if (this.isScrollbarVertical) {
             this.scrollbar
-                .beginFill(this.options.scrollbarBackground, this.options.scrollbarBackgroundAlpha)
-                .drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, 0, this.scrollbarSize, this.boxHeight)
-                .endFill()
+                .rect(this._scrollbarVerticalX, 0, this.scrollbarSize, this.boxHeight)
+                .fill(background)
         }
         if (this.isScrollbarHorizontal) {
             this.scrollbar
-                .beginFill(this.options.scrollbarBackground, this.options.scrollbarBackgroundAlpha)
-                .drawRect(0, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.boxWidth, this.scrollbarSize)
-                .endFill()
+                .rect(0, this._scrollbarHorizontalY, this.boxWidth, this.scrollbarSize)
+                .fill(background)
         }
         if (this.isScrollbarVertical) {
             this.scrollbar
-                .beginFill(this.options.scrollbarForeground, this.options.scrollbarForegroundAlpha)
-                .drawRect(this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical, this.scrollbarTop, this.scrollbarSize, this.scrollbarHeight)
-                .endFill()
+                .rect(this._scrollbarVerticalX, this.scrollbarTop, this.scrollbarSize, this.scrollbarHeight)
+                .fill(foreground)
         }
         if (this.isScrollbarHorizontal) {
             this.scrollbar
-                .beginFill(this.options.scrollbarForeground, this.options.scrollbarForegroundAlpha)
-                .drawRect(this.scrollbarLeft, this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal, this.scrollbarWidth, this.scrollbarSize)
-                .endFill()
+                .rect(this.scrollbarLeft, this._scrollbarHorizontalY, this.scrollbarWidth, this.scrollbarSize)
+                .fill(foreground)
         }
-        // this.content.forceHitArea = new PIXI.Rectangle(0, 0 , this.boxWidth, this.boxHeight)
         this.activateFade()
+    }
+
+    /**
+     * x-coordinate of the vertical scrollbar
+     * @private
+     */
+    get _scrollbarVerticalX() {
+        return this.boxWidth - this.scrollbarSize + this.options.scrollbarOffsetVertical
+    }
+
+    /**
+     * y-coordinate of the horizontal scrollbar
+     * @private
+     */
+    get _scrollbarHorizontalY() {
+        return this.boxHeight - this.scrollbarSize + this.options.scrollbarOffsetHorizontal
+    }
+
+    /**
+     * whether a point (in the scrollbox's coordinates) is over a visible scrollbar
+     * used as the scrollbar's hitArea so it works even when the scrollbar is transparent
+     * @private
+     */
+    _scrollbarContains(x, y) {
+        if (this._disabled) {
+            return false
+        }
+        if (this.isScrollbarHorizontal && this._overHorizontal(x, y)) {
+            return true
+        }
+        return this.isScrollbarVertical && this._overVertical(x, y)
+    }
+
+    /** @private */
+    _overHorizontal(x, y) {
+        return x >= 0 && x <= this.boxWidth && y >= this._scrollbarHorizontalY && y <= this._scrollbarHorizontalY + this.scrollbarSize
+    }
+
+    /** @private */
+    _overVertical(x, y) {
+        return y >= 0 && y <= this.boxHeight && x >= this._scrollbarVerticalX && x <= this._scrollbarVerticalX + this.scrollbarSize
+    }
+
+    /**
+     * clamps the content after moving it directly and redraws the scrollbars
+     * @private
+     */
+    _clampAndDraw() {
+        const clamp = this.content.plugins.get('clamp', true)
+        if (clamp) {
+            clamp.update()
+        }
+        this._drawScrollbars()
     }
 
     /**
@@ -411,9 +442,8 @@ export class Scrollbox extends PIXI.Container {
      */
     _drawMask() {
         this._maskContent
-            .beginFill(0)
-            .drawRect(0, 0, this.boxWidth, this.boxHeight)
-            .endFill()
+            .rect(0, 0, this.boxWidth, this.boxHeight)
+            .fill(0)
         this.content.mask = this._maskContent
     }
 
@@ -427,25 +457,30 @@ export class Scrollbox extends PIXI.Container {
             this._drawScrollbars()
             this._drawMask()
             const direction = this.isScrollbarHorizontal && this.isScrollbarVertical ? 'all' : this.isScrollbarHorizontal ? 'x' : 'y'
-            if (direction !== null) {
-                if (this.options.dragScroll) {
-                    this.content.drag({ clampWheel: this.options.clampWheel, direction })
-                }
-                this.content.clamp({ direction, underflow: this.options.underflow })
+            if (this.options.dragScroll) {
+                this.content.drag({ clampWheel: this.options.clampWheel, direction, wheelSwapAxes: this.options.wheelSwapAxes })
             }
+            this.content.clamp({ direction, underflow: this.options.underflow })
+        }
+        else {
+            this.scrollbar.clear()
         }
     }
 
     /**
      * called on each frame to update fade scrollbars (if enabled)
+     * if options.noTicker is set then call this on each frame (it also updates the underlying viewport)
      * @param {number} elapsed since last frame in milliseconds (usually capped at 16.6667)
      */
     updateLoop(elapsed) {
+        if (this.options.noTicker) {
+            this.content.update(elapsed)
+        }
         if (this.fade) {
             if (this.fade.wait > 0) {
                 this.fade.wait -= elapsed
                 if (this.fade.wait <= 0) {
-                    elapsed += this.fade.wait
+                    elapsed = -this.fade.wait
                 }
                 else {
                     return
@@ -478,7 +513,7 @@ export class Scrollbox extends PIXI.Container {
      * show the scrollbar and restart the timer for fade if options.fade is set
      */
     activateFade() {
-        if (!this.fade && this.options.fade) {
+        if (this.options.fade) {
             this.scrollbar.alpha = 1
             this.fade = { wait: this.options.fadeScrollboxWait, duration: 0 }
         }
@@ -486,77 +521,41 @@ export class Scrollbox extends PIXI.Container {
 
     /**
      * handle pointer down on scrollbar
-     * @param {PIXI.interaction.InteractionEvent} e
+     * @param {PIXI.FederatedPointerEvent} e
      * @private
      */
     scrollbarDown(e) {
-        const local = this.toLocal(e.data.global)
-        if (this.isScrollbarHorizontal) {
-            if (local.y > this.boxHeight - this.scrollbarSize) {
-                if (local.x >= this.scrollbarLeft && local.x <= this.scrollbarLeft + this.scrollbarWidth) {
-                    this.pointerDown = { type: 'horizontal', last: local }
+        const local = this.toLocal(e.global)
+        if (this.isScrollbarHorizontal && this._overHorizontal(local.x, local.y)) {
+            if (local.x >= this.scrollbarLeft && local.x <= this.scrollbarLeft + this.scrollbarWidth) {
+                this._startScrollbarDrag('horizontal', local)
+            }
+            else {
+                if (local.x > this.scrollbarLeft) {
+                    this.content.left += this.content.worldScreenWidth
                 }
                 else {
-                    if (local.x > this.scrollbarLeft) {
-                        this.content.left += this.content.worldScreenWidth
-                        this.update()
-                    }
-                    else {
-                        this.content.left -= this.content.worldScreenWidth
-                        this.update()
-                    }
+                    this.content.left -= this.content.worldScreenWidth
                 }
-                if (this.options.stopPropagation) {
-                    e.stopPropagation()
-                }
-                return
+                this._clampAndDraw()
             }
+            if (this.options.stopPropagation) {
+                e.stopPropagation()
+            }
+            return
         }
-        if (this.isScrollbarVertical) {
-            if (local.x > this.boxWidth - this.scrollbarSize) {
-                if (local.y >= this.scrollbarTop && local.y <= this.scrollbarTop + this.scrollbarWidth) {
-                    this.pointerDown = { type: 'vertical', last: local }
+        if (this.isScrollbarVertical && this._overVertical(local.x, local.y)) {
+            if (local.y >= this.scrollbarTop && local.y <= this.scrollbarTop + this.scrollbarHeight) {
+                this._startScrollbarDrag('vertical', local)
+            }
+            else {
+                if (local.y > this.scrollbarTop) {
+                    this.content.top += this.content.worldScreenHeight
                 }
                 else {
-                    if (local.y > this.scrollbarTop) {
-                        this.content.top += this.content.worldScreenHeight
-                        this.update()
-                    }
-                    else {
-                        this.content.top -= this.content.worldScreenHeight
-                        this.update()
-                    }
+                    this.content.top -= this.content.worldScreenHeight
                 }
-                if (this.options.stopPropagation) {
-                    e.stopPropagation()
-                }
-                return
-            }
-        }
-    }
-
-    /**
-     * handle pointer move on scrollbar
-     * @param {PIXI.interaction.InteractionEvent} e
-     * @private
-     */
-    scrollbarMove(e) {
-        if (this.pointerDown) {
-            if (this.pointerDown.type === 'horizontal') {
-                const local = this.toLocal(e.data.global)
-                const width = this.scrollWidth + (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
-                this.scrollbarLeft += local.x - this.pointerDown.last.x
-                this.content.left = this.scrollbarLeft / this.boxWidth * width
-                this.pointerDown.last = local
-                this.update()
-            }
-            else if (this.pointerDown.type === 'vertical') {
-                const local = this.toLocal(e.data.global)
-                const height = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
-                this.scrollbarTop += local.y - this.pointerDown.last.y
-                this.content.top = this.scrollbarTop / this.boxHeight * height
-                this.pointerDown.last = local
-                this.update()
+                this._clampAndDraw()
             }
             if (this.options.stopPropagation) {
                 e.stopPropagation()
@@ -565,11 +564,47 @@ export class Scrollbox extends PIXI.Container {
     }
 
     /**
-     * handle pointer down on scrollbar
+     * start dragging a scrollbar; listens to moves anywhere on the stage until the pointer is released
+     * @private
+     */
+    _startScrollbarDrag(type, local) {
+        this.pointerDown = { type, last: local }
+        this.scrollbar.on('globalpointermove', this.scrollbarMove, this)
+    }
+
+    /**
+     * handle pointer move on scrollbar
+     * @param {PIXI.FederatedPointerEvent} e
+     * @private
+     */
+    scrollbarMove(e) {
+        if (this.pointerDown) {
+            const local = this.toLocal(e.global)
+            if (this.pointerDown.type === 'horizontal') {
+                const width = this.scrollWidth + (this.isScrollbarVertical ? this.options.scrollbarSize : 0)
+                this.scrollbarLeft += local.x - this.pointerDown.last.x
+                this.content.left = this.scrollbarLeft / this.boxWidth * width
+            }
+            else {
+                const height = this.scrollHeight + (this.isScrollbarHorizontal ? this.options.scrollbarSize : 0)
+                this.scrollbarTop += local.y - this.pointerDown.last.y
+                this.content.top = this.scrollbarTop / this.boxHeight * height
+            }
+            this.pointerDown.last = local
+            this._clampAndDraw()
+            if (this.options.stopPropagation) {
+                e.stopPropagation()
+            }
+        }
+    }
+
+    /**
+     * handle pointer up on scrollbar
      * @private
      */
     scrollbarUp() {
         this.pointerDown = null
+        this.scrollbar.off('globalpointermove', this.scrollbarMove, this)
     }
 
     /**
@@ -603,5 +638,19 @@ export class Scrollbox extends PIXI.Container {
     ensureVisible(x, y, width, height) {
         this.content.ensureVisible(x, y, width, height)
         this._drawScrollbars()
+    }
+
+    /**
+     * removes the ticker and the viewport's wheel listener, then destroys the scrollbox
+     * @param {PIXI.DestroyOptions} [options]
+     */
+    destroy(options) {
+        if (this.tickerFunction) {
+            this.options.ticker.remove(this.tickerFunction)
+            this.tickerFunction = null
+        }
+        this.scrollbarUp()
+        this.content.destroy(options)
+        super.destroy(options)
     }
 }

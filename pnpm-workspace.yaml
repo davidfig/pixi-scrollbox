@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - pixi-viewport@7.0.0

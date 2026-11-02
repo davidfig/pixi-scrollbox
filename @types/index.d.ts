@@ -1,16 +1,18 @@
-import * as PIXI from 'pixi.js'
-import { Viewport } from 'pixi-viewport'
+import { Container, DestroyOptions, EventSystem, FederatedPointerEvent, Graphics, Ticker } from 'pixi.js'
+import type { Viewport } from 'pixi-viewport'
 
-type OverflowScrollType = 'none' | 'scroll' | 'hidden' | 'auto'
-type UnderflowType = 'center' | 'top' | 'left' | 'right' | 'bottom' | string
-interface ResizeOptions {
+export type OverflowScrollType = 'none' | 'scroll' | 'hidden' | 'auto'
+export type UnderflowType = 'center' | 'top' | 'left' | 'right' | 'bottom' | string
+export interface ResizeOptions {
     boxWidth?: number
     boxHeight?: number
     scrollWidth?: number
     scrollHeight?: number
 }
 
-interface ScrollBoxOptions {
+export interface ScrollboxOptions {
+    /** the renderer's EventSystem (app.renderer.events) */
+    events: EventSystem
     boxHeight?: number
     boxWidth?: number
     scrollbarSize?: number
@@ -30,18 +32,18 @@ interface ScrollBoxOptions {
     fadeScrollboxEase?: string | Function
     passiveWheel?: boolean
     clampWheel?: boolean
+    wheelSwapAxes?: boolean
     overflowX?: OverflowScrollType
     overflowY?: OverflowScrollType
     overflow?: OverflowScrollType
     noTicker?: boolean
-    ticker?: PIXI.Ticker
-    divWheel?: HTMLElement
+    ticker?: Ticker
 }
 
 /**
  * pixi.js scrollbox: a masked content box that can scroll vertically or horizontally with scrollbars
  */
-export declare class Scrollbox extends PIXI.Container {
+export declare class Scrollbox extends Container {
     boxHeight: number
     boxWidth: number
     content: Viewport
@@ -52,10 +54,10 @@ export declare class Scrollbox extends PIXI.Container {
     dragScroll: boolean
     readonly isScrollbarHorizontal: boolean
     readonly isScrollbarVertical: boolean
-    overflow: string
-    overflowX: string
-    overflowY: string
-    scrollbar: PIXI.Graphics
+    overflow: OverflowScrollType
+    overflowX: OverflowScrollType
+    overflowY: OverflowScrollType
+    scrollbar: Graphics
     scrollbarOffsetHorizontal: number
     scrollbarOffsetVertical: number
     scrollbarSize: number
@@ -68,7 +70,7 @@ export declare class Scrollbox extends PIXI.Container {
     /**
      * create a scrollbox
      */
-    constructor(options?: ScrollBoxOptions)
+    constructor(options: ScrollboxOptions)
 
     /**
      * show the scrollbar and restart the timer for fade if options.fade is set
@@ -95,21 +97,27 @@ export declare class Scrollbox extends PIXI.Container {
      */
     updateLoop(elapsed: number): void
 
+    /**
+     * removes the ticker and the viewport's wheel listener, then destroys the scrollbox
+     */
+    destroy(options?: DestroyOptions): void
+
     private _drawMask(): void
     private _drawScrollbars(): void
+    private _clampAndDraw(): void
 
     /**
      * handle pointer down on scrollbar
      */
-    private scrollbarDown(e: PIXI.InteractionEvent): void
+    private scrollbarDown(e: FederatedPointerEvent): void
 
     /**
      * handle pointer move on scrollbar
      */
-    private scrollbarMove(e: PIXI.InteractionEvent): void
+    private scrollbarMove(e: FederatedPointerEvent): void
 
     /**
-     * handle pointer down on scrollbar
+     * handle pointer up on scrollbar
      */
     private scrollbarUp(): void
 }
